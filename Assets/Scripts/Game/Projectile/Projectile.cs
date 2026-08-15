@@ -100,7 +100,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
         if (!_isActive)
             return;
 
-        var slime = other.GetComponent<SlimeView>();
+        var slime = other.GetComponent<BaseSlime>();
         if (slime == null)
             return;
 

@@ -82,14 +82,14 @@ public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
         // 경로 시작점에 배치
         obj.transform.position = _splineContainer.EvaluatePosition(0f);
 
-        var slimeView = obj.GetComponent<SlimeView>();
-        if (slimeView == null)
+        var slime = obj.GetComponent<BaseSlime>();
+        if (slime == null)
         {
-            Debug.LogError("[TestSpawner] 슬라임 프리팹에 SlimeView 컴포넌트가 없습니다.", obj);
+            Debug.LogError("[TestSpawner] 슬라임 프리팹에 BaseSlime 컴포넌트가 없습니다.", obj);
             return;
         }
 
-        slimeView.Initialize(_splineContainer);
+        slime.Initialize(_splineContainer);
         _spawnedCount++;
     }
 
