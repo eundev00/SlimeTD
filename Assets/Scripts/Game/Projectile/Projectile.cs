@@ -2,7 +2,6 @@ using Services.UpdateService;
 using UnityEngine;
 using VContainer;
 
-/// 논호밍 직선 발사체. 발사 시점의 타겟 위치를 향해 직진하며, 도중에 슬라임과 충돌하면 데미지를 준다.
 public class Projectile : MonoBehaviour, IUpdatable, IPoolable
 {
     #region Fields
@@ -35,7 +34,6 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
 
     #region Public API
 
-    /// 타워가 발사 시 호출. 타겟의 현재 위치를 향해 방향을 고정하고 이동을 시작한다.
     public void Initialize(Vector3 targetPosition, int damage)
     {
         _damage = damage;
@@ -62,7 +60,6 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
 
         _elapsedTime += Time.deltaTime;
 
-        // 수명 초과 → 풀 반환
         if (_elapsedTime >= _lifetime)
         {
             ReturnToPool();

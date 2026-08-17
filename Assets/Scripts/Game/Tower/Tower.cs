@@ -2,7 +2,6 @@ using Services.UpdateService;
 using UnityEngine;
 using VContainer;
 
-/// 타워 MonoBehaviour. 일정 주기(공격속도)마다 사거리 내 가장 가까운 슬라임을 찾아 발사체를 발사한다.
 public class Tower : MonoBehaviour, IPeriodicUpdatable
 {
     #region Fields
@@ -17,7 +16,6 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
     private IUpdateSubscriptionService _updateService;
     private GameObjectPoolService _poolService;
 
-    // OverlapSphere 결과 버퍼 (GC 방지)
     private readonly Collider[] _hitBuffer = new Collider[32];
 
     #endregion
@@ -90,7 +88,6 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
 
         for (int i = 0; i < count; i++)
         {
-            // 비활성 오브젝트 무시 (풀 반환된 슬라임의 콜라이더가 남아있을 수 있음)
             if (!_hitBuffer[i].gameObject.activeInHierarchy)
                 continue;
 

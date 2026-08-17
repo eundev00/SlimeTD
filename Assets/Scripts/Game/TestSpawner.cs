@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Splines;
 using VContainer;
 
-/// 테스트용 슬라임 주기 스포너. 정식 웨이브 시스템(2단계)으로 대체될 예정.
 public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
 {
     #region Fields
@@ -79,7 +78,6 @@ public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
         if (obj == null)
             return;
 
-        // 경로 시작점에 배치
         obj.transform.position = _splineContainer.EvaluatePosition(0f);
 
         var slime = obj.GetComponent<BaseSlime>();

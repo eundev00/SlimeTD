@@ -5,8 +5,6 @@ using UnityEngine.Pool;
 using VContainer;
 using VContainer.Unity;
 
-/// 프리팹별 ObjectPool을 관리하는 공용 풀 서비스.
-/// IObjectResolver를 통해 풀에서 생성된 오브젝트에도 VContainer 주입을 수행한다.
 public class GameObjectPoolService : IDisposable
 {
     #region Fields
@@ -104,7 +102,6 @@ public class GameObjectPoolService : IDisposable
         var instance = UnityEngine.Object.Instantiate(prefab, _poolRoot);
         instance.SetActive(false);
 
-        // VContainer 주입 — Instantiate로 만든 오브젝트는 VContainer가 모르므로 수동 주입
         _resolver.InjectGameObject(instance);
 
         _instanceToPrefab[instance] = prefab;
@@ -115,7 +112,6 @@ public class GameObjectPoolService : IDisposable
     {
         instance.SetActive(true);
 
-        // IPoolable 구현체에 활성화 알림
         var poolables = instance.GetComponents<IPoolable>();
         foreach (var poolable in poolables)
         {
@@ -125,7 +121,6 @@ public class GameObjectPoolService : IDisposable
 
     private void OnReleaseInstance(GameObject instance)
     {
-        // IPoolable 구현체에 반환 알림
         var poolables = instance.GetComponents<IPoolable>();
         foreach (var poolable in poolables)
         {
