@@ -9,6 +9,6 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<GameObjectPoolService>(Lifetime.Scoped)
                .As<IGameObjectPoolService>();
         builder.RegisterComponentInHierarchy<TestSpawner>();
-        builder.RegisterComponentInHierarchy<Tower>();
+        builder.RegisterComponentInHierarchy<BaseTower>();
     }
 }

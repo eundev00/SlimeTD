@@ -3,19 +3,22 @@ using Services.UpdateService;
 using UnityEngine;
 using VContainer;
 
-public class Tower : MonoBehaviour, IPeriodicUpdatable
+public class BaseTower : MonoBehaviour, IPeriodicUpdatable
 {
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _attackCooldown = 1f;
     [SerializeField] private int _damage = 1;
-    [SerializeField] private Transform _firePoint;
-    [SerializeField] private GameObject _projectilePrefab;
+    [SerializeField, NotNull] private Transform _firePoint;
+    [SerializeField, NotNull] private GameObject _projectilePrefab;
     [SerializeField] private LayerMask _slimeLayer;
 
+    private TowerStats _stats;
     private IUpdateSubscriptionService _updateService;
     private IGameObjectPoolService _poolService;
 
     private readonly Collider[] _hitBuffer = new Collider[32];
+
+    public TowerStats Stats => _stats;
 
     [Inject]
     public void Construct(
@@ -28,22 +31,27 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
 
     #region Unity Lifecycle
 
+    private void Awake()
+    {
+        _stats = new TowerStats(_attackRange, _attackCooldown, _damage);
+    }
+
     private void Start()
     {
         if (_firePoint == null)
         {
-            Debug.LogError("[Tower] _firePoint가 연결되지 않았습니다.", this);
+            Debug.LogError("[BaseTower] _firePoint가 연결되지 않았습니다.", this);
             return;
         }
 
         if (_projectilePrefab == null)
         {
-            Debug.LogError("[Tower] _projectilePrefab이 연결되지 않았습니다.", this);
+            Debug.LogError("[BaseTower] _projectilePrefab이 연결되지 않았습니다.", this);
             return;
         }
 
         _poolService.CreatePool(_projectilePrefab, 10, 50);
-        _updateService.RegisterPeriodicUpdatable(this, _attackCooldown);
+        _updateService.RegisterPeriodicUpdatable(this, _stats.AttackCooldown);
     }
 
     private void OnDestroy()
@@ -69,7 +77,7 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
     private Transform FindClosestSlime()
     {
         int count = Physics.OverlapSphereNonAlloc(
-            transform.position, _attackRange, _hitBuffer, _slimeLayer);
+            transform.position, _stats.AttackRange, _hitBuffer, _slimeLayer);
 
         if (count == 0)
             return null;
@@ -104,18 +112,27 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
         var projectile = projObj.GetComponent<Projectile>();
         if (projectile == null)
         {
-            Debug.LogError("[Tower] 발사체 프리팹에 Projectile 컴포넌트가 없습니다.", projObj);
+            Debug.LogError("[BaseTower] 발사체 프리팹에 Projectile 컴포넌트가 없습니다.", projObj);
             return;
         }
 
-        projectile.Initialize(target.position, _damage);
+        projectile.Initialize(target.position, _stats.Damage);
     }
 
     #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
+        if (_stats != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, _stats.AttackRange);
+        }
+        else
+        {
+            // Awake 전에는 SerializeField 값 사용
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, _attackRange);
+        }
     }
     #endif
 }

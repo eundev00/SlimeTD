@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class SlimeFace : MonoBehaviour, IPoolable
 {
-    [SerializeField] private SkinnedMeshRenderer _renderer;
-    [SerializeField] private Material _normalFace;
-    [SerializeField] private Material _damagedFace;
-    [SerializeField] private Material _deadFace;
+    [SerializeField, NotNull] private SkinnedMeshRenderer _renderer;
+    [SerializeField, NotNull] private Material _normalFace;
+    [SerializeField, NotNull] private Material _damagedFace;
+    [SerializeField, NotNull] private Material _deadFace;
     [SerializeField] private float _damagedFaceDuration = 0.3f;
 
     private BaseSlime _baseSlime;
