@@ -6,8 +6,8 @@ using VContainer;
 
 public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
 {
-    [SerializeField, NotNull] private GameObject _slimePrefab;
-    [SerializeField, NotNull] private SplineContainer _splineContainer;
+    [NotNull][SerializeField] private GameObject _slimePrefab;
+    [NotNull][SerializeField] private SplineContainer _splineContainer;
     [SerializeField] private float _spawnInterval = 2f;
     [SerializeField] private int _maxSlimes = 20;
 

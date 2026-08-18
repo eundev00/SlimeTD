@@ -8,13 +8,13 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _attackCooldown = 1f;
     [SerializeField] private int _damage = 1;
-    [SerializeField, NotNull] private Transform _firePoint;
-    [SerializeField, NotNull] private GameObject _projectilePrefab;
-    [SerializeField] private LayerMask _slimeLayer;
+    [NotNull][SerializeField] private Transform _firePoint;
+    [NotNull][SerializeField] private GameObject _projectilePrefab;
 
     private TowerStats _stats;
     private IUpdateSubscriptionService _updateService;
     private IGameObjectPoolService _poolService;
+    private LayerMask _slimeLayer;
 
     private readonly Collider[] _hitBuffer = new Collider[32];
 
@@ -33,6 +33,7 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
 
     private void Awake()
     {
+        _slimeLayer = LayerMask.GetMask(GameTags.SlimeLayer);
         _stats = new TowerStats(_attackRange, _attackCooldown, _damage);
     }
 
@@ -103,6 +104,14 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
 
     private void FireProjectile(Transform target)
     {
+        // 타겟 방향으로 회전
+        Vector3 direction = (target.position - transform.position).normalized;
+        direction.y = 0; // Y축만 회전 (평면)
+        if (direction != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
+
         var projObj = _poolService.Get(_projectilePrefab);
         if (projObj == null)
             return;
