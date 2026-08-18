@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7385034156950563216}
   - component: {fileID: 5028046557049172747}
   - component: {fileID: 1006846176720098267}
+  - component: {fileID: 9215837291409383890}
+  - component: {fileID: 8693613397451275887}
   m_Layer: 6
   m_Name: SlimePrefab
   m_TagString: Untagged
@@ -48,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Splines::UnityEngine.Splines.SplineAnimate
   m_Target: {fileID: 0}
   m_PlayOnAwake: 1
-  m_LoopMode: 0
+  m_LoopMode: 1
   m_Method: 1
   m_Duration: 1
   m_MaxSpeed: 10
@@ -70,7 +72,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseSlime
   _maxHealth: 3
-  _moveSpeed: 3
+  _moveSpeed: 1
+--- !u!114 &9215837291409383890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4941929678292297010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0241bf16e27c4b39bfa1e74240e87a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlimeAnimation
+  _dieAnimationDuration: 1
+--- !u!114 &8693613397451275887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4941929678292297010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 129b53d1667944c739ab3c1e3c716aff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlimeFace
+  _renderer: {fileID: 4132043665068717296}
+  _normalFace: {fileID: 2100000, guid: 557be4515c482fc429d356ef77d6851a, type: 2}
+  _damagedFace: {fileID: 2100000, guid: be37fb2a84ddb88439a5bf3d35e5661c, type: 2}
+  _deadFace: {fileID: 2100000, guid: 6a193c4b0f83b5e48a5515ba764ef9a8, type: 2}
+  _damagedFaceDuration: 0.3
 --- !u!1001 &5290205005513388863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -97,31 +129,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.00088992715
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.018942425
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9987053
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.050869703
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -5.832
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -135,6 +167,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5399359763246968904, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5669433055782128054, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -143,10 +179,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 7863571634359513836, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8343649804519354289, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 9071527473779720773, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 5a7d0e01b029840cab72819676a6ff25, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -181,6 +225,11 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.2637384
   m_Center: {x: 0, y: 0.1863908, z: 0}
+--- !u!137 &4132043665068717296 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8087729075525552079, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
+  m_PrefabInstance: {fileID: 5290205005513388863}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8381064368676710082 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}

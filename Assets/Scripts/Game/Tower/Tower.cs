@@ -4,8 +4,6 @@ using VContainer;
 
 public class Tower : MonoBehaviour, IPeriodicUpdatable
 {
-    #region Fields
-
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _attackCooldown = 1f;
     [SerializeField] private int _damage = 1;
@@ -18,10 +16,6 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
 
     private readonly Collider[] _hitBuffer = new Collider[32];
 
-    #endregion
-
-    #region DI
-
     [Inject]
     public void Construct(
         IUpdateSubscriptionService updateService,
@@ -30,8 +24,6 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
         _updateService = updateService;
         _poolService = poolService;
     }
-
-    #endregion
 
     #region Unity Lifecycle
 
@@ -72,8 +64,6 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
     }
 
     #endregion
-
-    #region Private
 
     private Transform FindClosestSlime()
     {
@@ -119,8 +109,6 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
 
         projectile.Initialize(target.position, _damage);
     }
-
-    #endregion
 
     #if UNITY_EDITOR
     private void OnDrawGizmosSelected()

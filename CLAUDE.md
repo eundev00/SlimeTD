@@ -198,3 +198,11 @@ Match를 0으로 두는 이유는 세로 게임에서 **가로 폭이 UI 레이�
 
 - [SlimeMover.cs](Assets/Scripts/SlimeMover.cs), `NewMonoBehaviourScript.cs`, `SampleScene.unity`는 프로토타입 잔재다. 정식 구현으로 대체되면 삭제한다
 - 어셈블리 정의(asmdef)가 아직 없다. 스크립트가 늘어나면 컴파일 시간을 위해 도입을 고려한다
+
+---
+
+## 8. Claude 응답 방식
+
+- 구조/설계를 논의할 때는 코드를 바로 작성하지 않는다. 역할 분리, 클래스/필드 구성, 데이터 흐름까지만 텍스트로 제시한다
+- 실제 코드는 사용자가 명시적으로 요청하거나, 구현 단계로 넘어가 실제로 필요한 시점에만 작성한다
+- MonoBehaviour 중 순수 표현(View) 역할만 하는 컴포넌트는 `View` 접미사를 붙이지 않는다 (예: `LobbyStartButton`처럼 이름 그대로). 슬라임 애니메이션 담당 컴포넌트는 `SlimeAnimationView`가 아니라 `SlimeAnimation`으로 부른다

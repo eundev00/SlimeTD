@@ -6,59 +6,65 @@ using System.Reflection;
 using System;
 
 [InitializeOnLoad]
-public class BootstrapPlayMode
+public class SceneBootstrapper
 {
-    private const string PreviousSceneKey = "BootstrapPlayMode_PreviousScene";
-    private const string ButtonPressedKey = "BootstrapPlayMode_ButtonPressed";
-    private const string BootstrapScenePath = "Assets/Scenes/Bootstrap.unity";
+    const string PreviousSceneKey = "PreviousScene";
+    const string BootstrapButtonPressedKey = "BootstrapButtonPressed";
+    const string BootstrapScenePath = "Assets/Scenes/Bootstrap.unity";
 
-    private static bool IsButtonPressed
+    static bool IsBootstrapButtonPressed
     {
-        get => EditorPrefs.GetBool(ButtonPressedKey, false);
-        set => EditorPrefs.SetBool(ButtonPressedKey, value);
+        get => EditorPrefs.GetBool(BootstrapButtonPressedKey, false);
+        set => EditorPrefs.SetBool(BootstrapButtonPressedKey, value);
     }
 
-    private static string PreviousScene
+    static string BootstrapScene =>
+        EditorBuildSettings.scenes.Length > 0
+            ? EditorBuildSettings.scenes[0].path
+            : string.Empty;
+
+    static string BootstrapSceneName =>
+        string.IsNullOrEmpty(BootstrapScene)
+            ? "No Scene"
+            : System.IO.Path.GetFileNameWithoutExtension(BootstrapScene);
+
+    static string PreviousScene
     {
         get => EditorPrefs.GetString(PreviousSceneKey);
         set => EditorPrefs.SetString(PreviousSceneKey, value);
     }
 
-    static BootstrapPlayMode()
+    static SceneBootstrapper()
     {
         EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         EditorApplication.delayCall += RegisterToolbar;
     }
 
-    private static void RegisterToolbar()
+    static void RegisterToolbar()
     {
-        var toolbarType = typeof(Editor).Assembly.GetType("UnityEditor.Toolbar");
-        if (toolbarType == null)
-            return;
+        Type toolbarType = typeof(Editor).Assembly.GetType("UnityEditor.Toolbar");
+        if (toolbarType == null) return;
 
         var toolbars = Resources.FindObjectsOfTypeAll(toolbarType);
-        if (toolbars.Length == 0)
-            return;
+        if (toolbars.Length == 0) return;
 
         var visualTree = toolbars[0].GetType().GetProperty(
             "visualTree",
             BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
         )?.GetValue(toolbars[0]) as VisualElement;
 
-        if (visualTree == null)
-            return;
+        if (visualTree == null) return;
 
         var playModeButtons = visualTree.Q("PlayMode");
-        if (playModeButtons == null)
-            return;
+        if (playModeButtons == null) return;
 
         var btn = new Button();
-        btn.text = "Bootstrap";
+        btn.text = $"Bootstrap";
         btn.AddToClassList("unity-editor-toolbar-element");
         btn.style.alignSelf = Align.Center;
         btn.clicked += () =>
         {
-            IsButtonPressed = true;
+            IsBootstrapButtonPressed = true;
             EditorApplication.isPlaying = true;
         };
 
@@ -67,32 +73,32 @@ public class BootstrapPlayMode
         parent.Insert(index, btn);
     }
 
-    private static void OnPlayModeStateChanged(PlayModeStateChange state)
+    static void OnPlayModeStateChanged(PlayModeStateChange state)
     {
         if (state == PlayModeStateChange.ExitingEditMode)
         {
-            if (!IsButtonPressed)
-                return;
-
-            PreviousScene = EditorSceneManager.GetActiveScene().path;
-
-            if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            if (IsBootstrapButtonPressed)
             {
-                EditorSceneManager.OpenScene(BootstrapScenePath);
-            }
-            else
-            {
-                EditorApplication.isPlaying = false;
-                IsButtonPressed = false;
+                PreviousScene = EditorSceneManager.GetActiveScene().path;
+
+                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                {
+                    EditorSceneManager.OpenScene(BootstrapScenePath);
+                }
+                else
+                {
+                    EditorApplication.isPlaying = false;
+                    IsBootstrapButtonPressed = false;
+                }
             }
         }
         else if (state == PlayModeStateChange.EnteredEditMode)
         {
-            if (!IsButtonPressed || string.IsNullOrEmpty(PreviousScene))
-                return;
-
-            EditorSceneManager.OpenScene(PreviousScene);
-            IsButtonPressed = false;
+            if (IsBootstrapButtonPressed && !string.IsNullOrEmpty(PreviousScene))
+            {
+                EditorSceneManager.OpenScene(PreviousScene);
+                IsBootstrapButtonPressed = false;
+            }
         }
     }
 }

@@ -4,8 +4,6 @@ using VContainer;
 
 public class Projectile : MonoBehaviour, IUpdatable, IPoolable
 {
-    #region Fields
-
     [SerializeField] private float _speed = 15f;
     [SerializeField] private float _lifetime = 3f;
 
@@ -17,10 +15,6 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
     private IUpdateSubscriptionService _updateService;
     private GameObjectPoolService _poolService;
 
-    #endregion
-
-    #region DI
-
     [Inject]
     public void Construct(
         IUpdateSubscriptionService updateService,
@@ -29,10 +23,6 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
         _updateService = updateService;
         _poolService = poolService;
     }
-
-    #endregion
-
-    #region Public API
 
     public void Initialize(Vector3 targetPosition, int damage)
     {
@@ -48,8 +38,6 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
 
         _updateService.RegisterUpdatable(this);
     }
-
-    #endregion
 
     #region IUpdatable
 
@@ -90,24 +78,18 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
 
     #endregion
 
-    #region Collision
-
     private void OnTriggerEnter(Collider other)
     {
         if (!_isActive)
             return;
 
-        var slime = other.GetComponent<BaseSlime>();
+        var slime = other.GetComponentInParent<BaseSlime>();
         if (slime == null)
             return;
 
         slime.TakeDamage(_damage);
         ReturnToPool();
     }
-
-    #endregion
-
-    #region Private
 
     private void ReturnToPool()
     {
@@ -117,6 +99,4 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
         _isActive = false;
         _poolService.Release(gameObject);
     }
-
-    #endregion
 }

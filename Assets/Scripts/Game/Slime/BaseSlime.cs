@@ -1,37 +1,24 @@
+using Cysharp.Threading.Tasks;
 using MessagePipe;
-using UniRx;
+using System;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Splines;
 using VContainer;
 
 public class BaseSlime : MonoBehaviour, IPoolable
 {
-    #region Fields
-
     [SerializeField] protected int _maxHealth = 3;
-    [SerializeField] protected float _moveSpeed = 10f;
+    [SerializeField] protected float _moveSpeed = 1f;
+    [SerializeField] private float _dieAnimationDuration = 1f;
 
     private SplineAnimate _splineAnimate;
-    private ReactiveProperty<int> _currentHealth;
-    private CompositeDisposable _disposables;
-    private bool _isDead;
-
+    private SlimeStats _stats;
     private IPublisher<SlimeKilledEvent> _killedPublisher;
     private GameObjectPoolService _poolService;
+    private CancellationTokenSource _cancellationTokenSource;
 
-    #endregion
-
-    #region Properties
-
-    protected SplineAnimate SplineAnimate => _splineAnimate;
-    protected GameObjectPoolService PoolService => _poolService;
-    protected bool IsDead => _isDead;
-
-    public IReadOnlyReactiveProperty<int> CurrentHealth => _currentHealth;
-
-    #endregion
-
-    #region DI
+    public SlimeStats Stats => _stats;
 
     [Inject]
     public void Construct(
@@ -41,8 +28,6 @@ public class BaseSlime : MonoBehaviour, IPoolable
         _killedPublisher = killedPublisher;
         _poolService = poolService;
     }
-
-    #endregion
 
     #region Unity Lifecycle
 
@@ -55,7 +40,7 @@ public class BaseSlime : MonoBehaviour, IPoolable
             return;
         }
 
-        _currentHealth = new ReactiveProperty<int>(_maxHealth);
+        _stats = new SlimeStats(_maxHealth);
 
         _splineAnimate.AnimationMethod = SplineAnimate.Method.Speed;
         _splineAnimate.MaxSpeed = _moveSpeed;
@@ -68,15 +53,8 @@ public class BaseSlime : MonoBehaviour, IPoolable
 
     public virtual void OnGetFromPool()
     {
-        _isDead = false;
-        _disposables = new CompositeDisposable();
-        _currentHealth.Value = _maxHealth;
-
-        _currentHealth
-            .Where(hp => hp <= 0)
-            .Take(1)
-            .Subscribe(_ => OnKilled())
-            .AddTo(_disposables);
+        _stats.Reset(_maxHealth);
+        _cancellationTokenSource = new CancellationTokenSource();
 
         if (_splineAnimate != null)
         {
@@ -86,8 +64,9 @@ public class BaseSlime : MonoBehaviour, IPoolable
 
     public virtual void OnReturnToPool()
     {
-        _disposables?.Dispose();
-        _disposables = null;
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = null;
 
         if (_splineAnimate != null)
         {
@@ -114,38 +93,44 @@ public class BaseSlime : MonoBehaviour, IPoolable
 
     public virtual void TakeDamage(int damage)
     {
-        if (_isDead || _currentHealth.Value <= 0)
-            return;
+        _stats.TakeDamage(damage);
 
-        _currentHealth.Value -= damage;
+        if (_stats.IsDead)
+        {
+            _splineAnimate.Pause();
+            _killedPublisher.Publish(new SlimeKilledEvent());
+            OnDiedAsync();
+        }
     }
 
     #endregion
 
-    #region Protected
 
-    protected virtual void OnKilled()
+    private async void OnDiedAsync()
     {
-        if (_isDead)
-            return;
+        try
+        {
+            await UniTask.Delay(
+                TimeSpan.FromSeconds(_dieAnimationDuration),
+                cancellationToken: _cancellationTokenSource.Token);
 
-        _isDead = true;
-
-        _killedPublisher.Publish(new SlimeKilledEvent(
-            gameObject.GetInstanceID(), transform.position));
-
-        _poolService.Release(gameObject);
+            if (_poolService != null)
+            {
+                _poolService.Release(gameObject);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // 풀 반환 시 취소되면 무시
+        }
     }
 
     protected virtual void OnReachedEnd()
     {
-        if (_isDead)
+        if (_stats.IsDead == false)
             return;
 
-        _isDead = true;
         // TODO: 라이프 차감 이벤트 발행 (2단계)
         _poolService.Release(gameObject);
     }
-
-    #endregion
 }
