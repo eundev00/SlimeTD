@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using MessagePipe;
+using Services.PoolService;
 using System;
 using System.Threading;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class BaseSlime : MonoBehaviour, IPoolable
     private SplineAnimate _splineAnimate;
     private SlimeStats _stats;
     private IPublisher<SlimeKilledEvent> _killedPublisher;
-    private GameObjectPoolService _poolService;
+    private IGameObjectPoolService _poolService;
     private CancellationTokenSource _cancellationTokenSource;
 
     public SlimeStats Stats => _stats;
@@ -23,7 +24,7 @@ public class BaseSlime : MonoBehaviour, IPoolable
     [Inject]
     public void Construct(
         IPublisher<SlimeKilledEvent> killedPublisher,
-        GameObjectPoolService poolService)
+        IGameObjectPoolService poolService)
     {
         _killedPublisher = killedPublisher;
         _poolService = poolService;

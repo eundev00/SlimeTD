@@ -1,3 +1,4 @@
+using Services.PoolService;
 using Services.UpdateService;
 using UnityEngine;
 using VContainer;
@@ -13,12 +14,12 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
     private bool _isActive;
 
     private IUpdateSubscriptionService _updateService;
-    private GameObjectPoolService _poolService;
+    private IGameObjectPoolService _poolService;
 
     [Inject]
     public void Construct(
         IUpdateSubscriptionService updateService,
-        GameObjectPoolService poolService)
+        IGameObjectPoolService poolService)
     {
         _updateService = updateService;
         _poolService = poolService;

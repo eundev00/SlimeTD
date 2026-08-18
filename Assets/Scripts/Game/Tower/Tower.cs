@@ -1,3 +1,4 @@
+using Services.PoolService;
 using Services.UpdateService;
 using UnityEngine;
 using VContainer;
@@ -12,14 +13,14 @@ public class Tower : MonoBehaviour, IPeriodicUpdatable
     [SerializeField] private LayerMask _slimeLayer;
 
     private IUpdateSubscriptionService _updateService;
-    private GameObjectPoolService _poolService;
+    private IGameObjectPoolService _poolService;
 
     private readonly Collider[] _hitBuffer = new Collider[32];
 
     [Inject]
     public void Construct(
         IUpdateSubscriptionService updateService,
-        GameObjectPoolService poolService)
+        IGameObjectPoolService poolService)
     {
         _updateService = updateService;
         _poolService = poolService;

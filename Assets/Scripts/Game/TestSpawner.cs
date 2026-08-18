@@ -1,3 +1,4 @@
+using Services.PoolService;
 using Services.UpdateService;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -5,31 +6,23 @@ using VContainer;
 
 public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
 {
-    #region Fields
-
     [SerializeField] private GameObject _slimePrefab;
     [SerializeField] private SplineContainer _splineContainer;
     [SerializeField] private float _spawnInterval = 2f;
     [SerializeField] private int _maxSlimes = 20;
 
     private IUpdateSubscriptionService _updateService;
-    private GameObjectPoolService _poolService;
+    private IGameObjectPoolService _poolService;
     private int _spawnedCount;
-
-    #endregion
-
-    #region DI
 
     [Inject]
     public void Construct(
         IUpdateSubscriptionService updateService,
-        GameObjectPoolService poolService)
+        IGameObjectPoolService poolService)
     {
         _updateService = updateService;
         _poolService = poolService;
     }
-
-    #endregion
 
     #region Unity Lifecycle
 
@@ -70,8 +63,6 @@ public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
 
     #endregion
 
-    #region Private
-
     private void SpawnSlime()
     {
         var obj = _poolService.Get(_slimePrefab);
@@ -90,6 +81,4 @@ public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
         slime.Initialize(_splineContainer);
         _spawnedCount++;
     }
-
-    #endregion
 }
