@@ -1,5 +1,7 @@
+using MessagePipe;
 using Services.PoolService;
 using Services.UpdateService;
+using UniRx;
 using UnityEngine;
 using VContainer;
 
@@ -14,7 +16,11 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
     private TowerStats _stats;
     private IUpdateSubscriptionService _updateService;
     private IGameObjectPoolService _poolService;
+    private ISubscriber<GameOverEvent> _gameOverSubscriber;
     private LayerMask _slimeLayer;
+
+    private CompositeDisposable _disposables;
+    private bool _stopped;
 
     private readonly Collider[] _hitBuffer = new Collider[32];
 
@@ -23,10 +29,12 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
     [Inject]
     public void Construct(
         IUpdateSubscriptionService updateService,
-        IGameObjectPoolService poolService)
+        IGameObjectPoolService poolService,
+        ISubscriber<GameOverEvent> gameOverSubscriber)
     {
         _updateService = updateService;
         _poolService = poolService;
+        _gameOverSubscriber = gameOverSubscriber;
     }
 
     #region Unity Lifecycle
@@ -53,10 +61,24 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
 
         _poolService.CreatePool(_projectilePrefab, 10, 50);
         _updateService.RegisterPeriodicUpdatable(this, _stats.AttackCooldown);
+
+        _disposables = new CompositeDisposable();
+        _gameOverSubscriber.Subscribe(_ => StopAttacking()).AddTo(_disposables);
     }
 
     private void OnDestroy()
     {
+        StopAttacking();
+        _disposables?.Dispose();
+        _disposables = null;
+    }
+
+    private void StopAttacking()
+    {
+        if (_stopped)
+            return;
+
+        _stopped = true;
         _updateService?.UnregisterPeriodicUpdatable(this);
     }
 

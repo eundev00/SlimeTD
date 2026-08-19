@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddb451acd4df24b7b8cca6503a100199, type: 3}
+  m_Name: WaveEasyTable
+  m_EditorClassIdentifier: Assembly-CSharp::WaveTableData
+  _waves:
+  - {fileID: 11400000, guid: d42cc6f0cb7744bb0a3cc014c0042ea3, type: 2}
+  - {fileID: 11400000, guid: 513b67f5727d0449d8bee4f31817d5de, type: 2}
+  - {fileID: 11400000, guid: 1c1bd10346b574cd1b1f75dd9ad44487, type: 2}

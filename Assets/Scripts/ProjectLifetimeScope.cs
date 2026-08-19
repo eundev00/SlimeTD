@@ -15,5 +15,9 @@ public class ProjectLifetimeScope : LifetimeScope
 
         var options = builder.RegisterMessagePipe();
         builder.RegisterMessageBroker<SlimeKilledEvent>(options);
+        builder.RegisterMessageBroker<SlimeReachedEndEvent>(options);
+        builder.RegisterMessageBroker<WaveStartedEvent>(options);
+        builder.RegisterMessageBroker<WaveClearedEvent>(options);
+        builder.RegisterMessageBroker<GameOverEvent>(options);
     }
 }

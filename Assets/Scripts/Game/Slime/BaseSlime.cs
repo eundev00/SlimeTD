@@ -12,10 +12,13 @@ public class BaseSlime : MonoBehaviour, IPoolable
     [SerializeField] protected int _maxHealth = 3;
     [SerializeField] protected float _moveSpeed = 1f;
     [SerializeField] private float _dieAnimationDuration = 1f;
+    [SerializeField] private int _lifeCost = 1;
+    [SerializeField] private int _goldReward = 10;
 
     private SplineAnimate _splineAnimate;
     private SlimeStats _stats;
     private IPublisher<SlimeKilledEvent> _killedPublisher;
+    private IPublisher<SlimeReachedEndEvent> _reachedEndPublisher;
     private IGameObjectPoolService _poolService;
     private CancellationTokenSource _cancellationTokenSource;
 
@@ -24,9 +27,11 @@ public class BaseSlime : MonoBehaviour, IPoolable
     [Inject]
     public void Construct(
         IPublisher<SlimeKilledEvent> killedPublisher,
+        IPublisher<SlimeReachedEndEvent> reachedEndPublisher,
         IGameObjectPoolService poolService)
     {
         _killedPublisher = killedPublisher;
+        _reachedEndPublisher = reachedEndPublisher;
         _poolService = poolService;
     }
 
@@ -99,7 +104,7 @@ public class BaseSlime : MonoBehaviour, IPoolable
         if (_stats.IsDead)
         {
             _splineAnimate.Pause();
-            _killedPublisher.Publish(new SlimeKilledEvent());
+            _killedPublisher.Publish(new SlimeKilledEvent(_goldReward));
             OnDiedAsync();
         }
     }
@@ -128,10 +133,9 @@ public class BaseSlime : MonoBehaviour, IPoolable
 
     protected virtual void OnReachedEnd()
     {
-        if (_stats.IsDead == false)
-            return;
-
-        // TODO: 라이프 차감 이벤트 발행 (2단계)
+        // 처치 시 SplineAnimate.Pause로 Completed가 막히므로 여기 도달은 "살아서 끝까지 온" 경우다.
+        // 처치와 도달이 같은 슬라임에서 함께 발생하지 않아 WaveSpawner 카운터 이중 차감이 없다.
+        _reachedEndPublisher.Publish(new SlimeReachedEndEvent(_lifeCost));
         _poolService.Release(gameObject);
     }
 }
