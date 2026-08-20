@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7777777777777777777}
   - component: {fileID: 8888888888888888888}
   m_Layer: 7
-  m_Name: ProjectilePrefab
+  m_Name: BaseProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a0fbf32cf1204770b75f2c5eb92c847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  _speed: 15
+  _speed: 3
   _lifetime: 3
 --- !u!135 &7777777777777777777
 SphereCollider:

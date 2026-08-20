@@ -10,13 +10,13 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _attackCooldown = 1f;
     [SerializeField] private int _damage = 1;
-    [NotNull][SerializeField] private Transform _firePoint;
+    [SerializeField] private Transform _firePoint;
     [NotNull][SerializeField] private GameObject _projectilePrefab;
 
     private TowerStats _stats;
     private IUpdateSubscriptionService _updateService;
     private IGameObjectPoolService _poolService;
-    private ISubscriber<GameOverEvent> _gameOverSubscriber;
+    private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private LayerMask _slimeLayer;
 
     private CompositeDisposable _disposables;
@@ -30,11 +30,11 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
     public void Construct(
         IUpdateSubscriptionService updateService,
         IGameObjectPoolService poolService,
-        ISubscriber<GameOverEvent> gameOverSubscriber)
+        ISubscriber<GameProgressEvent> gameProgressSubscriber)
     {
         _updateService = updateService;
         _poolService = poolService;
-        _gameOverSubscriber = gameOverSubscriber;
+        _gameProgressSubscriber = gameProgressSubscriber;
     }
 
     #region Unity Lifecycle
@@ -49,8 +49,7 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
     {
         if (_firePoint == null)
         {
-            Debug.LogError("[BaseTower] _firePoint가 연결되지 않았습니다.", this);
-            return;
+            Debug.LogWarning("[BaseTower] _firePoint가 연결되지 않았습니다. 타워 위치에서 발사합니다.", this);
         }
 
         if (_projectilePrefab == null)
@@ -63,7 +62,11 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
         _updateService.RegisterPeriodicUpdatable(this, _stats.AttackCooldown);
 
         _disposables = new CompositeDisposable();
-        _gameOverSubscriber.Subscribe(_ => StopAttacking()).AddTo(_disposables);
+        _gameProgressSubscriber.Subscribe(evt =>
+        {
+            if (evt.EventType == GameProgressType.GameOver)
+                StopAttacking();
+        }).AddTo(_disposables);
     }
 
     private void OnDestroy()
@@ -126,19 +129,23 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
 
     private void FireProjectile(Transform target)
     {
-        // 타겟 방향으로 회전
-        Vector3 direction = (target.position - transform.position).normalized;
-        direction.y = 0; // Y축만 회전 (평면)
-        if (direction != Vector3.zero)
+        // 타워 회전 (타워 본체 기준, 수평 방향만)
+        Vector3 horizontalDirection = (target.position - transform.position).normalized;
+        horizontalDirection.y = 0;
+
+        if (horizontalDirection != Vector3.zero)
         {
-            transform.rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.LookRotation(horizontalDirection);
         }
 
+        // 총알 생성
         var projObj = _poolService.Get(_projectilePrefab);
         if (projObj == null)
             return;
 
-        projObj.transform.position = _firePoint.position;
+        // 발사 위치 (_firePoint가 있으면 그 위치, 없으면 타워 본체)
+        Vector3 firePosition = _firePoint != null ? _firePoint.position : transform.position;
+        projObj.transform.position = firePosition;
 
         var projectile = projObj.GetComponent<Projectile>();
         if (projectile == null)
@@ -147,10 +154,11 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
             return;
         }
 
+        // Projectile.Initialize가 발사 위치에서 타겟까지의 실제 3D 방향을 계산
         projectile.Initialize(target.position, _stats.Damage);
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         if (_stats != null)
@@ -165,5 +173,5 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
             Gizmos.DrawWireSphere(transform.position, _attackRange);
         }
     }
-    #endif
+#endif
 }

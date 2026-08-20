@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9215837291409383890}
   - component: {fileID: 8693613397451275887}
   m_Layer: 6
-  m_Name: SlimePrefab
+  m_Name: SlimeTier1_Blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,6 +73,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BaseSlime
   _maxHealth: 3
   _moveSpeed: 1
+  _dieAnimationDuration: 1
+  _lifeCost: 1
+  _goldReward: 1
 --- !u!114 &9215837291409383890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0241bf16e27c4b39bfa1e74240e87a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlimeAnimation
-  _dieAnimationDuration: 1
 --- !u!114 &8693613397451275887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,37 +125,41 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4174877357465981652, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 27bf585b7eb145a4786c9fe7dc6857ac, type: 2}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00088992715
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.018942425
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9987053
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.050869703
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -5.832
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

@@ -1,23 +1,28 @@
 using System;
-using MessagePipe;
-using UniRx;
+using Cysharp.Threading.Tasks;
 
 public class HudViewPresenter : IDisposable
 {
-    private readonly CompositeDisposable _disposables = new CompositeDisposable();
+    private readonly HudView _view;
+    private readonly ISceneLoader _sceneLoader;
 
-    public HudViewPresenter(
-        IGameplayService gameplayService,
-        ISubscriber<WaveStartedEvent> waveStartedSubscriber,
-        HudView hud)
+    public HudViewPresenter(HudView view, ISceneLoader sceneLoader)
     {
-        gameplayService.Info.Gold.Subscribe(hud.SetGold).AddTo(_disposables);
-        gameplayService.Info.Life.Subscribe(hud.SetLife).AddTo(_disposables);
-        waveStartedSubscriber.Subscribe(e => hud.SetWave(e.WaveIndex)).AddTo(_disposables);
+        _view = view;
+        _sceneLoader = sceneLoader;
+
+        _view.LobbyButtonClicked += HandleLobbyButtonClicked;
+    }
+
+    private void HandleLobbyButtonClicked()
+    {
+        _view.SetLobbyButtonInteractable(false);
+        _sceneLoader.TransitionAsync(SceneNames.Game, SceneNames.Lobby).Forget();
     }
 
     public void Dispose()
     {
-        _disposables.Dispose();
+        if (_view != null)
+            _view.LobbyButtonClicked -= HandleLobbyButtonClicked;
     }
 }

@@ -98,6 +98,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
             return;
 
         _isActive = false;
+        _updateService?.UnregisterUpdatable(this);
         _poolService.Release(gameObject);
     }
 }

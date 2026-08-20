@@ -15,36 +15,23 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private bool _autoStart = true;
 
     private IGameObjectPoolService _poolService;
-    private IPublisher<WaveStartedEvent> _waveStartedPublisher;
-    private IPublisher<WaveClearedEvent> _waveClearedPublisher;
-    private ISubscriber<SlimeKilledEvent> _killedSubscriber;
-    private ISubscriber<SlimeReachedEndEvent> _reachedEndSubscriber;
-    private ISubscriber<GameOverEvent> _gameOverSubscriber;
+    private IPublisher<GameProgressEvent> _gameProgressPublisher;
+    private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
 
     private CompositeDisposable _disposables;
     private CancellationTokenSource _spawnCts;
-    private int _aliveCount;
-    private bool _spawnFinished;
-    private int _currentWaveIndex;
+    private bool _waveClearedReceived;
 
     [Inject]
     public void Construct(
         IGameObjectPoolService poolService,
-        IPublisher<WaveStartedEvent> waveStartedPublisher,
-        IPublisher<WaveClearedEvent> waveClearedPublisher,
-        ISubscriber<SlimeKilledEvent> killedSubscriber,
-        ISubscriber<SlimeReachedEndEvent> reachedEndSubscriber,
-        ISubscriber<GameOverEvent> gameOverSubscriber)
+        IPublisher<GameProgressEvent> gameProgressPublisher,
+        ISubscriber<GameProgressEvent> gameProgressSubscriber)
     {
         _poolService = poolService;
-        _waveStartedPublisher = waveStartedPublisher;
-        _waveClearedPublisher = waveClearedPublisher;
-        _killedSubscriber = killedSubscriber;
-        _reachedEndSubscriber = reachedEndSubscriber;
-        _gameOverSubscriber = gameOverSubscriber;
+        _gameProgressPublisher = gameProgressPublisher;
+        _gameProgressSubscriber = gameProgressSubscriber;
     }
-
-    #region Unity Lifecycle
 
     private void Start()
     {
@@ -61,9 +48,13 @@ public class WaveSpawner : MonoBehaviour
         }
 
         _disposables = new CompositeDisposable();
-        _killedSubscriber.Subscribe(_ => OnSlimeRemoved()).AddTo(_disposables);
-        _reachedEndSubscriber.Subscribe(_ => OnSlimeRemoved()).AddTo(_disposables);
-        _gameOverSubscriber.Subscribe(_ => OnGameOver()).AddTo(_disposables);
+        _gameProgressSubscriber.Subscribe(evt =>
+        {
+            if (evt.EventType == GameProgressType.GameOver)
+                OnGameOver();
+            else if (evt.EventType == GameProgressType.WaveCleared)
+                _waveClearedReceived = true;
+        }).AddTo(_disposables);
 
         _spawnCts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
 
@@ -83,11 +74,11 @@ public class WaveSpawner : MonoBehaviour
         _spawnCts = null;
     }
 
-    #endregion
-
     private void PreparePools()
     {
-        var prepared = new HashSet<GameObject>();
+        // 전체 웨이브에서 각 프리팹별로 총 몇 개가 필요한지 카운트
+        var prefabCounts = new Dictionary<GameObject, int>();
+
         foreach (var wave in _waveTable.Waves)
         {
             if (wave?.SpawnEntries == null)
@@ -95,11 +86,31 @@ public class WaveSpawner : MonoBehaviour
 
             foreach (var entry in wave.SpawnEntries)
             {
-                if (entry?.SlimePrefab == null || !prepared.Add(entry.SlimePrefab))
+                if (entry?.SlimePrefabs == null)
                     continue;
 
-                _poolService.CreatePool(entry.SlimePrefab, 10, 50);
+                foreach (var prefab in entry.SlimePrefabs)
+                {
+                    if (prefab == null)
+                        continue;
+
+                    if (!prefabCounts.ContainsKey(prefab))
+                        prefabCounts[prefab] = 0;
+
+                    prefabCounts[prefab]++;
+                }
             }
+        }
+
+        // 카운트 기반으로 풀 생성
+        foreach (var kvp in prefabCounts)
+        {
+            int totalCount = kvp.Value;
+            int initialSize = Mathf.Max(totalCount, 10); // 최소 10개
+            int maxSize = Mathf.CeilToInt(totalCount * 2f); // 여유분 2배
+
+            _poolService.CreatePool(kvp.Key, initialSize, maxSize);
+            Debug.Log($"[WaveSpawner] 풀 생성: {kvp.Key.name}, 초기={initialSize}, 최대={maxSize}");
         }
     }
 
@@ -125,26 +136,30 @@ public class WaveSpawner : MonoBehaviour
 
     private async UniTask RunWaveAsync(WaveData wave, System.Threading.CancellationToken token)
     {
-        _currentWaveIndex = wave.WaveIndex;
-        _aliveCount = 0;
-        _spawnFinished = false;
+        // 총 슬라임 개수 계산
+        int totalSlimeCount = CalculateTotalSlimeCount(wave);
 
-        _waveStartedPublisher.Publish(new WaveStartedEvent(wave.WaveIndex));
+        _waveClearedReceived = false;
+        _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.WaveStarted, wave.WaveIndex, totalSlimeCount));
         Debug.Log($"[WaveSpawner] 웨이브 {wave.WaveIndex} 시작");
 
         if (wave.StartDelay > 0f)
             await UniTask.Delay(System.TimeSpan.FromSeconds(wave.StartDelay), cancellationToken: token);
 
+        // 스폰 실행
         if (wave.SpawnEntries != null)
         {
             foreach (var entry in wave.SpawnEntries)
             {
-                if (entry?.SlimePrefab == null)
+                if (entry?.SlimePrefabs == null)
                     continue;
 
-                for (int i = 0; i < entry.Count; i++)
+                foreach (var prefab in entry.SlimePrefabs)
                 {
-                    SpawnOne(entry.SlimePrefab);
+                    if (prefab == null)
+                        continue;
+
+                    SpawnOne(prefab);
 
                     if (entry.SpawnInterval > 0f)
                         await UniTask.Delay(System.TimeSpan.FromSeconds(entry.SpawnInterval), cancellationToken: token);
@@ -152,17 +167,25 @@ public class WaveSpawner : MonoBehaviour
             }
         }
 
-        _spawnFinished = true;
+        _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.WaveSpawnFinished, wave.WaveIndex));
+        Debug.Log($"[WaveSpawner] 웨이브 {wave.WaveIndex} 스폰 완료");
 
-        // 마지막 스폰 전에 앞선 슬라임이 모두 처치되면 WaitUntil이 영영 안 깨어나므로 여기서 먼저 판정한다.
-        if (_aliveCount <= 0)
+        // WaveCleared 대기
+        await UniTask.WaitUntil(() => _waveClearedReceived, cancellationToken: token);
+    }
+
+    private int CalculateTotalSlimeCount(WaveData wave)
+    {
+        int count = 0;
+        if (wave.SpawnEntries != null)
         {
-            PublishCleared();
-            return;
+            foreach (var entry in wave.SpawnEntries)
+            {
+                if (entry?.SlimePrefabs != null)
+                    count += entry.SlimePrefabs.Length;
+            }
         }
-
-        await UniTask.WaitUntil(() => _aliveCount <= 0, cancellationToken: token);
-        PublishCleared();
+        return count;
     }
 
     private void SpawnOne(GameObject prefab)
@@ -181,22 +204,10 @@ public class WaveSpawner : MonoBehaviour
         }
 
         slime.Initialize(_splineContainer);
-        _aliveCount++;
-    }
-
-    private void OnSlimeRemoved()
-    {
-        _aliveCount = Mathf.Max(0, _aliveCount - 1);
     }
 
     private void OnGameOver()
     {
         _spawnCts?.Cancel();
-    }
-
-    private void PublishCleared()
-    {
-        _waveClearedPublisher.Publish(new WaveClearedEvent(_currentWaveIndex));
-        Debug.Log($"[WaveSpawner] 웨이브 {_currentWaveIndex} 클리어");
     }
 }

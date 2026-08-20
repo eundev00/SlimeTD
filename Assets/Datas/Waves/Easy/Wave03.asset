@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Wave03
   m_EditorClassIdentifier: Assembly-CSharp::WaveData
   _waveIndex: 3
-  _startDelay: 2
+  _startDelay: 1.5
   _spawnEntries:
   - {fileID: 11400000, guid: 9ede024a18f0842548bb8bfbd32704c5, type: 2}
-  - {fileID: 11400000, guid: 9ede024a18f0842548bb8bfbd32704c5, type: 2}
-  - {fileID: 11400000, guid: 9ede024a18f0842548bb8bfbd32704c5, type: 2}
+  - {fileID: 11400000, guid: 2efae9416288c43d1bd8841c103a2043, type: 2}
+  - {fileID: 11400000, guid: eef5ef62e563046b1aa6ed7f50765e48, type: 2}

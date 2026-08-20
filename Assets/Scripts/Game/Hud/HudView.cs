@@ -1,24 +1,27 @@
-using TMPro;
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HudView : MonoBehaviour
 {
-    [NotNull][SerializeField] private TMP_Text _goldText;
-    [NotNull][SerializeField] private TMP_Text _lifeText;
-    [NotNull][SerializeField] private TMP_Text _waveText;
+    [NotNull][SerializeField] private Button _lobbyButton;
 
-    public void SetGold(int value)
+    public event Action LobbyButtonClicked;
+
+    private void Start()
     {
-        _goldText.text = value.ToString();
+        if (_lobbyButton == null)
+        {
+            Debug.LogError("[HudView] _lobbyButton이 연결되지 않았습니다.", this);
+            return;
+        }
+
+        _lobbyButton.onClick.AddListener(() => LobbyButtonClicked?.Invoke());
     }
 
-    public void SetLife(int value)
+    public void SetLobbyButtonInteractable(bool interactable)
     {
-        _lifeText.text = value.ToString();
-    }
-
-    public void SetWave(int value)
-    {
-        _waveText.text = $"웨이브 {value}";
+        if (_lobbyButton != null)
+            _lobbyButton.interactable = interactable;
     }
 }

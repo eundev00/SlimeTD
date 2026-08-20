@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f1e3adc28b174c74b24472ff030c08b, type: 3}
-  m_Name: SpawnEntry_01
+  m_Name: SpawnEntry_02
   m_EditorClassIdentifier: Assembly-CSharp::SpawnEntry
   _slimePrefabs:
   - {fileID: 4941929678292297010, guid: bc1a5425ce414496dbaad846e62ed35b, type: 3}
   - {fileID: 4941929678292297010, guid: bc1a5425ce414496dbaad846e62ed35b, type: 3}
-  - {fileID: 4941929678292297010, guid: bc1a5425ce414496dbaad846e62ed35b, type: 3}
+  - {fileID: 4941929678292297010, guid: 3dc1fb8d6e76446a19736ca9f2e36de1, type: 3}
+  - {fileID: 4941929678292297010, guid: 3dc1fb8d6e76446a19736ca9f2e36de1, type: 3}
   _spawnInterval: 0.8

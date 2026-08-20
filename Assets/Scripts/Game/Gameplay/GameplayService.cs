@@ -7,9 +7,13 @@ using UnityEngine;
 public class GameplayService : IGameplayService
 {
     private readonly GameplayInfo _info;
-    private readonly IPublisher<GameOverEvent> _gameOverPublisher;
+    private readonly IPublisher<GameProgressEvent> _gameProgressPublisher;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
     private bool _gameOverPublished;
+
+    private int _aliveCount;
+    private bool _spawnFinished;
+    private int _currentWaveIndex;
 
     public GameplayInfo Info => _info;
 
@@ -17,13 +21,34 @@ public class GameplayService : IGameplayService
         GameConfig config,
         ISubscriber<SlimeReachedEndEvent> reachedEndSubscriber,
         ISubscriber<SlimeKilledEvent> killedSubscriber,
-        IPublisher<GameOverEvent> gameOverPublisher)
+        IPublisher<GameProgressEvent> gameProgressPublisher,
+        ISubscriber<GameProgressEvent> gameProgressSubscriber)
     {
         _info = new GameplayInfo(config.StartingLife, config.StartingGold);
-        _gameOverPublisher = gameOverPublisher;
+        _gameProgressPublisher = gameProgressPublisher;
 
         reachedEndSubscriber.Subscribe(OnSlimeReachedEnd).AddTo(_disposables);
         killedSubscriber.Subscribe(OnSlimeKilled).AddTo(_disposables);
+        gameProgressSubscriber.Subscribe(OnGameProgress).AddTo(_disposables);
+    }
+
+    private void OnGameProgress(GameProgressEvent e)
+    {
+        switch (e.EventType)
+        {
+            case GameProgressType.WaveStarted:
+                _currentWaveIndex = e.WaveIndex;
+                _aliveCount = e.SlimeCount;
+                _spawnFinished = false;
+                Debug.Log($"[GameplayService] 웨이브 {_currentWaveIndex} 시작, 예상 슬라임: {_aliveCount}");
+                break;
+
+            case GameProgressType.WaveSpawnFinished:
+                _spawnFinished = true;
+                Debug.Log($"[GameplayService] 웨이브 {_currentWaveIndex} 스폰 완료, 남은 슬라임: {_aliveCount}");
+                CheckWaveCleared();
+                break;
+        }
     }
 
     private void OnSlimeReachedEnd(SlimeReachedEndEvent e)
@@ -32,23 +57,39 @@ public class GameplayService : IGameplayService
             return;
 
         _info.Life.Value = Mathf.Max(0, _info.Life.Value - e.LifeCost);
-        // TODO: UI 붙으면 제거 — 임시 확인용 로그
         Debug.Log($"[GameplayService] 라이프 {_info.Life.Value}");
 
         if (_info.Life.Value <= 0)
         {
             _gameOverPublished = true;
-            _gameOverPublisher.Publish(new GameOverEvent());
+            _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.GameOver));
             Debug.Log("[GameplayService] 게임오버");
         }
+
+        OnSlimeRemoved();
     }
 
     private void OnSlimeKilled(SlimeKilledEvent e)
     {
-        // 하한 0 클램프 — 지금은 증가만 하지만 이후 골드 소모가 생겨도 음수로 못 내려가게 방어한다.
         _info.Gold.Value = Mathf.Max(0, _info.Gold.Value + e.GoldReward);
-        // TODO: UI 붙으면 제거 — 임시 확인용 로그
         Debug.Log($"[GameplayService] 골드 {_info.Gold.Value}");
+
+        OnSlimeRemoved();
+    }
+
+    private void OnSlimeRemoved()
+    {
+        _aliveCount = Mathf.Max(0, _aliveCount - 1);
+        CheckWaveCleared();
+    }
+
+    private void CheckWaveCleared()
+    {
+        if (_spawnFinished && _aliveCount <= 0)
+        {
+            _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.WaveCleared, _currentWaveIndex));
+            Debug.Log($"[GameplayService] 웨이브 {_currentWaveIndex} 클리어");
+        }
     }
 
     public void Dispose()
