@@ -1,12 +1,12 @@
 using System;
 using Cysharp.Threading.Tasks;
 
-public class HudViewPresenter : IDisposable
+public class TopHudPresenter : IDisposable
 {
-    private readonly HudView _view;
+    private readonly TopHudView _view;
     private readonly ISceneLoader _sceneLoader;
 
-    public HudViewPresenter(HudView view, ISceneLoader sceneLoader)
+    public TopHudPresenter(TopHudView view, ISceneLoader sceneLoader)
     {
         _view = view;
         _sceneLoader = sceneLoader;

@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-// TODO: 로비 UI가 커지면 Service/View/Presenter 3계층으로 승격
 public class LobbyStartButton : MonoBehaviour
 {
     [SerializeField] private Button _startButton;
+    [SerializeField] private Button _testStartButton;
 
     private ISceneLoader _sceneLoader;
 
@@ -25,19 +25,38 @@ public class LobbyStartButton : MonoBehaviour
         }
 
         _startButton.onClick.AddListener(OnStartButtonClicked);
+
+        if (_testStartButton != null)
+            _testStartButton.onClick.AddListener(OnTestStartButtonClicked);
     }
 
     private void OnDestroy()
     {
         if (_startButton != null)
             _startButton.onClick.RemoveListener(OnStartButtonClicked);
+
+        if (_testStartButton != null)
+            _testStartButton.onClick.RemoveListener(OnTestStartButtonClicked);
     }
 
     private void OnStartButtonClicked()
     {
+        LoadScene(SceneNames.Game);
+    }
+
+    private void OnTestStartButtonClicked()
+    {
+        LoadScene(SceneNames.GameTest);
+    }
+
+    private void LoadScene(string sceneName)
+    {
         _startButton.interactable = false;
 
+        if (_testStartButton != null)
+            _testStartButton.interactable = false;
+
         // 취소 토큰을 붙이지 말 것: 전환 도중 이 오브젝트가 파괴되어 자기 전환을 취소한다
-        _sceneLoader.TransitionAsync(SceneNames.Lobby, SceneNames.Game).Forget();
+        _sceneLoader.TransitionAsync(SceneNames.Lobby, sceneName).Forget();
     }
 }

@@ -32,6 +32,18 @@ public class GameplayService : IGameplayService
         gameProgressSubscriber.Subscribe(OnGameProgress).AddTo(_disposables);
     }
 
+    public bool TrySpendGold(int amount)
+    {
+        if (amount <= 0)
+            return false;
+
+        if (_info.Gold.Value < amount)
+            return false;
+
+        _info.Gold.Value -= amount;
+        return true;
+    }
+
     private void OnGameProgress(GameProgressEvent e)
     {
         switch (e.EventType)

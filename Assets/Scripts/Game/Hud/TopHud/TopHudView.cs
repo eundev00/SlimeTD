@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HudView : MonoBehaviour
+public class TopHudView : MonoBehaviour
 {
     [NotNull][SerializeField] private Button _lobbyButton;
 
@@ -12,7 +12,7 @@ public class HudView : MonoBehaviour
     {
         if (_lobbyButton == null)
         {
-            Debug.LogError("[HudView] _lobbyButton이 연결되지 않았습니다.", this);
+            Debug.LogError("[TopHudView] _lobbyButton이 연결되지 않았습니다.", this);
             return;
         }
 

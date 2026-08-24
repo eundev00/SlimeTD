@@ -6,6 +6,7 @@ using VContainer.Unity;
 public class GameLifetimeScope : LifetimeScope
 {
     [NotNull][SerializeField] private GameConfig _gameConfig;
+    [NotNull][SerializeField] private TowerSpawnConfig _towerSpawnConfig;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -13,19 +14,25 @@ public class GameLifetimeScope : LifetimeScope
                .As<IGameObjectPoolService>();
 
         builder.RegisterInstance(_gameConfig);
+        builder.RegisterInstance(_towerSpawnConfig);
         builder.Register<GameplayService>(Lifetime.Scoped).As<IGameplayService>();
 
         builder.RegisterComponentInHierarchy<WaveSpawner>();
-        builder.RegisterComponentInHierarchy<BaseTower>();
-        builder.RegisterComponentInHierarchy<HudView>();
+        builder.RegisterComponentInHierarchy<GridMapReference>();
+        builder.RegisterComponentInHierarchy<TowerInputHandler>();
+        builder.RegisterComponentInHierarchy<TopHudView>();
+        builder.RegisterComponentInHierarchy<GameplayHudView>();
 
-        builder.Register<HudViewPresenter>(Lifetime.Scoped);
+        builder.Register<TowerGridService>(Lifetime.Scoped).As<ITowerGridService>();
+        builder.Register<TowerSpawner>(Lifetime.Scoped).As<ITowerSpawner>();
 
-        // GameplayService/HudViewPresenter는 구독이 전부라 아무도 주입받지 않으면 생성이 안 되므로 스코프 빌드 시 강제로 생성한다.
+        builder.Register<TopHudPresenter>(Lifetime.Scoped);
+
+        // GameplayService/TopHudPresenter는 구독이 전부라 아무도 주입받지 않으면 생성이 안 되므로 스코프 빌드 시 강제로 생성한다.
         builder.RegisterBuildCallback(container =>
         {
             container.Resolve<IGameplayService>();
-            container.Resolve<HudViewPresenter>();
+            container.Resolve<TopHudPresenter>();
         });
     }
 }

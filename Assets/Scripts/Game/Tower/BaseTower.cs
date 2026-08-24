@@ -5,13 +5,16 @@ using UniRx;
 using UnityEngine;
 using VContainer;
 
-public class BaseTower : MonoBehaviour, IPeriodicUpdatable
+public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHandler
 {
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private float _attackCooldown = 1f;
     [SerializeField] private int _damage = 1;
     [SerializeField] private Transform _firePoint;
     [NotNull][SerializeField] private GameObject _projectilePrefab;
+    [SerializeField] private TowerRangeIndicator _rangeIndicator;
+    [SerializeField] private Transform _towerBody;
+    [SerializeField] private float _liftHeight = 0.35f;
 
     private TowerStats _stats;
     private IUpdateSubscriptionService _updateService;
@@ -20,11 +23,24 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
     private LayerMask _slimeLayer;
 
     private CompositeDisposable _disposables;
-    private bool _stopped;
+
+    // 게임오버는 비가역, 드래그는 가역이라 한 플래그로 겸하면 게임오버 후 드래그로 공격이 되살아난다.
+    private bool _gameOver;
+    private bool _dragged;
+    private bool _attackRegistered;
+
+    private readonly ReactiveProperty<bool> _isSelected = new ReactiveProperty<bool>(false);
+    private readonly ReactiveProperty<bool> _isDragging = new ReactiveProperty<bool>(false);
+
+    private Vector3 _originPosition;
+    private Vector3 _towerBodyLocalPosition;
 
     private readonly Collider[] _hitBuffer = new Collider[32];
 
     public TowerStats Stats => _stats;
+
+    public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
+    public IReadOnlyReactiveProperty<bool> IsDragging => _isDragging;
 
     [Inject]
     public void Construct(
@@ -43,10 +59,30 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
     {
         _slimeLayer = LayerMask.GetMask(GameTags.SlimeLayer);
         _stats = new TowerStats(_attackRange, _attackCooldown, _damage);
+
+        ApplyRangeToIndicator();
+    }
+
+    private void ApplyRangeToIndicator()
+    {
+        if (_rangeIndicator == null)
+        {
+            Debug.LogWarning("[BaseTower] _rangeIndicator가 연결되지 않아 범위 표시를 갱신할 수 없습니다.", this);
+            return;
+        }
+
+        _rangeIndicator.UpdateRangeVisual(_stats.AttackRange);
     }
 
     private void Start()
     {
+        if (_towerBody != null)
+        {
+            _towerBodyLocalPosition = _towerBody.localPosition;
+        }
+
+        ApplySelection();
+
         if (_firePoint == null)
         {
             Debug.LogWarning("[BaseTower] _firePoint가 연결되지 않았습니다. 타워 위치에서 발사합니다.", this);
@@ -59,7 +95,7 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
         }
 
         _poolService.CreatePool(_projectilePrefab, 10, 50);
-        _updateService.RegisterPeriodicUpdatable(this, _stats.AttackCooldown);
+        ApplyAttackActive();
 
         _disposables = new CompositeDisposable();
         _gameProgressSubscriber.Subscribe(evt =>
@@ -74,15 +110,33 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
         StopAttacking();
         _disposables?.Dispose();
         _disposables = null;
+
+        _isSelected.Dispose();
+        _isDragging.Dispose();
     }
 
     private void StopAttacking()
     {
-        if (_stopped)
+        _gameOver = true;
+        ApplyAttackActive();
+    }
+
+    private void ApplyAttackActive()
+    {
+        bool shouldAttack = !_gameOver && !_dragged;
+        if (shouldAttack == _attackRegistered)
             return;
 
-        _stopped = true;
-        _updateService?.UnregisterPeriodicUpdatable(this);
+        if (shouldAttack)
+        {
+            _updateService?.RegisterPeriodicUpdatable(this, _stats.AttackCooldown);
+        }
+        else
+        {
+            _updateService?.UnregisterPeriodicUpdatable(this);
+        }
+
+        _attackRegistered = shouldAttack;
     }
 
     #endregion
@@ -158,20 +212,114 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable
         projectile.Initialize(target.position, _stats.Damage);
     }
 
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    public void Select()
     {
-        if (_stats != null)
+        if (_isSelected.Value)
+            return;
+
+        _isSelected.Value = true;
+        ApplySelection();
+    }
+
+    public void Deselect()
+    {
+        if (!_isSelected.Value)
+            return;
+
+        _isSelected.Value = false;
+        ApplySelection();
+    }
+
+    public void BeginDrag()
+    {
+        if (_isDragging.Value)
+            return;
+
+        _originPosition = transform.position;
+        _isDragging.Value = true;
+
+        _dragged = true;
+        ApplyAttackActive();
+    }
+
+    public void UpdateDragPosition(Vector3 worldPosition, bool isValid)
+    {
+        if (!_isDragging.Value)
+            return;
+
+        transform.position = worldPosition;
+
+        if (_rangeIndicator != null)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, _stats.AttackRange);
+            _rangeIndicator.SetValid(isValid);
+        }
+    }
+
+    public void EndDrag(Vector3 snappedWorldPosition)
+    {
+        if (!_isDragging.Value)
+            return;
+
+        transform.position = snappedWorldPosition;
+        FinishDrag();
+    }
+
+    public void CancelDrag()
+    {
+        if (!_isDragging.Value)
+            return;
+
+        transform.position = _originPosition;
+        FinishDrag();
+    }
+
+    private void FinishDrag()
+    {
+        _isDragging.Value = false;
+
+        _dragged = false;
+        ApplyAttackActive();
+
+        if (_rangeIndicator != null)
+        {
+            _rangeIndicator.ResetColor();
+        }
+    }
+
+    private void ApplyLift(bool lifted)
+    {
+        if (_towerBody == null)
+            return;
+
+        _towerBody.localPosition = lifted
+            ? _towerBodyLocalPosition + Vector3.up * _liftHeight
+            : _towerBodyLocalPosition;
+    }
+
+    private void ApplySelection()
+    {
+        ApplyLift(_isSelected.Value);
+
+        if (_rangeIndicator == null)
+            return;
+
+        if (_isSelected.Value)
+        {
+            _rangeIndicator.Show();
         }
         else
         {
-            // Awake 전에는 SerializeField 값 사용
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, _attackRange);
+            _rangeIndicator.Hide();
         }
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        float range = _stats != null ? _stats.AttackRange : _attackRange;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, range);
     }
 #endif
 }

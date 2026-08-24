@@ -1,7 +1,5 @@
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [InitializeOnLoad]
 public static class GridSceneViewDrawer
@@ -14,7 +12,6 @@ public static class GridSceneViewDrawer
 
     private static readonly Vector3[] CellVertices = new Vector3[4];
 
-    private static GridMapReference _cachedReference;
     private static bool _isPainting;
     private static int _lastPaintedX = int.MinValue;
     private static int _lastPaintedY = int.MinValue;
@@ -22,11 +19,6 @@ public static class GridSceneViewDrawer
     static GridSceneViewDrawer()
     {
         SceneView.duringSceneGui += OnSceneGUI;
-        EditorApplication.hierarchyChanged += InvalidateCache;
-        EditorSceneManager.sceneOpened += OnSceneOpened;
-        EditorSceneManager.sceneClosed += OnSceneClosed;
-        PrefabStage.prefabStageOpened += OnPrefabStageChanged;
-        PrefabStage.prefabStageClosing += OnPrefabStageChanged;
     }
 
     private static void OnSceneGUI(SceneView sceneView)
@@ -47,39 +39,22 @@ public static class GridSceneViewDrawer
         HandlePaintInput(gridMapData);
     }
 
-    #region 조회
-
     private static GridMapData ResolveGridMapData()
     {
-        if (_cachedReference == null || !IsActive(_cachedReference))
+        foreach (Object selected in Selection.objects)
         {
-            _cachedReference = FindReference();
-        }
-
-        return _cachedReference == null ? null : _cachedReference.GridMapData;
-    }
-
-    private static GridMapReference FindReference()
-    {
-        PrefabStage prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
-        if (prefabStage != null)
-        {
-            GameObject root = prefabStage.prefabContentsRoot;
-            return root == null
-                ? null
-                : FirstActive(root.GetComponentsInChildren<GridMapReference>(true));
-        }
-
-        return FirstActive(Object.FindObjectsByType<GridMapReference>(FindObjectsInactive.Exclude, FindObjectsSortMode.None));
-    }
-
-    private static GridMapReference FirstActive(GridMapReference[] candidates)
-    {
-        foreach (GridMapReference candidate in candidates)
-        {
-            if (IsActive(candidate))
+            if (selected is GridMapData gridMapData)
             {
-                return candidate;
+                return gridMapData;
+            }
+
+            if (selected is GameObject gameObject)
+            {
+                GridMapReference reference = gameObject.GetComponentInParent<GridMapReference>();
+                if (IsActive(reference))
+                {
+                    return reference.GridMapData;
+                }
             }
         }
 
@@ -90,30 +65,6 @@ public static class GridSceneViewDrawer
     {
         return reference != null && reference.enabled && reference.gameObject.activeInHierarchy;
     }
-
-    private static void InvalidateCache()
-    {
-        _cachedReference = null;
-    }
-
-    private static void OnSceneOpened(Scene scene, OpenSceneMode mode)
-    {
-        InvalidateCache();
-    }
-
-    private static void OnSceneClosed(Scene scene)
-    {
-        InvalidateCache();
-    }
-
-    private static void OnPrefabStageChanged(PrefabStage stage)
-    {
-        InvalidateCache();
-    }
-
-    #endregion
-
-    #region 그리기
 
     private static void DrawCells(GridMapData gridMapData)
     {
@@ -190,10 +141,6 @@ public static class GridSceneViewDrawer
                 return PlaceableColor;
         }
     }
-
-    #endregion
-
-    #region 입력
 
     private static void HandlePaintInput(GridMapData gridMapData)
     {
@@ -290,6 +237,4 @@ public static class GridSceneViewDrawer
         (x, y) = GridUtility.WorldToGrid(ray.GetPoint(distance), gridMapData);
         return gridMapData.IsValidCoordinate(x, y);
     }
-
-    #endregion
 }
