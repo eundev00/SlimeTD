@@ -20,7 +20,7 @@ public class LobbyStartButton : MonoBehaviour
     {
         if (_startButton == null)
         {
-            Debug.LogError("[LobbyStartButton] _startButton이 연결되지 않았습니다.", this);
+            Debug.Log("[LobbyStartButton] _startButton이 연결되지 않았습니다.", this);
             return;
         }
 

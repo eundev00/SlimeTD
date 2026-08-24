@@ -56,7 +56,7 @@ public class TowerRangeIndicator : MonoBehaviour
         var particleRenderer = _rangeParticle.GetComponent<ParticleSystemRenderer>();
         if (particleRenderer == null)
         {
-            Debug.LogError("[TowerRangeIndicator] ParticleSystemRenderer를 찾을 수 없습니다.", this);
+            Debug.Log("[TowerRangeIndicator] ParticleSystemRenderer를 찾을 수 없습니다.", this);
             return null;
         }
 

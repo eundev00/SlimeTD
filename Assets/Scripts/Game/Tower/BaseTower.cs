@@ -90,7 +90,7 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
         if (_projectilePrefab == null)
         {
-            Debug.LogError("[BaseTower] _projectilePrefab이 연결되지 않았습니다.", this);
+            Debug.Log("[BaseTower] _projectilePrefab이 연결되지 않았습니다.", this);
             return;
         }
 
@@ -204,7 +204,7 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         var projectile = projObj.GetComponent<Projectile>();
         if (projectile == null)
         {
-            Debug.LogError("[BaseTower] 발사체 프리팹에 Projectile 컴포넌트가 없습니다.", projObj);
+            Debug.Log("[BaseTower] 발사체 프리팹에 Projectile 컴포넌트가 없습니다.", projObj);
             return;
         }
 

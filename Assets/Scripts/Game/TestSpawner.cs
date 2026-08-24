@@ -30,13 +30,13 @@ public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
     {
         if (_slimePrefab == null)
         {
-            Debug.LogError("[TestSpawner] _slimePrefab이 연결되지 않았습니다.", this);
+            Debug.Log("[TestSpawner] _slimePrefab이 연결되지 않았습니다.", this);
             return;
         }
 
         if (_splineContainer == null)
         {
-            Debug.LogError("[TestSpawner] _splineContainer가 연결되지 않았습니다.", this);
+            Debug.Log("[TestSpawner] _splineContainer가 연결되지 않았습니다.", this);
             return;
         }
 
@@ -74,7 +74,7 @@ public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
         var slime = obj.GetComponent<BaseSlime>();
         if (slime == null)
         {
-            Debug.LogError("[TestSpawner] 슬라임 프리팹에 BaseSlime 컴포넌트가 없습니다.", obj);
+            Debug.Log("[TestSpawner] 슬라임 프리팹에 BaseSlime 컴포넌트가 없습니다.", obj);
             return;
         }
 

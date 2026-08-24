@@ -42,7 +42,7 @@ public class BaseSlime : MonoBehaviour, IPoolable
         _splineAnimate = GetComponent<SplineAnimate>();
         if (_splineAnimate == null)
         {
-            Debug.LogError("[BaseSlime] SplineAnimate 컴포넌트가 없습니다.", this);
+            Debug.Log("[BaseSlime] SplineAnimate 컴포넌트가 없습니다.", this);
             return;
         }
 

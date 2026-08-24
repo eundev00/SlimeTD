@@ -52,13 +52,13 @@ public class TowerInputHandler : MonoBehaviour
     {
         if (_gridService == null)
         {
-            Debug.LogError("[TowerInputHandler] ITowerGridService가 주입되지 않아 드래그 이동이 비활성화됩니다.", this);
+            Debug.Log("[TowerInputHandler] ITowerGridService가 주입되지 않아 드래그 이동이 비활성화됩니다.", this);
             return;
         }
 
         if (_gridService.GridMapData == null)
         {
-            Debug.LogError("[TowerInputHandler] GridMapData를 찾을 수 없어 드래그 이동이 비활성화됩니다.", this);
+            Debug.Log("[TowerInputHandler] GridMapData를 찾을 수 없어 드래그 이동이 비활성화됩니다.", this);
             return;
         }
 
@@ -127,7 +127,7 @@ public class TowerInputHandler : MonoBehaviour
     {
         if (_camera == null)
         {
-            Debug.LogError("[TowerInputHandler] _camera가 없어 클릭 위치를 계산할 수 없습니다.", this);
+            Debug.Log("[TowerInputHandler] _camera가 없어 클릭 위치를 계산할 수 없습니다.", this);
             return;
         }
 

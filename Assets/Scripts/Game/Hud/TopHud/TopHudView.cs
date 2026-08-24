@@ -12,7 +12,7 @@ public class TopHudView : MonoBehaviour
     {
         if (_lobbyButton == null)
         {
-            Debug.LogError("[TopHudView] _lobbyButton이 연결되지 않았습니다.", this);
+            Debug.Log("[TopHudView] _lobbyButton이 연결되지 않았습니다.", this);
             return;
         }
 

@@ -17,7 +17,7 @@ public class TowerGridService : ITowerGridService
 
         if (_gridMapData == null)
         {
-            Debug.LogError("[TowerGridService] GridMapData를 찾을 수 없습니다.");
+            Debug.Log("[TowerGridService] GridMapData를 찾을 수 없습니다.");
         }
     }
 

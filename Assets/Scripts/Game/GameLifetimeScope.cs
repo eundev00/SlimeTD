@@ -32,12 +32,14 @@ public class GameLifetimeScope : LifetimeScope
             builder.RegisterComponent(gameplayHudView);
 
         builder.Register<TopHudPresenter>(Lifetime.Scoped);
+        builder.Register<GameplayHudPresenter>(Lifetime.Scoped);
 
-        // GameplayService/TopHudPresenter는 구독이 전부라 아무도 주입받지 않으면 생성이 안 되므로 스코프 빌드 시 강제로 생성한다.
+        // GameplayService/TopHudPresenter/GameplayHudPresenter는 구독이 전부라 아무도 주입받지 않으면 생성이 안 되므로 스코프 빌드 시 강제로 생성한다.
         builder.RegisterBuildCallback(container =>
         {
             container.Resolve<IGameplayService>();
             container.Resolve<TopHudPresenter>();
+            container.Resolve<GameplayHudPresenter>();
         });
     }
 }

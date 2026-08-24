@@ -16,7 +16,7 @@ public class SceneLoader : ISceneLoader
         var loaded = SceneManager.GetSceneByName(sceneName);
         if (!loaded.IsValid())
         {
-            Debug.LogError($"[SceneLoader] 씬 로드 실패: {sceneName} (Build Settings 등록 확인)");
+            Debug.Log($"[SceneLoader] 씬 로드 실패: {sceneName} (Build Settings 등록 확인)");
             return;
         }
 

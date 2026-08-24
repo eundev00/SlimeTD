@@ -26,14 +26,14 @@ public class TowerSpawner : ITowerSpawner
     {
         if (_config == null || _config.TowerPrefab == null)
         {
-            Debug.LogError("[TowerSpawner] TowerSpawnConfig 또는 타워 프리팹이 없습니다.");
+            Debug.Log("[TowerSpawner] TowerSpawnConfig 또는 타워 프리팹이 없습니다.");
             return false;
         }
 
         var gridMapData = _gridService.GridMapData;
         if (gridMapData == null)
         {
-            Debug.LogError("[TowerSpawner] GridMapData가 없어 타워를 배치할 수 없습니다.");
+            Debug.Log("[TowerSpawner] GridMapData가 없어 타워를 배치할 수 없습니다.");
             return false;
         }
 
@@ -55,7 +55,7 @@ public class TowerSpawner : ITowerSpawner
         var handler = tower.GetComponent<ITowerInteractionHandler>();
         if (handler == null)
         {
-            Debug.LogError("[TowerSpawner] 타워 프리팹에 ITowerInteractionHandler 구현체가 없습니다.", tower);
+            Debug.Log("[TowerSpawner] 타워 프리팹에 ITowerInteractionHandler 구현체가 없습니다.", tower);
             return false;
         }
 

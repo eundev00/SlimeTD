@@ -37,13 +37,13 @@ public class WaveSpawner : MonoBehaviour
     {
         if (_splineContainer == null)
         {
-            Debug.LogError("[WaveSpawner] _splineContainer가 연결되지 않았습니다.", this);
+            Debug.Log("[WaveSpawner] _splineContainer가 연결되지 않았습니다.", this);
             return;
         }
 
         if (_waveTable == null || _waveTable.Waves == null || _waveTable.Waves.Length == 0)
         {
-            Debug.LogError("[WaveSpawner] _waveTable이 비어 있습니다.", this);
+            Debug.Log("[WaveSpawner] _waveTable이 비어 있습니다.", this);
             return;
         }
 
@@ -199,7 +199,7 @@ public class WaveSpawner : MonoBehaviour
         var slime = obj.GetComponent<BaseSlime>();
         if (slime == null)
         {
-            Debug.LogError("[WaveSpawner] 슬라임 프리팹에 BaseSlime 컴포넌트가 없습니다.", obj);
+            Debug.Log("[WaveSpawner] 슬라임 프리팹에 BaseSlime 컴포넌트가 없습니다.", obj);
             return;
         }
 

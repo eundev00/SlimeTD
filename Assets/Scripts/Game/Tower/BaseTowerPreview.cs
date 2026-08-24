@@ -31,7 +31,7 @@ public class BaseTowerPreview : MonoBehaviour, ITowerInteractionHandler
 
         if (_rangeIndicator == null)
         {
-            Debug.LogError("[BaseTowerPreview] TowerRangeIndicator를 찾을 수 없습니다.", this);
+            Debug.Log("[BaseTowerPreview] TowerRangeIndicator를 찾을 수 없습니다.", this);
             return;
         }
 

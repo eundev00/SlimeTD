@@ -24,7 +24,7 @@ namespace Services.PoolService
         {
             if (prefab == null)
             {
-                Debug.LogError("[GameObjectPoolService] 프리팹이 null입니다.");
+                Debug.Log("[GameObjectPoolService] 프리팹이 null입니다.");
                 return;
             }
 
@@ -48,7 +48,7 @@ namespace Services.PoolService
         {
             if (!_pools.TryGetValue(prefab, out var pool))
             {
-                Debug.LogError($"[GameObjectPoolService] 등록되지 않은 프리팹: {prefab.name}. CreatePool을 먼저 호출하세요.");
+                Debug.Log($"[GameObjectPoolService] 등록되지 않은 프리팹: {prefab.name}. CreatePool을 먼저 호출하세요.");
                 return null;
             }
 
@@ -62,7 +62,7 @@ namespace Services.PoolService
 
             if (!_instanceToPrefab.TryGetValue(instance, out var prefab))
             {
-                Debug.LogError($"[GameObjectPoolService] 풀에서 관리하지 않는 인스턴스: {instance.name}", instance);
+                Debug.Log($"[GameObjectPoolService] 풀에서 관리하지 않는 인스턴스: {instance.name}", instance);
                 return;
             }
 

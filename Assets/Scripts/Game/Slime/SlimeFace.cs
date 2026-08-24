@@ -21,12 +21,12 @@ public class SlimeFace : MonoBehaviour, IPoolable
         _baseSlime = GetComponentInParent<BaseSlime>();
         if (_baseSlime == null)
         {
-            Debug.LogError("[SlimeFace] BaseSlime 컴포넌트를 찾을 수 없습니다.", this);
+            Debug.Log("[SlimeFace] BaseSlime 컴포넌트를 찾을 수 없습니다.", this);
         }
 
         if (_renderer == null)
         {
-            Debug.LogError("[SlimeFace] _renderer가 연결되지 않았습니다.", this);
+            Debug.Log("[SlimeFace] _renderer가 연결되지 않았습니다.", this);
         }
     }
 

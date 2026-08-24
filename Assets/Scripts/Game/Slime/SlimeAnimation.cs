@@ -18,14 +18,14 @@ public class SlimeAnimation : MonoBehaviour, IPoolable
         _baseSlime = GetComponent<BaseSlime>();
         if (_baseSlime == null)
         {
-            Debug.LogError("[SlimeAnimation] BaseSlime 컴포넌트가 없습니다.", this);
+            Debug.Log("[SlimeAnimation] BaseSlime 컴포넌트가 없습니다.", this);
             return;
         }
 
         _animator = GetComponentInChildren<Animator>();
         if (_animator == null)
         {
-            Debug.LogError("[SlimeAnimation] Animator 컴포넌트가 없습니다.", this);
+            Debug.Log("[SlimeAnimation] Animator 컴포넌트가 없습니다.", this);
             return;
         }
     }
