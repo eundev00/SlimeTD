@@ -9,7 +9,7 @@
 
 **목표 범위(1인 개발)**: 스테이지 3개, 슬라임 4종(기본 3종 + 대장 1종), 타워 2~3종. 아트는 에셋스토어 구매.
 
-**화면**: 모바일 **세로(Portrait) 고정**. UI/카메라/맵 관련 작업은 항상 세로 비율을 기준으로 한다. 자세한 내용은 아래 [6. 세로 화면(Portrait) 기준](#6-세로-화면portrait-기준) 참고.
+**화면**: 모바일 **세로(Portrait) 고정**. UI/카메라/맵 관련 작업은 항상 세로 비율을 기준으로 한다. 자세한 내용은 아래 [5. 세로 화면(Portrait) 기준](#5-세로-화면portrait-기준) 참고.
 
 ---
 
@@ -63,7 +63,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 
 ### 이벤트 (MessagePipe)
 
-씬/시스템 경계를 넘는 통지는 MessagePipe로 발행한다. 네이밍은 `<주어><과거분사>Event` (`WaveStartedEvent`, `SlimeKilledEvent`, `LifeChangedEvent`, `SlimeSplitEvent`).
+씬/시스템 경계를 넘는 통지는 MessagePipe로 발행한다. 네이밍은 `<주어><과거분사>Event` (`GameProgressEvent`, `SlimeKilledEvent`, `SlimeReachedEndEvent`).
 
 단일 객체 내부 상태 변화는 이벤트 대신 `ReactiveProperty`를 쓴다. 이벤트는 "다른 시스템이 알아야 하는 사실"에만 쓴다.
 
@@ -87,55 +87,36 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 
 ---
 
-## 3. 폴더 구조
-
-```
-Assets/Scripts/
-├── Bootstrap/          # 앱 진입점 (BootstrapEntryPoint)
-├── Constants/          # SceneNames 등 상수
-├── Lobby/              # 로비 씬 스코프 + View
-├── Game/               # 게임플레이 씬 스코프
-├── Services/
-│   ├── SceneService/   # ISceneLoader / SceneLoader
-│   └── UpdateService/  # UpdateSubscriptionService
-└── ProjectLifetimeScope.cs
-```
-
-`Services/` 하위는 `Services.<이름>` 네임스페이스를 쓴다. 루트 레벨 스크립트는 아직 네임스페이스가 없으며, 정리 시 이 규칙에 맞춰 이동한다.
-
----
-
-## 4. 코딩 컨벤션
+## 3. 코딩 컨벤션
 
 - private 필드: `_camelCase`, `[SerializeField] private`로 인스펙터 노출 (public 필드 금지)
 - 인터페이스는 `I` 접두사, 구현체와 파일 분리
-- 로그 태그: `[클래스명] 메시지` (예: `Debug.LogError($"[SceneLoader] 씬 로드 실패: {sceneName}")`)
-- MonoBehaviour 참조는 `Start()`에서 null 체크 후 조기 반환하고, 실패 시 `Debug.LogError(..., this)`로 대상 오브젝트를 함께 넘긴다
+- 로그 태그: `[클래스명] 메시지` (예: `Debug.Log($"[SceneLoader] 씬 로드 실패: {sceneName}")`)
+- MonoBehaviour 참조는 `Start()`에서 null 체크 후 조기 반환하고, 실패 시 `Debug.Log(..., this)`로 대상 오브젝트를 함께 넘긴다
 - 주석과 로그 메시지는 한국어로 작성한다
 
 ### 주석
 
-**주석은 코드에서 안 읽히는 것만 남긴다.**
+**주석은 최소화한다. 꼭 필요하고 중요도가 높은 내용만 남긴다.**
 
-- 남길 것: "왜 이렇게 했는가" — 함정, 순서 의존성, 엔진 동작 회피책
+- 남길 것: 함정, 순서 의존성, 엔진 동작 회피책 등 코드만으로 이해하기 어려운 핵심 정보
   - 예: `// 활성 씬을 먼저 언로드하면 Unity가 임의의 씬을 활성 씬으로 잡는다`
-- 남기지 않을 것: 코드를 그대로 읽는 주석, 클래스 헤더 주석, 파라미터 나열, 구획 장식용 주석
+- 남기지 않을 것: 코드를 그대로 읽는 주석, "왜" 설명, 클래스 헤더, 파라미터 나열, 구획 장식용 주석
 
 미완성 지점은 `// TODO:` 한 줄로 남긴다.
 
 ---
 
-## 5. 구현 시 주의점
+## 4. 구현 시 주의점
 
 - **슬라임 이동**: `SplineContainer` + `SplineAnimate`로 경로를 따르고, 갱신은 UpdateSubscriptionService에 붙인다. 타겟 탐색 로직은 Service 계층에 두고 View는 표현만 한다
-- **분열 시스템**: 체력 `ReactiveProperty`가 임계치에 닿으면 `SlimeSplitEvent`를 발행하고, SplitService가 구독해 자식 슬라임을 스폰한다. View는 결과만 받아 DOTween으로 찌그러짐/튕김을 재생한다. 로직과 연출을 섞지 않는다
-- **오브젝트 풀링**: 슬라임/발사체는 분열 때문에 스폰 빈도가 높다. Unity `ObjectPool<T>`를 쓰고, 반환 시 `ReactiveProperty`와 구독 상태를 반드시 초기화한다
+- **오브젝트 풀링**: 슬라임/발사체는 스폰 빈도가 높다. Unity `ObjectPool<T>`를 쓰고, 반환 시 `ReactiveProperty`와 구독 상태를 반드시 초기화한다
 - **밸런스 수치**: 체력/데미지/골드/라이프 차감량은 ScriptableObject로 분리해 코드에 하드코딩하지 않는다
-- **"손맛"이 이 프로젝트의 최우선 품질 기준**이다. 피격/분열/처치 연출은 비용을 아끼지 않는다
+- **"손맛"이 이 프로젝트의 최우선 품질 기준**이다. 피격/처치 연출은 비용을 아끼지 않는다
 
 ---
 
-## 6. 세로 화면(Portrait) 기준
+## 5. 세로 화면(Portrait) 기준
 
 이 게임은 **모바일 세로 고정**이다. 레퍼런스인 Bloons TD는 가로 화면이라, 맵/UI 레이아웃은 그대로 가져올 수 없고 세로에 맞게 재설계해야 한다.
 
@@ -193,14 +174,15 @@ Match를 0으로 두는 이유는 세로 게임에서 **가로 폭이 UI 레이�
 
 ---
 
-## 7. 정리 대상
+## 6. 정리 대상
 
 - [SlimeMover.cs](Assets/Scripts/SlimeMover.cs), `NewMonoBehaviourScript.cs`, `SampleScene.unity`는 프로토타입 잔재다. 정식 구현으로 대체되면 삭제한다
+- 미사용 이벤트 파일: `WaveStartedEvent.cs`, `WaveClearedEvent.cs`, `GameOverEvent.cs` (GameProgressEvent로 통합됨)
 - 어셈블리 정의(asmdef)가 아직 없다. 스크립트가 늘어나면 컴파일 시간을 위해 도입을 고려한다
 
 ---
 
-## 8. Claude 응답 방식
+## 7. Claude 응답 방식
 
 - 구조/설계를 논의할 때는 코드를 바로 작성하지 않는다. 역할 분리, 클래스/필드 구성, 데이터 흐름까지만 텍스트로 제시한다
 - 실제 코드는 사용자가 명시적으로 요청하거나, 구현 단계로 넘어가 실제로 필요한 시점에만 작성한다
