@@ -35,7 +35,6 @@ public class BaseSlime : MonoBehaviour, IPoolable
         _poolService = poolService;
     }
 
-    #region Unity Lifecycle
 
     protected virtual void Awake()
     {
@@ -53,9 +52,7 @@ public class BaseSlime : MonoBehaviour, IPoolable
         _splineAnimate.Loop = SplineAnimate.LoopMode.Once;
     }
 
-    #endregion
 
-    #region IPoolable
 
     public virtual void OnGetFromPool()
     {
@@ -82,9 +79,7 @@ public class BaseSlime : MonoBehaviour, IPoolable
         }
     }
 
-    #endregion
 
-    #region Public API
 
     public virtual void Initialize(SplineContainer splineContainer)
     {
@@ -109,7 +104,6 @@ public class BaseSlime : MonoBehaviour, IPoolable
         }
     }
 
-    #endregion
 
 
     private async void OnDiedAsync()

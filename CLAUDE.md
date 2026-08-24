@@ -111,7 +111,6 @@ Assets/Scripts/
 - 인터페이스는 `I` 접두사, 구현체와 파일 분리
 - 로그 태그: `[클래스명] 메시지` (예: `Debug.LogError($"[SceneLoader] 씬 로드 실패: {sceneName}")`)
 - MonoBehaviour 참조는 `Start()`에서 null 체크 후 조기 반환하고, 실패 시 `Debug.LogError(..., this)`로 대상 오브젝트를 함께 넘긴다
-- 클래스가 길어지면 `#region`으로 구획한다 (Fields / Unity Lifecycle / 인터페이스 구현 등)
 - 주석과 로그 메시지는 한국어로 작성한다
 
 ### 주석

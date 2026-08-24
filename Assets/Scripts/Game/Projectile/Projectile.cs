@@ -40,7 +40,6 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
         _updateService.RegisterUpdatable(this);
     }
 
-    #region IUpdatable
 
     public void ManagedUpdate()
     {
@@ -58,9 +57,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
         transform.position += _direction * _speed * Time.deltaTime;
     }
 
-    #endregion
 
-    #region IPoolable
 
     public void OnGetFromPool()
     {
@@ -77,7 +74,6 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolable
         _elapsedTime = 0f;
     }
 
-    #endregion
 
     private void OnTriggerEnter(Collider other)
     {

@@ -11,7 +11,6 @@ public class SlimeAnimation : MonoBehaviour, IPoolable
     private static readonly int HitStateHash = Animator.StringToHash("Hit");
     private static readonly int DieStateHash = Animator.StringToHash("Die");
 
-    #region Unity Lifecycle
 
     private void Awake()
     {
@@ -30,9 +29,7 @@ public class SlimeAnimation : MonoBehaviour, IPoolable
         }
     }
 
-    #endregion
 
-    #region IPoolable
 
     public void OnGetFromPool()
     {
@@ -68,7 +65,6 @@ public class SlimeAnimation : MonoBehaviour, IPoolable
         _disposables = null;
     }
 
-    #endregion
 
     private void OnDamaged()
     {

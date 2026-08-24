@@ -50,6 +50,12 @@ public class TowerInputHandler : MonoBehaviour
 
     private void Start()
     {
+        if (_camera == null)
+        {
+            Debug.Log("[TowerInputHandler] 카메라를 찾을 수 없습니다. Inspector에서 카메라를 할당하거나 MainCamera 태그를 설정하세요.", this);
+            return;
+        }
+
         if (_gridService == null)
         {
             Debug.Log("[TowerInputHandler] ITowerGridService가 주입되지 않아 드래그 이동이 비활성화됩니다.", this);

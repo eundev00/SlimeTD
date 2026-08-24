@@ -5,7 +5,6 @@ namespace Services.UpdateService
 {
     public class UpdateSubscriptionService : MonoBehaviour, IUpdateSubscriptionService
     {
-        #region Fields
 
         // Update: 역방향 반복으로 mid-iteration 등록/해제 안전
         private static readonly List<IUpdatable> _updateObservers = new List<IUpdatable>();
@@ -22,9 +21,7 @@ namespace Services.UpdateService
 
         private static readonly List<PeriodicSubscriber> _periodicSubscribers = new List<PeriodicSubscriber>();
 
-        #endregion
 
-        #region Inner Classes
 
         private class PeriodicSubscriber
         {
@@ -34,9 +31,7 @@ namespace Services.UpdateService
             public float LastCallTime;
         }
 
-        #endregion
 
-        #region Unity Lifecycle
 
         private void Update()
         {
@@ -96,9 +91,7 @@ namespace Services.UpdateService
             }
         }
 
-        #endregion
 
-        #region Periodic Updates
 
         private void HandlePeriodicUpdates()
         {
@@ -118,9 +111,7 @@ namespace Services.UpdateService
             }
         }
 
-        #endregion
 
-        #region IUpdateSubscriptionService Implementation
 
         public void RegisterUpdatable(IUpdatable updatable)
         {
@@ -246,6 +237,5 @@ namespace Services.UpdateService
             }
         }
 
-        #endregion
     }
 }

@@ -12,8 +12,8 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
     [SerializeField] private int _damage = 1;
     [SerializeField] private Transform _firePoint;
     [NotNull][SerializeField] private GameObject _projectilePrefab;
-    [SerializeField] private TowerRangeIndicator _rangeIndicator;
-    [SerializeField] private Transform _towerBody;
+    [NotNull][SerializeField] private TowerRangeIndicator _rangeIndicator;
+    [NotNull][SerializeField] private Transform _towerBody;
     [SerializeField] private float _liftHeight = 0.35f;
 
     private TowerStats _stats;
@@ -53,7 +53,6 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         _gameProgressSubscriber = gameProgressSubscriber;
     }
 
-    #region Unity Lifecycle
 
     private void Awake()
     {
@@ -139,9 +138,7 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         _attackRegistered = shouldAttack;
     }
 
-    #endregion
 
-    #region IPeriodicUpdatable
 
     public void ManagedPeriodicUpdate(float deltaTime)
     {
@@ -152,7 +149,6 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         FireProjectile(target);
     }
 
-    #endregion
 
     private Transform FindClosestSlime()
     {

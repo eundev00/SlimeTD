@@ -14,7 +14,6 @@ public class SlimeFace : MonoBehaviour, IPoolable
     private BaseSlime _baseSlime;
     private CompositeDisposable _disposables;
 
-    #region Unity Lifecycle
 
     private void Awake()
     {
@@ -30,9 +29,7 @@ public class SlimeFace : MonoBehaviour, IPoolable
         }
     }
 
-    #endregion
 
-    #region IPoolable
 
     public void OnGetFromPool()
     {
@@ -67,7 +64,6 @@ public class SlimeFace : MonoBehaviour, IPoolable
         _disposables = null;
     }
 
-    #endregion
 
     public void SetNormalFace()
     {

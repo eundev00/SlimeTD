@@ -24,7 +24,6 @@ public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
         _poolService = poolService;
     }
 
-    #region Unity Lifecycle
 
     private void Start()
     {
@@ -49,9 +48,7 @@ public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
         _updateService?.UnregisterPeriodicUpdatable(this);
     }
 
-    #endregion
 
-    #region IPeriodicUpdatable
 
     public void ManagedPeriodicUpdate(float deltaTime)
     {
@@ -61,7 +58,6 @@ public class TestSpawner : MonoBehaviour, IPeriodicUpdatable
         SpawnSlime();
     }
 
-    #endregion
 
     private void SpawnSlime()
     {
