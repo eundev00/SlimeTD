@@ -16,15 +16,20 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(_gameConfig);
         builder.RegisterInstance(_towerSpawnConfig);
         builder.Register<GameplayService>(Lifetime.Scoped).As<IGameplayService>();
+        builder.Register<TowerGridService>(Lifetime.Scoped).As<ITowerGridService>();
+        builder.Register<TowerSpawner>(Lifetime.Scoped).As<ITowerSpawner>();
 
         builder.RegisterComponentInHierarchy<WaveSpawner>();
         builder.RegisterComponentInHierarchy<GridMapReference>();
         builder.RegisterComponentInHierarchy<TowerInputHandler>();
-        builder.RegisterComponentInHierarchy<TopHudView>();
-        builder.RegisterComponentInHierarchy<GameplayHudView>();
 
-        builder.Register<TowerGridService>(Lifetime.Scoped).As<ITowerGridService>();
-        builder.Register<TowerSpawner>(Lifetime.Scoped).As<ITowerSpawner>();
+        var topHudView = Object.FindFirstObjectByType<TopHudView>();
+        if (topHudView != null)
+            builder.RegisterComponent(topHudView);
+
+        var gameplayHudView = Object.FindFirstObjectByType<GameplayHudView>();
+        if (gameplayHudView != null)
+            builder.RegisterComponent(gameplayHudView);
 
         builder.Register<TopHudPresenter>(Lifetime.Scoped);
 
