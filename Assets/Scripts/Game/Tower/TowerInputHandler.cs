@@ -1,16 +1,15 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using VContainer;
 
 public class TowerInputHandler : MonoBehaviour
 {
-    [SerializeField] private Camera _camera;
     [SerializeField] private float _maxRayDistance = 200f;
     // 모바일 최소 터치 타겟(1080 너비 기준 약 130px)의 1/8. 손가락 떨림과 의도한 이동을 가르는 값.
     [SerializeField] private float _dragThresholdPixels = 16f;
 
-    private ITowerGridService _gridService;
+    private Camera _camera;
+    private TowerCells _towerCells;
 
     private InputAction _pressAction;
     private InputAction _pointerPositionAction;
@@ -25,51 +24,46 @@ public class TowerInputHandler : MonoBehaviour
     private Vector2Int _dragOriginCell;
     private Vector2Int _dragTargetCell;
 
-    [Inject]
-    public void Construct(ITowerGridService gridService)
+    public void Initialize(TowerCells towerCells)
     {
-        _gridService = gridService;
+        if (towerCells == null)
+        {
+            Debug.Log("[TowerInputHandler] TowerCells가 없어 드래그 이동이 비활성화됩니다.", this);
+            return;
+        }
+
+        if (towerCells.GridMapData == null)
+        {
+            Debug.Log("[TowerInputHandler] GridMapData를 찾을 수 없어 드래그 이동이 비활성화됩니다.", this);
+            return;
+        }
+
+        _towerCells = towerCells;
+        _gridMapData = towerCells.GridMapData;
     }
 
     private void Awake()
     {
         _towerLayer = LayerMask.GetMask(GameTags.TowerLayer);
 
-        if (_camera == null)
-        {
-            _camera = Camera.main;
-        }
-
-        _pressAction = new InputAction(binding: "<Pointer>/press", type: InputActionType.Button);
+        _pressAction = new InputAction(type: InputActionType.Button);
+        _pressAction.AddBinding("<Mouse>/leftButton");
+        _pressAction.AddBinding("<Touchscreen>/primaryTouch/press");
         _pressAction.performed += OnPressed;
         _pressAction.canceled += OnReleased;
 
-        _pointerPositionAction = new InputAction(binding: "<Pointer>/position", type: InputActionType.Value);
+        _pointerPositionAction = new InputAction(type: InputActionType.Value);
+        _pointerPositionAction.AddBinding("<Mouse>/position");
+        _pointerPositionAction.AddBinding("<Touchscreen>/primaryTouch/position");
         _pointerPositionAction.performed += OnPointerMoved;
+
+        _pressAction.Enable();
+        _pointerPositionAction.Enable();
     }
 
     private void Start()
     {
-        if (_camera == null)
-        {
-            Debug.Log("[TowerInputHandler] 카메라를 찾을 수 없습니다. Inspector에서 카메라를 할당하거나 MainCamera 태그를 설정하세요.", this);
-            return;
-        }
-
-        if (_gridService == null)
-        {
-            Debug.Log("[TowerInputHandler] ITowerGridService가 주입되지 않아 드래그 이동이 비활성화됩니다.", this);
-            return;
-        }
-
-        if (_gridService.GridMapData == null)
-        {
-            Debug.Log("[TowerInputHandler] GridMapData를 찾을 수 없어 드래그 이동이 비활성화됩니다.", this);
-            return;
-        }
-
-        _gridMapData = _gridService.GridMapData;
-        RegisterExistingTowers();
+        _camera = Camera.main;
     }
 
     private void OnEnable()
@@ -102,21 +96,6 @@ public class TowerInputHandler : MonoBehaviour
         }
     }
 
-    private void RegisterExistingTowers()
-    {
-        var behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-        foreach (var behaviour in behaviours)
-        {
-            if (behaviour is not ITowerInteractionHandler tower)
-                continue;
-
-            if (!TryGetCell(behaviour.transform.position, out var cell))
-                continue;
-
-            _gridService.Register(cell, tower);
-        }
-    }
-
     private bool TryGetCell(Vector3 worldPosition, out Vector2Int cell)
     {
         cell = default;
@@ -132,16 +111,15 @@ public class TowerInputHandler : MonoBehaviour
     private void OnPressed(InputAction.CallbackContext context)
     {
         if (_camera == null)
-        {
-            Debug.Log("[TowerInputHandler] _camera가 없어 클릭 위치를 계산할 수 없습니다.", this);
+            _camera = Camera.main;
+
+        if (_camera == null)
             return;
-        }
 
         var pointer = Pointer.current;
         if (pointer == null)
             return;
 
-        // 이 핸들러는 EventSystem을 거치지 않으므로 UI가 입력을 막아주지 않는다. 직접 확인한다.
         if (IsPointerOverUI())
             return;
 
@@ -188,7 +166,6 @@ public class TowerInputHandler : MonoBehaviour
             if ((screenPosition - _pressScreenPosition).sqrMagnitude < threshold)
                 return;
 
-            // 그리드 밖 타워는 원래 칸이 없어 해제 대상도 없다. 새 칸 점유만 하면 된다.
             if (!TryGetCell(((MonoBehaviour)_selected).transform.position, out _dragOriginCell))
             {
                 _dragOriginCell = new Vector2Int(int.MinValue, int.MinValue);
@@ -229,7 +206,7 @@ public class TowerInputHandler : MonoBehaviour
         if (_gridMapData.GetCellState(x, y) != GridCellState.Placeable)
             return false;
 
-        if (!_gridService.TryGetTower(new Vector2Int(x, y), out var occupant))
+        if (!_towerCells.TryGetTower(new Vector2Int(x, y), out var occupant))
             return true;
 
         return ReferenceEquals(occupant, _selected);
@@ -242,7 +219,7 @@ public class TowerInputHandler : MonoBehaviour
             // 터치는 떼는 순간 사라져 포인터 위치를 다시 읽을 수 없으므로 마지막 판정을 쓴다.
             if (_lastDragValid)
             {
-                _gridService.Move(_dragOriginCell, _dragTargetCell, _selected);
+                _towerCells.Move(_dragOriginCell, _dragTargetCell, _selected);
                 _selected.EndDrag(_lastSnappedPosition);
             }
             else

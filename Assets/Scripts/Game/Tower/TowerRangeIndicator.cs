@@ -3,6 +3,7 @@ using UnityEngine;
 public class TowerRangeIndicator : MonoBehaviour
 {
     private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+    private static readonly int ColorId = Shader.PropertyToID("_Color");
 
     [NotNull][SerializeField] private ParticleSystem _rangeParticle;
     [SerializeField] private Color _defaultColor = new Color(0.345f, 0.858f, 0.271f, 1f);
@@ -42,7 +43,12 @@ public class TowerRangeIndicator : MonoBehaviour
         if (material == null)
             return;
 
-        material.SetColor(BaseColorId, color);
+        // 빌트인 파티클 셰이더는 _Color, URP 계열은 _BaseColor를 쓴다.
+        if (material.HasProperty(BaseColorId))
+            material.SetColor(BaseColorId, color);
+
+        if (material.HasProperty(ColorId))
+            material.SetColor(ColorId, color);
     }
 
     private Material GetMaterialInstance()

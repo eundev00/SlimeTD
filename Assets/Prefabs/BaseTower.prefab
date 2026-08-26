@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.05, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5000001, z: 1.5000001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3306031608630738119}
@@ -4906,7 +4906,7 @@ GameObject:
   - component: {fileID: 1266482616311215232}
   - component: {fileID: 66643094166707236}
   - component: {fileID: 615486733404179337}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5017,7 +5017,7 @@ GameObject:
   - component: {fileID: 3306031608630738119}
   - component: {fileID: 891301291402324248}
   - component: {fileID: 4743521097118198240}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BaseTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5053,7 +5053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba8f2b66e5b6e4a64a00a5403ab5a774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseTower
-  _attackRange: 5
+  _attackRange: 1
   _attackCooldown: 1
   _damage: 1
   _firePoint: {fileID: 7222613264578411400}

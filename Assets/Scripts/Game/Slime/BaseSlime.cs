@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Splines;
 using VContainer;
 
-public class BaseSlime : MonoBehaviour, IPoolable
+public class BaseSlime : MonoBehaviour, IPoolItem
 {
     [SerializeField] protected int _maxHealth = 3;
     [SerializeField] protected float _moveSpeed = 1f;

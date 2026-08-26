@@ -1,21 +1,28 @@
 using System;
+using MessagePipe;
+using VContainer.Unity;
 
-public class GameplayHudPresenter : IDisposable
+public class GameplayHudPresenter : IStartable, IDisposable
 {
     private readonly GameplayHudView _view;
-    private readonly ITowerSpawner _towerSpawner;
+    private readonly IPublisher<TowerSpawnRequestedEvent> _spawnRequestedPublisher;
 
-    public GameplayHudPresenter(GameplayHudView view, ITowerSpawner towerSpawner)
+    public GameplayHudPresenter(
+        GameplayHudView view,
+        IPublisher<TowerSpawnRequestedEvent> spawnRequestedPublisher)
     {
         _view = view;
-        _towerSpawner = towerSpawner;
+        _spawnRequestedPublisher = spawnRequestedPublisher;
+    }
 
+    public void Start()
+    {
         _view.SummonButtonClicked += HandleSummonButtonClicked;
     }
 
     private void HandleSummonButtonClicked()
     {
-        _towerSpawner.TrySpawnRandom();
+        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent());
     }
 
     public void Dispose()

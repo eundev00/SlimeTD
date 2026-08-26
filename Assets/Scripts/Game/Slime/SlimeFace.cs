@@ -3,7 +3,7 @@ using System;
 using UniRx;
 using UnityEngine;
 
-public class SlimeFace : MonoBehaviour, IPoolable
+public class SlimeFace : MonoBehaviour, IPoolItem
 {
     [NotNull][SerializeField] private SkinnedMeshRenderer _renderer;
     [NotNull][SerializeField] private Material _normalFace;

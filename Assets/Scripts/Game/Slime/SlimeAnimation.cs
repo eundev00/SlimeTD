@@ -1,7 +1,7 @@
 using UniRx;
 using UnityEngine;
 
-public class SlimeAnimation : MonoBehaviour, IPoolable
+public class SlimeAnimation : MonoBehaviour, IPoolItem
 {
     private BaseSlime _baseSlime;
     private Animator _animator;

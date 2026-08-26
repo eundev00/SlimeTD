@@ -8,6 +8,8 @@ public class TopHudView : MonoBehaviour
 
     public event Action LobbyButtonClicked;
 
+    public string SceneName => gameObject.scene.name;
+
     private void Start()
     {
         if (_lobbyButton == null)

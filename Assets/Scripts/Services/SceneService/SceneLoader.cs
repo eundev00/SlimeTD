@@ -32,7 +32,10 @@ public class SceneLoader : ISceneLoader
 
         // 미로드 씬에 UnloadSceneAsync를 호출하면 null이 반환된다
         if (!scene.IsValid() || !scene.isLoaded)
+        {
+            Debug.Log($"[SceneLoader] 언로드 대상 씬이 로드되어 있지 않습니다: {sceneName}");
             return;
+        }
 
         await SceneManager.UnloadSceneAsync(scene).ToUniTask();
     }

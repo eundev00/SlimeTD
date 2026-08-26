@@ -290,53 +290,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 295744688}
   m_CullTransparentMesh: 1
---- !u!1 &893510867
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 893510869}
-  - component: {fileID: 893510868}
-  m_Layer: 0
-  m_Name: TowerInputHandler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &893510868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 893510867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0a801506a4aa48ea9cdb9df3813d431, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TowerInputHandler
-  _camera: {fileID: 0}
-  _maxRayDistance: 200
-  _dragThresholdPixels: 16
---- !u!4 &893510869
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 893510867}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1354912052
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,13 +573,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestStage
       objectReference: {fileID: 0}
+    - target: {fileID: 5199654878905615940, guid: f7407204c0b064715b82892160a32dce, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5968070496457514691, guid: f7407204c0b064715b82892160a32dce, type: 3}
       propertyPath: _autoStart
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 5556999501817354383, guid: f7407204c0b064715b82892160a32dce, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7407204c0b064715b82892160a32dce, type: 3}
@@ -1010,8 +966,6 @@ MonoBehaviour:
     TypeName: ProjectLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
-  _gameConfig: {fileID: 11400000, guid: df7e5911d5ed84cc6b7ff665d507c86f, type: 2}
-  _towerSpawnConfig: {fileID: 11400000, guid: 4b7782708908147bcac79c78619f950e, type: 2}
 --- !u!4 &1772568649
 Transform:
   m_ObjectHideFlags: 0
@@ -1163,4 +1117,3 @@ SceneRoots:
   - {fileID: 1772568649}
   - {fileID: 1435000812}
   - {fileID: 1396322648}
-  - {fileID: 893510869}

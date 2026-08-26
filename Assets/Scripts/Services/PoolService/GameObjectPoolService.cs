@@ -107,19 +107,19 @@ namespace Services.PoolService
         {
             instance.SetActive(true);
 
-            var poolables = instance.GetComponents<IPoolable>();
-            foreach (var poolable in poolables)
+            var poolItems = instance.GetComponents<IPoolItem>();
+            foreach (var poolItem in poolItems)
             {
-                poolable.OnGetFromPool();
+                poolItem.OnGetFromPool();
             }
         }
 
         private void OnReleaseInstance(GameObject instance)
         {
-            var poolables = instance.GetComponents<IPoolable>();
-            foreach (var poolable in poolables)
+            var poolItems = instance.GetComponents<IPoolItem>();
+            foreach (var poolItem in poolItems)
             {
-                poolable.OnReturnToPool();
+                poolItem.OnReturnToPool();
             }
 
             instance.SetActive(false);

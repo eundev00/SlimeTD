@@ -3,7 +3,7 @@ using Services.UpdateService;
 using UnityEngine;
 using VContainer;
 
-public class Projectile : MonoBehaviour, IUpdatable, IPoolable
+public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
 {
     [SerializeField] private float _speed = 15f;
     [SerializeField] private float _lifetime = 3f;
