@@ -65,16 +65,17 @@ public class GameplayService : IGameplayService
     {
         switch (e.EventType)
         {
+            // 웨이브가 겹치므로 덮어쓰면 이전 웨이브 생존분이 카운터에서 사라진다.
             case GameProgressType.WaveStarted:
                 _currentWaveIndex = e.WaveIndex;
-                _aliveCount = e.SlimeCount;
-                _spawnFinished = false;
-                Debug.Log($"[GameplayService] 웨이브 {_currentWaveIndex} 시작, 예상 슬라임: {_aliveCount}");
+                _aliveCount += e.SlimeCount;
+                Debug.Log($"[GameplayService] 웨이브 {_currentWaveIndex} 시작, 누적 슬라임: {_aliveCount}");
                 break;
 
             case GameProgressType.WaveSpawnFinished:
-                _spawnFinished = true;
-                Debug.Log($"[GameplayService] 웨이브 {_currentWaveIndex} 스폰 완료, 남은 슬라임: {_aliveCount}");
+                if (e.IsLastWave)
+                    _spawnFinished = true;
+                Debug.Log($"[GameplayService] 웨이브 {e.WaveIndex} 스폰 완료, 남은 슬라임: {_aliveCount}");
                 CheckWaveCleared();
                 break;
         }

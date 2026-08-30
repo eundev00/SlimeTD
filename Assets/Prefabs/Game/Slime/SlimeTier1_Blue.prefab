@@ -71,11 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cafa8867af1f4772806c795bd687a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseSlime
-  _maxHealth: 3
-  _moveSpeed: 1
   _dieAnimationDuration: 1
-  _lifeCost: 1
-  _goldReward: 1
 --- !u!114 &9215837291409383890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,9 +97,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlimeFace
   _renderer: {fileID: 4132043665068717296}
-  _normalFace: {fileID: 2100000, guid: 557be4515c482fc429d356ef77d6851a, type: 2}
-  _damagedFace: {fileID: 2100000, guid: be37fb2a84ddb88439a5bf3d35e5661c, type: 2}
-  _deadFace: {fileID: 2100000, guid: 6a193c4b0f83b5e48a5515ba764ef9a8, type: 2}
+  _normalFace: {fileID: 2100000, guid: de3f4134e6b944ba592012eb4b06112c, type: 2}
+  _damagedFace: {fileID: 2100000, guid: 6ca377501d617455782ed5c16036a370, type: 2}
+  _deadFace: {fileID: 2100000, guid: b69e3d99b5bae4ee6b64f8953d6d5b27, type: 2}
   _damagedFaceDuration: 0.3
 --- !u!1001 &5290205005513388863
 PrefabInstance:
@@ -126,20 +122,24 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4174877357465981652, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -7872843255129959453, guid: f58054181156e6249ad82cda35ad06e6, type: 3}
+    - target: {fileID: 4174877357465981652, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 27bf585b7eb145a4786c9fe7dc6857ac, type: 2}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -201,6 +201,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8087729075525552079, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f84d8c2b6f6364ce09db5a840752750d, type: 2}
     - target: {fileID: 8343649804519354289, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       propertyPath: m_Layer
       value: 6

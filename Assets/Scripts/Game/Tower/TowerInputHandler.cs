@@ -10,6 +10,7 @@ public class TowerInputHandler : MonoBehaviour
 
     private Camera _camera;
     private TowerCells _towerCells;
+    private IGroundHeightSampler _groundHeightSampler;
 
     private InputAction _pressAction;
     private InputAction _pointerPositionAction;
@@ -24,7 +25,7 @@ public class TowerInputHandler : MonoBehaviour
     private Vector2Int _dragOriginCell;
     private Vector2Int _dragTargetCell;
 
-    public void Initialize(TowerCells towerCells)
+    public void Initialize(TowerCells towerCells, IGroundHeightSampler groundHeightSampler)
     {
         if (towerCells == null)
         {
@@ -40,6 +41,7 @@ public class TowerInputHandler : MonoBehaviour
 
         _towerCells = towerCells;
         _gridMapData = towerCells.GridMapData;
+        _groundHeightSampler = groundHeightSampler;
     }
 
     private void Awake()
@@ -190,15 +192,20 @@ public class TowerInputHandler : MonoBehaviour
         {
             _dragTargetCell = new Vector2Int(x, y);
             _lastDragValid = IsPlaceable(x, y);
-            _lastSnappedPosition = GridUtility.GridToWorld(x, y, _gridMapData);
+            _lastSnappedPosition = SnapToGround(GridUtility.GridToWorld(x, y, _gridMapData));
         }
         else
         {
             _lastDragValid = false;
-            _lastSnappedPosition = ray.GetPoint(distance);
+            _lastSnappedPosition = SnapToGround(ray.GetPoint(distance));
         }
 
         _selected.UpdateDragPosition(_lastSnappedPosition, _lastDragValid);
+    }
+
+    private Vector3 SnapToGround(Vector3 position)
+    {
+        return _groundHeightSampler != null ? _groundHeightSampler.SnapToGround(position) : position;
     }
 
     private bool IsPlaceable(int x, int y)

@@ -3,9 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SpawnEntry_00", menuName = "SlimeTD/Spawn Entry")]
 public class SpawnEntry : ScriptableObject
 {
-    [SerializeField] private GameObject[] _slimePrefabs;
+    [SerializeField] private SlimeData[] _slimeDatas;
     [SerializeField] private float _spawnInterval = 1f;
 
-    public GameObject[] SlimePrefabs => _slimePrefabs;
+    public SlimeData[] SlimeDatas => _slimeDatas;
     public float SpawnInterval => _spawnInterval;
 }

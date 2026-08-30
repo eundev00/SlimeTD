@@ -14,6 +14,7 @@ public class Zone : MonoBehaviour
 
     private IObjectResolver _resolver;
     private IResourceLoadService _resourceLoadService;
+    private IGroundHeightSampler _groundHeightSampler;
     private ISubscriber<TowerSpawnRequestedEvent> _spawnRequestedSubscriber;
 
     private TowerCells _towerCells;
@@ -23,10 +24,12 @@ public class Zone : MonoBehaviour
     public void Construct(
         IObjectResolver resolver,
         IResourceLoadService resourceLoadService,
+        IGroundHeightSampler groundHeightSampler,
         ISubscriber<TowerSpawnRequestedEvent> spawnRequestedSubscriber)
     {
         _resolver = resolver;
         _resourceLoadService = resourceLoadService;
+        _groundHeightSampler = groundHeightSampler;
         _spawnRequestedSubscriber = spawnRequestedSubscriber;
     }
 
@@ -67,7 +70,7 @@ public class Zone : MonoBehaviour
 
         if (_towerInputHandler != null)
         {
-            _towerInputHandler.Initialize(_towerCells);
+            _towerInputHandler.Initialize(_towerCells, _groundHeightSampler);
         }
 
         if (_waveSpawner != null)

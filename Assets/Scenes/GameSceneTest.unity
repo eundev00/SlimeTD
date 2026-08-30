@@ -581,6 +581,10 @@ PrefabInstance:
       propertyPath: _autoStart
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6940580114569879007, guid: f7407204c0b064715b82892160a32dce, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -7,16 +7,21 @@ public class TowerSpawner : MonoBehaviour
 
     private IObjectResolver _resolver;
     private IGameplayService _gameplayService;
+    private IGroundHeightSampler _groundHeightSampler;
     private TowerCells _towerCells;
 
     private Transform _spawnRoot;
     private Transform _holder;
 
     [Inject]
-    public void Construct(IObjectResolver resolver, IGameplayService gameplayService)
+    public void Construct(
+        IObjectResolver resolver,
+        IGameplayService gameplayService,
+        IGroundHeightSampler groundHeightSampler)
     {
         _resolver = resolver;
         _gameplayService = gameplayService;
+        _groundHeightSampler = groundHeightSampler;
     }
 
     public void Initialize(TowerCells towerCells, TowerSpawnConfig config, Transform spawnRoot)
@@ -68,6 +73,8 @@ public class TowerSpawner : MonoBehaviour
         }
 
         var position = GridUtility.GridToWorld(cell.x, cell.y, gridMapData);
+        position = _groundHeightSampler.SnapToGround(position);
+
         var tower = CreateTower(position);
 
         var handler = tower.GetComponent<ITowerInteractionHandler>();

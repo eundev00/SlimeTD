@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -10,6 +11,20 @@ using VContainer;
 
 public class WaveSpawner : MonoBehaviour
 {
+    private readonly struct SpawnPlan
+    {
+        public readonly SlimeData SlimeData;
+        public readonly int Health;
+        public readonly float SpawnInterval;
+
+        public SpawnPlan(SlimeData slimeData, int health, float spawnInterval)
+        {
+            SlimeData = slimeData;
+            Health = health;
+            SpawnInterval = spawnInterval;
+        }
+    }
+
     [NotNull][SerializeField] private SplineContainer _splineContainer;
     [SerializeField] private bool _autoStart = true;
 
@@ -22,6 +37,7 @@ public class WaveSpawner : MonoBehaviour
     private CompositeDisposable _disposables;
     private CancellationTokenSource _spawnCts;
     private bool _waveClearedReceived;
+    private bool _gameOver;
 
     [Inject]
     public void Construct(
@@ -51,11 +67,14 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
-        if (_waveTable == null || _waveTable.Waves == null || _waveTable.Waves.Length == 0)
+        if (_waveTable == null || _waveTable.MaxWave <= 0)
         {
-            Debug.Log("[WaveSpawner] _waveTable이 비어 있습니다.", this);
+            Debug.Log("[WaveSpawner] _waveTable이 비어 있거나 MaxWave가 0 이하입니다.", this);
             return;
         }
+
+        _gameOver = false;
+        _waveClearedReceived = false;
 
         _disposables = new CompositeDisposable();
         _gameProgressSubscriber.Subscribe(evt =>
@@ -84,40 +103,122 @@ public class WaveSpawner : MonoBehaviour
         _spawnCts = null;
     }
 
-    private void PreparePools()
+    private List<SpawnPlan> ResolveWave(int waveIndex)
     {
-        // 전체 웨이브에서 각 프리팹별로 총 몇 개가 필요한지 카운트
-        var prefabCounts = new Dictionary<GameObject, int>();
+        var plans = new List<SpawnPlan>();
 
-        foreach (var wave in _waveTable.Waves)
+        if (_waveTable.ManualWave != null)
         {
-            if (wave?.SpawnEntries == null)
-                continue;
-
-            foreach (var entry in wave.SpawnEntries)
+            foreach (var entry in _waveTable.ManualWave)
             {
-                if (entry?.SlimePrefabs == null)
+                if (entry == null || entry.WaveIndex != waveIndex)
                     continue;
 
-                foreach (var prefab in entry.SlimePrefabs)
-                {
-                    if (prefab == null)
-                        continue;
-
-                    if (!prefabCounts.ContainsKey(prefab))
-                        prefabCounts[prefab] = 0;
-
-                    prefabCounts[prefab]++;
-                }
+                AddPlans(plans, entry, 1f, 1f, 0);
             }
         }
 
-        // 카운트 기반으로 풀 생성
+        if (plans.Count == 0 && _waveTable.AutoWave != null && _waveTable.AutoWave.Length > 0)
+        {
+            float countMultiplier = waveIndex * _waveTable.CountRate;
+            float healthMultiplier = 1f + waveIndex * _waveTable.HealthRate;
+
+            var entry = _waveTable.AutoWave[UnityEngine.Random.Range(0, _waveTable.AutoWave.Length)];
+            AddPlans(plans, entry, countMultiplier, healthMultiplier, _waveTable.MaxSlimeCount);
+        }
+
+        if (_waveTable.BossWave != null)
+        {
+            foreach (var entry in _waveTable.BossWave)
+            {
+                if (entry == null || entry.WaveIndex != waveIndex)
+                    continue;
+
+                if (entry.WaveIndex > _waveTable.MaxWave)
+                    continue;
+
+                AddPlans(plans, entry, 1f, 1f, 0);
+            }
+        }
+
+        return plans;
+    }
+
+    private static void AddPlans(List<SpawnPlan> plans, SpawnEntry entry, float countMultiplier, float healthMultiplier, int maxCount)
+    {
+        if (entry == null || entry.SlimeDatas == null || entry.SlimeDatas.Length == 0)
+            return;
+
+        int baseCount = entry.SlimeDatas.Length;
+        int totalCount = Mathf.Max(1, Mathf.RoundToInt(baseCount * countMultiplier));
+
+        if (maxCount > 0)
+            totalCount = Mathf.Min(totalCount, maxCount);
+
+        for (int i = 0; i < totalCount; i++)
+        {
+            var slimeData = entry.SlimeDatas[i % baseCount];
+            if (slimeData == null)
+                continue;
+
+            int health = Mathf.Max(1, Mathf.RoundToInt(slimeData.BaseHealth * healthMultiplier));
+            plans.Add(new SpawnPlan(slimeData, health, entry.SpawnInterval));
+        }
+    }
+
+    // TODO: 웨이브가 겹쳐 스폰되므로 동시 생존 수 기준으로 풀 크기를 재산정할 것
+    private void PreparePools()
+    {
+        var prefabCounts = new Dictionary<GameObject, int>();
+
+        for (int waveIndex = 1; waveIndex <= _waveTable.MaxWave; waveIndex++)
+        {
+            var plans = new List<SpawnPlan>();
+
+            if (_waveTable.ManualWave != null)
+            {
+                foreach (var entry in _waveTable.ManualWave)
+                {
+                    if (entry != null && entry.WaveIndex == waveIndex)
+                        AddPlans(plans, entry, 1f, 1f, 0);
+                }
+            }
+
+            if (plans.Count == 0 && _waveTable.AutoWave != null)
+            {
+                float countMultiplier = waveIndex * _waveTable.CountRate;
+
+                foreach (var entry in _waveTable.AutoWave)
+                {
+                    AddPlans(plans, entry, countMultiplier, 1f, _waveTable.MaxSlimeCount);
+                }
+            }
+
+            if (_waveTable.BossWave != null)
+            {
+                foreach (var entry in _waveTable.BossWave)
+                {
+                    if (entry != null && entry.WaveIndex == waveIndex && entry.WaveIndex <= _waveTable.MaxWave)
+                        AddPlans(plans, entry, 1f, 1f, 0);
+                }
+            }
+
+            foreach (var plan in plans)
+            {
+                var prefab = plan.SlimeData.Prefab;
+                if (prefab == null)
+                    continue;
+
+                prefabCounts.TryGetValue(prefab, out int current);
+                prefabCounts[prefab] = current + 1;
+            }
+        }
+
         foreach (var kvp in prefabCounts)
         {
             int totalCount = kvp.Value;
-            int initialSize = Mathf.Max(totalCount, 10); // 최소 10개
-            int maxSize = Mathf.CeilToInt(totalCount * 2f); // 여유분 2배
+            int initialSize = Mathf.Max(totalCount, 10);
+            int maxSize = Mathf.CeilToInt(totalCount * 2f);
 
             _poolService.CreatePool(kvp.Key, initialSize, maxSize);
             Debug.Log($"[WaveSpawner] 풀 생성: {kvp.Key.name}, 초기={initialSize}, 최대={maxSize}");
@@ -130,76 +231,85 @@ public class WaveSpawner : MonoBehaviour
 
         try
         {
-            foreach (var wave in _waveTable.Waves)
+            for (int waveIndex = 1; waveIndex <= _waveTable.MaxWave; waveIndex++)
             {
-                if (wave == null)
-                    continue;
-
-                await RunWaveAsync(wave, token);
+                await RunWaveAsync(waveIndex, token);
             }
+
+            if (_gameOver)
+                return;
+
+            _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.StageCleared, _waveTable.MaxWave));
+            Debug.Log("[WaveSpawner] 스테이지 클리어");
         }
-        catch (System.OperationCanceledException)
+        catch (OperationCanceledException)
         {
             // 게임오버 또는 파괴로 스폰 루프 취소 시 정상 종료.
         }
     }
 
-    private async UniTask RunWaveAsync(WaveData wave, System.Threading.CancellationToken token)
+    private async UniTask RunWaveAsync(int waveIndex, CancellationToken token)
     {
-        // 총 슬라임 개수 계산
-        int totalSlimeCount = CalculateTotalSlimeCount(wave);
+        var plans = ResolveWave(waveIndex);
+        if (plans.Count == 0)
+        {
+            Debug.Log($"[WaveSpawner] 웨이브 {waveIndex} 스폰 목록이 비어 건너뜁니다.", this);
+            return;
+        }
+
+        float startDelay = plans[0].SpawnInterval;
+        if (startDelay > 0f)
+            await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: token);
+
+        bool isLastWave = waveIndex == _waveTable.MaxWave;
+        int totalSlimeCount = plans.Count;
 
         _waveClearedReceived = false;
-        _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.WaveStarted, wave.WaveIndex, totalSlimeCount));
-        Debug.Log($"[WaveSpawner] 웨이브 {wave.WaveIndex} 시작");
+        _gameProgressPublisher.Publish(
+            new GameProgressEvent(GameProgressType.WaveStarted, waveIndex, totalSlimeCount, isLastWave));
+        Debug.Log($"[WaveSpawner] 웨이브 {waveIndex} 시작, 슬라임 {totalSlimeCount}마리 [{DescribePlans(plans)}]");
 
-        if (wave.StartDelay > 0f)
-            await UniTask.Delay(System.TimeSpan.FromSeconds(wave.StartDelay), cancellationToken: token);
-
-        // 스폰 실행
-        if (wave.SpawnEntries != null)
+        foreach (var plan in plans)
         {
-            foreach (var entry in wave.SpawnEntries)
-            {
-                if (entry?.SlimePrefabs == null)
-                    continue;
+            SpawnOne(plan.SlimeData, plan.Health);
 
-                foreach (var prefab in entry.SlimePrefabs)
-                {
-                    if (prefab == null)
-                        continue;
-
-                    SpawnOne(prefab);
-
-                    if (entry.SpawnInterval > 0f)
-                        await UniTask.Delay(System.TimeSpan.FromSeconds(entry.SpawnInterval), cancellationToken: token);
-                }
-            }
+            if (plan.SpawnInterval > 0f)
+                await UniTask.Delay(TimeSpan.FromSeconds(plan.SpawnInterval), cancellationToken: token);
         }
 
-        _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.WaveSpawnFinished, wave.WaveIndex));
-        Debug.Log($"[WaveSpawner] 웨이브 {wave.WaveIndex} 스폰 완료");
+        _gameProgressPublisher.Publish(
+            new GameProgressEvent(GameProgressType.WaveSpawnFinished, waveIndex, totalSlimeCount, isLastWave));
+        Debug.Log($"[WaveSpawner] 웨이브 {waveIndex} 스폰 완료");
 
-        // WaveCleared 대기
-        await UniTask.WaitUntil(() => _waveClearedReceived, cancellationToken: token);
+        // 일반 웨이브는 스폰이 끝나면 곧바로 다음 웨이브로 넘어간다. 슬라임 전멸을 기다리는 건
+        // 마지막 웨이브뿐이며, 이 대기가 곧 스테이지 클리어 판정이다.
+        if (isLastWave)
+            await UniTask.WaitUntil(() => _waveClearedReceived, cancellationToken: token);
     }
 
-    private int CalculateTotalSlimeCount(WaveData wave)
+    private static string DescribePlans(List<SpawnPlan> plans)
     {
-        int count = 0;
-        if (wave.SpawnEntries != null)
+        var builder = new System.Text.StringBuilder();
+        foreach (var plan in plans)
         {
-            foreach (var entry in wave.SpawnEntries)
-            {
-                if (entry?.SlimePrefabs != null)
-                    count += entry.SlimePrefabs.Length;
-            }
+            if (builder.Length > 0)
+                builder.Append(", ");
+
+            builder.Append(plan.SlimeData.name).Append("(hp").Append(plan.Health).Append(')');
         }
-        return count;
+
+        return builder.ToString();
     }
 
-    private void SpawnOne(GameObject prefab)
+    private void SpawnOne(SlimeData slimeData, int health)
     {
+        var prefab = slimeData.Prefab;
+        if (prefab == null)
+        {
+            Debug.Log($"[WaveSpawner] {slimeData.name}에 프리팹이 연결되지 않았습니다.", this);
+            return;
+        }
+
         var obj = _poolService.Get(prefab);
         if (obj == null)
             return;
@@ -214,11 +324,12 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
-        slime.Initialize(_splineContainer);
+        slime.Initialize(_splineContainer, slimeData, health);
     }
 
     private void OnGameOver()
     {
+        _gameOver = true;
         _spawnCts?.Cancel();
     }
 }

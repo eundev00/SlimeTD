@@ -10,6 +10,7 @@ public class GameLifetimeScope : LifetimeScope
                .As<IGameObjectPoolService>();
 
         builder.Register<GameplayService>(Lifetime.Scoped).As<IGameplayService>();
+        builder.Register<GroundHeightSampler>(Lifetime.Scoped).As<IGroundHeightSampler>();
         builder.RegisterEntryPoint<GameInitiator>();
 
         builder.RegisterComponentInHierarchy<Zone>();

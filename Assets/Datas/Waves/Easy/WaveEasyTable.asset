@@ -12,7 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb451acd4df24b7b8cca6503a100199, type: 3}
   m_Name: WaveEasyTable
   m_EditorClassIdentifier: Assembly-CSharp::WaveTableData
-  _waves:
-  - {fileID: 11400000, guid: d42cc6f0cb7744bb0a3cc014c0042ea3, type: 2}
-  - {fileID: 11400000, guid: 513b67f5727d0449d8bee4f31817d5de, type: 2}
-  - {fileID: 11400000, guid: 1c1bd10346b574cd1b1f75dd9ad44487, type: 2}
+  _maxWave: 10
+  _manualWave:
+  - {fileID: 11400000, guid: 2b00000000000000000000000000000a, type: 2}
+  - {fileID: 11400000, guid: 5a691ae1e204645d8a6a44ffcaa4c0ad, type: 2}
+  - {fileID: 11400000, guid: 2b00000000000000000000000000000c, type: 2}
+  - {fileID: 11400000, guid: 2b00000000000000000000000000000b, type: 2}
+  - {fileID: 11400000, guid: 697c50decf3a848d3864c78f71bcab07, type: 2}
+  - {fileID: 11400000, guid: 14f7f2362de154151939b5c8df3a7ad7, type: 2}
+  - {fileID: 11400000, guid: dda15dd54186d4c3e918e476269d0615, type: 2}
+  - {fileID: 11400000, guid: 1745a3ced7d64415baa84cb562c2dcb3, type: 2}
+  - {fileID: 11400000, guid: 590a51770b2c34ed2b49c1274d18b375, type: 2}
+  - {fileID: 11400000, guid: 08dc792b679744609bd7a40646111f45, type: 2}
+  _bossWave:
+  - {fileID: 11400000, guid: 2b000000000000000000000000000010, type: 2}
+  - {fileID: 11400000, guid: 4ed505e0bb84b4fa2a604d7ca03dae6a, type: 2}
+  _autoWave:
+  - {fileID: 11400000, guid: 3c00000000000000000000000000000a, type: 2}
+  - {fileID: 11400000, guid: 3c00000000000000000000000000000b, type: 2}
+  _countRate: 0.1
+  _healthRate: 0.15
+  _maxSlimeCount: 30
