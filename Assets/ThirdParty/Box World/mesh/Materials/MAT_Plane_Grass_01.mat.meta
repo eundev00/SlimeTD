@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 597710b49ea0fa34fac285fe6349e685
+timeCreated: 1445591993
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 48957
+  packageName: Box World Environments PACK
+  packageVersion: 1.0
+  assetPath: Assets/mesh/Materials/MAT_Plane_Grass_01.mat
+  uploadId: 87674

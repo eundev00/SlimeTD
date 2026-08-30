@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: f7898d203e9b94c0dbe2bf9dd5cb32c0
+ShaderImporter:
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 48957
+  packageName: Box World Environments PACK
+  packageVersion: 1.0
+  assetPath: Assets/Standard Assets/Effects/ImageEffects/Shaders/_BloomAndFlares/BlendOneOne.shader
+  uploadId: 87674

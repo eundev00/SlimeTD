@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 9f6b777d7e1e77b4eb2c9e4c2dc4b1ce
+labels:
+- BOXWorld_EnvironmentsPACK
+timeCreated: 1445951263
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 48957
+  packageName: Box World Environments PACK
+  packageVersion: 1.0
+  assetPath: Assets/Mesh_Prefab/Foliage/FOL_Leaf_04.prefab
+  uploadId: 87674

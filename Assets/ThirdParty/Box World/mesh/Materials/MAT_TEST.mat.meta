@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 881bd2d70cdba314188c0947915aac50
+timeCreated: 1446028744
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 48957
+  packageName: Box World Environments PACK
+  packageVersion: 1.0
+  assetPath: Assets/mesh/Materials/MAT_TEST.mat
+  uploadId: 87674

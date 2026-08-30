@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e33f3d9eaf606f149a643da4f9d4e1cf
+timeCreated: 1445602300
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 48957
+  packageName: Box World Environments PACK
+  packageVersion: 1.0
+  assetPath: Assets/Mesh_Prefab/Prop/OBJ_Streetlight_01.prefab
+  uploadId: 87674

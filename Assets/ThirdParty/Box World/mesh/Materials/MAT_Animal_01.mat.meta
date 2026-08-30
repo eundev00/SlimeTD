@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 38ac006bd9608de42ab9d9f85d8e8293
+timeCreated: 1445605855
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 48957
+  packageName: Box World Environments PACK
+  packageVersion: 1.0
+  assetPath: Assets/mesh/Materials/MAT_Animal_01.mat
+  uploadId: 87674

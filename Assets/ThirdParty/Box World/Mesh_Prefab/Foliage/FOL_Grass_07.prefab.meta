@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 5f13e3248c045ea4687ce7af097f24f4
+labels:
+- BOXWorld_EnvironmentsPACK
+timeCreated: 1445655210
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 48957
+  packageName: Box World Environments PACK
+  packageVersion: 1.0
+  assetPath: Assets/Mesh_Prefab/Foliage/FOL_Grass_07.prefab
+  uploadId: 87674
