@@ -110,7 +110,26 @@ public class TowerSpawner : MonoBehaviour
 
         instance.transform.SetParent(_spawnRoot, false);
         instance.transform.position = position;
-        instance.transform.rotation = Quaternion.identity;
+
+        // 카메라를 바라보도록 회전 (Y축만 회전)
+        var mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            var directionToCamera = mainCamera.transform.position - position;
+            directionToCamera.y = 0; // 수평 방향만 계산
+            if (directionToCamera.sqrMagnitude > 0.001f)
+            {
+                instance.transform.rotation = Quaternion.LookRotation(directionToCamera);
+            }
+            else
+            {
+                instance.transform.rotation = Quaternion.identity;
+            }
+        }
+        else
+        {
+            instance.transform.rotation = Quaternion.identity;
+        }
 
         var tower = instance.GetComponent<BaseTower>();
         if (tower != null)

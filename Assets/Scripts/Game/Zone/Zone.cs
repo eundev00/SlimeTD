@@ -79,6 +79,7 @@ public class Zone : MonoBehaviour
             _waveSpawner.Initialize(waveTable, _spawnRoot);
         }
 
+        _disposables?.Dispose();
         _disposables = new CompositeDisposable();
         _spawnRequestedSubscriber.Subscribe(_ => OnTowerSpawnRequested()).AddTo(_disposables);
     }

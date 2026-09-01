@@ -6,7 +6,6 @@ public class TowerAnimator : MonoBehaviour
     private readonly Dictionary<string, int> _stateHashes = new Dictionary<string, int>();
 
     private Animator _animator;
-    private string _idleState;
 
     private void Awake()
     {
@@ -15,12 +14,6 @@ public class TowerAnimator : MonoBehaviour
         {
             Debug.Log("[TowerAnimator] Animator 컴포넌트가 없습니다.", this);
         }
-    }
-
-    public void Initialize(string idleState)
-    {
-        _idleState = idleState;
-        PlayIdle();
     }
 
     public void Play(string state)
@@ -39,6 +32,11 @@ public class TowerAnimator : MonoBehaviour
 
     public void PlayIdle()
     {
-        Play(_idleState);
+        Play("Idle");
+    }
+
+    public void PlaySpawn()
+    {
+        Play("Spawn");
     }
 }

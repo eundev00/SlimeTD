@@ -15,8 +15,20 @@ public class GameplayHudView : MonoBehaviour
             Debug.Log("[GameplayHudView] _summonButton이 연결되지 않았습니다.", this);
             return;
         }
+        _summonButton.onClick.AddListener(OnSummonButtonClicked);
+    }
 
-        _summonButton.onClick.AddListener(() => SummonButtonClicked?.Invoke());
+    private void OnDestroy()
+    {
+        if (_summonButton != null)
+        {
+            _summonButton.onClick.RemoveListener(OnSummonButtonClicked);
+        }
+    }
+
+    private void OnSummonButtonClicked()
+    {
+        SummonButtonClicked?.Invoke();
     }
 
     public void SetSummonButtonInteractable(bool interactable)

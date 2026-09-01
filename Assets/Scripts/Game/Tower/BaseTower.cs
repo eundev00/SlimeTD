@@ -87,7 +87,9 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         _stats.Initialize(data);
 
         if (_animator != null)
-            _animator.Initialize(data.IdleState);
+        {
+            _animator.PlaySpawn();
+        }
     }
 
     private void Start()
@@ -250,6 +252,11 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
         _dragged = true;
         ApplyAttackActive();
+
+        if (_rangeIndicator != null)
+        {
+            _rangeIndicator.Show();
+        }
     }
 
     public void UpdateDragPosition(Vector3 worldPosition, bool isValid)

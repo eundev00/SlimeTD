@@ -145,14 +145,18 @@ public class TowerInputHandler : MonoBehaviour
         if (EventSystem.current == null)
             return false;
 
-        // 터치는 pointerId를 넘겨야 판정된다. 인자 없는 호출은 마우스만 본다.
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
-        {
-            int touchId = Touchscreen.current.primaryTouch.touchId.ReadValue();
-            return EventSystem.current.IsPointerOverGameObject(touchId);
-        }
+        var pointer = Pointer.current;
+        if (pointer == null)
+            return false;
 
-        return EventSystem.current.IsPointerOverGameObject();
+        var pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = pointer.position.ReadValue()
+        };
+
+        var results = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        return results.Count > 0;
     }
 
     private void OnPointerMoved(InputAction.CallbackContext context)

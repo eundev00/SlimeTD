@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: TowerData_Archer
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _prefab: {fileID: 751951308249362410, guid: b79adc6af80e9436f971d0e3a3776459, type: 3}
-  _idleState: Idle
   _attackRange: 2
   _basicAttack: {fileID: 11400000, guid: a11db0930c428493d821144d8455395e, type: 2}
