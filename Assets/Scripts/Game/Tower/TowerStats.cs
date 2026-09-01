@@ -1,13 +1,20 @@
-public class TowerStats
-{
-    public float AttackRange { get; }
-    public float AttackCooldown { get; }
-    public int Damage { get; }
+using System;
+using UniRx;
 
-    public TowerStats(float attackRange, float attackCooldown, int damage)
+public class TowerStats : IDisposable
+{
+    private readonly ReactiveProperty<float> _attackRange = new ReactiveProperty<float>();
+
+    public IReadOnlyReactiveProperty<float> AttackRange => _attackRange;
+
+    // TowerRangeIndicator가 _attackRange를 구독하므로 인스턴스를 교체하면 구독이 끊긴다.
+    public void Initialize(TowerData data)
     {
-        AttackRange = attackRange;
-        AttackCooldown = attackCooldown;
-        Damage = damage;
+        _attackRange.Value = data.AttackRange;
+    }
+
+    public void Dispose()
+    {
+        _attackRange?.Dispose();
     }
 }

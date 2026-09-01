@@ -1,28 +1,33 @@
+using Cysharp.Threading.Tasks;
 using MessagePipe;
 using Services.PoolService;
 using Services.UpdateService;
+using System;
+using System.Threading;
 using UniRx;
 using UnityEngine;
 using VContainer;
 
-public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHandler
+public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHandler, ITowerContext
 {
-    [SerializeField] private float _attackRange = 5f;
-    [SerializeField] private float _attackCooldown = 1f;
-    [SerializeField] private int _damage = 1;
-    [SerializeField] private Transform _firePoint;
-    [NotNull][SerializeField] private GameObject _projectilePrefab;
+    private const float TickInterval = 0.1f;
+
     [NotNull][SerializeField] private TowerRangeIndicator _rangeIndicator;
+    [NotNull][SerializeField] private TowerAnimator _animator;
     [NotNull][SerializeField] private Transform _towerBody;
     [SerializeField] private float _liftHeight = 0.35f;
 
+    private TowerData _data;
     private TowerStats _stats;
+    private ITargetFinder _targetFinder;
+    private IAttackBehaviour _attack;
     private IUpdateSubscriptionService _updateService;
     private IGameObjectPoolService _poolService;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
-    private LayerMask _slimeLayer;
 
     private CompositeDisposable _disposables;
+    private CancellationTokenSource _attackCancellation;
+    private bool _isAttacking;
 
     // 게임오버는 비가역, 드래그는 가역이라 한 플래그로 겸하면 게임오버 후 드래그로 공격이 되살아난다.
     private bool _gameOver;
@@ -35,9 +40,12 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
     private Vector3 _originPosition;
     private Vector3 _towerBodyLocalPosition;
 
-    private readonly Collider[] _hitBuffer = new Collider[32];
-
     public TowerStats Stats => _stats;
+
+    Transform ITowerContext.Transform => transform;
+    IGameObjectPoolService ITowerContext.Pool => _poolService;
+    // 인터페이스로 넘어간 뒤에는 Unity fake-null을 못 걸러내므로 여기서 진짜 null로 정규화한다.
+    TowerAnimator ITowerContext.Animator => _animator != null ? _animator : null;
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
     public IReadOnlyReactiveProperty<bool> IsDragging => _isDragging;
@@ -56,21 +64,30 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
     private void Awake()
     {
-        _slimeLayer = LayerMask.GetMask(GameTags.SlimeLayer);
-        _stats = new TowerStats(_attackRange, _attackCooldown, _damage);
+        _targetFinder = new ClosestTargetFinder();
+        _stats = new TowerStats();
+        _disposables = new CompositeDisposable();
 
-        ApplyRangeToIndicator();
+        _stats.AttackRange
+            .Subscribe(range =>
+            {
+                if (_rangeIndicator != null)
+                    _rangeIndicator.UpdateRangeVisual(range);
+            })
+            .AddTo(_disposables);
     }
 
-    private void ApplyRangeToIndicator()
+    // TowerSpawner가 Awake 직후 Start 이전에 호출한다. Start에서 데이터를 쓰려면 이 순서가 지켜져야 한다.
+    public void Initialize(TowerData data)
     {
-        if (_rangeIndicator == null)
-        {
-            Debug.LogWarning("[BaseTower] _rangeIndicator가 연결되지 않아 범위 표시를 갱신할 수 없습니다.", this);
+        if (data == null)
             return;
-        }
 
-        _rangeIndicator.UpdateRangeVisual(_stats.AttackRange);
+        _data = data;
+        _stats.Initialize(data);
+
+        if (_animator != null)
+            _animator.Initialize(data.IdleState);
     }
 
     private void Start()
@@ -82,21 +99,24 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
         ApplySelection();
 
-        if (_firePoint == null)
+        if (_data == null)
         {
-            Debug.LogWarning("[BaseTower] _firePoint가 연결되지 않았습니다. 타워 위치에서 발사합니다.", this);
-        }
-
-        if (_projectilePrefab == null)
-        {
-            Debug.Log("[BaseTower] _projectilePrefab이 연결되지 않았습니다.", this);
+            Debug.Log("[BaseTower] TowerData가 없습니다.", this);
             return;
         }
 
-        _poolService.CreatePool(_projectilePrefab, 10, 50);
+        if (_data.BasicAttack == null)
+        {
+            Debug.Log("[BaseTower] TowerData에 기본 공격이 없습니다.", this);
+            return;
+        }
+
+        _attackCancellation = new CancellationTokenSource();
+        _attack = _data.BasicAttack.CreateBehaviour();
+        _attack.Initialize(this);
+
         ApplyAttackActive();
 
-        _disposables = new CompositeDisposable();
         _gameProgressSubscriber.Subscribe(evt =>
         {
             if (evt.EventType == GameProgressType.GameOver)
@@ -107,8 +127,19 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
     private void OnDestroy()
     {
         StopAttacking();
+
+        // 진행 중인 공격을 먼저 끊어야 부품이 파괴된 뒤에 이어지지 않는다.
+        _attackCancellation?.Cancel();
+        _attackCancellation?.Dispose();
+        _attackCancellation = null;
+
+        _attack?.Dispose();
+        _attack = null;
+
         _disposables?.Dispose();
         _disposables = null;
+
+        _stats?.Dispose();
 
         _isSelected.Dispose();
         _isDragging.Dispose();
@@ -118,8 +149,10 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
     {
         _gameOver = true;
         ApplyAttackActive();
+        _attackCancellation?.Cancel();
     }
 
+    // RegisterPeriodicUpdatable은 interval을 등록 시점에 고정한다. 쿨다운은 능력이 자체 타이머로 관리한다.
     private void ApplyAttackActive()
     {
         bool shouldAttack = !_gameOver && !_dragged;
@@ -128,7 +161,7 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
         if (shouldAttack)
         {
-            _updateService?.RegisterPeriodicUpdatable(this, _stats.AttackCooldown);
+            _updateService?.RegisterPeriodicUpdatable(this, TickInterval);
         }
         else
         {
@@ -142,70 +175,51 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
     public void ManagedPeriodicUpdate(float deltaTime)
     {
-        var target = FindClosestSlime();
-        if (target == null)
+        if (_attack == null || _attackCancellation == null)
             return;
 
-        FireProjectile(target);
+        // UpdateSubscriptionService가 넘기는 deltaTime은 Timer와 Time.time을 빼는 계산이라 신뢰할 수 없다.
+        _attack.Tick(TickInterval);
+
+        if (_isAttacking || !_attack.IsReady)
+            return;
+
+        if (!_targetFinder.TryFind(transform.position, _stats.AttackRange.Value, out var target))
+            return;
+
+        if (_attack.RequiresFacing)
+            FaceTarget(target);
+
+        AttackAsync(target).Forget();
     }
 
-
-    private Transform FindClosestSlime()
+    private async UniTaskVoid AttackAsync(TargetInfo target)
     {
-        int count = Physics.OverlapSphereNonAlloc(
-            transform.position, _stats.AttackRange, _hitBuffer, _slimeLayer);
+        _isAttacking = true;
 
-        if (count == 0)
-            return null;
-
-        Transform closest = null;
-        float closestSqrDist = float.MaxValue;
-
-        for (int i = 0; i < count; i++)
+        try
         {
-            if (!_hitBuffer[i].gameObject.activeInHierarchy)
-                continue;
-
-            float sqrDist = (_hitBuffer[i].transform.position - transform.position).sqrMagnitude;
-            if (sqrDist < closestSqrDist)
-            {
-                closestSqrDist = sqrDist;
-                closest = _hitBuffer[i].transform;
-            }
+            await _attack.ExecuteAsync(target, _attackCancellation.Token);
         }
-
-        return closest;
+        catch (OperationCanceledException)
+        {
+            // 타워 파괴 시 취소되면 무시
+        }
+        finally
+        {
+            _isAttacking = false;
+        }
     }
 
-    private void FireProjectile(Transform target)
+    private void FaceTarget(in TargetInfo target)
     {
-        // 타워 회전 (타워 본체 기준, 수평 방향만)
-        Vector3 horizontalDirection = (target.position - transform.position).normalized;
+        Vector3 horizontalDirection = target.Transform.position - transform.position;
         horizontalDirection.y = 0;
 
-        if (horizontalDirection != Vector3.zero)
+        if (horizontalDirection.sqrMagnitude > Mathf.Epsilon)
         {
-            transform.rotation = Quaternion.LookRotation(horizontalDirection);
+            transform.rotation = Quaternion.LookRotation(horizontalDirection.normalized);
         }
-
-        // 총알 생성
-        var projObj = _poolService.Get(_projectilePrefab);
-        if (projObj == null)
-            return;
-
-        // 발사 위치 (_firePoint가 있으면 그 위치, 없으면 타워 본체)
-        Vector3 firePosition = _firePoint != null ? _firePoint.position : transform.position;
-        projObj.transform.position = firePosition;
-
-        var projectile = projObj.GetComponent<Projectile>();
-        if (projectile == null)
-        {
-            Debug.Log("[BaseTower] 발사체 프리팹에 Projectile 컴포넌트가 없습니다.", projObj);
-            return;
-        }
-
-        // Projectile.Initialize가 발사 위치에서 타겟까지의 실제 3D 방향을 계산
-        projectile.Initialize(target.position, _stats.Damage);
     }
 
     public void Select()
@@ -312,10 +326,11 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        float range = _stats != null ? _stats.AttackRange : _attackRange;
+        if (_stats == null)
+            return;
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, range);
+        Gizmos.DrawWireSphere(transform.position, _stats.AttackRange.Value);
     }
 #endif
 }

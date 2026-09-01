@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WaveTable", menuName = "SlimeTD/Wave Table")]
+[CreateAssetMenu(fileName = "WaveTable", menuName = "SlimeTD/Wave Table", order = 23)]
 public class WaveTableData : ScriptableObject
 {
     [SerializeField] private int _maxWave = 10;

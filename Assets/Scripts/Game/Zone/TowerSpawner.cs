@@ -41,9 +41,9 @@ public class TowerSpawner : MonoBehaviour
 
     public bool TrySpawnRandom()
     {
-        if (_config == null || _config.TowerPrefab == null)
+        if (_config == null || _config.TowerPool == null || _config.TowerPool.Length == 0)
         {
-            Debug.Log("[TowerSpawner] TowerSpawnConfig 또는 타워 프리팹이 없습니다.", this);
+            Debug.Log("[TowerSpawner] TowerSpawnConfig에 타워 데이터가 없습니다.", this);
             return false;
         }
 
@@ -66,6 +66,14 @@ public class TowerSpawner : MonoBehaviour
             return false;
         }
 
+        var towerData = _config.TowerPool[Random.Range(0, _config.TowerPool.Length)];
+        if (towerData == null || towerData.Prefab == null)
+        {
+            Debug.Log("[TowerSpawner] 선택된 TowerData 또는 프리팹이 비어 있습니다.", this);
+            return false;
+        }
+
+        // 골드 차감은 실패 가능한 검증을 모두 통과한 뒤에 한다. 차감 후 실패하면 환불 경로가 없다.
         if (!_config.IgnoreGoldCost && !_gameplayService.TrySpendGold(_config.Cost))
         {
             Debug.Log($"[TowerSpawner] 골드가 부족합니다. 필요: {_config.Cost}, 보유: {_gameplayService.Info.Gold.Value}", this);
@@ -75,12 +83,13 @@ public class TowerSpawner : MonoBehaviour
         var position = GridUtility.GridToWorld(cell.x, cell.y, gridMapData);
         position = _groundHeightSampler.SnapToGround(position);
 
-        var tower = CreateTower(position);
+        var tower = CreateTower(towerData, position);
 
         var handler = tower.GetComponent<ITowerInteractionHandler>();
         if (handler == null)
         {
             Debug.Log("[TowerSpawner] 타워 프리팹에 ITowerInteractionHandler 구현체가 없습니다.", tower);
+            Destroy(tower);
             return false;
         }
 
@@ -88,11 +97,11 @@ public class TowerSpawner : MonoBehaviour
         return true;
     }
 
-    private GameObject CreateTower(Vector3 position)
+    private GameObject CreateTower(TowerData towerData, Vector3 position)
     {
         // 비활성 부모 밑에 생성해야 Awake가 안 돈다. 프리팹 자체를 SetActive(false)하면 에셋이 오염된다.
         var holder = GetHolder();
-        var instance = Instantiate(_config.TowerPrefab, holder);
+        var instance = Instantiate(towerData.Prefab, holder);
 
         foreach (var component in instance.GetComponentsInChildren<MonoBehaviour>(true))
         {
@@ -102,6 +111,13 @@ public class TowerSpawner : MonoBehaviour
         instance.transform.SetParent(_spawnRoot, false);
         instance.transform.position = position;
         instance.transform.rotation = Quaternion.identity;
+
+        var tower = instance.GetComponent<BaseTower>();
+        if (tower != null)
+        {
+            tower.Initialize(towerData);
+        }
+
         return instance;
     }
 

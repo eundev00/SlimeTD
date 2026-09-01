@@ -5017,6 +5017,7 @@ GameObject:
   - component: {fileID: 3306031608630738119}
   - component: {fileID: 891301291402324248}
   - component: {fileID: 4743521097118198240}
+  - component: {fileID: 3441055517794676827}
   m_Layer: 8
   m_Name: BaseTower
   m_TagString: Untagged
@@ -5053,12 +5054,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba8f2b66e5b6e4a64a00a5403ab5a774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseTower
-  _attackRange: 1
-  _attackCooldown: 1
-  _damage: 1
   _firePoint: {fileID: 7222613264578411400}
-  _projectilePrefab: {fileID: 967341609201319176, guid: 3c72db355c42e4480834e1b0726e6115, type: 3}
   _rangeIndicator: {fileID: 4743521097118198240}
+  _animator: {fileID: 3441055517794676827}
   _towerBody: {fileID: 7222613264578411400}
   _liftHeight: 0.35
 --- !u!114 &4743521097118198240
@@ -5077,3 +5075,15 @@ MonoBehaviour:
   _defaultColor: {r: 0.345, g: 0.858, b: 0.271, a: 1}
   _validColor: {r: 0.25, g: 0.6, b: 1, a: 1}
   _invalidColor: {r: 1, g: 0.3, b: 0.25, a: 1}
+--- !u!114 &3441055517794676827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8284994789354928280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eb9c12abece84110b07c92edb86dd51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerAnimator

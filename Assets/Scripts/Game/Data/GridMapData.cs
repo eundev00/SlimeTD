@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GridMapData", menuName = "SlimeTD/Grid Map Data")]
+[CreateAssetMenu(fileName = "GridMapData", menuName = "SlimeTD/Grid Map Data", order = 1)]
 public class GridMapData : ScriptableObject
 {
     private const float FixedCellSize = 1f;

@@ -2,10 +2,12 @@ using System.Collections.Generic;
 
 public static class DataKeys
 {
+    public const string Attack_Archer_Basic = "Attack_Archer_Basic";
     public const string Auto_Orange = "Auto_Orange";
     public const string Auto_White = "Auto_White";
     public const string GameConfig = "GameConfig";
     public const string GridMapData1 = "GridMapData1";
+    public const string GridMapDataTemp = "GridMapDataTemp";
     public const string GridMapDataTest = "GridMapDataTest";
     public const string Indexed_Boss_W10 = "Indexed_Boss_W10";
     public const string Indexed_Boss_W20 = "Indexed_Boss_W20";
@@ -24,15 +26,18 @@ public static class DataKeys
     public const string SlimeData_Boss2 = "SlimeData_Boss2";
     public const string SlimeData_Orange = "SlimeData_Orange";
     public const string SlimeData_White = "SlimeData_White";
+    public const string TowerData_Archer = "TowerData_Archer";
     public const string TowerSpawnConfig = "TowerSpawnConfig";
     public const string WaveEasyTable = "WaveEasyTable";
 
     public static readonly Dictionary<string, string> DataPaths = new Dictionary<string, string>()
     {
+        { Attack_Archer_Basic, "Assets/Datas/Characters/ArcherAttacks/Attack_Archer_Basic.asset" },
         { Auto_Orange, "Assets/Datas/Waves/Easy/Auto_Orange.asset" },
         { Auto_White, "Assets/Datas/Waves/Easy/Auto_White.asset" },
         { GameConfig, "Assets/Datas/GameConfig.asset" },
         { GridMapData1, "Assets/Datas/Grid/GridMapData1.asset" },
+        { GridMapDataTemp, "Assets/Datas/Grid/GridMapDataTemp.asset" },
         { GridMapDataTest, "Assets/Datas/Grid/GridMapDataTest.asset" },
         { Indexed_Boss_W10, "Assets/Datas/Waves/Easy/Indexed_Boss_W10.asset" },
         { Indexed_Boss_W20, "Assets/Datas/Waves/Easy/Indexed_Boss_W20.asset" },
@@ -51,6 +56,7 @@ public static class DataKeys
         { SlimeData_Boss2, "Assets/Datas/Slimes/SlimeData_Boss2.asset" },
         { SlimeData_Orange, "Assets/Datas/Slimes/SlimeData_Orange.asset" },
         { SlimeData_White, "Assets/Datas/Slimes/SlimeData_White.asset" },
+        { TowerData_Archer, "Assets/Datas/Characters/TowerData_Archer.asset" },
         { TowerSpawnConfig, "Assets/Datas/TowerSpawnConfig.asset" },
         { WaveEasyTable, "Assets/Datas/Waves/Easy/WaveEasyTable.asset" },
     };

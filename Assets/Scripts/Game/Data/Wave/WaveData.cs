@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Wave_00", menuName = "SlimeTD/Wave Data")]
+[CreateAssetMenu(fileName = "Wave_00", menuName = "SlimeTD/Wave Data", order = 22)]
 public class WaveData : ScriptableObject
 {
     [SerializeField] private int _waveIndex = 1;

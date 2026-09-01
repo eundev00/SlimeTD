@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65dfa538ef02d41ed924b4a602daef6e, type: 3}
   m_Name: TowerSpawnConfig
   m_EditorClassIdentifier: Assembly-CSharp::TowerSpawnConfig
-  _towerPrefab: {fileID: 8284994789354928280, guid: 599c8833d184b46aaa2633ff9496792d, type: 3}
+  _towerPool:
+  - {fileID: 11400000, guid: 4ee6c01b831494ed38ce5bab2003e616, type: 2}
   _cost: 50
   _ignoreGoldCost: 1

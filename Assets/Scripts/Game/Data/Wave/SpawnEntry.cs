@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SpawnEntry_00", menuName = "SlimeTD/Spawn Entry")]
+[CreateAssetMenu(fileName = "SpawnEntry_00", menuName = "SlimeTD/Spawn Entry", order = 20)]
 public class SpawnEntry : ScriptableObject
 {
     [SerializeField] private SlimeData[] _slimeDatas;

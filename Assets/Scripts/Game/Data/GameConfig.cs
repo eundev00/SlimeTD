@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameConfig", menuName = "SlimeTD/Game Config")]
+[CreateAssetMenu(fileName = "GameConfig", menuName = "SlimeTD/Game Config", order = 0)]
 public class GameConfig : ScriptableObject
 {
     [SerializeField] private int _startingLife = 20;
