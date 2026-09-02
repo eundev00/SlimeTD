@@ -7,8 +7,8 @@ public class GridMapData : ScriptableObject
 
     [SerializeField] private Vector3 _centerPosition = Vector3.zero;
     [SerializeField] private Vector3 _origin;
-    [SerializeField] private int _width = 10;
-    [SerializeField] private int _height = 10;
+    [SerializeField] private int _width = 8;
+    [SerializeField] private int _height = 15;
     [SerializeField, HideInInspector] private GridCellState[] _cellStates;
     [SerializeField, HideInInspector] private int _cellStatesWidth;
     [SerializeField, HideInInspector] private int _cellStatesHeight;

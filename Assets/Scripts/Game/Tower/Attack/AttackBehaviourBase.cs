@@ -7,6 +7,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 {
     private readonly AttackBehaviourData _data;
     private float _remainingCooldown;
+    private int _attackStateIndex;
 
     protected ITowerContext Context { get; private set; }
     protected AttackBehaviourData Data => _data;
@@ -44,7 +45,8 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
                 await UniTask.Delay(TimeSpan.FromSeconds(_data.ChargeDuration), cancellationToken: token);
             }
 
-            animator?.Play(_data.AttackState);
+            animator?.Play(_data.GetAttackState(_attackStateIndex));
+            _attackStateIndex = _data.GetNextAttackStateIndex(_attackStateIndex);
             OnChargeEnded();
 
             // 차징 동안 타겟이 죽거나 풀에 반환됐을 수 있다.

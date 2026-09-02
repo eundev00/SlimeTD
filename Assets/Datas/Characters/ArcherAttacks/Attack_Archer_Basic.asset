@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e8bfa18c47647eab52936692a5e83a, type: 3}
   m_Name: Attack_Archer_Basic
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileAttackData
+  _damage: 1
+  _cooldown: 1
   _chargeState: Draw
-  _attackState: Release
+  _attackStates:
+  - Release
   _chargeDuration: 1
   _attackDuration: 1.3
   _projectilePrefab: {fileID: 2717176595723297759, guid: 6ce103a3c1f974b9586882c7ff946232, type: 3}
