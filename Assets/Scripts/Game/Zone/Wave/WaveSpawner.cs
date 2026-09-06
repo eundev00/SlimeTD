@@ -11,6 +11,8 @@ using VContainer;
 
 public class WaveSpawner : MonoBehaviour
 {
+    private const int BaseSortingOrder = 10000;
+
     private readonly struct SpawnPlan
     {
         public readonly SlimeData SlimeData;
@@ -38,6 +40,8 @@ public class WaveSpawner : MonoBehaviour
     private CancellationTokenSource _spawnCts;
     private bool _waveClearedReceived;
     private bool _gameOver;
+
+    private int _spawnOrderCounter;
 
     [Inject]
     public void Construct(
@@ -75,6 +79,7 @@ public class WaveSpawner : MonoBehaviour
 
         _gameOver = false;
         _waveClearedReceived = false;
+        _spawnOrderCounter = 0;
 
         _disposables = new CompositeDisposable();
         _gameProgressSubscriber.Subscribe(evt =>
@@ -257,9 +262,8 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
-        float startDelay = plans[0].SpawnInterval;
-        if (startDelay > 0f)
-            await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: token);
+        if (_waveTable.WaveStartDelay > 0f)
+            await UniTask.Delay(TimeSpan.FromSeconds(_waveTable.WaveStartDelay), cancellationToken: token);
 
         bool isLastWave = waveIndex == _waveTable.MaxWave;
         int totalSlimeCount = plans.Count;
@@ -323,6 +327,9 @@ public class WaveSpawner : MonoBehaviour
             Debug.Log("[WaveSpawner] 슬라임 프리팹에 BaseSlime 컴포넌트가 없습니다.", obj);
             return;
         }
+
+        slime.SetRenderingOrder(BaseSortingOrder - _spawnOrderCounter);
+        _spawnOrderCounter++;
 
         slime.Initialize(_splineContainer, slimeData, health);
     }

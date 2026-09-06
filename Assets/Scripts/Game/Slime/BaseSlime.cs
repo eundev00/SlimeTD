@@ -120,6 +120,11 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
             _splineAnimate.Play();
     }
 
+    public void SetRenderingOrder(int order)
+    {
+        transform.position += Vector3.up * (order * 0.001f);
+    }
+
     public virtual void TakeDamage(int damage)
     {
         _stats.TakeDamage(damage);

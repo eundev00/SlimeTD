@@ -21,5 +21,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
   - {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
   - {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
-  _spawnInterval: 1
-  _waveIndex: 9
+  _spawnInterval: 1.2
+  _waveIndex: 10

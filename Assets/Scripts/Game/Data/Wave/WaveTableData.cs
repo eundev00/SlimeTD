@@ -4,6 +4,7 @@ using UnityEngine;
 public class WaveTableData : ScriptableObject
 {
     [SerializeField] private int _maxWave = 10;
+    [SerializeField] private float _waveStartDelay = 3f;
     [SerializeField] private IndexedSpawnEntry[] _manualWave;
     [SerializeField] private IndexedSpawnEntry[] _bossWave;
     [SerializeField] private SpawnEntry[] _autoWave;
@@ -13,6 +14,7 @@ public class WaveTableData : ScriptableObject
     [SerializeField] private int _maxSlimeCount = 30;
 
     public int MaxWave => _maxWave;
+    public float WaveStartDelay => _waveStartDelay;
     public IndexedSpawnEntry[] ManualWave => _manualWave;
     public IndexedSpawnEntry[] BossWave => _bossWave;
     public SpawnEntry[] AutoWave => _autoWave;
