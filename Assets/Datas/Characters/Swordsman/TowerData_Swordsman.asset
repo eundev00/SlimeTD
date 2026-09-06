@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a564b8603519415aa919cd3e7532039, type: 3}
+  m_Name: TowerData_Swordsman
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  _towerName: 일병
+  _prefab: {fileID: 2621857700972423482, guid: a19fd15b27fca45519391f504f46874f, type: 3}
+  _attackRange: 1
+  _basicAttack: {fileID: 11400000, guid: 028f44f7aca345a29d91642f41b9cfe3, type: 2}

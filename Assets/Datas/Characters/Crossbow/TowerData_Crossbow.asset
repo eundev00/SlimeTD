@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a564b8603519415aa919cd3e7532039, type: 3}
+  m_Name: TowerData_Crossbow
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  _towerName: "\uC11D\uAD81\uBCD1"
+  _prefab: {fileID: 0}
+  _attackRange: 2
+  _basicAttack: {fileID: 11400000, guid: 4d7967d549d84303a5a40d5709546e67, type: 2}

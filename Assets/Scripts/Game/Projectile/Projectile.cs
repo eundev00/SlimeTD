@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     [SerializeField] private float _lifetime = 3f;
 
     private Vector3 _direction;
-    private int _damage;
+    protected int Damage;
     private float _elapsedTime;
     private bool _isActive;
 
@@ -27,7 +27,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
 
     public void Initialize(Vector3 targetPosition, int damage)
     {
-        _damage = damage;
+        Damage = damage;
         _direction = (targetPosition - transform.position).normalized;
         _elapsedTime = 0f;
         _isActive = true;
@@ -59,18 +59,18 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
 
 
 
-    public void OnGetFromPool()
+    public virtual void OnGetFromPool()
     {
         _elapsedTime = 0f;
         _isActive = false;
     }
 
-    public void OnReturnToPool()
+    public virtual void OnReturnToPool()
     {
         _isActive = false;
         _updateService?.UnregisterUpdatable(this);
         _direction = Vector3.zero;
-        _damage = 0;
+        Damage = 0;
         _elapsedTime = 0f;
     }
 
@@ -84,11 +84,16 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         if (slime == null)
             return;
 
-        slime.TakeDamage(_damage);
+        OnHit(slime);
+    }
+
+    protected virtual void OnHit(BaseSlime slime)
+    {
+        slime.TakeDamage(Damage);
         ReturnToPool();
     }
 
-    private void ReturnToPool()
+    protected void ReturnToPool()
     {
         if (!_isActive)
             return;
