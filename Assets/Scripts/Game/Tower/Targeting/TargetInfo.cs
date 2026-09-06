@@ -3,10 +3,10 @@ using UnityEngine;
 public readonly struct TargetInfo
 {
     public readonly Transform Transform;
-    public readonly BaseSlime Slime;
+    public readonly ISlime Slime;
     public readonly float SqrDistance;
 
-    public TargetInfo(Transform transform, BaseSlime slime, float sqrDistance)
+    public TargetInfo(Transform transform, ISlime slime, float sqrDistance)
     {
         Transform = transform;
         Slime = slime;

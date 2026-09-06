@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Splines;
 using VContainer;
 
-public class BaseSlime : MonoBehaviour, IPoolItem
+public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 {
     [SerializeField] private float _dieAnimationDuration = 1f;
 
@@ -24,6 +24,7 @@ public class BaseSlime : MonoBehaviour, IPoolItem
     private bool _gameOver;
 
     public SlimeStats Stats => _stats;
+    public Vector3 Position => transform.position;
 
     [Inject]
     public void Construct(
@@ -48,7 +49,6 @@ public class BaseSlime : MonoBehaviour, IPoolItem
             return;
         }
 
-        // SlimeAnimation/SlimeFace가 OnGetFromPool에서 이 인스턴스를 구독하므로 교체하면 구독이 끊긴다.
         _stats = new SlimeStats(0);
 
         _splineAnimate.AnimationMethod = SplineAnimate.Method.Speed;
@@ -77,7 +77,6 @@ public class BaseSlime : MonoBehaviour, IPoolItem
 
     public virtual void OnReturnToPool()
     {
-        // 0으로 눕혀야 재사용 시 SlimeFace/SlimeAnimation의 Pairwise가 헛피격으로 오인하지 않는다.
         _stats?.Reset(0);
 
         _disposables?.Dispose();
@@ -150,14 +149,11 @@ public class BaseSlime : MonoBehaviour, IPoolItem
         }
         catch (OperationCanceledException)
         {
-            // 풀 반환 시 취소되면 무시
         }
     }
 
     protected virtual void OnReachedEnd()
     {
-        // 처치 시 SplineAnimate.Pause로 Completed가 막히므로 여기 도달은 "살아서 끝까지 온" 경우다.
-        // 처치와 도달이 같은 슬라임에서 함께 발생하지 않아 WaveSpawner 카운터 이중 차감이 없다.
         _reachedEndPublisher.Publish(new SlimeReachedEndEvent(_data.LifeCost));
         _poolService.Release(gameObject);
     }
@@ -166,6 +162,10 @@ public class BaseSlime : MonoBehaviour, IPoolItem
     {
         _disposables?.Dispose();
         _disposables = null;
+
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = null;
 
         _stats?.Dispose();
     }

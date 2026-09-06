@@ -17,31 +17,35 @@ public abstract class TargetFinderBase : ITargetFinder
         target = default;
 
         int count = Physics.OverlapSphereNonAlloc(origin, range, _hitBuffer, _slimeLayer);
+
         if (count == 0)
             return false;
 
-        float bestScore = float.MaxValue;
+        float bestDistance = float.MaxValue;
         bool found = false;
 
         for (int i = 0; i < count; i++)
         {
             var collider = _hitBuffer[i];
+
             if (!collider.gameObject.activeInHierarchy)
                 continue;
 
-            var slime = collider.GetComponentInParent<BaseSlime>();
+            ISlime slime = collider.GetComponentInParent<BaseSlime>();
+            if (slime == null)
+                slime = collider.GetComponentInParent<DummySlime>();
+
             if (slime == null)
                 continue;
 
-            var candidateTransform = slime.transform;
-            float sqrDistance = (candidateTransform.position - origin).sqrMagnitude;
-            var candidate = new TargetInfo(candidateTransform, slime, sqrDistance);
+            float sqrDistance = (slime.Position - origin).sqrMagnitude;
+            var candidate = new TargetInfo(collider.transform, slime, sqrDistance);
 
-            float score = GetScore(candidate);
-            if (score >= bestScore)
+            float distance = GetDistance(candidate);
+            if (distance >= bestDistance)
                 continue;
 
-            bestScore = score;
+            bestDistance = distance;
             target = candidate;
             found = true;
         }
@@ -49,5 +53,5 @@ public abstract class TargetFinderBase : ITargetFinder
         return found;
     }
 
-    protected abstract float GetScore(in TargetInfo candidate);
+    protected abstract float GetDistance(in TargetInfo candidate);
 }

@@ -29,7 +29,6 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
     private CancellationTokenSource _attackCancellation;
     private bool _isAttacking;
 
-    // 게임오버는 비가역, 드래그는 가역이라 한 플래그로 겸하면 게임오버 후 드래그로 공격이 되살아난다.
     private bool _gameOver;
     private bool _dragged;
     private bool _attackRegistered;
@@ -44,7 +43,6 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
     Transform ITowerContext.Transform => transform;
     IGameObjectPoolService ITowerContext.Pool => _poolService;
-    // 인터페이스로 넘어간 뒤에는 Unity fake-null을 못 걸러내므로 여기서 진짜 null로 정규화한다.
     TowerAnimator ITowerContext.Animator => _animator != null ? _animator : null;
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
@@ -77,7 +75,6 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
             .AddTo(_disposables);
     }
 
-    // TowerSpawner가 Awake 직후 Start 이전에 호출한다. Start에서 데이터를 쓰려면 이 순서가 지켜져야 한다.
     public void Initialize(TowerData data)
     {
         if (data == null)
@@ -130,7 +127,6 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
     {
         StopAttacking();
 
-        // 진행 중인 공격을 먼저 끊어야 부품이 파괴된 뒤에 이어지지 않는다.
         _attackCancellation?.Cancel();
         _attackCancellation?.Dispose();
         _attackCancellation = null;
@@ -154,7 +150,6 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         _attackCancellation?.Cancel();
     }
 
-    // RegisterPeriodicUpdatable은 interval을 등록 시점에 고정한다. 쿨다운은 능력이 자체 타이머로 관리한다.
     private void ApplyAttackActive()
     {
         bool shouldAttack = !_gameOver && !_dragged;
@@ -180,7 +175,6 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         if (_attack == null || _attackCancellation == null)
             return;
 
-        // UpdateSubscriptionService가 넘기는 deltaTime은 Timer와 Time.time을 빼는 계산이라 신뢰할 수 없다.
         _attack.Tick(TickInterval);
 
         if (_isAttacking || !_attack.IsReady)
@@ -205,7 +199,6 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         }
         catch (OperationCanceledException)
         {
-            // 타워 파괴 시 취소되면 무시
         }
         finally
         {
@@ -215,6 +208,9 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
     private void FaceTarget(in TargetInfo target)
     {
+        if (target.Transform == null)
+            return;
+
         Vector3 horizontalDirection = target.Transform.position - transform.position;
         horizontalDirection.y = 0;
 
