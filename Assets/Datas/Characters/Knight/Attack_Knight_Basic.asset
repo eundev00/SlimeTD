@@ -17,6 +17,5 @@ MonoBehaviour:
   _chargeState: 
   _attackStates:
   - Attack1
-  - Attack2
   _chargeDuration: 0
   _attackDuration: 1

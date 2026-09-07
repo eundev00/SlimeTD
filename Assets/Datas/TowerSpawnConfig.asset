@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: TowerSpawnConfig
   m_EditorClassIdentifier: Assembly-CSharp::TowerSpawnConfig
   _towerPool:
-  - {fileID: 11400000, guid: 4ee6c01b831494ed38ce5bab2003e616, type: 2}
-  - {fileID: 11400000, guid: 630245cf1b0841e2b37aa9e028937a16, type: 2}
-  - {fileID: 11400000, guid: 9824eeb356a62414aaafb9d58a3a6535, type: 2}
   - {fileID: 11400000, guid: 0a24f11c50c8481ea32e17d61bfbf60c, type: 2}
+  - {fileID: 11400000, guid: 9824eeb356a62414aaafb9d58a3a6535, type: 2}
+  - {fileID: 11400000, guid: 630245cf1b0841e2b37aa9e028937a16, type: 2}
+  - {fileID: 11400000, guid: 4ee6c01b831494ed38ce5bab2003e616, type: 2}
   - {fileID: 11400000, guid: 450481ff21ed489d9f830f61882607a3, type: 2}
   _cost: 50
   _ignoreGoldCost: 1

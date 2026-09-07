@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeAttackData
   _damage: 3
   _cooldown: 2
-  _chargeState:
+  _chargeState: 
   _attackStates:
   - Attack1
-  - Attack2
   _chargeDuration: 0
   _attackDuration: 1.2
