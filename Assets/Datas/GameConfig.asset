@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152011e2254784595a1c8bf1d0505129, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
-  _startingLife: 10
+  _startingLife: 10000
+  _startingGold: 0
