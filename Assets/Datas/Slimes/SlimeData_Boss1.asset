@@ -17,3 +17,4 @@ MonoBehaviour:
   _baseSpeed: 0.5
   _lifeCost: 10
   _goldReward: 100
+  _renderGroup: 1

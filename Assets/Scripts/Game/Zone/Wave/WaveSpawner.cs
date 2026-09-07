@@ -11,8 +11,6 @@ using VContainer;
 
 public class WaveSpawner : MonoBehaviour
 {
-    private const int BaseSortingOrder = 10000;
-
     private readonly struct SpawnPlan
     {
         public readonly SlimeData SlimeData;
@@ -35,28 +33,30 @@ public class WaveSpawner : MonoBehaviour
     private IGameObjectPoolService _poolService;
     private IPublisher<GameProgressEvent> _gameProgressPublisher;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
+    private ISlimeRenderOrderService _renderOrderService;
 
     private CompositeDisposable _disposables;
     private CancellationTokenSource _spawnCts;
     private bool _waveClearedReceived;
     private bool _gameOver;
 
-    private int _spawnOrderCounter;
-
     [Inject]
     public void Construct(
         IGameObjectPoolService poolService,
         IPublisher<GameProgressEvent> gameProgressPublisher,
-        ISubscriber<GameProgressEvent> gameProgressSubscriber)
+        ISubscriber<GameProgressEvent> gameProgressSubscriber,
+        ISlimeRenderOrderService renderOrderService)
     {
         _poolService = poolService;
         _gameProgressPublisher = gameProgressPublisher;
         _gameProgressSubscriber = gameProgressSubscriber;
+        _renderOrderService = renderOrderService;
     }
 
     public void Initialize(WaveTableData waveTable, Transform spawnRoot)
     {
-        if (_poolService == null || _gameProgressPublisher == null || _gameProgressSubscriber == null)
+        if (_poolService == null || _gameProgressPublisher == null || _gameProgressSubscriber == null
+            || _renderOrderService == null)
         {
             Debug.Log("[WaveSpawner] 의존성이 주입되지 않아 웨이브를 시작할 수 없습니다.", this);
             return;
@@ -79,7 +79,7 @@ public class WaveSpawner : MonoBehaviour
 
         _gameOver = false;
         _waveClearedReceived = false;
-        _spawnOrderCounter = 0;
+        _renderOrderService.Reset();
 
         _disposables = new CompositeDisposable();
         _gameProgressSubscriber.Subscribe(evt =>
@@ -112,16 +112,9 @@ public class WaveSpawner : MonoBehaviour
     {
         var plans = new List<SpawnPlan>();
 
-        if (_waveTable.ManualWave != null)
-        {
-            foreach (var entry in _waveTable.ManualWave)
-            {
-                if (entry == null || entry.WaveIndex != waveIndex)
-                    continue;
-
-                AddPlans(plans, entry, 1f, 1f, 0);
-            }
-        }
+        var manualEntry = FindManualEntry(waveIndex);
+        if (manualEntry != null)
+            AddPlans(plans, manualEntry, 1f, 1f, 0);
 
         if (plans.Count == 0 && _waveTable.AutoWave != null && _waveTable.AutoWave.Length > 0)
         {
@@ -132,21 +125,21 @@ public class WaveSpawner : MonoBehaviour
             AddPlans(plans, entry, countMultiplier, healthMultiplier, _waveTable.MaxSlimeCount);
         }
 
-        if (_waveTable.BossWave != null)
+        return plans;
+    }
+
+    private IndexedSpawnEntry FindManualEntry(int waveIndex)
+    {
+        if (_waveTable.ManualWave == null)
+            return null;
+
+        foreach (var entry in _waveTable.ManualWave)
         {
-            foreach (var entry in _waveTable.BossWave)
-            {
-                if (entry == null || entry.WaveIndex != waveIndex)
-                    continue;
-
-                if (entry.WaveIndex > _waveTable.MaxWave)
-                    continue;
-
-                AddPlans(plans, entry, 1f, 1f, 0);
-            }
+            if (entry != null && entry.WaveIndex == waveIndex)
+                return entry;
         }
 
-        return plans;
+        return null;
     }
 
     private static void AddPlans(List<SpawnPlan> plans, SpawnEntry entry, float countMultiplier, float healthMultiplier, int maxCount)
@@ -180,14 +173,9 @@ public class WaveSpawner : MonoBehaviour
         {
             var plans = new List<SpawnPlan>();
 
-            if (_waveTable.ManualWave != null)
-            {
-                foreach (var entry in _waveTable.ManualWave)
-                {
-                    if (entry != null && entry.WaveIndex == waveIndex)
-                        AddPlans(plans, entry, 1f, 1f, 0);
-                }
-            }
+            var manualEntry = FindManualEntry(waveIndex);
+            if (manualEntry != null)
+                AddPlans(plans, manualEntry, 1f, 1f, 0);
 
             if (plans.Count == 0 && _waveTable.AutoWave != null)
             {
@@ -196,15 +184,6 @@ public class WaveSpawner : MonoBehaviour
                 foreach (var entry in _waveTable.AutoWave)
                 {
                     AddPlans(plans, entry, countMultiplier, 1f, _waveTable.MaxSlimeCount);
-                }
-            }
-
-            if (_waveTable.BossWave != null)
-            {
-                foreach (var entry in _waveTable.BossWave)
-                {
-                    if (entry != null && entry.WaveIndex == waveIndex && entry.WaveIndex <= _waveTable.MaxWave)
-                        AddPlans(plans, entry, 1f, 1f, 0);
                 }
             }
 
@@ -328,8 +307,7 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
-        slime.SetRenderingOrder(BaseSortingOrder - _spawnOrderCounter);
-        _spawnOrderCounter++;
+        slime.SetRenderingOrder(_renderOrderService.Next(slimeData.RenderGroup));
 
         slime.Initialize(_splineContainer, slimeData, health);
     }

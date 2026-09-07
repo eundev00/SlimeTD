@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a564b8603519415aa919cd3e7532039, type: 3}
   m_Name: TowerData_Lumberjack
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  _towerName: 나무꾼
+  _towerName: "\uB098\uBB34\uAFBC"
   _prefab: {fileID: 0}
   _attackRange: 1
   _basicAttack: {fileID: 11400000, guid: 2c4aeb8378834156a619cf110ada84a0, type: 2}

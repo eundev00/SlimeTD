@@ -5,6 +5,7 @@ using System;
 using System.Threading;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Splines;
 using VContainer;
 
@@ -13,6 +14,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
     [SerializeField] private float _dieAnimationDuration = 1f;
 
     private SplineAnimate _splineAnimate;
+    private SortingGroup _sortingGroup;
     private SlimeStats _stats;
     private SlimeData _data;
     private IPublisher<SlimeKilledEvent> _killedPublisher;
@@ -48,6 +50,10 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
             Debug.Log("[BaseSlime] SplineAnimate 컴포넌트가 없습니다.", this);
             return;
         }
+
+        _sortingGroup = GetComponentInChildren<SortingGroup>(true);
+        if (_sortingGroup == null)
+            Debug.Log("[BaseSlime] SortingGroup 컴포넌트가 없어 렌더 순서를 적용할 수 없습니다.", this);
 
         _stats = new SlimeStats(0);
 
@@ -122,7 +128,10 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 
     public void SetRenderingOrder(int order)
     {
-        transform.position += Vector3.up * (order * 0.001f);
+        if (_sortingGroup == null)
+            return;
+
+        _sortingGroup.sortingOrder = order;
     }
 
     public virtual void TakeDamage(int damage)

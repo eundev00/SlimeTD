@@ -11,6 +11,7 @@ public class GameLifetimeScope : LifetimeScope
 
         builder.Register<GameplayService>(Lifetime.Scoped).As<IGameplayService>();
         builder.Register<GroundHeightSampler>(Lifetime.Scoped).As<IGroundHeightSampler>();
+        builder.Register<SlimeRenderOrderService>(Lifetime.Scoped).As<ISlimeRenderOrderService>();
         builder.RegisterEntryPoint<GameInitiator>();
 
         builder.RegisterComponentInHierarchy<Zone>();

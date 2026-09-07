@@ -14,8 +14,7 @@ public static class DataKeys
     public const string GridMapData1_Old = "GridMapData1_Old";
     public const string GridMapDataTemp = "GridMapDataTemp";
     public const string GridMapDataTest = "GridMapDataTest";
-    public const string Indexed_Boss_W10 = "Indexed_Boss_W10";
-    public const string Indexed_Boss_W20 = "Indexed_Boss_W20";
+    public const string GridMapDataTest2 = "GridMapDataTest2";
     public const string Indexed_W1 = "Indexed_W1";
     public const string Indexed_W10 = "Indexed_W10";
     public const string Indexed_W2 = "Indexed_W2";
@@ -53,8 +52,7 @@ public static class DataKeys
         { GridMapData1_Old, "Assets/Datas/Grid/GridMapData1_Old.asset" },
         { GridMapDataTemp, "Assets/Datas/Grid/GridMapDataTemp.asset" },
         { GridMapDataTest, "Assets/Datas/Grid/GridMapDataTest.asset" },
-        { Indexed_Boss_W10, "Assets/Datas/Waves/Easy/Indexed_Boss_W10.asset" },
-        { Indexed_Boss_W20, "Assets/Datas/Waves/Easy/Indexed_Boss_W20.asset" },
+        { GridMapDataTest2, "Assets/Datas/Grid/GridMapDataTest2.asset" },
         { Indexed_W1, "Assets/Datas/Waves/Easy/Indexed_W1.asset" },
         { Indexed_W10, "Assets/Datas/Waves/Easy/Indexed_W10.asset" },
         { Indexed_W2, "Assets/Datas/Waves/Easy/Indexed_W2.asset" },

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TowerData_Crossbow
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _towerName: "\uC11D\uAD81\uBCD1"
-  _prefab: {fileID: 0}
+  _prefab: {fileID: 2869148599219049116, guid: 3f1680e1422f74eeb9ccdda638bd521c, type: 3}
   _attackRange: 2
   _basicAttack: {fileID: 11400000, guid: 4d7967d549d84303a5a40d5709546e67, type: 2}
