@@ -30,13 +30,20 @@ public class ProjectileAttack : AttackBehaviourBase
         context.Pool.CreatePool(_data.ProjectilePrefab, _data.PoolCapacity, _data.PoolMaxSize);
     }
 
-    protected override void OnChargeStarted()
+    protected override void OnAttackStarted()
     {
         if (_launcher != null)
             _launcher.SetHeldProjectileActive(true);
     }
 
-    protected override void OnChargeEnded()
+    protected override void OnHitFrame()
+    {
+        if (_launcher != null)
+            _launcher.SetHeldProjectileActive(false);
+    }
+
+    // 취소로 히트 프레임에 도달하지 못하면 손에 발사체가 남는다.
+    protected override void OnAttackFinished()
     {
         if (_launcher != null)
             _launcher.SetHeldProjectileActive(false);
@@ -51,7 +58,8 @@ public class ProjectileAttack : AttackBehaviourBase
         if (projectileObject == null)
             return;
 
-        projectileObject.transform.position = _launcher.FirePoint.position;
+        Vector3 firePosition = _launcher.FirePoint.position;
+        projectileObject.transform.position = firePosition;
 
         var projectile = projectileObject.GetComponent<Projectile>();
         if (projectile == null)
@@ -60,6 +68,24 @@ public class ProjectileAttack : AttackBehaviourBase
             return;
         }
 
-        projectile.Initialize(target.Transform.position, _data.Damage);
+        projectile.Initialize(GetFireDirection(target, firePosition), _data.Damage);
+    }
+
+    private Vector3 GetFireDirection(in TargetInfo target, Vector3 firePosition)
+    {
+        Vector3 aim = Context.AimDirection;
+        Vector3 horizontal = new Vector3(aim.x, 0f, aim.z);
+
+        if (target.Transform == null || horizontal.sqrMagnitude <= Mathf.Epsilon)
+            return aim;
+
+        Vector3 targetCenter = target.Transform.TryGetComponent<Collider>(out var collider)
+            ? collider.bounds.center
+            : target.Transform.position;
+
+        Vector3 toTarget = targetCenter - firePosition;
+        Vector3 toTargetHorizontal = new Vector3(toTarget.x, 0f, toTarget.z);
+
+        return horizontal.normalized * toTargetHorizontal.magnitude + Vector3.up * toTarget.y;
     }
 }

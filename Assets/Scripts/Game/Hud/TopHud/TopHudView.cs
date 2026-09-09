@@ -1,10 +1,13 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TopHudView : MonoBehaviour
 {
     [NotNull][SerializeField] private Button _lobbyButton;
+    [NotNull][SerializeField] private TMP_Text _waveText;
+    [NotNull][SerializeField] private TMP_Text _lifeText;
 
     public event Action LobbyButtonClicked;
 
@@ -25,5 +28,17 @@ public class TopHudView : MonoBehaviour
     {
         if (_lobbyButton != null)
             _lobbyButton.interactable = interactable;
+    }
+
+    public void SetWave(int currentWave, int maxWave)
+    {
+        if (_waveText != null)
+            _waveText.text = $"{currentWave} / {maxWave}";
+    }
+
+    public void SetLife(int life)
+    {
+        if (_lifeText != null)
+            _lifeText.text = life.ToString();
     }
 }

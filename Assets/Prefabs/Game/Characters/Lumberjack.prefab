@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BaseTower
   _rangeIndicator: {fileID: 1485282311674297628}
   _animator: {fileID: 9126005739907525304}
+  _animationEventListener: {fileID: 1541841661291491804}
   _towerBody: {fileID: 8592645671069443564}
   _liftHeight: 0.35
 --- !u!114 &9126005739907525304
@@ -129,7 +130,7 @@ Transform:
   m_GameObject: {fileID: 8415254733003629574}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.15, z: 0}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5279,7 +5280,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 56b4a0ca8daa0154387f58eb3154ab99, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5345630105873653097}
+      addedObject: {fileID: 1541841661291491804}
   m_SourcePrefab: {fileID: 100100000, guid: 56b4a0ca8daa0154387f58eb3154ab99, type: 3}
 --- !u!4 &4882337991342977539 stripped
 Transform:
@@ -5296,16 +5297,15 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 56b4a0ca8daa0154387f58eb3154ab99, type: 3}
   m_PrefabInstance: {fileID: 8121552307450610183}
   m_PrefabAsset: {fileID: 0}
---- !u!210 &5345630105873653097
-SortingGroup:
+--- !u!114 &1541841661291491804
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8968044661362147158}
   m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_SortAtRoot: 0
-  m_Sort3DAs2D: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a4b2c1c33d69414a80afde031b951fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerAnimationEventListener

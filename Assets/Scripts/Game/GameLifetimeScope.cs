@@ -21,5 +21,8 @@ public class GameLifetimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<GameplayHudView>();
         builder.RegisterEntryPoint<GameplayHudPresenter>();
+
+        builder.RegisterComponentInHierarchy<GameResultView>();
+        builder.RegisterEntryPoint<GameResultPresenter>();
     }
 }

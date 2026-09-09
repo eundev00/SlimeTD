@@ -262,6 +262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BaseTower
   _rangeIndicator: {fileID: 6583080133682948031}
   _animator: {fileID: 6304550979438566945}
+  _animationEventListener: {fileID: 8668825013524613853}
   _towerBody: {fileID: 6664335346177747793}
   _liftHeight: 0.35
 --- !u!114 &6304550979438566945
@@ -550,7 +551,7 @@ Transform:
   m_GameObject: {fileID: 2976305529203841563}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.15, z: 0}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5881,6 +5882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6664335346177747793}
   - component: {fileID: 6235985311278781914}
+  - component: {fileID: 8668825013524613853}
   m_Layer: 8
   m_Name: Knight
   m_TagString: Untagged
@@ -5897,7 +5899,7 @@ Transform:
   m_GameObject: {fileID: 4546556572980567102}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5935,6 +5937,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8668825013524613853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4546556572980567102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a4b2c1c33d69414a80afde031b951fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerAnimationEventListener
 --- !u!1 &5196473570073419459
 GameObject:
   m_ObjectHideFlags: 0
@@ -6912,6 +6926,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5183434cbf0695640814090fc958f3b3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 067b3baf622f44ba59223e9f28db0b6a, type: 2}
     - target: {fileID: 919132149155446097, guid: 5183434cbf0695640814090fc958f3b3, type: 3}
       propertyPath: m_Name
       value: shield_spikes
@@ -6978,6 +6996,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: c85b70d5b9e5dda4d91f7d8ad5b574db, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d490c827e000d4750987c2f9a44da6fa, type: 2}
     - target: {fileID: 919132149155446097, guid: c85b70d5b9e5dda4d91f7d8ad5b574db, type: 3}
       propertyPath: m_Name
       value: sword_1handed

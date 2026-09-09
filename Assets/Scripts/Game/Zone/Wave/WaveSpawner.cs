@@ -33,6 +33,7 @@ public class WaveSpawner : MonoBehaviour
     private IGameObjectPoolService _poolService;
     private IPublisher<GameProgressEvent> _gameProgressPublisher;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
+    private IGameplayService _gameplayService;
     private ISlimeRenderOrderService _renderOrderService;
 
     private CompositeDisposable _disposables;
@@ -45,18 +46,20 @@ public class WaveSpawner : MonoBehaviour
         IGameObjectPoolService poolService,
         IPublisher<GameProgressEvent> gameProgressPublisher,
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
-        ISlimeRenderOrderService renderOrderService)
+        ISlimeRenderOrderService renderOrderService,
+        IGameplayService gameplayService)
     {
         _poolService = poolService;
         _gameProgressPublisher = gameProgressPublisher;
         _gameProgressSubscriber = gameProgressSubscriber;
         _renderOrderService = renderOrderService;
+        _gameplayService = gameplayService;
     }
 
     public void Initialize(WaveTableData waveTable, Transform spawnRoot)
     {
         if (_poolService == null || _gameProgressPublisher == null || _gameProgressSubscriber == null
-            || _renderOrderService == null)
+            || _renderOrderService == null || _gameplayService == null)
         {
             Debug.Log("[WaveSpawner] 의존성이 주입되지 않아 웨이브를 시작할 수 없습니다.", this);
             return;
@@ -76,6 +79,8 @@ public class WaveSpawner : MonoBehaviour
             Debug.Log("[WaveSpawner] _waveTable이 비어 있거나 MaxWave가 0 이하입니다.", this);
             return;
         }
+
+        _gameplayService.SetMaxWave(_waveTable.MaxWave);
 
         _gameOver = false;
         _waveClearedReceived = false;

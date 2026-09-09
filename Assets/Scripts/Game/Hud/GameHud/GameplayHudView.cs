@@ -1,10 +1,12 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameplayHudView : MonoBehaviour
 {
     [NotNull][SerializeField] private Button _summonButton;
+    [NotNull][SerializeField] private TMP_Text _goldText;
 
     public event Action SummonButtonClicked;
 
@@ -35,5 +37,11 @@ public class GameplayHudView : MonoBehaviour
     {
         if (_summonButton != null)
             _summonButton.interactable = interactable;
+    }
+
+    public void SetGold(int gold)
+    {
+        if (_goldText != null)
+            _goldText.text = gold.ToString();
     }
 }

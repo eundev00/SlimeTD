@@ -5,15 +5,22 @@ using UnityEngine;
 
 public abstract class AttackBehaviourBase : IAttackBehaviour
 {
+    private const float EndEventTimeout = 10f;
+
     private readonly AttackBehaviourData _data;
     private float _remainingCooldown;
     private int _attackStateIndex;
+
+    private TargetInfo _pendingTarget;
+    private bool _hasPendingTarget;
+    private UniTaskCompletionSource _endSource;
 
     protected ITowerContext Context { get; private set; }
     protected AttackBehaviourData Data => _data;
 
     public virtual bool RequiresFacing => true;
     public bool IsReady => _remainingCooldown <= 0f;
+    public bool IsAiming { get; private set; }
 
     protected AttackBehaviourBase(AttackBehaviourData data)
     {
@@ -33,50 +40,93 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 
     public async UniTask ExecuteAsync(TargetInfo target, CancellationToken token)
     {
-        var animator = Context?.Animator;
+        var animator = Context.Animator;
+        var stats = Context.Stats;
+        string attackState = _data.GetAttackState(_attackStateIndex);
 
-        // 취소로 중단돼도 차징 상태는 반드시 되돌려야 손에 발사체가 남지 않는다.
+        _pendingTarget = target;
+        _hasPendingTarget = true;
+        _endSource = new UniTaskCompletionSource();
+
+        IsAiming = true;
+
         try
         {
-            if (_data.ChargeDuration > 0f)
-            {
-                animator?.Play(_data.ChargeState);
-                OnChargeStarted();
-                await UniTask.Delay(TimeSpan.FromSeconds(_data.ChargeDuration), cancellationToken: token);
-            }
+            OnAttackStarted();
 
-            animator?.Play(_data.GetAttackState(_attackStateIndex));
+            animator.SetTrigger(attackState);
             _attackStateIndex = _data.GetNextAttackStateIndex(_attackStateIndex);
-            OnChargeEnded();
 
-            // 차징 동안 타겟이 죽거나 풀에 반환됐을 수 있다.
-            if (target.IsValid)
+            // 클립의 OnAttackEnd 이벤트가 완료시킨다. 이벤트가 없으면 타임아웃까지 대기한다.
+            TimeoutEndSourceAsync(_endSource, token).Forget();
+
+            using (token.Register(() => _endSource.TrySetCanceled()))
             {
-                Apply(target);
+                await _endSource.Task;
             }
-
-            if (_data.AttackDuration > 0f)
-            {
-                await UniTask.Delay(TimeSpan.FromSeconds(_data.AttackDuration), cancellationToken: token);
-            }
-
-            animator?.PlayIdle();
         }
         finally
         {
+            animator.ResetTrigger(attackState);
+
+            IsAiming = false;
+            _hasPendingTarget = false;
+            _pendingTarget = default;
+            _endSource = null;
+
+            OnAttackFinished();
+
             // 쿨다운은 공격이 끝난 뒤부터 흐른다. 시작 시점에 걸면 모션 시간과 겹쳐 값이 무의미해진다.
-            _remainingCooldown = _data.Cooldown;
-            OnChargeEnded();
+            _remainingCooldown = _data.Cooldown / stats.AttackSpeed.Value;
         }
+    }
+
+    public void OnAnimationHit()
+    {
+        IsAiming = false;
+
+        if (!_hasPendingTarget)
+            return;
+
+        var target = _pendingTarget;
+        _hasPendingTarget = false;
+
+        OnHitFrame();
+
+        if (target.IsValid)
+            Apply(target);
+    }
+
+    public void OnAnimationEnd()
+    {
+        _endSource?.TrySetResult();
+    }
+
+    private async UniTaskVoid TimeoutEndSourceAsync(UniTaskCompletionSource source, CancellationToken token)
+    {
+        try
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(EndEventTimeout), cancellationToken: token);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+
+        if (source.TrySetResult())
+            Debug.Log($"[{GetType().Name}] 공격 종료 이벤트가 오지 않았습니다. 클립에 OnAttackEnd가 있는지 확인하세요.");
     }
 
     protected abstract void Apply(in TargetInfo target);
 
-    protected virtual void OnChargeStarted() { }
-    protected virtual void OnChargeEnded() { }
+    protected virtual void OnAttackStarted() { }
+    protected virtual void OnHitFrame() { }
+    protected virtual void OnAttackFinished() { }
 
     public virtual void Dispose()
     {
+        _endSource?.TrySetCanceled();
+        _endSource = null;
         Context = null;
     }
 }

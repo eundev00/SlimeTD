@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class TowerAnimator : MonoBehaviour
 {
+    private static readonly int AttackSpeedParameter = Animator.StringToHash("AttackSpeed");
+
     private readonly Dictionary<string, int> _stateHashes = new Dictionary<string, int>();
 
     private Animator _animator;
@@ -28,6 +30,37 @@ public class TowerAnimator : MonoBehaviour
         }
 
         _animator.Play(hash);
+    }
+
+    public void SetTrigger(string trigger)
+    {
+        if (_animator == null || string.IsNullOrEmpty(trigger))
+            return;
+
+        if (!_stateHashes.TryGetValue(trigger, out var hash))
+        {
+            hash = Animator.StringToHash(trigger);
+            _stateHashes.Add(trigger, hash);
+        }
+
+        _animator.SetTrigger(hash);
+    }
+
+    public void SetAttackSpeed(float multiplier)
+    {
+        if (_animator == null)
+            return;
+
+        _animator.SetFloat(AttackSpeedParameter, multiplier);
+    }
+
+    public void ResetTrigger(string trigger)
+    {
+        if (_animator == null || string.IsNullOrEmpty(trigger))
+            return;
+
+        if (_stateHashes.TryGetValue(trigger, out var hash))
+            _animator.ResetTrigger(hash);
     }
 
     public void PlayIdle()

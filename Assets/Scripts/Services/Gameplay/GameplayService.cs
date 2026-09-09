@@ -11,6 +11,7 @@ public class GameplayService : IGameplayService
     private readonly IPublisher<GameProgressEvent> _gameProgressPublisher;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
     private bool _gameOverPublished;
+    private bool _gameEnded;
 
     private int _aliveCount;
     private bool _spawnFinished;
@@ -49,6 +50,11 @@ public class GameplayService : IGameplayService
         _info.Gold.Value = config.StartingGold;
     }
 
+    public void SetMaxWave(int maxWave)
+    {
+        _info.MaxWave.Value = maxWave;
+    }
+
     public bool TrySpendGold(int amount)
     {
         if (amount <= 0)
@@ -63,11 +69,21 @@ public class GameplayService : IGameplayService
 
     private void OnGameProgress(GameProgressEvent e)
     {
+        if (e.EventType == GameProgressType.GameOver || e.EventType == GameProgressType.StageCleared)
+        {
+            _gameEnded = true;
+            return;
+        }
+
+        if (_gameEnded)
+            return;
+
         switch (e.EventType)
         {
             // 웨이브가 겹치므로 덮어쓰면 이전 웨이브 생존분이 카운터에서 사라진다.
             case GameProgressType.WaveStarted:
                 _currentWaveIndex = e.WaveIndex;
+                _info.CurrentWave.Value = e.WaveIndex;
                 _aliveCount += e.SlimeCount;
                 Debug.Log($"[GameplayService] 웨이브 {_currentWaveIndex} 시작, 누적 슬라임: {_aliveCount}");
                 break;
@@ -83,7 +99,7 @@ public class GameplayService : IGameplayService
 
     private void OnSlimeReachedEnd(SlimeReachedEndEvent e)
     {
-        if (_gameOverPublished)
+        if (_gameOverPublished || _gameEnded)
             return;
 
         _info.Life.Value = Mathf.Max(0, _info.Life.Value - e.LifeCost);
@@ -101,6 +117,9 @@ public class GameplayService : IGameplayService
 
     private void OnSlimeKilled(SlimeKilledEvent e)
     {
+        if (_gameEnded)
+            return;
+
         _info.Gold.Value = Mathf.Max(0, _info.Gold.Value + e.GoldReward);
         Debug.Log($"[GameplayService] 골드 {_info.Gold.Value}");
 

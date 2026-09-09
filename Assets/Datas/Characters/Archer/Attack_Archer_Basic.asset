@@ -14,11 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileAttackData
   _damage: 1
   _cooldown: 1
-  _chargeState: Draw
   _attackStates:
-  - Release
-  _chargeDuration: 1
-  _attackDuration: 1.3
+  - Attack
   _projectilePrefab: {fileID: 2717176595723297759, guid: 6ce103a3c1f974b9586882c7ff946232, type: 3}
   _poolCapacity: 10
   _poolMaxSize: 50

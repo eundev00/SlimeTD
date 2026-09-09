@@ -8,4 +8,6 @@ public interface ISceneLoader
     UniTask UnloadAsync(string sceneName);
 
     UniTask TransitionAsync(string fromSceneName, string toSceneName);
+
+    UniTask ReloadAsync(string sceneName);
 }

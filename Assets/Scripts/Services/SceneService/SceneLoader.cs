@@ -62,4 +62,22 @@ public class SceneLoader : ISceneLoader
             _isTransitioning = false;
         }
     }
+
+    public async UniTask ReloadAsync(string sceneName)
+    {
+        if (_isTransitioning)
+            return;
+
+        _isTransitioning = true;
+
+        try
+        {
+            await UnloadAsync(sceneName);
+            await LoadAdditiveAsync(sceneName);
+        }
+        finally
+        {
+            _isTransitioning = false;
+        }
+    }
 }

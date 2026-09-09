@@ -8,12 +8,14 @@ using UniRx;
 using UnityEngine;
 using VContainer;
 
-public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHandler, ITowerContext
+public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerInteractionHandler, ITowerContext
 {
     private const float TickInterval = 0.1f;
+    private const float RotationLerpSpeed = 10f;
 
     [NotNull][SerializeField] private TowerRangeIndicator _rangeIndicator;
     [NotNull][SerializeField] private TowerAnimator _animator;
+    [NotNull][SerializeField] private TowerAnimationEventListener _animationEventListener;
     [NotNull][SerializeField] private Transform _towerBody;
     [SerializeField] private float _liftHeight = 0.35f;
 
@@ -39,11 +41,17 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
     private Vector3 _originPosition;
     private Vector3 _towerBodyLocalPosition;
 
+    private TargetInfo _currentTarget;
+    private TargetInfo _attackTarget;
+    private bool _hasTarget;
+    private Quaternion _aimRotation = Quaternion.identity;
+
     public TowerStats Stats => _stats;
 
     Transform ITowerContext.Transform => transform;
+    Vector3 ITowerContext.AimDirection => transform.forward;
     IGameObjectPoolService ITowerContext.Pool => _poolService;
-    TowerAnimator ITowerContext.Animator => _animator != null ? _animator : null;
+    TowerAnimator ITowerContext.Animator => _animator;
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
     public IReadOnlyReactiveProperty<bool> IsDragging => _isDragging;
@@ -62,6 +70,9 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
     private void Awake()
     {
+        if (_animator == null)
+            Debug.Log("[BaseTower] TowerAnimator가 없습니다.", this);
+
         _targetFinder = new ClosestTargetFinder();
         _stats = new TowerStats();
         _disposables = new CompositeDisposable();
@@ -71,6 +82,14 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
             {
                 if (_rangeIndicator != null)
                     _rangeIndicator.UpdateRangeVisual(range);
+            })
+            .AddTo(_disposables);
+
+        _stats.AttackSpeed
+            .Subscribe(speed =>
+            {
+                if (_animator != null)
+                    _animator.SetAttackSpeed(speed);
             })
             .AddTo(_disposables);
     }
@@ -83,10 +102,7 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         _data = data;
         _stats.Initialize(data);
 
-        if (_animator != null)
-        {
-            _animator.PlaySpawn();
-        }
+        _animator.PlaySpawn();
     }
 
     private void Start()
@@ -114,6 +130,9 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         _attack = _data.BasicAttack.CreateBehaviour();
         _attack.Initialize(this);
 
+        if (_animationEventListener != null)
+            _animationEventListener.SetAttack(_attack);
+
         ApplyAttackActive();
 
         _gameProgressSubscriber.Subscribe(evt =>
@@ -127,9 +146,15 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
     {
         StopAttacking();
 
+        _updateService?.UnregisterUpdatable(this);
+        _updateService?.UnregisterPeriodicUpdatable(this);
+
         _attackCancellation?.Cancel();
         _attackCancellation?.Dispose();
         _attackCancellation = null;
+
+        if (_animationEventListener != null)
+            _animationEventListener.SetAttack(null);
 
         _attack?.Dispose();
         _attack = null;
@@ -159,10 +184,13 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         if (shouldAttack)
         {
             _updateService?.RegisterPeriodicUpdatable(this, TickInterval);
+            _updateService?.RegisterUpdatable(this);
         }
         else
         {
             _updateService?.UnregisterPeriodicUpdatable(this);
+            _updateService?.UnregisterUpdatable(this);
+            _hasTarget = false;
         }
 
         _attackRegistered = shouldAttack;
@@ -177,16 +205,33 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
 
         _attack.Tick(TickInterval);
 
-        if (_isAttacking || !_attack.IsReady)
+        _hasTarget = _targetFinder.TryFind(transform.position, _stats.AttackRange.Value, out _currentTarget);
+
+        if (_isAttacking || !_attack.IsReady || !_hasTarget)
             return;
 
-        if (!_targetFinder.TryFind(transform.position, _stats.AttackRange.Value, out var target))
+        _attackTarget = _currentTarget;
+
+        TryGetAimRotation(_attackTarget, out _aimRotation);
+
+        AttackAsync(_currentTarget).Forget();
+    }
+
+    public void ManagedUpdate()
+    {
+        if (_attack == null || !_attack.RequiresFacing)
             return;
 
-        if (_attack.RequiresFacing)
-            FaceTarget(target);
+        if (!_attack.IsAiming)
+            return;
 
-        AttackAsync(target).Forget();
+        if (_attackTarget.IsValid && TryGetAimRotation(_attackTarget, out var aimRotation))
+            _aimRotation = aimRotation;
+
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            _aimRotation,
+            1f - Mathf.Exp(-RotationLerpSpeed * Time.deltaTime));
     }
 
     private async UniTaskVoid AttackAsync(TargetInfo target)
@@ -206,18 +251,21 @@ public class BaseTower : MonoBehaviour, IPeriodicUpdatable, ITowerInteractionHan
         }
     }
 
-    private void FaceTarget(in TargetInfo target)
+    private bool TryGetAimRotation(in TargetInfo target, out Quaternion rotation)
     {
+        rotation = transform.rotation;
+
         if (target.Transform == null)
-            return;
+            return false;
 
         Vector3 horizontalDirection = target.Transform.position - transform.position;
         horizontalDirection.y = 0;
 
-        if (horizontalDirection.sqrMagnitude > Mathf.Epsilon)
-        {
-            transform.rotation = Quaternion.LookRotation(horizontalDirection.normalized);
-        }
+        if (horizontalDirection.sqrMagnitude <= Mathf.Epsilon)
+            return false;
+
+        rotation = Quaternion.LookRotation(horizontalDirection.normalized);
+        return true;
     }
 
     public void Select()

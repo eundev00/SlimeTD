@@ -6,16 +6,22 @@ public class GameplayInfo
 {
     public ReactiveProperty<int> Life { get; }
     public ReactiveProperty<int> Gold { get; }
+    public ReactiveProperty<int> CurrentWave { get; }
+    public ReactiveProperty<int> MaxWave { get; }
 
     public GameplayInfo(int startingLife, int startingGold)
     {
         Life = new ReactiveProperty<int>(startingLife);
         Gold = new ReactiveProperty<int>(startingGold);
+        CurrentWave = new ReactiveProperty<int>(0);
+        MaxWave = new ReactiveProperty<int>(0);
     }
 
     public void Dispose()
     {
         Life.Dispose();
         Gold.Dispose();
+        CurrentWave.Dispose();
+        MaxWave.Dispose();
     }
 }

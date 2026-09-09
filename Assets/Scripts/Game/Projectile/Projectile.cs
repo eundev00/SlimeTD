@@ -7,11 +7,15 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
 {
     [SerializeField] private float _speed = 15f;
     [SerializeField] private float _lifetime = 3f;
+    [SerializeField] private float _hitRadius = 0.15f;
 
     private Vector3 _direction;
     protected int Damage;
     private float _elapsedTime;
     private bool _isActive;
+
+    private readonly RaycastHit[] _hitBuffer = new RaycastHit[8];
+    private int _slimeLayer;
 
     private IUpdateSubscriptionService _updateService;
     private IGameObjectPoolService _poolService;
@@ -25,10 +29,15 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _poolService = poolService;
     }
 
-    public void Initialize(Vector3 targetPosition, int damage)
+    private void Awake()
+    {
+        _slimeLayer = LayerMask.GetMask(GameTags.SlimeLayer);
+    }
+
+    public void Initialize(Vector3 direction, int damage)
     {
         Damage = damage;
-        _direction = (targetPosition - transform.position).normalized;
+        _direction = direction.normalized;
         _elapsedTime = 0f;
         _isActive = true;
 
@@ -54,7 +63,42 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
             return;
         }
 
-        transform.position += _direction * _speed * Time.deltaTime;
+        float distance = _speed * Time.deltaTime;
+
+        transform.position += _direction * distance;
+
+        DetectHits(distance);
+    }
+
+    private void DetectHits(float distance)
+    {
+        Vector3 origin = transform.position - _direction * distance;
+
+        int count = Physics.SphereCastNonAlloc(
+            origin, _hitRadius, _direction, _hitBuffer, distance, _slimeLayer);
+
+        for (int i = 0; i < count && _isActive; i++)
+        {
+            int nearest = -1;
+            for (int j = 0; j < count; j++)
+            {
+                if (_hitBuffer[j].distance < 0f)
+                    continue;
+
+                if (nearest < 0 || _hitBuffer[j].distance < _hitBuffer[nearest].distance)
+                    nearest = j;
+            }
+
+            if (nearest < 0)
+                break;
+
+            var hit = _hitBuffer[nearest];
+            _hitBuffer[nearest].distance = -1f;
+
+            var slime = hit.collider.GetComponentInParent<BaseSlime>();
+            if (slime != null)
+                OnHit(slime);
+        }
     }
 
 
@@ -74,18 +118,6 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _elapsedTime = 0f;
     }
 
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!_isActive)
-            return;
-
-        var slime = other.GetComponentInParent<BaseSlime>();
-        if (slime == null)
-            return;
-
-        OnHit(slime);
-    }
 
     protected virtual void OnHit(BaseSlime slime)
     {

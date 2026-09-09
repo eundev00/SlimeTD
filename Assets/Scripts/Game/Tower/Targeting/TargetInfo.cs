@@ -13,5 +13,8 @@ public readonly struct TargetInfo
         SqrDistance = sqrDistance;
     }
 
-    public bool IsValid => Transform != null && Transform.gameObject.activeInHierarchy;
+    public bool IsValid => Transform != null
+        && Transform.gameObject.activeInHierarchy
+        && Slime != null
+        && !Slime.Stats.IsDead;
 }
