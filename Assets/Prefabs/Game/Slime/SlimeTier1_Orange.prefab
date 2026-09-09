@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5028046557049172747}
   - component: {fileID: 1006846176720098267}
   - component: {fileID: 9215837291409383890}
+  - component: {fileID: 7414914610581293711}
   m_Layer: 6
   m_Name: SlimeTier1_Orange
   m_TagString: Untagged
@@ -85,6 +86,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlimeAnimation
   _animator: {fileID: 3786998700065698170}
   _faceAnimator: {fileID: 1486972411267538982}
+--- !u!210 &7414914610581293711
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4941929678292297010}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1001 &5290205005513388863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209,9 +223,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3922283859378868039, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6724512795243089722}
     - targetCorrespondingSourceObject: {fileID: 5399359763246968904, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3552660595142011349}
@@ -282,21 +293,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4405946291833984509, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
   m_PrefabInstance: {fileID: 5290205005513388863}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &9152533869597621368 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3922283859378868039, guid: 5fb17488728a3184f98a9e9de517898b, type: 3}
-  m_PrefabInstance: {fileID: 5290205005513388863}
-  m_PrefabAsset: {fileID: 0}
---- !u!210 &6724512795243089722
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9152533869597621368}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_SortAtRoot: 0
-  m_Sort3DAs2D: 0
