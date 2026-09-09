@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 public interface IGameplayService : IDisposable
 {
     GameplayInfo Info { get; }
+    GameConfig Config { get; }
     TowerSpawnConfig TowerConfig { get; }
     WaveTableData WaveTable { get; }
 

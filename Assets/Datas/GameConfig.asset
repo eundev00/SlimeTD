@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
   _startingLife: 10000
   _startingGold: 0
+  _ignoreGoldCost: 1
+  _autoStartWave: 1

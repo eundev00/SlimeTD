@@ -26,7 +26,6 @@ public class WaveSpawner : MonoBehaviour
     }
 
     [NotNull][SerializeField] private SplineContainer _splineContainer;
-    [SerializeField] private bool _autoStart = true;
 
     private WaveTableData _waveTable;
     private Transform _spawnRoot;
@@ -99,7 +98,7 @@ public class WaveSpawner : MonoBehaviour
 
         PreparePools();
 
-        if (_autoStart)
+        if (_gameplayService.Config.AutoStartWave)
             RunAllWavesAsync().Forget();
     }
 

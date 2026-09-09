@@ -47,12 +47,13 @@ public class GameplayHudPresenter : IStartable, IDisposable
         if (_disposed)
             return;
 
-        var config = _gameplayService.TowerConfig;
-        if (config == null)
+        var gameConfig = _gameplayService.Config;
+        var towerConfig = _gameplayService.TowerConfig;
+        if (gameConfig == null || towerConfig == null)
             return;
 
-        bool affordable = config.IgnoreGoldCost
-            || _gameplayService.Info.Gold.Value >= config.Cost;
+        bool affordable = gameConfig.IgnoreGoldCost
+            || _gameplayService.Info.Gold.Value >= towerConfig.Cost;
 
         _view.SetSummonButtonInteractable(!_gameEnded && affordable);
     }

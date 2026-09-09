@@ -74,7 +74,7 @@ public class TowerSpawner : MonoBehaviour
         }
 
         // 골드 차감은 실패 가능한 검증을 모두 통과한 뒤에 한다. 차감 후 실패하면 환불 경로가 없다.
-        if (!_config.IgnoreGoldCost && !_gameplayService.TrySpendGold(_config.Cost))
+        if (!_gameplayService.Config.IgnoreGoldCost && !_gameplayService.TrySpendGold(_config.Cost))
         {
             Debug.Log($"[TowerSpawner] 골드가 부족합니다. 필요: {_config.Cost}, 보유: {_gameplayService.Info.Gold.Value}", this);
             return false;

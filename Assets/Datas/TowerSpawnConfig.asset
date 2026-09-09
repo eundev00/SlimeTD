@@ -15,4 +15,3 @@ MonoBehaviour:
   _towerPool:
   - {fileID: 11400000, guid: 4ee6c01b831494ed38ce5bab2003e616, type: 2}
   _cost: 50
-  _ignoreGoldCost: 1

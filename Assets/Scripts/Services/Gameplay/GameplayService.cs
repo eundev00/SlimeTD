@@ -18,6 +18,7 @@ public class GameplayService : IGameplayService
     private int _currentWaveIndex;
 
     public GameplayInfo Info => _info;
+    public GameConfig Config { get; private set; }
     public TowerSpawnConfig TowerConfig { get; private set; }
     public WaveTableData WaveTable { get; private set; }
 
@@ -41,8 +42,8 @@ public class GameplayService : IGameplayService
 
     public async UniTask InitializeAsync()
     {
-        var config = await _resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
-        if (config == null)
+        Config = await _resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
+        if (Config == null)
         {
             Debug.Log($"[GameplayService] {DataKeys.GameConfig} 로드에 실패했습니다.");
             return;
@@ -51,8 +52,8 @@ public class GameplayService : IGameplayService
         TowerConfig = await _resourceLoadService.LoadAsync<TowerSpawnConfig>(DataKeys.TowerSpawnConfig);
         WaveTable = await _resourceLoadService.LoadAsync<WaveTableData>(DataKeys.WaveEasyTable);
 
-        _info.Life.Value = config.StartingLife;
-        _info.Gold.Value = config.StartingGold;
+        _info.Life.SetValueAndForceNotify(Config.StartingLife);
+        _info.Gold.SetValueAndForceNotify(Config.StartingGold);
     }
 
     public void SetMaxWave(int maxWave)
