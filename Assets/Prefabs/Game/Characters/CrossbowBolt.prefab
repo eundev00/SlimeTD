@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ba22b8266334253ba2971787b37c8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PiercingProjectile
-  _speed: 1
+  _speed: 5
   _lifetime: 3
   _hitRadius: 0.15
   _pierce: 3
