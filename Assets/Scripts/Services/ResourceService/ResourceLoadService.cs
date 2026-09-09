@@ -9,16 +9,16 @@ using Object = UnityEngine.Object;
 public class ResourceLoadService : IResourceLoadService, IDisposable
 {
     private readonly Dictionary<string, AsyncOperationHandle> _handles = new();
-    private readonly Dictionary<string, UniTask<Object>> _loading = new();
+    private readonly Dictionary<string, UniTaskCompletionSource<Object>> _loading = new();
 
     public async UniTask<T> LoadAsync<T>(string key) where T : Object
     {
         if (_handles.TryGetValue(key, out var loaded))
             return loaded.Result as T;
 
-        // 같은 키를 동시에 요청하면 핸들이 중복 생성되어 한쪽이 해제되지 않는다
+        // 같은 키를 동시에 요청하면 UniTaskCompletionSource로 여러 awaiter가 같은 결과를 공유한다
         if (_loading.TryGetValue(key, out var inFlight))
-            return await inFlight as T;
+            return await inFlight.Task as T;
 
         var path = ResourceKeys.GetPath(key);
         if (string.IsNullOrEmpty(path))
@@ -27,12 +27,19 @@ public class ResourceLoadService : IResourceLoadService, IDisposable
             return null;
         }
 
-        var task = LoadInternalAsync<T>(key, path);
-        _loading[key] = task;
+        var tcs = new UniTaskCompletionSource<Object>();
+        _loading[key] = tcs;
 
         try
         {
-            return await task as T;
+            var result = await LoadInternalAsync<T>(key, path);
+            tcs.TrySetResult(result);
+            return result as T;
+        }
+        catch (System.Exception ex)
+        {
+            tcs.TrySetException(ex);
+            throw;
         }
         finally
         {

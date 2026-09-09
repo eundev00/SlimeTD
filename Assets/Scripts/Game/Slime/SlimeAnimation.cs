@@ -95,10 +95,10 @@ public class SlimeAnimation : MonoBehaviour, IPoolItem
 
     private void Play(int stateHash)
     {
-        if (_animator != null)
+        if (_animator != null && _animator.runtimeAnimatorController != null)
             _animator.Play(stateHash);
 
-        if (_faceAnimator != null)
+        if (_faceAnimator != null && _faceAnimator.runtimeAnimatorController != null)
             _faceAnimator.Play(stateHash);
     }
 }

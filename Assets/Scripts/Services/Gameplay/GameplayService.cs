@@ -18,6 +18,10 @@ public class GameplayService : IGameplayService
     private int _currentWaveIndex;
 
     public GameplayInfo Info => _info;
+    public TowerSpawnConfig TowerConfig { get; private set; }
+    public WaveTableData WaveTable { get; private set; }
+
+    private readonly IResourceLoadService _resourceLoadService;
 
     public GameplayService(
         IResourceLoadService resourceLoadService,
@@ -28,23 +32,24 @@ public class GameplayService : IGameplayService
     {
         _info = new GameplayInfo(0, 0);
         _gameProgressPublisher = gameProgressPublisher;
+        _resourceLoadService = resourceLoadService;
 
         reachedEndSubscriber.Subscribe(OnSlimeReachedEnd).AddTo(_disposables);
         killedSubscriber.Subscribe(OnSlimeKilled).AddTo(_disposables);
         gameProgressSubscriber.Subscribe(OnGameProgress).AddTo(_disposables);
-
-        LoadConfigAsync(resourceLoadService).Forget();
     }
 
-    // 시작 수치는 로드가 끝나야 정해진다. ReactiveProperty라 HUD는 값이 들어오는 순간 갱신된다.
-    private async UniTaskVoid LoadConfigAsync(IResourceLoadService resourceLoadService)
+    public async UniTask InitializeAsync()
     {
-        var config = await resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
+        var config = await _resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
         if (config == null)
         {
             Debug.Log($"[GameplayService] {DataKeys.GameConfig} 로드에 실패했습니다.");
             return;
         }
+
+        TowerConfig = await _resourceLoadService.LoadAsync<TowerSpawnConfig>(DataKeys.TowerSpawnConfig);
+        WaveTable = await _resourceLoadService.LoadAsync<WaveTableData>(DataKeys.WaveEasyTable);
 
         _info.Life.Value = config.StartingLife;
         _info.Gold.Value = config.StartingGold;

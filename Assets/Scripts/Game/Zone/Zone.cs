@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UniRx;
 using UnityEngine;
@@ -13,7 +12,6 @@ public class Zone : MonoBehaviour
     [NotNull][SerializeField] private Transform _spawnRoot;
 
     private IObjectResolver _resolver;
-    private IResourceLoadService _resourceLoadService;
     private IGroundHeightSampler _groundHeightSampler;
     private ISubscriber<TowerSpawnRequestedEvent> _spawnRequestedSubscriber;
 
@@ -23,42 +21,21 @@ public class Zone : MonoBehaviour
     [Inject]
     public void Construct(
         IObjectResolver resolver,
-        IResourceLoadService resourceLoadService,
         IGroundHeightSampler groundHeightSampler,
         ISubscriber<TowerSpawnRequestedEvent> spawnRequestedSubscriber)
     {
         _resolver = resolver;
-        _resourceLoadService = resourceLoadService;
         _groundHeightSampler = groundHeightSampler;
         _spawnRequestedSubscriber = spawnRequestedSubscriber;
     }
 
-    private void Start()
+    public void Initialize(TowerSpawnConfig towerSpawnConfig, WaveTableData waveTable)
     {
-        if (_resolver == null)
-        {
-            Debug.Log("[Zone] 주입되지 않았습니다.", this);
-            return;
-        }
-
         if (_gridMapReference == null || _gridMapReference.GridMapData == null)
         {
             Debug.Log("[Zone] GridMapReference가 연결되지 않았습니다.", this);
             return;
         }
-
-        InitializeAsync();
-    }
-
-    private async void InitializeAsync()
-    {
-        var token = this.GetCancellationTokenOnDestroy();
-
-        var towerSpawnConfig = await _resourceLoadService.LoadAsync<TowerSpawnConfig>(DataKeys.TowerSpawnConfig);
-        var waveTable = await _resourceLoadService.LoadAsync<WaveTableData>(DataKeys.WaveEasyTable);
-
-        if (token.IsCancellationRequested)
-            return;
 
         _towerCells = new TowerCells(_gridMapReference.GridMapData);
 
