@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8d3ac45eb0f54dab953f4eba0a5a04b, type: 3}
+  m_Name: TowerTierTable
+  m_EditorClassIdentifier: Assembly-CSharp::TowerTierTable
+  _groups:
+  - {fileID: 11400000, guid: 9030725efe291458691d6225c85e084e, type: 2}
+  - {fileID: 11400000, guid: 8a5a6700ac9484d30b8a632f4193627e, type: 2}

@@ -39,6 +39,14 @@ public class GameplayHudPresenter : IStartable, IDisposable
             })
             .AddTo(_disposables);
 
+        _gameplayService.Info.SummonCost
+            .Subscribe(cost =>
+            {
+                _view.SetSummonCost(cost);
+                ApplySummonInteractable();
+            })
+            .AddTo(_disposables);
+
         _gameProgressSubscriber.Subscribe(HandleGameProgress).AddTo(_disposables);
     }
 
@@ -48,12 +56,11 @@ public class GameplayHudPresenter : IStartable, IDisposable
             return;
 
         var gameConfig = _gameplayService.Config;
-        var towerConfig = _gameplayService.TowerConfig;
-        if (gameConfig == null || towerConfig == null)
+        if (gameConfig == null)
             return;
 
         bool affordable = gameConfig.IgnoreGoldCost
-            || _gameplayService.Info.Gold.Value >= towerConfig.Cost;
+            || _gameplayService.Info.Gold.Value >= _gameplayService.Info.SummonCost.Value;
 
         _view.SetSummonButtonInteractable(!_gameEnded && affordable);
     }

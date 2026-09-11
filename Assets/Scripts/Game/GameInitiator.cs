@@ -16,6 +16,6 @@ public class GameInitiator : IAsyncStartable
     public async UniTask StartAsync(CancellationToken ct)
     {
         await _gameplayService.InitializeAsync();
-        _zone.Initialize(_gameplayService.TowerConfig, _gameplayService.WaveTable);
+        _zone.Initialize(_gameplayService.WaveTable);
     }
 }

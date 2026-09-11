@@ -14,7 +14,7 @@ public class TowerStats : IDisposable
     public void Initialize(TowerData data)
     {
         _attackRange.Value = data.AttackRange;
-        _attackSpeed.Value = Mathf.Max(0.01f, data.AttackSpeed);
+        _attackSpeed.Value = 1f;
     }
 
     public void SetAttackSpeed(float multiplier)

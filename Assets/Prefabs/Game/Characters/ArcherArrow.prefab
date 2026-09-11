@@ -110,16 +110,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 6d86cad7f06cd1b4d919003b5af871f2, type: 3}
       propertyPath: m_Materials.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 6d86cad7f06cd1b4d919003b5af871f2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 84eed479414a74b4fad05e2efa6c3182, type: 2}
+      objectReference: {fileID: 2100000, guid: 5b6956f9e446348e2aa79304258980da, type: 2}
     - target: {fileID: -7511558181221131132, guid: 6d86cad7f06cd1b4d919003b5af871f2, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: e74172c48db81420db090c6a920be38d, type: 2}
+      objectReference: {fileID: 2100000, guid: b3ef5cdc28e146c78ddd534232a379a3, type: 2}
     - target: {fileID: 919132149155446097, guid: 6d86cad7f06cd1b4d919003b5af871f2, type: 3}
       propertyPath: m_Name
       value: arrow_bow

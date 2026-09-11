@@ -47,6 +47,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private Quaternion _aimRotation = Quaternion.identity;
 
     public TowerStats Stats => _stats;
+    public TowerData Data => _data;
 
     Transform ITowerContext.Transform => transform;
     Vector3 ITowerContext.AimDirection => transform.forward;
@@ -175,6 +176,20 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         _attackCancellation?.Cancel();
     }
 
+    private void AbortAttack()
+    {
+        if (_gameOver || _attackCancellation == null)
+            return;
+
+        _attackCancellation.Cancel();
+        _attackCancellation.Dispose();
+        _attackCancellation = new CancellationTokenSource();
+
+        _hasTarget = false;
+        _attackTarget = default;
+        _animator?.PlayIdle();
+    }
+
     private void ApplyAttackActive()
     {
         bool shouldAttack = !_gameOver && !_dragged;
@@ -296,6 +311,8 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
         _dragged = true;
         ApplyAttackActive();
+        AbortAttack();
+        ApplyLift(true);
 
         if (_rangeIndicator != null)
         {
@@ -340,11 +357,15 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
         _dragged = false;
         ApplyAttackActive();
+        ApplyLift(false);
 
         if (_rangeIndicator != null)
         {
             _rangeIndicator.ResetColor();
         }
+
+        if (!_isSelected.Value)
+            _rangeIndicator?.Hide();
     }
 
     private void ApplyLift(bool lifted)
@@ -359,8 +380,6 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
     private void ApplySelection()
     {
-        ApplyLift(_isSelected.Value);
-
         if (_rangeIndicator == null)
             return;
 

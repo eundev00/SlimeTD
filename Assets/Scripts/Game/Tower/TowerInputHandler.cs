@@ -16,6 +16,7 @@ public class TowerInputHandler : MonoBehaviour
     private InputAction _pointerPositionAction;
     private LayerMask _towerLayer;
     private ITowerInteractionHandler _selected;
+    private ITowerInteractionHandler _pressedTower;
 
     private GridMapData _gridMapData;
     private Vector2 _pressScreenPosition;
@@ -129,14 +130,21 @@ public class TowerInputHandler : MonoBehaviour
         var ray = _camera.ScreenPointToRay(screenPosition);
 
         if (!Physics.Raycast(ray, out var hit, _maxRayDistance, _towerLayer))
+        {
+            ClearSelection();
             return;
+        }
 
         var tower = hit.collider.GetComponentInParent<ITowerInteractionHandler>();
         if (tower == null)
+        {
+            ClearSelection();
             return;
+        }
 
         _pressScreenPosition = screenPosition;
         _dragging = false;
+        _pressedTower = tower;
         SelectTower(tower);
     }
 
@@ -161,7 +169,7 @@ public class TowerInputHandler : MonoBehaviour
 
     private void OnPointerMoved(InputAction.CallbackContext context)
     {
-        if (_selected == null || _gridMapData == null || _camera == null)
+        if (_pressedTower == null || _gridMapData == null || _camera == null)
             return;
 
         Vector2 screenPosition = context.ReadValue<Vector2>();
@@ -172,7 +180,7 @@ public class TowerInputHandler : MonoBehaviour
             if ((screenPosition - _pressScreenPosition).sqrMagnitude < threshold)
                 return;
 
-            if (!TryGetCell(((MonoBehaviour)_selected).transform.position, out _dragOriginCell))
+            if (!TryGetCell(((MonoBehaviour)_pressedTower).transform.position, out _dragOriginCell))
             {
                 _dragOriginCell = new Vector2Int(int.MinValue, int.MinValue);
             }
@@ -180,8 +188,8 @@ public class TowerInputHandler : MonoBehaviour
             _dragging = true;
             _dragTargetCell = _dragOriginCell;
             _lastDragValid = false;
-            _lastSnappedPosition = ((MonoBehaviour)_selected).transform.position;
-            _selected.BeginDrag();
+            _lastSnappedPosition = ((MonoBehaviour)_pressedTower).transform.position;
+            _pressedTower.BeginDrag();
         }
 
         var ray = _camera.ScreenPointToRay(screenPosition);
@@ -204,7 +212,7 @@ public class TowerInputHandler : MonoBehaviour
             _lastSnappedPosition = SnapToGround(ray.GetPoint(distance));
         }
 
-        _selected.UpdateDragPosition(_lastSnappedPosition, _lastDragValid);
+        _pressedTower.UpdateDragPosition(_lastSnappedPosition, _lastDragValid);
     }
 
     private Vector3 SnapToGround(Vector3 position)
@@ -220,27 +228,27 @@ public class TowerInputHandler : MonoBehaviour
         if (!_towerCells.TryGetTower(new Vector2Int(x, y), out var occupant))
             return true;
 
-        return ReferenceEquals(occupant, _selected);
+        return ReferenceEquals(occupant, _pressedTower);
     }
 
     private void OnReleased(InputAction.CallbackContext context)
     {
-        if (_dragging && _selected != null)
+        if (_dragging && _pressedTower != null)
         {
             // 터치는 떼는 순간 사라져 포인터 위치를 다시 읽을 수 없으므로 마지막 판정을 쓴다.
             if (_lastDragValid)
             {
-                _towerCells.Move(_dragOriginCell, _dragTargetCell, _selected);
-                _selected.EndDrag(_lastSnappedPosition);
+                _towerCells.Move(_dragOriginCell, _dragTargetCell, _pressedTower);
+                _pressedTower.EndDrag(_lastSnappedPosition);
             }
             else
             {
-                _selected.CancelDrag();
+                _pressedTower.CancelDrag();
             }
         }
 
         _dragging = false;
-        ClearSelection();
+        _pressedTower = null;
     }
 
     private void SelectTower(ITowerInteractionHandler tower)

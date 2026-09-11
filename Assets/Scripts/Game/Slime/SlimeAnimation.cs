@@ -102,3 +102,4 @@ public class SlimeAnimation : MonoBehaviour, IPoolItem
             _faceAnimator.Play(stateHash);
     }
 }
+

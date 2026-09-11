@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class SmoothNormalsToVertexColor : MonoBehaviour
 {
     static Dictionary<Mesh, Mesh> cache = new Dictionary<Mesh, Mesh>();
+    static HashSet<Mesh> bakedMeshes = new HashSet<Mesh>();
 
     void Awake()
     {
@@ -23,21 +24,23 @@ public class SmoothNormalsToVertexColor : MonoBehaviour
 
         if (original == null) return;
 
+        if (bakedMeshes.Contains(original)) return;
+
         if (!cache.TryGetValue(original, out Mesh baked))
         {
             baked = Instantiate(original);
             BakeSmoothNormals(baked);
             cache[original] = baked;
+            bakedMeshes.Add(baked);
         }
 
         if (meshFilter != null)
         {
-            meshFilter.mesh = baked;
+            meshFilter.sharedMesh = baked;
         }
         else if (skinnedMeshRenderer != null)
         {
-            Mesh instanceMesh = Instantiate(baked);
-            skinnedMeshRenderer.sharedMesh = instanceMesh;
+            skinnedMeshRenderer.sharedMesh = baked;
         }
     }
 
@@ -46,12 +49,21 @@ public class SmoothNormalsToVertexColor : MonoBehaviour
         var vertices = mesh.vertices;
         var normals = mesh.normals;
 
-        var groups = new Dictionary<Vector3, List<int>>();
+        var groups = new Dictionary<Vector3Int, List<int>>();
         for (int i = 0; i < vertices.Length; i++)
         {
             Vector3 pos = vertices[i];
-            if (!groups.ContainsKey(pos)) groups[pos] = new List<int>();
-            groups[pos].Add(i);
+            var key = new Vector3Int(
+                Mathf.RoundToInt(pos.x * 10000f),
+                Mathf.RoundToInt(pos.y * 10000f),
+                Mathf.RoundToInt(pos.z * 10000f));
+
+            if (!groups.TryGetValue(key, out var list))
+            {
+                list = new List<int>();
+                groups[key] = list;
+            }
+            list.Add(i);
         }
 
         var colors = new Color[vertices.Length];

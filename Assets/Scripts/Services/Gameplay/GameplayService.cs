@@ -3,8 +3,6 @@ using MessagePipe;
 using UniRx;
 using UnityEngine;
 
-// 게임플레이 수치 로직 담당(MVP의 Model). 상태는 GameplayInfo가 들고, 변경은 여기서만 한다.
-// 기존 LifeService를 대체 — 라이프 차감/게임오버 로직은 그대로 유지하고 골드 처리를 통합했다.
 public class GameplayService : IGameplayService
 {
     private readonly GameplayInfo _info;
@@ -16,10 +14,11 @@ public class GameplayService : IGameplayService
     private int _aliveCount;
     private bool _spawnFinished;
     private int _currentWaveIndex;
+    private int _summonCount;
 
     public GameplayInfo Info => _info;
     public GameConfig Config { get; private set; }
-    public TowerSpawnConfig TowerConfig { get; private set; }
+    public TowerTierTable TierTable { get; private set; }
     public WaveTableData WaveTable { get; private set; }
 
     private readonly IResourceLoadService _resourceLoadService;
@@ -49,11 +48,33 @@ public class GameplayService : IGameplayService
             return;
         }
 
-        TowerConfig = await _resourceLoadService.LoadAsync<TowerSpawnConfig>(DataKeys.TowerSpawnConfig);
+        TierTable = await _resourceLoadService.LoadAsync<TowerTierTable>(DataKeys.TowerTierTable);
+        if (TierTable == null)
+        {
+            Debug.Log($"[GameplayService] {DataKeys.TowerTierTable} 로드에 실패했습니다.");
+            return;
+        }
+
         WaveTable = await _resourceLoadService.LoadAsync<WaveTableData>(DataKeys.WaveEasyTable);
 
         _info.Life.SetValueAndForceNotify(Config.StartingLife);
         _info.Gold.SetValueAndForceNotify(Config.StartingGold);
+        _summonCount = 0;
+        _info.SummonCost.SetValueAndForceNotify(Config.SummonBaseCost);
+    }
+
+    public bool TrySpendSummonCost()
+    {
+        if (Config == null)
+            return false;
+
+        int cost = _info.SummonCost.Value;
+        if (!Config.IgnoreGoldCost && cost > 0 && !TrySpendGold(cost))
+            return false;
+
+        _summonCount++;
+        _info.SummonCost.Value = Config.SummonBaseCost + _summonCount * Config.SummonCostIncrease;
+        return true;
     }
 
     public void SetMaxWave(int maxWave)

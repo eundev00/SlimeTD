@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SlimeData_White
   m_EditorClassIdentifier: Assembly-CSharp::SlimeData
   _prefab: {fileID: 4941929678292297010, guid: bc1a5425ce414496dbaad846e62ed35b, type: 3}
-  _baseHealth: 2
+  _baseHealth: 20
   _baseSpeed: 1
   _lifeCost: 1
   _goldReward: 1

@@ -10,17 +10,18 @@ Shader "Custom/Outline"
     {
         Tags
         {
-            "RenderType" = "Opaque"
+            "RenderType" = "Transparent"
             "RenderPipeline" = "UniversalPipeline"
-            "Queue" = "Geometry"
+            "Queue" = "Transparent-1"
         }
 
         Pass
         {
             Name "Outline"
             Cull Front
-            ZWrite On
+            ZWrite Off
             ZTest LEqual
+            Blend SrcAlpha OneMinusSrcAlpha
 
             HLSLPROGRAM
             #pragma vertex vert
@@ -32,7 +33,6 @@ Shader "Custom/Outline"
             {
                 float3 positionOS : POSITION;
                 float3 normalOS   : NORMAL;
-                float4 color      : COLOR;
             };
 
             struct Varyings
@@ -49,9 +49,7 @@ Shader "Custom/Outline"
             {
                 Varyings OUT;
 
-                float3 smoothedNormalOS = normalize(IN.color.rgb * 2.0 - 1.0);
-
-                float3 expandedPositionOS = IN.positionOS + smoothedNormalOS * _OutlineWidth * 0.01;
+                float3 expandedPositionOS = IN.positionOS + normalize(IN.normalOS) * _OutlineWidth * 0.01;
 
                 OUT.positionCS = TransformObjectToHClip(expandedPositionOS);
                 return OUT;

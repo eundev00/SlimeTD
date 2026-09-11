@@ -3,7 +3,7 @@ using VContainer;
 
 public class TowerSpawner : MonoBehaviour
 {
-    private TowerSpawnConfig _config;
+    private const int DrawableTier = 1;
 
     private IObjectResolver _resolver;
     private IGameplayService _gameplayService;
@@ -24,10 +24,9 @@ public class TowerSpawner : MonoBehaviour
         _groundHeightSampler = groundHeightSampler;
     }
 
-    public void Initialize(TowerCells towerCells, TowerSpawnConfig config, Transform spawnRoot)
+    public void Initialize(TowerCells towerCells, Transform spawnRoot)
     {
         _towerCells = towerCells;
-        _config = config;
         _spawnRoot = spawnRoot;
     }
 
@@ -41,12 +40,6 @@ public class TowerSpawner : MonoBehaviour
 
     public bool TrySpawnRandom()
     {
-        if (_config == null || _config.TowerPool == null || _config.TowerPool.Length == 0)
-        {
-            Debug.Log("[TowerSpawner] TowerSpawnConfig에 타워 데이터가 없습니다.", this);
-            return false;
-        }
-
         if (_resolver == null || _towerCells == null)
         {
             Debug.Log("[TowerSpawner] Initialize가 호출되지 않았습니다.", this);
@@ -66,17 +59,29 @@ public class TowerSpawner : MonoBehaviour
             return false;
         }
 
-        var towerData = _config.TowerPool[Random.Range(0, _config.TowerPool.Length)];
-        if (towerData == null || towerData.Prefab == null)
+        var tierTable = _gameplayService.TierTable;
+        if (tierTable == null)
         {
-            Debug.Log("[TowerSpawner] 선택된 TowerData 또는 프리팹이 비어 있습니다.", this);
+            Debug.Log("[TowerSpawner] TowerTierTable이 없어 타워를 뽑을 수 없습니다.", this);
+            return false;
+        }
+
+        if (!tierTable.TryDraw(DrawableTier, out var towerData))
+        {
+            Debug.Log($"[TowerSpawner] 티어 {DrawableTier}에서 뽑을 타워가 없습니다.", this);
+            return false;
+        }
+
+        if (towerData.Prefab == null)
+        {
+            Debug.Log("[TowerSpawner] 선택된 TowerData에 프리팹이 없습니다.", this);
             return false;
         }
 
         // 골드 차감은 실패 가능한 검증을 모두 통과한 뒤에 한다. 차감 후 실패하면 환불 경로가 없다.
-        if (!_gameplayService.Config.IgnoreGoldCost && !_gameplayService.TrySpendGold(_config.Cost))
+        if (!_gameplayService.TrySpendSummonCost())
         {
-            Debug.Log($"[TowerSpawner] 골드가 부족합니다. 필요: {_config.Cost}, 보유: {_gameplayService.Info.Gold.Value}", this);
+            Debug.Log($"[TowerSpawner] 골드가 부족합니다. 필요: {_gameplayService.Info.SummonCost.Value}, 보유: {_gameplayService.Info.Gold.Value}", this);
             return false;
         }
 

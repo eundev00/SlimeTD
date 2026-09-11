@@ -29,7 +29,7 @@ public class Zone : MonoBehaviour
         _spawnRequestedSubscriber = spawnRequestedSubscriber;
     }
 
-    public void Initialize(TowerSpawnConfig towerSpawnConfig, WaveTableData waveTable)
+    public void Initialize(WaveTableData waveTable)
     {
         if (_gridMapReference == null || _gridMapReference.GridMapData == null)
         {
@@ -42,7 +42,7 @@ public class Zone : MonoBehaviour
         if (_towerSpawner != null)
         {
             _resolver.Inject(_towerSpawner);
-            _towerSpawner.Initialize(_towerCells, towerSpawnConfig, _spawnRoot);
+            _towerSpawner.Initialize(_towerCells, _spawnRoot);
         }
 
         if (_towerInputHandler != null)

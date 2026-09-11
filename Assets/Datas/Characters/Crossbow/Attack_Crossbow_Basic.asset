@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e8bfa18c47647eab52936692a5e83a, type: 3}
   m_Name: Attack_Crossbow_Basic
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileAttackData
-  _damage: 3
-  _cooldown: 2
+  _damage: 15
+  _cooldown: 1.5
   _attackStates:
   - Attack
   _projectilePrefab: {fileID: 2717176595723297760, guid: a31a181bd89948e3b71d3bd7fb7bd271, type: 3}
   _poolCapacity: 10
-  _poolMaxSize: 50
+  _poolMaxSize: 20

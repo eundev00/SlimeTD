@@ -163,7 +163,7 @@ public class WaveSpawner : MonoBehaviour
             if (slimeData == null)
                 continue;
 
-            int health = Mathf.Max(1, Mathf.RoundToInt(slimeData.BaseHealth * healthMultiplier));
+            int health = Mathf.Max(1, Mathf.CeilToInt(slimeData.BaseHealth * healthMultiplier));
             plans.Add(new SpawnPlan(slimeData, health, entry.SpawnInterval));
         }
     }

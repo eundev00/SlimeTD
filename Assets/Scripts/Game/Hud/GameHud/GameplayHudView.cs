@@ -7,6 +7,7 @@ public class GameplayHudView : MonoBehaviour
 {
     [NotNull][SerializeField] private Button _summonButton;
     [NotNull][SerializeField] private TMP_Text _goldText;
+    [NotNull][SerializeField] private TMP_Text _summonCostText;
 
     public event Action SummonButtonClicked;
 
@@ -43,5 +44,11 @@ public class GameplayHudView : MonoBehaviour
     {
         if (_goldText != null)
             _goldText.text = gold.ToString();
+    }
+
+    public void SetSummonCost(int cost)
+    {
+        if (_summonCostText != null)
+            _summonCostText.text = cost.ToString();
     }
 }
