@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a1c4e9b2d3f4a5b8c6d7e8f9a0b1c2d, type: 3}
   m_Name: SlimeData_Boss2
   m_EditorClassIdentifier: Assembly-CSharp::SlimeData
-  _prefab: {fileID: 4941929678292297010, guid: 37b3bec40dd864d88a19b23b48347344, type: 3}
+  _prefab: {fileID: 4941929678292297010, guid: e6d40d6a7b6864784a94e3e85b8b8e37, type: 3}
   _baseHealth: 300
   _baseSpeed: 0.5
   _lifeCost: 5

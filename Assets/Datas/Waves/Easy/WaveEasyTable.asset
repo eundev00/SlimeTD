@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb451acd4df24b7b8cca6503a100199, type: 3}
   m_Name: WaveEasyTable
   m_EditorClassIdentifier: Assembly-CSharp::WaveTableData
-  _maxWave: 15
+  _maxWave: 12
   _waveStartDelay: 2
   _manualWave:
   - {fileID: 11400000, guid: 2b00000000000000000000000000000a, type: 2}
@@ -25,9 +25,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1745a3ced7d64415baa84cb562c2dcb3, type: 2}
   - {fileID: 11400000, guid: 590a51770b2c34ed2b49c1274d18b375, type: 2}
   - {fileID: 11400000, guid: 08dc792b679744609bd7a40646111f45, type: 2}
-  _bossWave:
-  - {fileID: 11400000, guid: 2b000000000000000000000000000010, type: 2}
-  - {fileID: 11400000, guid: 4ed505e0bb84b4fa2a604d7ca03dae6a, type: 2}
   _autoWave:
   - {fileID: 11400000, guid: 3c00000000000000000000000000000a, type: 2}
   - {fileID: 11400000, guid: 3c00000000000000000000000000000b, type: 2}

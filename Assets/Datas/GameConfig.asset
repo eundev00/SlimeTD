@@ -17,4 +17,4 @@ MonoBehaviour:
   _summonBaseCost: 10
   _summonCostIncrease: 2
   _ignoreGoldCost: 1
-  _autoStartWave: 0
+  _autoStartWave: 1
