@@ -31,6 +31,7 @@ public static class DataKeys
     public const string SlimeData_Boss2 = "SlimeData_Boss2";
     public const string SlimeData_Orange = "SlimeData_Orange";
     public const string SlimeData_White = "SlimeData_White";
+    public const string SlimeDepthBucketSettings = "SlimeDepthBucketSettings";
     public const string TowerData_Archer = "TowerData_Archer";
     public const string TowerData_Crossbow = "TowerData_Crossbow";
     public const string TowerData_Knight = "TowerData_Knight";
@@ -73,6 +74,7 @@ public static class DataKeys
         { SlimeData_Boss2, "Assets/Datas/Slimes/SlimeData_Boss2.asset" },
         { SlimeData_Orange, "Assets/Datas/Slimes/SlimeData_Orange.asset" },
         { SlimeData_White, "Assets/Datas/Slimes/SlimeData_White.asset" },
+        { SlimeDepthBucketSettings, "Assets/Datas/SlimeDepthBucketSettings.asset" },
         { TowerData_Archer, "Assets/Datas/Characters/Archer/TowerData_Archer.asset" },
         { TowerData_Crossbow, "Assets/Datas/Characters/Crossbow/TowerData_Crossbow.asset" },
         { TowerData_Knight, "Assets/Datas/Characters/Knight/TowerData_Knight.asset" },

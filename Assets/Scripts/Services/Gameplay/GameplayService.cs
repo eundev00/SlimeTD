@@ -20,6 +20,7 @@ public class GameplayService : IGameplayService
     public GameConfig Config { get; private set; }
     public TowerTierTable TierTable { get; private set; }
     public WaveTableData WaveTable { get; private set; }
+    public SlimeDepthBucketSettings DepthBucketSettings { get; private set; }
 
     private readonly IResourceLoadService _resourceLoadService;
 
@@ -56,6 +57,10 @@ public class GameplayService : IGameplayService
         }
 
         WaveTable = await _resourceLoadService.LoadAsync<WaveTableData>(DataKeys.WaveEasyTable);
+
+        DepthBucketSettings = await _resourceLoadService.LoadAsync<SlimeDepthBucketSettings>(DataKeys.SlimeDepthBucketSettings);
+        if (DepthBucketSettings == null)
+            Debug.Log($"[GameplayService] {DataKeys.SlimeDepthBucketSettings} 로드에 실패했습니다.");
 
         _info.Life.SetValueAndForceNotify(Config.StartingLife);
         _info.Gold.SetValueAndForceNotify(Config.StartingGold);

@@ -33,7 +33,7 @@ public class WaveSpawner : MonoBehaviour
     private IPublisher<GameProgressEvent> _gameProgressPublisher;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private IGameplayService _gameplayService;
-    private ISlimeRenderOrderService _renderOrderService;
+    private ISpawnOrderCounter _spawnOrderCounter;
 
     private CompositeDisposable _disposables;
     private CancellationTokenSource _spawnCts;
@@ -45,20 +45,20 @@ public class WaveSpawner : MonoBehaviour
         IGameObjectPoolService poolService,
         IPublisher<GameProgressEvent> gameProgressPublisher,
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
-        ISlimeRenderOrderService renderOrderService,
+        ISpawnOrderCounter spawnOrderCounter,
         IGameplayService gameplayService)
     {
         _poolService = poolService;
         _gameProgressPublisher = gameProgressPublisher;
         _gameProgressSubscriber = gameProgressSubscriber;
-        _renderOrderService = renderOrderService;
+        _spawnOrderCounter = spawnOrderCounter;
         _gameplayService = gameplayService;
     }
 
     public void Initialize(WaveTableData waveTable, Transform spawnRoot)
     {
         if (_poolService == null || _gameProgressPublisher == null || _gameProgressSubscriber == null
-            || _renderOrderService == null || _gameplayService == null)
+            || _spawnOrderCounter == null || _gameplayService == null)
         {
             Debug.Log("[WaveSpawner] 의존성이 주입되지 않아 웨이브를 시작할 수 없습니다.", this);
             return;
@@ -83,7 +83,7 @@ public class WaveSpawner : MonoBehaviour
 
         _gameOver = false;
         _waveClearedReceived = false;
-        _renderOrderService.Reset();
+        _spawnOrderCounter.Reset();
 
         _disposables = new CompositeDisposable();
         _gameProgressSubscriber.Subscribe(evt =>
@@ -311,7 +311,7 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
-        slime.SetRenderingOrder(_renderOrderService.Next(slimeData.RenderGroup));
+        slime.SetDepthBucket(_spawnOrderCounter.NextBucket(slimeData.RenderGroup));
 
         slime.Initialize(_splineContainer, slimeData, health);
     }

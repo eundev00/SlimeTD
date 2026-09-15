@@ -7,6 +7,7 @@ public interface IGameplayService : IDisposable
     GameConfig Config { get; }
     TowerTierTable TierTable { get; }
     WaveTableData WaveTable { get; }
+    SlimeDepthBucketSettings DepthBucketSettings { get; }
 
     UniTask InitializeAsync();
     bool TrySpendGold(int amount);

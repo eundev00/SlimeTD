@@ -48,10 +48,13 @@ Shader "Custom/OutlineOpaque"
             {
                 Varyings OUT;
 
+                // 월드 공간에서 밀어야 계층 스케일과 무관하게 두께가 일정하다.
                 float3 smoothNormalOS = IN.color.rgb * 2.0 - 1.0;
-                float3 expandedPositionOS = IN.positionOS + normalize(smoothNormalOS) * _OutlineWidth * 0.01;
+                float3 positionWS = TransformObjectToWorld(IN.positionOS);
+                float3 normalWS = normalize(TransformObjectToWorldNormal(smoothNormalOS));
+                positionWS += normalWS * _OutlineWidth * 0.01;
 
-                OUT.positionCS = TransformObjectToHClip(expandedPositionOS);
+                OUT.positionCS = TransformWorldToHClip(positionWS);
                 return OUT;
             }
 

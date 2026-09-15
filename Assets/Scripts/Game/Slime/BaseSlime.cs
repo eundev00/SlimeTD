@@ -5,16 +5,18 @@ using System;
 using System.Threading;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Splines;
 using VContainer;
 
 public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 {
+    private static readonly int DepthBucketId = Shader.PropertyToID("_SlimeDepthBucket");
+
     [SerializeField] private float _dieAnimationDuration = 1f;
+    [SerializeField] private SkinnedMeshRenderer[] _depthBucketRenderers;
 
     private SplineAnimate _splineAnimate;
-    private SortingGroup _sortingGroup;
+    private MaterialPropertyBlock _propertyBlock;
     private SlimeStats _stats;
     private SlimeData _data;
     private IPublisher<SlimeKilledEvent> _killedPublisher;
@@ -51,9 +53,10 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
             return;
         }
 
-        _sortingGroup = GetComponentInChildren<SortingGroup>(true);
-        if (_sortingGroup == null)
-            Debug.Log("[BaseSlime] SortingGroup 컴포넌트가 없어 렌더 순서를 적용할 수 없습니다.", this);
+        if (_depthBucketRenderers == null || _depthBucketRenderers.Length == 0)
+            Debug.Log("[BaseSlime] _depthBucketRenderers가 연결되지 않아 렌더 순서를 적용할 수 없습니다.", this);
+        else
+            _propertyBlock = new MaterialPropertyBlock();
 
         _stats = new SlimeStats(0);
 
@@ -126,12 +129,21 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
             _splineAnimate.Play();
     }
 
-    public void SetRenderingOrder(int order)
+    public void SetDepthBucket(int bucket)
     {
-        if (_sortingGroup == null)
+        if (_propertyBlock == null)
             return;
 
-        _sortingGroup.sortingOrder = order;
+        for (int i = 0; i < _depthBucketRenderers.Length; i++)
+        {
+            var renderer = _depthBucketRenderers[i];
+            if (renderer == null)
+                continue;
+
+            renderer.GetPropertyBlock(_propertyBlock);
+            _propertyBlock.SetFloat(DepthBucketId, bucket);
+            renderer.SetPropertyBlock(_propertyBlock);
+        }
     }
 
     public virtual void TakeDamage(int damage)

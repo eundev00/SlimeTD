@@ -49,9 +49,12 @@ Shader "Custom/Outline"
             {
                 Varyings OUT;
 
-                float3 expandedPositionOS = IN.positionOS + normalize(IN.normalOS) * _OutlineWidth * 0.01;
+                // 월드 공간에서 밀어야 계층 스케일과 무관하게 두께가 일정하다.
+                float3 positionWS = TransformObjectToWorld(IN.positionOS);
+                float3 normalWS = normalize(TransformObjectToWorldNormal(IN.normalOS));
+                positionWS += normalWS * _OutlineWidth * 0.01;
 
-                OUT.positionCS = TransformObjectToHClip(expandedPositionOS);
+                OUT.positionCS = TransformWorldToHClip(positionWS);
                 return OUT;
             }
 
