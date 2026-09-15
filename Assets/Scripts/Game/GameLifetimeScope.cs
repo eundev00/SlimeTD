@@ -24,5 +24,7 @@ public class GameLifetimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<GameResultView>();
         builder.RegisterEntryPoint<GameResultPresenter>();
+
+        builder.RegisterComponentInHierarchy<DamageTextSpawner>();
     }
 }

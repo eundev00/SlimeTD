@@ -6,6 +6,7 @@ public static class ResourceKeys
     private static readonly List<Func<string, string>> Resolvers = new()
     {
         DataKeys.GetDataPath,
+        PrefabKeys.GetPrefabPath,
     };
 
     public static string GetPath(string key)

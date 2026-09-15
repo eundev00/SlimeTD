@@ -14,6 +14,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 
     [SerializeField] private float _dieAnimationDuration = 1f;
     [SerializeField] private SkinnedMeshRenderer[] _depthBucketRenderers;
+    [SerializeField] private Vector3 _damageTextOffset = new Vector3(0f, 1f, 0f);
 
     private SplineAnimate _splineAnimate;
     private MaterialPropertyBlock _propertyBlock;
@@ -23,6 +24,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
     private IPublisher<SlimeReachedEndEvent> _reachedEndPublisher;
     private IGameObjectPoolService _poolService;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
+    private DamageTextSpawner _damageTextSpawner;
     private CancellationTokenSource _cancellationTokenSource;
     private CompositeDisposable _disposables;
     private bool _gameOver;
@@ -35,12 +37,14 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
         IPublisher<SlimeKilledEvent> killedPublisher,
         IPublisher<SlimeReachedEndEvent> reachedEndPublisher,
         IGameObjectPoolService poolService,
-        ISubscriber<GameProgressEvent> gameProgressSubscriber)
+        ISubscriber<GameProgressEvent> gameProgressSubscriber,
+        DamageTextSpawner damageTextSpawner)
     {
         _killedPublisher = killedPublisher;
         _reachedEndPublisher = reachedEndPublisher;
         _poolService = poolService;
         _gameProgressSubscriber = gameProgressSubscriber;
+        _damageTextSpawner = damageTextSpawner;
     }
 
 
@@ -148,7 +152,12 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 
     public virtual void TakeDamage(int damage)
     {
+        int before = _stats.CurrentHealth.Value;
         _stats.TakeDamage(damage);
+        int dealt = before - _stats.CurrentHealth.Value;
+
+        if (dealt > 0)
+            _damageTextSpawner?.Show(dealt, transform.position + _damageTextOffset);
 
         if (_stats.IsDead)
         {

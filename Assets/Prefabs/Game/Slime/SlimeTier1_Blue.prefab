@@ -206,7 +206,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: de3f4134e6b944ba592012eb4b06112c, type: 2}
+  - {fileID: 2100000, guid: 9642cd83a61004ab5be730e78e579cbc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -370,6 +370,7 @@ MonoBehaviour:
   _depthBucketRenderers:
   - {fileID: 8113993091855852011}
   - {fileID: 4132043665068717296}
+  _damageTextOffset: {x: 0, y: 1, z: 0}
 --- !u!114 &9215837291409383890
 MonoBehaviour:
   m_ObjectHideFlags: 0
