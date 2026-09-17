@@ -16,8 +16,10 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     [NotNull][SerializeField] private TowerRangeIndicator _rangeIndicator;
     [NotNull][SerializeField] private TowerAnimator _animator;
     [NotNull][SerializeField] private TowerAnimationEventListener _animationEventListener;
-    [NotNull][SerializeField] private Transform _towerBody;
+    [NotNull][SerializeField] private Transform _liftTarget;
     [SerializeField] private float _liftHeight = 0.35f;
+
+    private Collider[] _colliders;
 
     private TowerData _data;
     private TowerStats _stats;
@@ -39,7 +41,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private readonly ReactiveProperty<bool> _isDragging = new ReactiveProperty<bool>(false);
 
     private Vector3 _originPosition;
-    private Vector3 _towerBodyLocalPosition;
+    private Vector3 _liftTargetLocalPosition;
 
     private TargetInfo _currentTarget;
     private TargetInfo _attackTarget;
@@ -108,9 +110,9 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
     private void Start()
     {
-        if (_towerBody != null)
+        if (_liftTarget != null)
         {
-            _towerBodyLocalPosition = _towerBody.localPosition;
+            _liftTargetLocalPosition = _liftTarget.localPosition;
         }
 
         ApplySelection();
@@ -370,12 +372,12 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
     private void ApplyLift(bool lifted)
     {
-        if (_towerBody == null)
+        if (_liftTarget == null)
             return;
 
-        _towerBody.localPosition = lifted
-            ? _towerBodyLocalPosition + Vector3.up * _liftHeight
-            : _towerBodyLocalPosition;
+        _liftTarget.localPosition = lifted
+            ? _liftTargetLocalPosition + Vector3.up * _liftHeight
+            : _liftTargetLocalPosition;
     }
 
     private void ApplySelection()

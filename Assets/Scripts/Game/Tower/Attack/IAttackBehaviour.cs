@@ -12,6 +12,7 @@ public interface IAttackBehaviour : IDisposable
     void Tick(float deltaTime);
     UniTask ExecuteAsync(TargetInfo target, CancellationToken token);
 
+    void OnAnimationCast();
     void OnAnimationHit();
     void OnAnimationEnd();
 }

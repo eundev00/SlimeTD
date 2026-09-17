@@ -535,7 +535,7 @@ MonoBehaviour:
   _rangeIndicator: {fileID: 613357904063341106}
   _animator: {fileID: 8028167222665907839}
   _animationEventListener: {fileID: 6860743880279085853}
-  _towerBody: {fileID: 2323940195225192386}
+  _liftTarget: {fileID: 2323940195225192386}
   _liftHeight: 0.35
 --- !u!114 &8028167222665907839
 MonoBehaviour:

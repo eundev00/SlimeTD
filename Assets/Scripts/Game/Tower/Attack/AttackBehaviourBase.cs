@@ -81,6 +81,11 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         }
     }
 
+    public void OnAnimationCast()
+    {
+        OnCastFrame();
+    }
+
     public void OnAnimationHit()
     {
         IsAiming = false;
@@ -120,6 +125,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
     protected abstract void Apply(in TargetInfo target);
 
     protected virtual void OnAttackStarted() { }
+    protected virtual void OnCastFrame() { }
     protected virtual void OnHitFrame() { }
     protected virtual void OnAttackFinished() { }
 

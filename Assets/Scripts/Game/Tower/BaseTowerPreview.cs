@@ -5,23 +5,23 @@ public class BaseTowerPreview : MonoBehaviour, ITowerInteractionHandler
 {
     [SerializeField] private TowerRangeIndicator _rangeIndicator;
     [SerializeField] private float _previewRange = 5f;
-    [NotNull][SerializeField] private Transform _towerBody;
+    [NotNull][SerializeField] private Transform _liftTarget;
     [SerializeField] private float _liftHeight = 0.35f;
 
     private readonly ReactiveProperty<bool> _isSelected = new ReactiveProperty<bool>(false);
     private readonly ReactiveProperty<bool> _isDragging = new ReactiveProperty<bool>(false);
 
     private Vector3 _originPosition;
-    private Vector3 _towerBodyLocalPosition;
+    private Vector3 _liftTargetLocalPosition;
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
     public IReadOnlyReactiveProperty<bool> IsDragging => _isDragging;
 
     private void Start()
     {
-        if (_towerBody != null)
+        if (_liftTarget != null)
         {
-            _towerBodyLocalPosition = _towerBody.localPosition;
+            _liftTargetLocalPosition = _liftTarget.localPosition;
         }
 
         if (_rangeIndicator == null)
@@ -115,12 +115,12 @@ public class BaseTowerPreview : MonoBehaviour, ITowerInteractionHandler
 
     private void ApplyLift(bool lifted)
     {
-        if (_towerBody == null)
+        if (_liftTarget == null)
             return;
 
-        _towerBody.localPosition = lifted
-            ? _towerBodyLocalPosition + Vector3.up * _liftHeight
-            : _towerBodyLocalPosition;
+        _liftTarget.localPosition = lifted
+            ? _liftTargetLocalPosition + Vector3.up * _liftHeight
+            : _liftTargetLocalPosition;
     }
 
     private void ApplySelection()

@@ -19,7 +19,7 @@ public class MeleeAttack : AttackBehaviourBase
             Debug.Log("[MeleeAttack] AttackEffect가 없습니다.", context.Transform);
     }
 
-    protected override void OnAttackStarted()
+    protected override void OnCastFrame()
     {
         if (_effect != null)
             _effect.Play();

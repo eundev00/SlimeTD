@@ -1,3 +1,5 @@
+using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class AttackEffect : MonoBehaviour
@@ -9,7 +11,7 @@ public class AttackEffect : MonoBehaviour
         Stop();
     }
 
-    public void Play()
+    public async void Play()
     {
         if (_effect == null)
             return;

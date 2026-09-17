@@ -9,13 +9,27 @@ public class TowerAnimationEventListener : MonoBehaviour
         _attack = attack;
     }
 
+    public void OnAttackCast()
+    {
+        if (_attack == null)
+            return;
+
+        _attack.OnAnimationCast();
+    }
+
     public void OnAttackHit()
     {
-        _attack?.OnAnimationHit();
+        if (_attack == null)
+            return;
+
+        _attack.OnAnimationHit();
     }
 
     public void OnAttackEnd()
     {
-        _attack?.OnAnimationEnd();
+        if (_attack == null)
+            return;
+
+        _attack.OnAnimationEnd();
     }
 }
