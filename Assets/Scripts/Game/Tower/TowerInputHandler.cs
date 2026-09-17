@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class TowerInputHandler : MonoBehaviour
 {
+    public event Action<ITowerInteractionHandler> SelectionChanged;
+
     [SerializeField] private float _maxRayDistance = 200f;
     // 모바일 최소 터치 타겟(1080 너비 기준 약 130px)의 1/8. 손가락 떨림과 의도한 이동을 가르는 값.
     [SerializeField] private float _dragThresholdPixels = 16f;
@@ -97,6 +100,8 @@ public class TowerInputHandler : MonoBehaviour
             _pointerPositionAction.Dispose();
             _pointerPositionAction = null;
         }
+
+        SelectionChanged = null;
     }
 
     private bool TryGetCell(Vector3 worldPosition, out Vector2Int cell)
@@ -251,18 +256,35 @@ public class TowerInputHandler : MonoBehaviour
         _pressedTower = null;
     }
 
+    public void ClearSelectedTower()
+    {
+        ClearSelection();
+    }
+
     private void SelectTower(ITowerInteractionHandler tower)
     {
         if (_selected == tower)
             return;
 
-        ClearSelection();
+        Deselect();
 
         _selected = tower;
         _selected.Select();
+
+        SelectionChanged?.Invoke(_selected);
     }
 
     private void ClearSelection()
+    {
+        if (_selected == null)
+            return;
+
+        Deselect();
+
+        SelectionChanged?.Invoke(null);
+    }
+
+    private void Deselect()
     {
         if (_selected == null)
             return;

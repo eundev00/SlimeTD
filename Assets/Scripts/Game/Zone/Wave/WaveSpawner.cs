@@ -57,13 +57,6 @@ public class WaveSpawner : MonoBehaviour
 
     public void Initialize(WaveTableData waveTable, Transform spawnRoot)
     {
-        if (_poolService == null || _gameProgressPublisher == null || _gameProgressSubscriber == null
-            || _spawnOrderCounter == null || _gameplayService == null)
-        {
-            Debug.Log("[WaveSpawner] 의존성이 주입되지 않아 웨이브를 시작할 수 없습니다.", this);
-            return;
-        }
-
         _waveTable = waveTable;
         _spawnRoot = spawnRoot;
 

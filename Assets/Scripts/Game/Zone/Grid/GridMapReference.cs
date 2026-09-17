@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GridMapReference : MonoBehaviour
 {
-    [SerializeField] private GridMapData _gridMapData;
+    [NotNull][SerializeField] private GridMapData _gridMapData;
     [SerializeField] private bool _showGizmos = true;
 
     public GridMapData GridMapData => _gridMapData;

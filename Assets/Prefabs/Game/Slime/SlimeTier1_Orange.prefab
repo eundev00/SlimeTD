@@ -116,6 +116,37 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.2637384
   m_Center: {x: 0, y: 0.1863908, z: 0}
+--- !u!1 &328406486173758738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8011389086584417406}
+  m_Layer: 6
+  m_Name: DamageAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8011389086584417406
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328406486173758738}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7385034156950563216}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &560498317258013321
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,6 +359,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8011389086584417406}
   - {fileID: 8381064368676710082}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -370,6 +402,7 @@ MonoBehaviour:
   _depthBucketRenderers:
   - {fileID: 8113993091855852011}
   - {fileID: 4132043665068717296}
+  _damageTextAnchor: {fileID: 8011389086584417406}
 --- !u!114 &9215837291409383890
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class GameConfig : ScriptableObject
     [Header("디버그")]
     [SerializeField] private bool _ignoreGoldCost;
     [SerializeField] private bool _autoStartWave = true;
+    [SerializeField] private TowerData _testTower;
 
     public int StartingLife => _startingLife;
     public int StartingGold => _startingGold;
@@ -21,4 +22,5 @@ public class GameConfig : ScriptableObject
     public int SummonCostIncrease => _summonCostIncrease;
     public bool IgnoreGoldCost => _ignoreGoldCost;
     public bool AutoStartWave => _autoStartWave;
+    public TowerData TestTower => _testTower;
 }

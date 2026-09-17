@@ -147,8 +147,8 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     {
         StopAttacking();
 
-        _updateService?.UnregisterUpdatable(this);
-        _updateService?.UnregisterPeriodicUpdatable(this);
+        _updateService.UnregisterUpdatable(this);
+        _updateService.UnregisterPeriodicUpdatable(this);
 
         _attackCancellation?.Cancel();
         _attackCancellation?.Dispose();
@@ -198,13 +198,13 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
         if (shouldAttack)
         {
-            _updateService?.RegisterPeriodicUpdatable(this, TickInterval);
-            _updateService?.RegisterUpdatable(this);
+            _updateService.RegisterPeriodicUpdatable(this, TickInterval);
+            _updateService.RegisterUpdatable(this);
         }
         else
         {
-            _updateService?.UnregisterPeriodicUpdatable(this);
-            _updateService?.UnregisterUpdatable(this);
+            _updateService.UnregisterPeriodicUpdatable(this);
+            _updateService.UnregisterUpdatable(this);
             _hasTarget = false;
         }
 

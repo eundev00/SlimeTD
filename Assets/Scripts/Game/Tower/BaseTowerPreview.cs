@@ -5,7 +5,7 @@ public class BaseTowerPreview : MonoBehaviour, ITowerInteractionHandler
 {
     [SerializeField] private TowerRangeIndicator _rangeIndicator;
     [SerializeField] private float _previewRange = 5f;
-    [SerializeField] private Transform _towerBody;
+    [NotNull][SerializeField] private Transform _towerBody;
     [SerializeField] private float _liftHeight = 0.35f;
 
     private readonly ReactiveProperty<bool> _isSelected = new ReactiveProperty<bool>(false);

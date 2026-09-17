@@ -5,7 +5,7 @@ using VContainer;
 
 public class LobbyStartButton : MonoBehaviour
 {
-    [SerializeField] private Button _startButton;
+    [NotNull][SerializeField] private Button _startButton;
     [SerializeField] private Button _testStartButton;
 
     private ISceneLoader _sceneLoader;

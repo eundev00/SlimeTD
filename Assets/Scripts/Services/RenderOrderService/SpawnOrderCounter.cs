@@ -16,7 +16,7 @@ public class SpawnOrderCounter : ISpawnOrderCounter
     {
         get
         {
-            var settings = _gameplayService?.DepthBucketSettings;
+            var settings = _gameplayService.DepthBucketSettings;
             return settings != null ? Mathf.Max(2, settings.BucketCount) : FallbackBucketCount;
         }
     }

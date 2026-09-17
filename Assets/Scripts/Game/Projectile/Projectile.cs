@@ -112,7 +112,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     public virtual void OnReturnToPool()
     {
         _isActive = false;
-        _updateService?.UnregisterUpdatable(this);
+        _updateService.UnregisterUpdatable(this);
         _direction = Vector3.zero;
         Damage = 0;
         _elapsedTime = 0f;
@@ -131,12 +131,12 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
             return;
 
         _isActive = false;
-        _updateService?.UnregisterUpdatable(this);
+        _updateService.UnregisterUpdatable(this);
         _poolService.Release(gameObject);
     }
 
     private void OnDestroy()
     {
-        _updateService?.UnregisterUpdatable(this);
+        _updateService.UnregisterUpdatable(this);
     }
 }

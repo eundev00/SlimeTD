@@ -49,9 +49,9 @@ public class DamageTextSpawner : MonoBehaviour
         if (_camera == null)
             _camera = Camera.main;
 
-        if (_poolService == null || _canvas == null || _camera == null || _damageTextPrefab == null)
+        if (_canvas == null || _camera == null || _damageTextPrefab == null)
         {
-            Debug.Log($"[DamageTextSpawner] null 체크 실패: pool={_poolService != null}, canvas={_canvas != null}, camera={_camera != null}, prefab={_damageTextPrefab != null}");
+            Debug.Log($"[DamageTextSpawner] null 체크 실패: canvas={_canvas != null}, camera={_camera != null}, prefab={_damageTextPrefab != null}");
             return;
         }
 

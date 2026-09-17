@@ -8,8 +8,10 @@ public class GameplayHudView : MonoBehaviour
     [NotNull][SerializeField] private Button _summonButton;
     [NotNull][SerializeField] private TMP_Text _goldText;
     [NotNull][SerializeField] private TMP_Text _summonCostText;
+    [SerializeField] private Button _testSummonButton;
 
     public event Action SummonButtonClicked;
+    public event Action TestSummonButtonClicked;
 
     private void Start()
     {
@@ -19,6 +21,9 @@ public class GameplayHudView : MonoBehaviour
             return;
         }
         _summonButton.onClick.AddListener(OnSummonButtonClicked);
+
+        if (_testSummonButton != null)
+            _testSummonButton.onClick.AddListener(OnTestSummonButtonClicked);
     }
 
     private void OnDestroy()
@@ -27,11 +32,21 @@ public class GameplayHudView : MonoBehaviour
         {
             _summonButton.onClick.RemoveListener(OnSummonButtonClicked);
         }
+
+        if (_testSummonButton != null)
+        {
+            _testSummonButton.onClick.RemoveListener(OnTestSummonButtonClicked);
+        }
     }
 
     private void OnSummonButtonClicked()
     {
         SummonButtonClicked?.Invoke();
+    }
+
+    private void OnTestSummonButtonClicked()
+    {
+        TestSummonButtonClicked?.Invoke();
     }
 
     public void SetSummonButtonInteractable(bool interactable)

@@ -29,6 +29,7 @@ public class GameplayHudPresenter : IStartable, IDisposable
     public void Start()
     {
         _view.SummonButtonClicked += HandleSummonButtonClicked;
+        _view.TestSummonButtonClicked += HandleTestSummonButtonClicked;
         _view.SetSummonButtonInteractable(false);
 
         _gameplayService.Info.Gold
@@ -76,7 +77,12 @@ public class GameplayHudPresenter : IStartable, IDisposable
 
     private void HandleSummonButtonClicked()
     {
-        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent());
+        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent(null));
+    }
+
+    private void HandleTestSummonButtonClicked()
+    {
+        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent(_gameplayService.Config?.TestTower));
     }
 
     public void Dispose()
@@ -84,7 +90,10 @@ public class GameplayHudPresenter : IStartable, IDisposable
         _disposed = true;
 
         if (_view != null)
+        {
             _view.SummonButtonClicked -= HandleSummonButtonClicked;
+            _view.TestSummonButtonClicked -= HandleTestSummonButtonClicked;
+        }
 
         _disposables.Dispose();
     }

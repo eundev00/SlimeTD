@@ -6,13 +6,12 @@ using VContainer;
 
 public class DamageTextView : MonoBehaviour, IPoolItem
 {
-    [SerializeField] private TMP_Text _text;
-    [SerializeField] private RectTransform _rectTransform;
+    [NotNull][SerializeField] private TMP_Text _text;
+    [NotNull][SerializeField] private RectTransform _rectTransform;
 
     private const float Duration = 1.5f;
     private const float FadeDuration = 0.5f;
     private const float RiseDistance = 40f;
-    private static readonly Vector3 WorldOffset = new Vector3(0f, 1f, 0f);
 
     private Sequence _sequence;
     private IGameObjectPoolService _poolService;
@@ -29,7 +28,7 @@ public class DamageTextView : MonoBehaviour, IPoolItem
 
         _text.text = damage.ToString();
 
-        Vector3 screenPos = camera.WorldToScreenPoint(worldPosition + WorldOffset);
+        Vector3 screenPos = camera.WorldToScreenPoint(worldPosition);
         screenPos.x -= Screen.width * 0.5f;
         screenPos.y -= Screen.height * 0.5f;
         Vector2 anchoredPos = (Vector2)screenPos / canvas.scaleFactor;

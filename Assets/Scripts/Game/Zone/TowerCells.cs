@@ -10,6 +10,7 @@ public class TowerCells
     private readonly GridMapData _gridMapData;
 
     public GridMapData GridMapData => _gridMapData;
+    public IReadOnlyDictionary<Vector2Int, ITowerInteractionHandler> Towers => _towers;
 
     public TowerCells(GridMapData gridMapData)
     {

@@ -149,6 +149,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000022873282, y: 0.8386132, z: -0.023827761}
     m_Extent: {x: 0.39487934, y: 0.4622137, z: 0.3893827}
   m_DirtyAABB: 0
+--- !u!114 &8200000000000000039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119776022235270248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &290716446186793154
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +344,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.50670516, y: 1.1235806, z: -0.0071138293}
     m_Extent: {x: 0.46454853, y: 0.14827713, z: 0.1778044}
   m_DirtyAABB: 0
+--- !u!114 &8200000000000000040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021298095155749944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &1379436651124842368
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,6 +600,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.16867091, y: 0.17940882, z: 0.042441197}
     m_Extent: {x: 0.12301974, y: 0.35697892, z: 0.2899711}
   m_DirtyAABB: 0
+--- !u!114 &8200000000000000041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2356985033765874494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &2621857700972423482
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,6 +624,7 @@ GameObject:
   - component: {fileID: 1841102203795611137}
   - component: {fileID: 4824485404277675976}
   - component: {fileID: 301936111937207002}
+  - component: {fileID: 5420198292930374793}
   - component: {fileID: 3091883203650349222}
   m_Layer: 8
   m_Name: Swordsman
@@ -628,7 +665,7 @@ MonoBehaviour:
   _rangeIndicator: {fileID: 4824485404277675976}
   _animator: {fileID: 301936111937207002}
   _animationEventListener: {fileID: 5598831796159584584}
-  _towerBody: {fileID: 7008035818036247474}
+  _towerBody: {fileID: 4110658924186834728}
   _liftHeight: 0.35
 --- !u!114 &4824485404277675976
 MonoBehaviour:
@@ -658,6 +695,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb9c12abece84110b07c92edb86dd51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerAnimator
+--- !u!114 &5420198292930374793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2621857700972423482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c8879eb5eacd492798291aedb72d74e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackEffect
+  _effect: {fileID: 5461952471933780695}
 --- !u!65 &3091883203650349222
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -859,6 +909,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 1.7481396, z: 0.02775371}
     m_Extent: {x: 0.56949735, y: 0.64973235, z: 0.56993866}
   m_DirtyAABB: 0
+--- !u!114 &8200000000000000042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3352470371378561224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &3738905602957901499
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,6 +1134,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.16866435, y: 0.17940894, z: 0.0424411}
     m_Extent: {x: 0.12301971, y: 0.3569788, z: 0.289971}
   m_DirtyAABB: 0
+--- !u!114 &8200000000000000043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4054612902487970866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &4228453167203015339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1284,6 +1358,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000010699034, y: 0.6650187, z: -0.21479943}
     m_Extent: {x: 0.48537844, y: 0.57097244, z: 0.17129451}
   m_DirtyAABB: 0
+--- !u!114 &8200000000000000044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5023486242242968664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &5281833903914096121
 GameObject:
   m_ObjectHideFlags: 0
@@ -1496,6 +1582,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0001385212, y: 2.0976725, z: 0.3402679}
     m_Extent: {x: 0.6086559, y: 0.44543213, z: 0.42532516}
   m_DirtyAABB: 0
+--- !u!114 &8200000000000000045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6721284619657665282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &6761174013194174565
 GameObject:
   m_ObjectHideFlags: 0
@@ -1852,6 +1950,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000140070915, y: 1.7500387, z: 0.024851978}
     m_Extent: {x: 0.54317343, y: 0.5341474, z: 0.50694174}
   m_DirtyAABB: 0
+--- !u!114 &8200000000000000046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8253467893663607349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &8271287230343994583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1969,6 +2079,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.506705, y: 1.1235809, z: -0.0071141273}
     m_Extent: {x: 0.4645483, y: 0.14827669, z: 0.17780426}
   m_DirtyAABB: 0
+--- !u!114 &8200000000000000047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8271287230343994583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &9056856884207233383
 GameObject:
   m_ObjectHideFlags: 0
@@ -6957,111 +7079,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8663132425146241535, guid: 0de84c8ed5bed413894987608a8673e6, type: 3}
   m_PrefabInstance: {fileID: 9059507081327352850}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8200000000000000039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!198 &5461952471933780695 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3924066175118024389, guid: 0de84c8ed5bed413894987608a8673e6, type: 3}
+  m_PrefabInstance: {fileID: 9059507081327352850}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 119776022235270248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
---- !u!114 &8200000000000000040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021298095155749944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
---- !u!114 &8200000000000000041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2356985033765874494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
---- !u!114 &8200000000000000042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3352470371378561224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
---- !u!114 &8200000000000000043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4054612902487970866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
---- !u!114 &8200000000000000044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5023486242242968664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
---- !u!114 &8200000000000000045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6721284619657665282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
---- !u!114 &8200000000000000046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8253467893663607349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
---- !u!114 &8200000000000000047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8271287230343994583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor

@@ -14,7 +14,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 
     [SerializeField] private float _dieAnimationDuration = 1f;
     [SerializeField] private SkinnedMeshRenderer[] _depthBucketRenderers;
-    [SerializeField] private Vector3 _damageTextOffset = new Vector3(0f, 1f, 0f);
+    [NotNull][SerializeField] private Transform _damageTextAnchor;
 
     private SplineAnimate _splineAnimate;
     private MaterialPropertyBlock _propertyBlock;
@@ -57,6 +57,12 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
             return;
         }
 
+        if (_damageTextAnchor == null)
+        {
+            Debug.Log("[BaseSlime] _damageTextAnchor가 연결되지 않아 슬라임 위치에 데미지 텍스트를 띄웁니다.", this);
+            _damageTextAnchor = transform;
+        }
+
         if (_depthBucketRenderers == null || _depthBucketRenderers.Length == 0)
             Debug.Log("[BaseSlime] _depthBucketRenderers가 연결되지 않아 렌더 순서를 적용할 수 없습니다.", this);
         else
@@ -76,7 +82,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
         _cancellationTokenSource = new CancellationTokenSource();
 
         _disposables = new CompositeDisposable();
-        _gameProgressSubscriber?.Subscribe(evt =>
+        _gameProgressSubscriber.Subscribe(evt =>
         {
             if (evt.EventType == GameProgressType.GameOver)
                 StopMoving();
@@ -157,7 +163,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
         int dealt = before - _stats.CurrentHealth.Value;
 
         if (dealt > 0)
-            _damageTextSpawner?.Show(dealt, transform.position + _damageTextOffset);
+            _damageTextSpawner.Show(dealt, _damageTextAnchor.position);
 
         if (_stats.IsDead)
         {
@@ -177,10 +183,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
                 TimeSpan.FromSeconds(_dieAnimationDuration),
                 cancellationToken: _cancellationTokenSource.Token);
 
-            if (_poolService != null)
-            {
-                _poolService.Release(gameObject);
-            }
+            _poolService.Release(gameObject);
         }
         catch (OperationCanceledException)
         {
