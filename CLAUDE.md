@@ -177,7 +177,6 @@ Match를 0으로 두는 이유는 세로 게임에서 **가로 폭이 UI 레이�
 ## 6. 정리 대상
 
 - [SlimeMover.cs](Assets/Scripts/SlimeMover.cs), `NewMonoBehaviourScript.cs`, `SampleScene.unity`는 프로토타입 잔재다. 정식 구현으로 대체되면 삭제한다
-- 미사용 이벤트 파일: `WaveStartedEvent.cs`, `WaveClearedEvent.cs`, `GameOverEvent.cs` (GameProgressEvent로 통합됨)
 - 어셈블리 정의(asmdef)가 아직 없다. 스크립트가 늘어나면 컴파일 시간을 위해 도입을 고려한다
 
 ---
