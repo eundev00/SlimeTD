@@ -19,7 +19,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
     private SplineAnimate _splineAnimate;
     private MaterialPropertyBlock _propertyBlock;
     private SlimeStats _stats;
-    private SlimeData _data;
+    private SlimeDataBase _data;
+    private int _goldReward;
     private IPublisher<SlimeKilledEvent> _killedPublisher;
     private IPublisher<SlimeReachedEndEvent> _reachedEndPublisher;
     private IGameObjectPoolService _poolService;
@@ -97,6 +98,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
     public virtual void OnReturnToPool()
     {
         _stats?.Reset(0);
+        _goldReward = 0;
 
         _disposables?.Dispose();
         _disposables = null;
@@ -123,12 +125,13 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 
 
 
-    public virtual void Initialize(SplineContainer splineContainer, SlimeData data, int health)
+    public virtual void Initialize(SplineContainer splineContainer, SlimeDataBase data, int health, int goldReward)
     {
         if (_splineAnimate == null || data == null)
             return;
 
         _data = data;
+        _goldReward = goldReward;
         _stats.Reset(health);
 
         _splineAnimate.Container = splineContainer;
@@ -168,7 +171,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
         if (_stats.IsDead)
         {
             _splineAnimate.Pause();
-            _killedPublisher.Publish(new SlimeKilledEvent(_data.GoldReward));
+            _killedPublisher.Publish(new SlimeKilledEvent(_goldReward));
             OnDiedAsync();
         }
     }

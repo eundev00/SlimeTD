@@ -123,6 +123,14 @@ public class GameplayService : IGameplayService
             case GameProgressType.WaveSpawnFinished:
                 if (e.IsLastWave)
                     _spawnFinished = true;
+
+                if (WaveTable != null)
+                {
+                    int reward = WaveTable.WaveClearGold(e.WaveIndex);
+                    _info.Gold.Value += reward;
+                    Debug.Log($"[GameplayService] 웨이브 {e.WaveIndex} 보상 골드 +{reward}");
+                }
+
                 Debug.Log($"[GameplayService] 웨이브 {e.WaveIndex} 스폰 완료, 남은 슬라임: {_aliveCount}");
                 CheckWaveCleared();
                 break;

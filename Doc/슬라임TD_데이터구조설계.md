@@ -30,31 +30,9 @@ GridCellState (enum)
 
 ## 웨이브 / 슬라임
 
+[슬라임TD_웨이브데이터구조.md](슬라임TD_웨이브데이터구조.md) 참고.
+
 ```
-WaveTableData (SO, 스테이지당 1개)
-├─ maxWave           : int = 10                 // 이 웨이브까지 진행되면 클리어
-├─ waveStartDelay    : float = 3                // 웨이브 시작 전 대기
-├─ manualWave        : IndexedSpawnEntry[]      // 손으로 짠 웨이브 (배율 미적용)
-├─ autoWave          : SpawnEntry[]             // manualWave 없는 구간 자동 생성용 기준값
-├─ countRate         : float = 0.1              // autoWave 전용, count = base * (1 + waveIndex * countRate)
-├─ healthRate        : float = 0.15             // autoWave 전용, health = baseHealth * (1 + waveIndex * healthRate)
-└─ maxSlimeCount     : int = 30                 // 동시 존재 상한
-
-SpawnEntry (SO)
-├─ slimeDatas        : SlimeData[]              // 순서대로 스폰
-└─ spawnInterval     : float = 1                // 스폰 간격
-
-IndexedSpawnEntry (SpawnEntry 상속)
-└─ waveIndex         : int = 1                  // 같은 값끼리 한 웨이브로 묶임
-
-SlimeData (SO, 종류당 1개)
-├─ prefab            : GameObject
-├─ baseHealth        : int = 3
-├─ baseSpeed         : float = 1
-├─ lifeCost          : int = 1                  // 경로 끝 도달 시 차감 라이프
-├─ goldReward        : int = 1                  // 처치 보상
-└─ renderGroup       : SlimeRenderGroup
-
 SlimeRenderGroup (enum)
 ├─ Normal = 0
 └─ Boss   = 1

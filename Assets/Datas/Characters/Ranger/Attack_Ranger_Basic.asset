@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e8bfa18c47647eab52936692a5e83a, type: 3}
   m_Name: Attack_Ranger_Basic
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileAttackData
-  _damage: 20
+  _damage: 80
   _cooldown: 1
   _attackStates:
   - Attack

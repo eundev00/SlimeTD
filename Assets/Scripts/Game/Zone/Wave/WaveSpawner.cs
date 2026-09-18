@@ -11,21 +11,10 @@ using VContainer;
 
 public class WaveSpawner : MonoBehaviour
 {
-    private readonly struct SpawnPlan
-    {
-        public readonly SlimeData SlimeData;
-        public readonly int Health;
-        public readonly float SpawnInterval;
-
-        public SpawnPlan(SlimeData slimeData, int health, float spawnInterval)
-        {
-            SlimeData = slimeData;
-            Health = health;
-            SpawnInterval = spawnInterval;
-        }
-    }
-
     [NotNull][SerializeField] private SplineContainer _splineContainer;
+
+    // 웨이브가 겹쳐 스폰되므로 동시 생존 수를 이 창(window) 크기로 근사한다.
+    [SerializeField] private int _overlapWaveWindow = 3;
 
     private WaveTableData _waveTable;
     private Transform _spawnRoot;
@@ -37,6 +26,7 @@ public class WaveSpawner : MonoBehaviour
 
     private CompositeDisposable _disposables;
     private CancellationTokenSource _spawnCts;
+    private System.Random _rng;
     private bool _waveClearedReceived;
     private bool _gameOver;
 
@@ -76,6 +66,7 @@ public class WaveSpawner : MonoBehaviour
 
         _gameOver = false;
         _waveClearedReceived = false;
+        _rng = new System.Random();
         _spawnOrderCounter.Reset();
 
         _disposables = new CompositeDisposable();
@@ -105,101 +96,56 @@ public class WaveSpawner : MonoBehaviour
         _spawnCts = null;
     }
 
-    private List<SpawnPlan> ResolveWave(int waveIndex)
-    {
-        var plans = new List<SpawnPlan>();
-
-        var manualEntry = FindManualEntry(waveIndex);
-        if (manualEntry != null)
-            AddPlans(plans, manualEntry, 1f, 1f, 0);
-
-        if (plans.Count == 0 && _waveTable.AutoWave != null && _waveTable.AutoWave.Length > 0)
-        {
-            float countMultiplier = waveIndex * _waveTable.CountRate;
-            float healthMultiplier = 1f + waveIndex * _waveTable.HealthRate;
-
-            var entry = _waveTable.AutoWave[UnityEngine.Random.Range(0, _waveTable.AutoWave.Length)];
-            AddPlans(plans, entry, countMultiplier, healthMultiplier, _waveTable.MaxSlimeCount);
-        }
-
-        return plans;
-    }
-
-    private IndexedSpawnEntry FindManualEntry(int waveIndex)
-    {
-        if (_waveTable.ManualWave == null)
-            return null;
-
-        foreach (var entry in _waveTable.ManualWave)
-        {
-            if (entry != null && entry.WaveIndex == waveIndex)
-                return entry;
-        }
-
-        return null;
-    }
-
-    private static void AddPlans(List<SpawnPlan> plans, SpawnEntry entry, float countMultiplier, float healthMultiplier, int maxCount)
-    {
-        if (entry == null || entry.SlimeDatas == null || entry.SlimeDatas.Length == 0)
-            return;
-
-        int baseCount = entry.SlimeDatas.Length;
-        int totalCount = Mathf.Max(1, Mathf.RoundToInt(baseCount * countMultiplier));
-
-        if (maxCount > 0)
-            totalCount = Mathf.Min(totalCount, maxCount);
-
-        for (int i = 0; i < totalCount; i++)
-        {
-            var slimeData = entry.SlimeDatas[i % baseCount];
-            if (slimeData == null)
-                continue;
-
-            int health = Mathf.Max(1, Mathf.CeilToInt(slimeData.BaseHealth * healthMultiplier));
-            plans.Add(new SpawnPlan(slimeData, health, entry.SpawnInterval));
-        }
-    }
-
-    // TODO: 웨이브가 겹쳐 스폰되므로 동시 생존 수 기준으로 풀 크기를 재산정할 것
     private void PreparePools()
     {
-        var prefabCounts = new Dictionary<GameObject, int>();
+        int finalWave = _waveTable.FinalWave;
+        var plans = new List<SpawnPlan>();
+        var perWave = new List<Dictionary<GameObject, int>>(finalWave + 1) { null };
 
-        for (int waveIndex = 1; waveIndex <= _waveTable.MaxWave; waveIndex++)
+        for (int waveIndex = 1; waveIndex <= finalWave; waveIndex++)
         {
-            var plans = new List<SpawnPlan>();
+            WaveResolver.Resolve(_waveTable, waveIndex, plans, null, false);
 
-            var manualEntry = FindManualEntry(waveIndex);
-            if (manualEntry != null)
-                AddPlans(plans, manualEntry, 1f, 1f, 0);
-
-            if (plans.Count == 0 && _waveTable.AutoWave != null)
-            {
-                float countMultiplier = waveIndex * _waveTable.CountRate;
-
-                foreach (var entry in _waveTable.AutoWave)
-                {
-                    AddPlans(plans, entry, countMultiplier, 1f, _waveTable.MaxSlimeCount);
-                }
-            }
-
+            var demand = new Dictionary<GameObject, int>();
             foreach (var plan in plans)
             {
                 var prefab = plan.SlimeData.Prefab;
-                if (prefab == null)
-                    continue;
+                demand.TryGetValue(prefab, out int current);
+                demand[prefab] = current + 1;
+            }
 
-                prefabCounts.TryGetValue(prefab, out int current);
-                prefabCounts[prefab] = current + 1;
+            perWave.Add(demand);
+        }
+
+        int window = Mathf.Max(1, _overlapWaveWindow);
+        var peak = new Dictionary<GameObject, int>();
+        var windowSum = new Dictionary<GameObject, int>();
+
+        for (int waveIndex = 1; waveIndex <= finalWave; waveIndex++)
+        {
+            windowSum.Clear();
+
+            for (int k = waveIndex; k < waveIndex + window && k <= finalWave; k++)
+            {
+                foreach (var kvp in perWave[k])
+                {
+                    windowSum.TryGetValue(kvp.Key, out int current);
+                    windowSum[kvp.Key] = current + kvp.Value;
+                }
+            }
+
+            foreach (var kvp in windowSum)
+            {
+                peak.TryGetValue(kvp.Key, out int current);
+                if (kvp.Value > current)
+                    peak[kvp.Key] = kvp.Value;
             }
         }
 
-        foreach (var kvp in prefabCounts)
+        foreach (var kvp in peak)
         {
-            int totalCount = kvp.Value;
-            int initialSize = Mathf.Max(totalCount, 10);
-            int maxSize = Mathf.CeilToInt(totalCount * 2f);
+            int initialSize = Mathf.Clamp(kvp.Value, 8, 256);
+            int maxSize = Mathf.CeilToInt(kvp.Value * 1.5f) + 8;
 
             _poolService.CreatePool(kvp.Key, initialSize, maxSize);
             Debug.Log($"[WaveSpawner] 풀 생성: {kvp.Key.name}, 초기={initialSize}, 최대={maxSize}");
@@ -231,15 +177,18 @@ public class WaveSpawner : MonoBehaviour
 
     private async UniTask RunWaveAsync(int waveIndex, CancellationToken token)
     {
-        var plans = ResolveWave(waveIndex);
+        var plans = new List<SpawnPlan>();
+        WaveResolver.Resolve(_waveTable, waveIndex, plans, _rng, true);
+
         if (plans.Count == 0)
         {
             Debug.Log($"[WaveSpawner] 웨이브 {waveIndex} 스폰 목록이 비어 건너뜁니다.", this);
             return;
         }
 
-        if (_waveTable.WaveStartDelay > 0f)
-            await UniTask.Delay(TimeSpan.FromSeconds(_waveTable.WaveStartDelay), cancellationToken: token);
+        float startDelay = WaveResolver.StartDelayFor(_waveTable, waveIndex);
+        if (startDelay > 0f)
+            await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: token);
 
         bool isLastWave = waveIndex == _waveTable.MaxWave;
         int totalSlimeCount = plans.Count;
@@ -251,7 +200,7 @@ public class WaveSpawner : MonoBehaviour
 
         foreach (var plan in plans)
         {
-            SpawnOne(plan.SlimeData, plan.Health);
+            SpawnOne(plan);
 
             if (plan.SpawnInterval > 0f)
                 await UniTask.Delay(TimeSpan.FromSeconds(plan.SpawnInterval), cancellationToken: token);
@@ -281,16 +230,11 @@ public class WaveSpawner : MonoBehaviour
         return builder.ToString();
     }
 
-    private void SpawnOne(SlimeData slimeData, int health)
+    private void SpawnOne(SpawnPlan plan)
     {
-        var prefab = slimeData.Prefab;
-        if (prefab == null)
-        {
-            Debug.Log($"[WaveSpawner] {slimeData.name}에 프리팹이 연결되지 않았습니다.", this);
-            return;
-        }
+        var slimeData = plan.SlimeData;
 
-        var obj = _poolService.Get(prefab);
+        var obj = _poolService.Get(slimeData.Prefab);
         if (obj == null)
             return;
 
@@ -306,7 +250,7 @@ public class WaveSpawner : MonoBehaviour
 
         slime.SetDepthBucket(_spawnOrderCounter.NextBucket(slimeData.RenderGroup));
 
-        slime.Initialize(_splineContainer, slimeData, health);
+        slime.Initialize(_splineContainer, slimeData, plan.Health, plan.GoldReward);
     }
 
     private void OnGameOver()
