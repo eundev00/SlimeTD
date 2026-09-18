@@ -143,7 +143,6 @@ public class GameplayService : IGameplayService
             return;
 
         _info.Life.Value = Mathf.Max(0, _info.Life.Value - e.LifeCost);
-        Debug.Log($"[GameplayService] 라이프 {_info.Life.Value}");
 
         if (_info.Life.Value <= 0)
         {

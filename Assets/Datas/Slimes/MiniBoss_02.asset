@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c3e5a71b8d24f60a417e9c2d5b306f8, type: 3}
   m_Name: MiniBoss_02
   m_EditorClassIdentifier: Assembly-CSharp::BossSlimeData
-  _prefab: {fileID: 4941929678292297010, guid: e6d40d6a7b6864784a94e3e85b8b8e37, type: 3}
+  _prefab: {fileID: 4941929678292297010, guid: c0e636019118e4da2a14eb82fa92fdec, type: 3}
   _baseHealth: 5000
-  _baseSpeed: 0.5
+  _baseSpeed: 0.7
   _lifeCost: 5
   _renderGroup: 1
   _goldReward: 100

@@ -64,7 +64,8 @@ public static class WaveResolver
                 continue;
             }
 
-            results.Insert(0, new SpawnPlan(boss, boss.BaseHealth, boss.GoldReward, interval));
+            int midIndex = results.Count / 2;
+            results.Insert(midIndex, new SpawnPlan(boss, boss.BaseHealth, boss.GoldReward, interval));
         }
     }
 

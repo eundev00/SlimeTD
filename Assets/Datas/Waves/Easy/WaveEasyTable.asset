@@ -42,16 +42,16 @@ MonoBehaviour:
   _bossEntries:
   - _waveNumber: 10
     _bossData: {fileID: 11400000, guid: 1a0000000000000000000000000000f4, type: 2}
-    _extraStartDelay: 3
+    _extraStartDelay: 0.5
   - _waveNumber: 20
     _bossData: {fileID: 11400000, guid: 85e16d32317594170b7de993ec0d0088, type: 2}
-    _extraStartDelay: 3
+    _extraStartDelay: 0.5
   - _waveNumber: 30
     _bossData: {fileID: 11400000, guid: 468b86f21e7204bf7b6f17f3dd323b98, type: 2}
-    _extraStartDelay: 3
+    _extraStartDelay: 1
   - _waveNumber: 40
     _bossData: {fileID: 11400000, guid: aca79f126081d469ea2c06d141827200, type: 2}
-    _extraStartDelay: 3
+    _extraStartDelay: 1
   - _waveNumber: 50
     _bossData: {fileID: 11400000, guid: d2934cfdc592a418380060b838a3c11a, type: 2}
-    _extraStartDelay: 3
+    _extraStartDelay: 1

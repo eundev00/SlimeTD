@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossSlimeData
   _prefab: {fileID: 4941929678292297010, guid: 474a59f31f6f54d01875c1d060e7d1dd, type: 3}
   _baseHealth: 15000
-  _baseSpeed: 0.5
+  _baseSpeed: 0.6
   _lifeCost: 10
   _renderGroup: 1
   _goldReward: 100

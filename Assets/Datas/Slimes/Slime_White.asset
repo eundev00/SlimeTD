@@ -18,4 +18,4 @@ MonoBehaviour:
   _lifeCost: 1
   _renderGroup: 0
   _appearFromWave: 1
-  _spawnWeight: 8
+  _spawnWeight: 36
