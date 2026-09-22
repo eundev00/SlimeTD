@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4393816539427685457}
   - component: {fileID: 1825165534152143458}
   - component: {fileID: 385336844868598333}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Slime_Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3128614972345509345}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 2986962603447594488}
   - component: {fileID: 5807686432058566521}
   - component: {fileID: 7728436527363987313}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Slime_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6240646396668184687}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 5028046557049172747}
   - component: {fileID: 1006846176720098267}
   - component: {fileID: 9215837291409383890}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: SlimeTier1_White
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,7 +396,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6074291652830617680}
   - component: {fileID: 1481019008075855848}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: Cute_Slime_A_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,7 +452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7950034562630052804}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1478327742592422935}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: DamageAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
