@@ -3,11 +3,10 @@
 3D 캐주얼 타워 디펜스. Bloons TD 구조를 차용하되, "풍선이 터지는" 대신 **"슬라임이 쪼개지는"** 손맛을 핵심 차별점으로 삼는다.
 
 - 기획서: [Doc/슬라임TD_게임기획서.md](Doc/슬라임TD_게임기획서.md)
-- 작업 플랜: [Doc/슬라임TD_작업플랜.md](Doc/슬라임TD_작업플랜.md)
-
-작업 전 위 두 문서를 우선 참고한다. 기능 범위/우선순위 판단이 필요하면 작업 플랜의 단계 구성을 따른다.
-
-**목표 범위(1인 개발)**: 스테이지 3개, 슬라임 4종(기본 3종 + 대장 1종), 타워 2~3종. 아트는 에셋스토어 구매.
+- 타워 로스터: [Doc/슬라임TD_타워로스터.md](Doc/슬라임TD_타워로스터.md)
+- 데이터 구조: [Doc/슬라임TD_데이터구조설계.md](Doc/슬라임TD_데이터구조설계.md)
+- 웨이브 데이터: [Doc/슬라임TD_웨이브데이터구조.md](Doc/슬라임TD_웨이브데이터구조.md)
+- 슬라임 렌더링: [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md)
 
 **화면**: 모바일 **세로(Portrait) 고정**. UI/카메라/맵 관련 작업은 항상 세로 비율을 기준으로 한다. 자세한 내용은 아래 [5. 세로 화면(Portrait) 기준](#5-세로-화면portrait-기준) 참고.
 
@@ -26,6 +25,7 @@
 | 프레임 업데이트 | UpdateSubscriptionService (중앙 집중 Update 관리) |
 | 경로 이동 | Unity Splines (곡선 경로 생성/이동) |
 | 트윈/연출 | DOTween (피격 반응, 분열 연출 등 "손맛" 구현) |
+| Safe Area | NotchSolution (노치/펀치홀 기기 대응) |
 
 Unity Object Pool과 ScriptableObject는 엔진 기본 기능이라 스택으로 명시하지 않고 설계 패턴으로만 활용한다.
 
@@ -113,6 +113,8 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 - **오브젝트 풀링**: 슬라임/발사체는 스폰 빈도가 높다. Unity `ObjectPool<T>`를 쓰고, 반환 시 `ReactiveProperty`와 구독 상태를 반드시 초기화한다
 - **밸런스 수치**: 체력/데미지/골드/라이프 차감량은 ScriptableObject로 분리해 코드에 하드코딩하지 않는다
 - **"손맛"이 이 프로젝트의 최우선 품질 기준**이다. 피격/처치 연출은 비용을 아끼지 않는다
+- **그리드 배치**: 맵은 `GridMapData`(ScriptableObject)로 셀 단위 관리한다. 배치 가능/불가/경로 상태를 셀마다 지정하고, 에디터 도구(`GridMapDataInspector`, `GridSceneViewDrawer`, `GridPaintMode`)로 편집한다
+- **슬라임 렌더 순서**: `SlimeRenderOrderService`가 슬라임 간 깊이(Z-order)를 관리한다. 상세 설계는 [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md) 참고
 
 ---
 
@@ -176,7 +178,7 @@ Match를 0으로 두는 이유는 세로 게임에서 **가로 폭이 UI 레이�
 
 ## 6. 정리 대상
 
-- [SlimeMover.cs](Assets/Scripts/SlimeMover.cs), `NewMonoBehaviourScript.cs`, `SampleScene.unity`는 프로토타입 잔재다. 정식 구현으로 대체되면 삭제한다
+- [SlimeMover.cs](Assets/Scripts/SlimeMover.cs), `SampleScene.unity`는 프로토타입 잔재다. 정식 구현으로 대체되면 삭제한다
 - 어셈블리 정의(asmdef)가 아직 없다. 스크립트가 늘어나면 컴파일 시간을 위해 도입을 고려한다
 
 ---
