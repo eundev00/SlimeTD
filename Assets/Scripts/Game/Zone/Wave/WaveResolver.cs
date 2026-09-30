@@ -42,8 +42,7 @@ public static class WaveResolver
         foreach (var slime in Minions)
         {
             int health = ScaleHealth(slime.BaseHealth, table.HpGrowth, waveNumber);
-            int gold = Mathf.Max(1, Mathf.RoundToInt(health * table.GoldRatio));
-            results.Add(new SpawnPlan(slime, health, gold, interval));
+            results.Add(new SpawnPlan(slime, health, slime.GoldReward, interval));
         }
 
         var bossEntries = table.BossEntries;
