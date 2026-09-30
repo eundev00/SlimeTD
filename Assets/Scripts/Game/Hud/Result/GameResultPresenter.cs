@@ -8,6 +8,7 @@ public class GameResultPresenter : IStartable, IDisposable
 {
     private readonly GameResultView _view;
     private readonly ISceneLoader _sceneLoader;
+    private readonly IGameplayService _gameplayService;
     private readonly ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -16,10 +17,12 @@ public class GameResultPresenter : IStartable, IDisposable
     public GameResultPresenter(
         GameResultView view,
         ISceneLoader sceneLoader,
+        IGameplayService gameplayService,
         ISubscriber<GameProgressEvent> gameProgressSubscriber)
     {
         _view = view;
         _sceneLoader = sceneLoader;
+        _gameplayService = gameplayService;
         _gameProgressSubscriber = gameProgressSubscriber;
     }
 
@@ -40,7 +43,10 @@ public class GameResultPresenter : IStartable, IDisposable
             return;
 
         _shown = true;
-        _view.Show();
+
+        bool isCleared = e.EventType == GameProgressType.StageCleared;
+        var info = _gameplayService.Info;
+        _view.Show(isCleared, info.CurrentWave.Value, info.MaxWave.Value);
     }
 
     private void HandleRestartButtonClicked()

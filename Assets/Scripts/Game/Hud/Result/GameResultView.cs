@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,11 @@ public class GameResultView : MonoBehaviour
     [NotNull][SerializeField] private GameObject _panelRoot;
     [NotNull][SerializeField] private Button _restartButton;
     [NotNull][SerializeField] private Button _lobbyButton;
+
+    [Header("결과 정보")]
+    [SerializeField] private TMP_Text _titleText;
+    [SerializeField] private TMP_Text _waveText;
+    [SerializeField] private GameObject _rewardRoot;
 
     public event Action RestartButtonClicked;
     public event Action LobbyButtonClicked;
@@ -55,8 +61,17 @@ public class GameResultView : MonoBehaviour
         LobbyButtonClicked?.Invoke();
     }
 
-    public void Show()
+    public void Show(bool isCleared, int currentWave, int maxWave)
     {
+        if (_titleText != null)
+            _titleText.text = isCleared ? "클리어!" : "게임오버";
+
+        if (_waveText != null)
+            _waveText.text = $"{currentWave} / {maxWave}";
+
+        if (_rewardRoot != null)
+            _rewardRoot.SetActive(true);
+
         SetButtonsInteractable(true);
 
         if (_panelRoot != null)
