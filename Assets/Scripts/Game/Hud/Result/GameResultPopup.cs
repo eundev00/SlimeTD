@@ -1,11 +1,11 @@
 using System;
+using Services.PopupService;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameResultView : MonoBehaviour
+public class GameResultPopup : PopupBase
 {
-    [NotNull][SerializeField] private GameObject _panelRoot;
     [NotNull][SerializeField] private Button _restartButton;
     [NotNull][SerializeField] private Button _lobbyButton;
 
@@ -19,22 +19,11 @@ public class GameResultView : MonoBehaviour
 
     public string SceneName => gameObject.scene.name;
 
-    private void Awake()
-    {
-        Hide();
-    }
-
     private void Start()
     {
-        if (_panelRoot == null)
-        {
-            Debug.Log("[GameResultView] _panelRoot가 연결되지 않았습니다.", this);
-            return;
-        }
-
         if (_restartButton == null || _lobbyButton == null)
         {
-            Debug.Log("[GameResultView] 버튼이 연결되지 않았습니다.", this);
+            Debug.Log("[GameResultPopup] 버튼이 연결되지 않았습니다.", this);
             return;
         }
 
@@ -61,7 +50,15 @@ public class GameResultView : MonoBehaviour
         LobbyButtonClicked?.Invoke();
     }
 
-    public void Show(bool isCleared, int currentWave, int maxWave)
+    protected override void OnBackPressed()
+    {
+        if (_lobbyButton == null || !_lobbyButton.interactable)
+            return;
+
+        OnLobbyButtonClicked();
+    }
+
+    public void Setup(bool isCleared, int currentWave, int maxWave)
     {
         if (_titleText != null)
             _titleText.text = isCleared ? "클리어!" : "게임오버";
@@ -73,15 +70,6 @@ public class GameResultView : MonoBehaviour
             _rewardRoot.SetActive(true);
 
         SetButtonsInteractable(true);
-
-        if (_panelRoot != null)
-            _panelRoot.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        if (_panelRoot != null)
-            _panelRoot.SetActive(false);
     }
 
     public void SetButtonsInteractable(bool interactable)

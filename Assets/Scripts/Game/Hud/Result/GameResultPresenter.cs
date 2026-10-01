@@ -1,26 +1,29 @@
 using System;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
+using Services.PopupService;
 using UniRx;
 using VContainer.Unity;
 
 public class GameResultPresenter : IStartable, IDisposable
 {
-    private readonly GameResultView _view;
+    private readonly IPopupService _popupService;
     private readonly ISceneLoader _sceneLoader;
     private readonly IGameplayService _gameplayService;
     private readonly ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+    private GameResultPopup _popup;
     private bool _shown;
+    private bool _disposed;
 
     public GameResultPresenter(
-        GameResultView view,
+        IPopupService popupService,
         ISceneLoader sceneLoader,
         IGameplayService gameplayService,
         ISubscriber<GameProgressEvent> gameProgressSubscriber)
     {
-        _view = view;
+        _popupService = popupService;
         _sceneLoader = sceneLoader;
         _gameplayService = gameplayService;
         _gameProgressSubscriber = gameProgressSubscriber;
@@ -28,9 +31,6 @@ public class GameResultPresenter : IStartable, IDisposable
 
     public void Start()
     {
-        _view.RestartButtonClicked += HandleRestartButtonClicked;
-        _view.LobbyButtonClicked += HandleLobbyButtonClicked;
-
         _gameProgressSubscriber.Subscribe(HandleGameProgress).AddTo(_disposables);
     }
 
@@ -45,28 +45,43 @@ public class GameResultPresenter : IStartable, IDisposable
         _shown = true;
 
         bool isCleared = e.EventType == GameProgressType.StageCleared;
+        ShowAsync(isCleared).Forget();
+    }
+
+    private async UniTaskVoid ShowAsync(bool isCleared)
+    {
+        var popup = await _popupService.OpenAsync<GameResultPopup>(PrefabKeys.GameResultPopup);
+        if (popup == null || _disposed)
+            return;
+
+        _popup = popup;
+        _popup.RestartButtonClicked += HandleRestartButtonClicked;
+        _popup.LobbyButtonClicked += HandleLobbyButtonClicked;
+
         var info = _gameplayService.Info;
-        _view.Show(isCleared, info.CurrentWave.Value, info.MaxWave.Value);
+        _popup.Setup(isCleared, info.CurrentWave.Value, info.MaxWave.Value);
     }
 
     private void HandleRestartButtonClicked()
     {
-        _view.SetButtonsInteractable(false);
-        _sceneLoader.ReloadAsync(_view.SceneName).Forget();
+        _popup.SetButtonsInteractable(false);
+        _sceneLoader.ReloadAsync(_popup.SceneName).Forget();
     }
 
     private void HandleLobbyButtonClicked()
     {
-        _view.SetButtonsInteractable(false);
-        _sceneLoader.TransitionAsync(_view.SceneName, SceneNames.Lobby).Forget();
+        _popup.SetButtonsInteractable(false);
+        _sceneLoader.TransitionAsync(_popup.SceneName, SceneNames.Lobby).Forget();
     }
 
     public void Dispose()
     {
-        if (_view != null)
+        _disposed = true;
+
+        if (_popup != null)
         {
-            _view.RestartButtonClicked -= HandleRestartButtonClicked;
-            _view.LobbyButtonClicked -= HandleLobbyButtonClicked;
+            _popup.RestartButtonClicked -= HandleRestartButtonClicked;
+            _popup.LobbyButtonClicked -= HandleLobbyButtonClicked;
         }
 
         _disposables.Dispose();

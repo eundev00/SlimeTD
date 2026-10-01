@@ -1,4 +1,5 @@
 using Services.PoolService;
+using Services.PopupService;
 using VContainer;
 using VContainer.Unity;
 
@@ -22,7 +23,9 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<GameplayHudView>();
         builder.RegisterEntryPoint<GameplayHudPresenter>();
 
-        builder.RegisterComponentInHierarchy<GameResultView>();
+        builder.RegisterComponentInHierarchy<PopupRoot>();
+        builder.RegisterEntryPoint<PopupService>();
+
         builder.RegisterEntryPoint<GameResultPresenter>();
 
         builder.RegisterComponentInHierarchy<TowerActionView>();
