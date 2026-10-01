@@ -1,12 +1,10 @@
 using Cysharp.Threading.Tasks;
 
-namespace Services.PopupService
+public interface IPopupService
 {
-    public interface IPopupService
-    {
-        bool HasOpenPopup { get; }
+    bool HasOpenPopup { get; }
 
-        UniTask<T> OpenAsync<T>(string key) where T : PopupBase;
-        UniTask CloseAsync(PopupBase popup);
-    }
+    UniTask<PopupBase> OpenAsync(string key);
+    UniTask<T> OpenAsync<T>(string key) where T : PopupBase;
+    UniTask CloseAsync(PopupBase popup);
 }

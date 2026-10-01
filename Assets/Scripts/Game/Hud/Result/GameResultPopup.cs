@@ -1,16 +1,15 @@
 using System;
-using Services.PopupService;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[PopupPresenter(typeof(GameResultPresenter))]
 public class GameResultPopup : PopupBase
 {
     [NotNull][SerializeField] private Button _restartButton;
     [NotNull][SerializeField] private Button _lobbyButton;
 
     [Header("결과 정보")]
-    [SerializeField] private TMP_Text _titleText;
     [SerializeField] private TMP_Text _waveText;
     [SerializeField] private GameObject _rewardRoot;
 
@@ -58,13 +57,11 @@ public class GameResultPopup : PopupBase
         OnLobbyButtonClicked();
     }
 
-    public void Setup(bool isCleared, int currentWave, int maxWave)
+    public void Setup(bool isCleared, int currentWave)
     {
-        if (_titleText != null)
-            _titleText.text = isCleared ? "클리어!" : "게임오버";
-
+        // TODO: isCleared 사용 예정 (클리어/게임오버 구분 연출)
         if (_waveText != null)
-            _waveText.text = $"{currentWave} / {maxWave}";
+            _waveText.text = currentWave.ToString();
 
         if (_rewardRoot != null)
             _rewardRoot.SetActive(true);

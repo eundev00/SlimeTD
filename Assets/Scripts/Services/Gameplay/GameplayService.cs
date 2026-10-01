@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameplayService : IGameplayService
 {
     private readonly GameplayInfo _info;
+    private readonly IPopupService _popupService;
     private readonly IPublisher<GameProgressEvent> _gameProgressPublisher;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
     private bool _gameOverPublished;
@@ -26,6 +27,7 @@ public class GameplayService : IGameplayService
 
     public GameplayService(
         IResourceLoadService resourceLoadService,
+        IPopupService popupService,
         ISubscriber<SlimeReachedEndEvent> reachedEndSubscriber,
         ISubscriber<SlimeKilledEvent> killedSubscriber,
         IPublisher<GameProgressEvent> gameProgressPublisher,
@@ -34,6 +36,7 @@ public class GameplayService : IGameplayService
         _info = new GameplayInfo(0, 0);
         _gameProgressPublisher = gameProgressPublisher;
         _resourceLoadService = resourceLoadService;
+        _popupService = popupService;
 
         reachedEndSubscriber.Subscribe(OnSlimeReachedEnd).AddTo(_disposables);
         killedSubscriber.Subscribe(OnSlimeKilled).AddTo(_disposables);
@@ -103,7 +106,12 @@ public class GameplayService : IGameplayService
     {
         if (e.EventType == GameProgressType.GameOver || e.EventType == GameProgressType.StageCleared)
         {
+            if (_gameEnded)
+                return;
+
             _gameEnded = true;
+            _info.IsCleared.Value = e.EventType == GameProgressType.StageCleared;
+            _popupService.OpenAsync(PrefabKeys.GameResultPopup).Forget();
             return;
         }
 

@@ -1,10 +1,12 @@
 using Services.PoolService;
-using Services.PopupService;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 public class GameLifetimeScope : LifetimeScope
 {
+    [SerializeField] private RectTransform _popupRoot;
+
     protected override void Configure(IContainerBuilder builder)
     {
         builder.Register<GameObjectPoolService>(Lifetime.Scoped)
@@ -23,10 +25,8 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<GameplayHudView>();
         builder.RegisterEntryPoint<GameplayHudPresenter>();
 
-        builder.RegisterComponentInHierarchy<PopupRoot>();
+        builder.RegisterInstance(_popupRoot);
         builder.RegisterEntryPoint<PopupService>();
-
-        builder.RegisterEntryPoint<GameResultPresenter>();
 
         builder.RegisterComponentInHierarchy<TowerActionView>();
         builder.RegisterEntryPoint<TowerActionPresenter>();

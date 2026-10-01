@@ -22,8 +22,11 @@ public static class PrefabKeys
     public const string SlimeTier1_Green = "SlimeTier1_Green";
     public const string SlimeTier1_Orange = "SlimeTier1_Orange";
     public const string SlimeTier1_White = "SlimeTier1_White";
+    public const string SlimeTier2_Dark = "SlimeTier2_Dark";
     public const string SlimeTier2_Pink = "SlimeTier2_Pink";
-    public const string SlimeTier3_BossSlime = "SlimeTier3_BossSlime";
+    public const string SlimeTier3_BossSlime2 = "SlimeTier3_BossSlime2";
+    public const string SlimeTier3_BossSlime3 = "SlimeTier3_BossSlime3";
+    public const string SlimeTier3_Orange = "SlimeTier3_Orange";
     public const string Sword = "Sword";
     public const string Swordsman = "Swordsman";
 
@@ -49,8 +52,11 @@ public static class PrefabKeys
         { SlimeTier1_Green, "Assets/Prefabs/Game/Slime/SlimeTier1_Green.prefab" },
         { SlimeTier1_Orange, "Assets/Prefabs/Game/Slime/SlimeTier1_Orange.prefab" },
         { SlimeTier1_White, "Assets/Prefabs/Game/Slime/SlimeTier1_White.prefab" },
+        { SlimeTier2_Dark, "Assets/Prefabs/Game/Slime/SlimeTier2_Dark.prefab" },
         { SlimeTier2_Pink, "Assets/Prefabs/Game/Slime/SlimeTier2_Pink.prefab" },
-        { SlimeTier3_BossSlime, "Assets/Prefabs/Game/Slime/SlimeTier3_BossSlime.prefab" },
+        { SlimeTier3_BossSlime2, "Assets/Prefabs/Game/Slime/SlimeTier3_BossSlime2.prefab" },
+        { SlimeTier3_BossSlime3, "Assets/Prefabs/Game/Slime/SlimeTier3_BossSlime3.prefab" },
+        { SlimeTier3_Orange, "Assets/Prefabs/Game/Slime/SlimeTier3_Orange.prefab" },
         { Sword, "Assets/Prefabs/Game/Characters/Sword.prefab" },
         { Swordsman, "Assets/Prefabs/Game/Characters/Swordsman.prefab" },
     };
