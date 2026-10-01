@@ -38,37 +38,27 @@ Addressables
 - Animator가 없거나 상태가 없으면 연출 없이 바로 열고 닫힌다
 - 팝업마다 연출을 바꾸려면 `AnimatorOverrideController`로 클립만 교체한다
 
-## 에디터 작업 체크리스트
+## 생성된 에셋
 
-### 1. 팝업 애니메이터
-- [ ] `Assets/Animations/Popup/`에 `PopupOpen.anim`, `PopupClose.anim` 생성 (Loop Time 끔)
-  - Open 예: `CanvasGroup.alpha` 0→1, 콘텐츠 `Scale` 0.8→1.05→1 (약 0.25초)
-  - Close 예: alpha 1→0, scale 1→0.9 (약 0.15초)
-- [ ] `PopupAnimator.controller` 생성, 상태 `Open`(기본), `Close` 추가 후 각 클립 연결
+| 에셋 | 내용 |
+|---|---|
+| `Assets/Animations/Popup/PopupOpen.anim` | alpha 0→1 (0.15초), scale 0.8→1.05→1 (0.25초) |
+| `Assets/Animations/Popup/PopupClose.anim` | alpha 1→0, scale 1→0.9 (0.15초) |
+| `Assets/Animations/Popup/PopupAnimator.controller` | 상태 `Open`(기본), `Close` |
+| `Assets/Prefabs/Game/UI/Popup/PopupRoot.prefab` | Canvas(Sort Order 10, 1080×1920, Match 0) + Container + Dim(검정 60%) |
+| `Assets/Prefabs/Game/UI/Popup/GameResultPopup.prefab` | 기존 씬 결과 패널을 `Panel` 자식으로 옮기고 루트에 Canvas/GraphicRaycaster/CanvasGroup/Animator/GameResultPopup 구성 |
 
-### 2. PopupRoot 프리팹
-- [ ] Canvas 생성: Render Mode Screen Space - Overlay, **Sort Order를 HUD보다 높게**
-- [ ] CanvasScaler: Scale With Screen Size, 1080×1920, Match 0
-- [ ] GraphicRaycaster 확인
-- [ ] 자식 `Container` (RectTransform, 전체 스트레치)
-- [ ] `Container` 자식 `Dim` (Image, 반투명 검정, 전체 스트레치, **Raycast Target 켜기**)
-- [ ] Canvas 오브젝트에 `PopupRoot` 추가, `_container` = Container, `_dim` = Dim
-- [ ] `Assets/Prefabs/Game/UI/Popup/PopupRoot.prefab`으로 저장
-- [ ] `GameScene`, `GameScene2`, `GameSceneTest`에 배치. **씬에 PopupRoot가 없으면 GameLifetimeScope 생성이 실패한다**
+- `Assets/Prefabs` 폴더 전체가 Addressables에 등록돼 있어, 그 아래 프리팹은 에셋 경로가 곧 주소다. 별도 등록이 필요 없다
+- `GameScene`, `GameScene2`, `GameSceneTest`에서 기존 결과 패널을 삭제하고 `PopupRoot` 프리팹을 배치했다
 
-### 3. GameResultPopup 프리팹
-기존 `GameResultView` 컴포넌트는 스크립트 GUID를 유지한 채 `GameResultPopup`으로 바뀌었다. 버튼·텍스트 연결이 그대로 남아 있으니 이걸 바탕으로 만든다.
-- [ ] `GameScene`의 기존 결과 패널에서 `GameResultPopup` 컴포넌트가 붙은 오브젝트를 찾는다
-  - 기존 `_panelRoot` 필드는 없어졌다. 컴포넌트가 붙은 오브젝트 자체가 팝업 루트가 되도록 정리한다 (패널 내용이 그 아래에 활성 상태로 있어야 한다)
-- [ ] 루트에 `Canvas`(하위 캔버스) + **`GraphicRaycaster`** + `CanvasGroup` + `Animator`(PopupAnimator) 추가
-  - 하위 Canvas에 GraphicRaycaster가 없으면 버튼이 눌리지 않는다
-- [ ] 루트 RectTransform 전체 스트레치
-- [ ] `GameResultPopup`의 `_animator` 연결, `_useDim` 켜기, 버튼·텍스트 연결 확인
-- [ ] `Assets/Prefabs/Game/UI/Popup/GameResultPopup.prefab`으로 저장
-- [ ] Addressables 등록. 주소는 **에셋 경로 그대로** (`Assets/Prefabs/Game/UI/Popup/GameResultPopup.prefab`)
-- [ ] 세 게임 씬에서 기존 결과 패널 삭제
+## 남은 에디터 작업
 
-### 4. 확인
+- [ ] `GameResultPopup`의 `_titleText`, `_waveText`, `_rewardRoot` 연결 (기존 씬에서도 비어 있었다. `Panel` 아래 `Text (TMP)` 두 개가 후보)
+- [ ] `Panel` 아래에 기존 패널 자체 `Dim`이 있다. `PopupRoot` 딤과 겹쳐 더 어두워지므로 하나를 정리한다 (`Panel/Dim` 삭제 또는 `_useDim` 끄기)
+- [ ] 연출 수치·딤 색은 취향대로 조정
+
+## 확인
+
 - [ ] 게임오버 / 클리어 시 결과 팝업이 연출과 함께 열린다
 - [ ] 팝업 뒤 딤이 깔리고, 딤 위를 눌러도 타워가 소환·선택되지 않는다
 - [ ] 다시하기 / 로비 버튼 동작
