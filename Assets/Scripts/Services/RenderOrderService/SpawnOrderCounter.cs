@@ -36,12 +36,6 @@ public class SpawnOrderCounter : ISpawnOrderCounter
         return _counter++ + 1;
     }
 
-    // TODO: 분열 구현 시 부모와 겹치지 않는 버킷을 고르도록 확장
-    public int NextBucketFor(int parentBucket)
-    {
-        return NextBucket(SlimeRenderGroup.Normal);
-    }
-
     public void Reset()
     {
         _counter = 0;

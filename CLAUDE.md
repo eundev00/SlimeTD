@@ -1,6 +1,6 @@
 # SlimeTD
 
-3D 캐주얼 타워 디펜스. Bloons TD 구조를 차용하되, "풍선이 터지는" 대신 **"슬라임이 쪼개지는"** 손맛을 핵심 차별점으로 삼는다.
+3D 캐주얼 타워 디펜스. Bloons TD 구조를 차용하되, "풍선이 터지는" 대신 **"슬라임이 말랑하게 튕기는"** 손맛을 핵심 차별점으로 삼는다.
 
 - 기획서: [Doc/슬라임TD_게임기획서.md](Doc/슬라임TD_게임기획서.md)
 - 타워 로스터: [Doc/슬라임TD_타워로스터.md](Doc/슬라임TD_타워로스터.md)
@@ -25,7 +25,7 @@
 | Reactive | UniRx (`ReactiveProperty`, `CompositeDisposable`) |
 | 프레임 업데이트 | UpdateSubscriptionService (중앙 집중 Update 관리) |
 | 경로 이동 | Unity Splines (곡선 경로 생성/이동) |
-| 트윈/연출 | DOTween (피격 반응, 분열 연출 등 "손맛" 구현) |
+| 트윈/연출 | DOTween (피격 반응, 처치 연출 등 "손맛" 구현) |
 | Safe Area | NotchSolution (노치/펀치홀 기기 대응) |
 
 Unity Object Pool과 ScriptableObject는 엔진 기본 기능이라 스택으로 명시하지 않고 설계 패턴으로만 활용한다.

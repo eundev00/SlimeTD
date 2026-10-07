@@ -131,4 +131,3 @@ WaveZone ([Serializable])
 ## 7. 미결 항목
 
 - **_lifeCost 존치 여부** — 일반 슬라임 전부 1. 삭제 시 차감량을 GameConfig로 이동
-- **분열 메커닉** — 이번 설계에서 제외. 추가 시 `SlimeDataBase`에 `_splitTarget` / `_splitCount` 필드 추가

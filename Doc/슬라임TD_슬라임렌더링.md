@@ -209,7 +209,6 @@ positionWS += normalWS * _OutlineWidth * 0.01;
 - **PC 퀄리티(Deferred) 미대응.** 아웃라인 패스가 실행되지 않는다
 - **SkinnedMeshRenderer라 GPU Instancing 불가.** MaterialPropertyBlock 사용으로 SRP Batcher 배칭에서도 이탈한다
 - **몸통·얼굴이 별도 머티리얼**이라 마리당 드로우콜이 최대 3개(몸통 컬러·아웃라인 + 얼굴)다. 텍스처 아틀라싱으로 통합하면 줄일 수 있으나 UV와 표정 교체 로직을 건드려야 한다
-- **분열(Split) 미연결.** `ISpawnOrderCounter.NextBucketFor(int parentBucket)`를 열어두었고 현재는 `NextBucket`에 위임한다. 자식 슬라임은 부모 값을 상속하지 말고 새로 발급받아야 한다
 
 ### 남아있는 UTS3 파일
 
