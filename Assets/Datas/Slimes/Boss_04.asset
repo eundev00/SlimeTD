@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c3e5a71b8d24f60a417e9c2d5b306f8, type: 3}
-  m_Name: MiniBoss_01
+  m_Name: Boss_04
   m_EditorClassIdentifier: Assembly-CSharp::BossSlimeData
-  _prefab: {fileID: 4941929678292297010, guid: 1df1e83b98aaa459b947b32a40d3621e, type: 3}
-  _baseHealth: 1000
-  _baseSpeed: 0.7
+  _prefab: {fileID: 4941929678292297010, guid: 474a59f31f6f54d01875c1d060e7d1dd, type: 3}
+  _baseHealth: 93000
+  _baseSpeed: 0.6
   _lifeCost: 10
   _renderGroup: 1
   _goldReward: 100
+  _instantGameOver: 1

@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 1006846176720098267}
   - component: {fileID: 9215837291409383890}
   m_Layer: 9
-  m_Name: SlimeTier3_BossSlime2
+  m_Name: SlimeBoss_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

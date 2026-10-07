@@ -26,7 +26,6 @@ public class WaveSpawner : MonoBehaviour
 
     private CompositeDisposable _disposables;
     private CancellationTokenSource _spawnCts;
-    private System.Random _rng;
     private bool _waveClearedReceived;
     private bool _gameOver;
 
@@ -66,7 +65,6 @@ public class WaveSpawner : MonoBehaviour
 
         _gameOver = false;
         _waveClearedReceived = false;
-        _rng = new System.Random();
         _spawnOrderCounter.Reset();
 
         _disposables = new CompositeDisposable();
@@ -104,7 +102,7 @@ public class WaveSpawner : MonoBehaviour
 
         for (int waveIndex = 1; waveIndex <= finalWave; waveIndex++)
         {
-            WaveResolver.Resolve(_waveTable, waveIndex, plans, null, false);
+            WaveResolver.Resolve(_waveTable, waveIndex, plans, false);
 
             var demand = new Dictionary<GameObject, int>();
             foreach (var plan in plans)
@@ -178,7 +176,7 @@ public class WaveSpawner : MonoBehaviour
     private async UniTask RunWaveAsync(int waveIndex, CancellationToken token)
     {
         var plans = new List<SpawnPlan>();
-        WaveResolver.Resolve(_waveTable, waveIndex, plans, _rng, true);
+        WaveResolver.Resolve(_waveTable, waveIndex, plans, true);
 
         if (plans.Count == 0)
         {

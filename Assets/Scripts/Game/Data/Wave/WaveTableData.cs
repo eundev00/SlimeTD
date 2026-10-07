@@ -3,89 +3,73 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class AutoWaveSetting
+public class WaveZone
 {
-    [SerializeField] private int _baseCount = 12;
-    [SerializeField] private float _countGrowth = 0.06f;
-    [SerializeField] private int _maxCount = 40;
-    [SerializeField] private SlimeData[] _slimes;
+    [SerializeField] private SlimeData _slime;
+    [SerializeField] private int _count = 10;
+    [SerializeField] private BossSlimeData _boss;
+    [SerializeField] private float _bossExtraStartDelay = 1f;
 
-    public int BaseCount => _baseCount;
-    public float CountGrowth => _countGrowth;
-    public int MaxCount => _maxCount;
-    public SlimeData[] Slimes => _slimes;
-}
-
-[Serializable]
-public class BossSpawnEntry
-{
-    [SerializeField] private int _waveNumber = 1;
-    [SerializeField] private BossSlimeData _bossData;
-    [SerializeField] private float _extraStartDelay = 3f;
-
-    public int WaveNumber => _waveNumber;
-    public BossSlimeData BossData => _bossData;
-    public float ExtraStartDelay => _extraStartDelay;
+    public SlimeData Slime => _slime;
+    public int Count => _count;
+    public BossSlimeData Boss => _boss;
+    public float BossExtraStartDelay => _bossExtraStartDelay;
 }
 
 [CreateAssetMenu(fileName = "WaveTable", menuName = "SlimeTD/Wave Table", order = 23)]
 public class WaveTableData : ScriptableObject
 {
+    public const int WavesPerZone = 10;
+
     [Header("공통")]
     [SerializeField] private float _spawnInterval = 0.8f;
     [SerializeField] private float _interWaveDelay = 3f;
-    [SerializeField] private int _finalWave = 50;
 
     [Header("성장")]
-    [SerializeField] private float _hpGrowth = 0.04f;
+    [Tooltip("일반 슬라임에만 적용. 보스는 _baseHealth 고정")]
+    [SerializeField] private float _normalHpGrowth = 0.06f;
 
-    [Header("보상")]
-    [SerializeField] private float _goldRatio = 0.2f;
-    [SerializeField] private int _waveClearGoldBase = 10;
-    [SerializeField] private int _waveClearGoldStep = 1;
-
-    [Header("웨이브")]
-    [SerializeField] private FixedWaveData[] _fixedWaves;
-    [SerializeField] private AutoWaveSetting _autoWaveSetting = new();
-    [SerializeField] private List<BossSpawnEntry> _bossEntries = new();
+    [Header("구간")]
+    [SerializeField] private List<WaveZone> _zones = new();
 
     public float SpawnInterval => _spawnInterval;
     public float InterWaveDelay => _interWaveDelay;
-    public int FinalWave => _finalWave;
-    public float HpGrowth => _hpGrowth;
-    public float GoldRatio => _goldRatio;
-    public int WaveClearGoldBase => _waveClearGoldBase;
-    public int WaveClearGoldStep => _waveClearGoldStep;
-    public FixedWaveData[] FixedWaves => _fixedWaves;
-    public AutoWaveSetting AutoWaveSetting => _autoWaveSetting;
-    public IReadOnlyList<BossSpawnEntry> BossEntries => _bossEntries;
+    public float NormalHpGrowth => _normalHpGrowth;
+    public IReadOnlyList<WaveZone> Zones => _zones;
 
-    public int MaxWave => _finalWave;
+    public int FinalWave => _zones == null ? 0 : _zones.Count * WavesPerZone;
+    public int MaxWave => FinalWave;
 
-    public int WaveClearGold(int waveNumber) => _waveClearGoldBase + _waveClearGoldStep * waveNumber;
+    public static int ZoneIndexOf(int waveNumber) => (waveNumber - 1) / WavesPerZone;
+    public static bool IsBossWave(int waveNumber) => waveNumber % WavesPerZone == 0;
+
+    public WaveZone GetZone(int zoneIndex)
+    {
+        if (_zones == null || zoneIndex < 0 || zoneIndex >= _zones.Count)
+            return null;
+
+        return _zones[zoneIndex];
+    }
 
     private void OnValidate()
     {
-        if (_bossEntries == null)
+        if (_zones == null)
             return;
 
-        for (int i = 0; i < _bossEntries.Count; i++)
+        for (int i = 0; i < _zones.Count; i++)
         {
-            var entry = _bossEntries[i];
-            if (entry == null)
+            var zone = _zones[i];
+            if (zone == null)
                 continue;
 
-            if (entry.BossData == null)
-                Debug.Log($"[WaveTableData] bossEntries[{i}]에 보스 데이터가 없습니다.", this);
+            if (zone.Slime == null)
+                Debug.Log($"[WaveTableData] zones[{i}]에 슬라임 데이터가 없습니다.", this);
 
-            if (entry.WaveNumber < 1 || entry.WaveNumber > _finalWave)
-                Debug.Log($"[WaveTableData] bossEntries[{i}] 웨이브 {entry.WaveNumber}가 1~{_finalWave} 범위를 벗어납니다.", this);
+            if (zone.Boss == null)
+                Debug.Log($"[WaveTableData] zones[{i}]에 보스 데이터가 없습니다.", this);
 
-            for (int j = i + 1; j < _bossEntries.Count; j++)
-            {
-                if (_bossEntries[j] != null && _bossEntries[j].WaveNumber == entry.WaveNumber)
-                    Debug.Log($"[WaveTableData] 웨이브 {entry.WaveNumber}에 보스 엔트리가 중복됩니다.", this);
-            }
+            if (zone.Count < 1)
+                Debug.Log($"[WaveTableData] zones[{i}] 마릿수가 1 미만입니다.", this);
         }
     }
 }

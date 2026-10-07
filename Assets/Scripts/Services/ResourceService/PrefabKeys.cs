@@ -18,15 +18,16 @@ public static class PrefabKeys
     public const string Ranger = "Ranger";
     public const string RangerArrow = "RangerArrow";
     public const string RangerBow = "RangerBow";
-    public const string SlimeTier1_Blue = "SlimeTier1_Blue";
-    public const string SlimeTier1_Green = "SlimeTier1_Green";
-    public const string SlimeTier1_Orange = "SlimeTier1_Orange";
-    public const string SlimeTier1_White = "SlimeTier1_White";
-    public const string SlimeTier2_Dark = "SlimeTier2_Dark";
-    public const string SlimeTier2_Pink = "SlimeTier2_Pink";
-    public const string SlimeTier3_BossSlime2 = "SlimeTier3_BossSlime2";
-    public const string SlimeTier3_BossSlime3 = "SlimeTier3_BossSlime3";
-    public const string SlimeTier3_Orange = "SlimeTier3_Orange";
+    public const string SlimeBoss_01 = "SlimeBoss_01";
+    public const string SlimeBoss_02 = "SlimeBoss_02";
+    public const string SlimeBoss_03 = "SlimeBoss_03";
+    public const string SlimeBoss_04 = "SlimeBoss_04";
+    public const string SlimeBoss_05 = "SlimeBoss_05";
+    public const string SlimeNormal_01 = "SlimeNormal_01";
+    public const string SlimeNormal_02 = "SlimeNormal_02";
+    public const string SlimeNormal_03 = "SlimeNormal_03";
+    public const string SlimeNormal_04 = "SlimeNormal_04";
+    public const string SlimeNormal_05 = "SlimeNormal_05";
     public const string Sword = "Sword";
     public const string Swordsman = "Swordsman";
 
@@ -48,15 +49,16 @@ public static class PrefabKeys
         { Ranger, "Assets/Prefabs/Game/Characters/Ranger.prefab" },
         { RangerArrow, "Assets/Prefabs/Game/Characters/RangerArrow.prefab" },
         { RangerBow, "Assets/Prefabs/Game/Characters/RangerBow.prefab" },
-        { SlimeTier1_Blue, "Assets/Prefabs/Game/Slime/SlimeTier1_Blue.prefab" },
-        { SlimeTier1_Green, "Assets/Prefabs/Game/Slime/SlimeTier1_Green.prefab" },
-        { SlimeTier1_Orange, "Assets/Prefabs/Game/Slime/SlimeTier1_Orange.prefab" },
-        { SlimeTier1_White, "Assets/Prefabs/Game/Slime/SlimeTier1_White.prefab" },
-        { SlimeTier2_Dark, "Assets/Prefabs/Game/Slime/SlimeTier2_Dark.prefab" },
-        { SlimeTier2_Pink, "Assets/Prefabs/Game/Slime/SlimeTier2_Pink.prefab" },
-        { SlimeTier3_BossSlime2, "Assets/Prefabs/Game/Slime/SlimeTier3_BossSlime2.prefab" },
-        { SlimeTier3_BossSlime3, "Assets/Prefabs/Game/Slime/SlimeTier3_BossSlime3.prefab" },
-        { SlimeTier3_Orange, "Assets/Prefabs/Game/Slime/SlimeTier3_Orange.prefab" },
+        { SlimeBoss_01, "Assets/Prefabs/Game/Slime/SlimeBoss_01.prefab" },
+        { SlimeBoss_02, "Assets/Prefabs/Game/Slime/SlimeBoss_02.prefab" },
+        { SlimeBoss_03, "Assets/Prefabs/Game/Slime/SlimeBoss_03.prefab" },
+        { SlimeBoss_04, "Assets/Prefabs/Game/Slime/SlimeBoss_04.prefab" },
+        { SlimeBoss_05, "Assets/Prefabs/Game/Slime/SlimeBoss_05.prefab" },
+        { SlimeNormal_01, "Assets/Prefabs/Game/Slime/SlimeNormal_01.prefab" },
+        { SlimeNormal_02, "Assets/Prefabs/Game/Slime/SlimeNormal_02.prefab" },
+        { SlimeNormal_03, "Assets/Prefabs/Game/Slime/SlimeNormal_03.prefab" },
+        { SlimeNormal_04, "Assets/Prefabs/Game/Slime/SlimeNormal_04.prefab" },
+        { SlimeNormal_05, "Assets/Prefabs/Game/Slime/SlimeNormal_05.prefab" },
         { Sword, "Assets/Prefabs/Game/Characters/Sword.prefab" },
         { Swordsman, "Assets/Prefabs/Game/Characters/Swordsman.prefab" },
     };

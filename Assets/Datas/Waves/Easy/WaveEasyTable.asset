@@ -13,45 +13,26 @@ MonoBehaviour:
   m_Name: WaveEasyTable
   m_EditorClassIdentifier: Assembly-CSharp::WaveTableData
   _spawnInterval: 0.8
-  _interWaveDelay: 3
-  _finalWave: 50
-  _hpGrowth: 0.05
-  _goldRatio: 0.2
-  _waveClearGoldBase: 10
-  _waveClearGoldStep: 1
-  _fixedWaves:
-  - {fileID: 11400000, guid: 04847ebb1da36f389f44f40d94744bb7, type: 2}
-  - {fileID: 11400000, guid: 256d1443b7688875fb46a14363931703, type: 2}
-  - {fileID: 11400000, guid: 4dcda6fcd6011c9f269255378e72d56a, type: 2}
-  - {fileID: 11400000, guid: 1e85476d11ab424f4991b817e1ce4dd6, type: 2}
-  - {fileID: 11400000, guid: 00d94b31601758a7e69f1c3d71cb9fef, type: 2}
-  - {fileID: 11400000, guid: 45756834a52db603eb668c3893740a2b, type: 2}
-  - {fileID: 11400000, guid: 93d4bd77efd6c51fd92df25eff5ca069, type: 2}
-  - {fileID: 11400000, guid: 9ee7557c4f0d34fe4dd77120ba7a0db8, type: 2}
-  - {fileID: 11400000, guid: 069389bb1055e61e84b3a590eddf3d22, type: 2}
-  - {fileID: 11400000, guid: 2ced865fb9b94bb4a28cd9e8ee65c3f5, type: 2}
-  _autoWaveSetting:
-    _baseCount: 12
-    _countGrowth: 0.06
-    _maxCount: 55
-    _slimes:
-    - {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
-    - {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
-    - {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
-    - {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
-  _bossEntries:
-  - _waveNumber: 10
-    _bossData: {fileID: 11400000, guid: 1a0000000000000000000000000000f4, type: 2}
-    _extraStartDelay: 0.5
-  - _waveNumber: 20
-    _bossData: {fileID: 11400000, guid: 85e16d32317594170b7de993ec0d0088, type: 2}
-    _extraStartDelay: 0.5
-  - _waveNumber: 30
-    _bossData: {fileID: 11400000, guid: 468b86f21e7204bf7b6f17f3dd323b98, type: 2}
-    _extraStartDelay: 1
-  - _waveNumber: 40
-    _bossData: {fileID: 11400000, guid: aca79f126081d469ea2c06d141827200, type: 2}
-    _extraStartDelay: 1
-  - _waveNumber: 50
-    _bossData: {fileID: 11400000, guid: d2934cfdc592a418380060b838a3c11a, type: 2}
-    _extraStartDelay: 1
+  _interWaveDelay: 2
+  _normalHpGrowth: 0.06
+  _zones:
+  - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+    _count: 10
+    _boss: {fileID: 11400000, guid: 1a0000000000000000000000000000f4, type: 2}
+    _bossExtraStartDelay: 0.5
+  - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+    _count: 11
+    _boss: {fileID: 11400000, guid: 85e16d32317594170b7de993ec0d0088, type: 2}
+    _bossExtraStartDelay: 0.5
+  - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+    _count: 12
+    _boss: {fileID: 11400000, guid: 468b86f21e7204bf7b6f17f3dd323b98, type: 2}
+    _bossExtraStartDelay: 1
+  - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+    _count: 13
+    _boss: {fileID: 11400000, guid: aca79f126081d469ea2c06d141827200, type: 2}
+    _bossExtraStartDelay: 1
+  - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+    _count: 14
+    _boss: {fileID: 11400000, guid: d2934cfdc592a418380060b838a3c11a, type: 2}
+    _bossExtraStartDelay: 1

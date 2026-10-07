@@ -195,7 +195,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 
     protected virtual void OnReachedEnd()
     {
-        _reachedEndPublisher.Publish(new SlimeReachedEndEvent(_data.LifeCost));
+        _reachedEndPublisher.Publish(new SlimeReachedEndEvent(_data.LifeCost, _data.InstantGameOver));
         _poolService.Release(gameObject);
     }
 

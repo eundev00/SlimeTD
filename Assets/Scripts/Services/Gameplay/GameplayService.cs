@@ -132,13 +132,6 @@ public class GameplayService : IGameplayService
                 if (e.IsLastWave)
                     _spawnFinished = true;
 
-                if (WaveTable != null)
-                {
-                    int reward = WaveTable.WaveClearGold(e.WaveIndex);
-                    _info.Gold.Value += reward;
-                    Debug.Log($"[GameplayService] 웨이브 {e.WaveIndex} 보상 골드 +{reward}");
-                }
-
                 Debug.Log($"[GameplayService] 웨이브 {e.WaveIndex} 스폰 완료, 남은 슬라임: {_aliveCount}");
                 CheckWaveCleared();
                 break;
@@ -150,7 +143,7 @@ public class GameplayService : IGameplayService
         if (_gameOverPublished || _gameEnded)
             return;
 
-        _info.Life.Value = Mathf.Max(0, _info.Life.Value - e.LifeCost);
+        _info.Life.Value = e.InstantGameOver ? 0 : Mathf.Max(0, _info.Life.Value - e.LifeCost);
 
         if (_info.Life.Value <= 0)
         {
