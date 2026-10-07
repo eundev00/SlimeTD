@@ -75,6 +75,26 @@ ProjectileAttackData (AttackBehaviourData 상속)
 
 `AttackBehaviourData`는 여러 타워가 공유하는 에셋이므로 `attackStates` 순환 인덱스를 SO가 갖지 않는다. 인덱스는 `CreateBehaviour()`로 만든 런타임 인스턴스가 보유한다.
 
+## 타워 스킬 (설계안, 미구현)
+
+스킬 정의는 공용으로 두고, 수치는 타워가 스킬을 꽂을 때 따로 가진다. 용어와 스킬 풀은 [슬라임TD_타워스킬목록.md](슬라임TD_타워스킬목록.md) 참고.
+
+```
+TowerSkillData (abstract SO, 공용 정의)
+└─ 무엇을 하는지 / 어떤 능력치에 적용하는지
+
+TowerData.skills : TowerSkillEntry[]              // 여러 개 꽂을 수 있음
+TowerSkillEntry
+├─ skill             : TowerSkillData
+└─ values            : SkillValue[]               // 스킬이 요구하는 수치 슬롯 수만큼
+   ├─ baseValue      : float                      // 타워 레벨 1의 값
+   └─ perLevel       : float                      // 타워 레벨당 증가폭
+```
+
+- 값 = `baseValue + perLevel × (타워 레벨 - 1)`. 고정값이며 등급에 귀속되지 않는다
+- **타워 레벨**은 로비에서 올리는 영구 성장이다. 타워 종류별로 저장하며 합성과 무관하다
+- **타워 강화**(전투 중 성장)는 런타임 상태로만 존재하고 전투가 끝나면 초기화된다. 도입은 추후 결정
+
 ## 런타임 상태
 
 SO는 기준값만 담고, 변화하는 상태는 아래 클래스가 `ReactiveProperty`로 노출한다.
