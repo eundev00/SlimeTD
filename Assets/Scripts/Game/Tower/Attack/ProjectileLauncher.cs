@@ -3,7 +3,7 @@ using UnityEngine;
 public class ProjectileLauncher : MonoBehaviour
 {
     [NotNull][SerializeField] private Transform _firePoint;
-    [NotNull][SerializeField] private GameObject _heldProjectile;
+    [SerializeField] private GameObject _heldProjectile;
 
     public Transform FirePoint => _firePoint != null ? _firePoint : transform;
 
