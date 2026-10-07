@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152011e2254784595a1c8bf1d0505129, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
-  _startingLife: 2
-  _startingGold: 0
+  _startingLife: 10
+  _startingGold: 20
   _summonBaseCost: 10
   _summonCostIncrease: 2
-  _ignoreGoldCost: 1
+  _ignoreGoldCost: 0
   _autoStartWave: 1
   _testTower: {fileID: 11400000, guid: 450481ff21ed489d9f830f61882607a3, type: 2}
