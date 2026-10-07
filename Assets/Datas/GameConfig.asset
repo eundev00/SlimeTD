@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
   _startingLife: 10
-  _startingGold: 20
+  _startingGold: 50
   _summonBaseCost: 10
   _summonCostIncrease: 2
   _ignoreGoldCost: 0
