@@ -1,0 +1,9 @@
+﻿towerId,codeName,name,attackRange,attackCooldown
+타워ID,코드명,이름,사거리,공격쿨다운
+101,Archer,궁수,2,1
+103,Swordsman,일병,1,1
+104,Lumberjack,나무꾼,1,1.5
+105,GoodSlime,착한 슬라임,2,1
+202,Ranger,레인저,2,1
+203,Knight,기사,1,1
+204,Crossbow,석궁병,2,1.5
