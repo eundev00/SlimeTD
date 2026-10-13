@@ -77,23 +77,40 @@ ProjectileAttackData (AttackBehaviourData 상속)
 
 ## 타워 스킬 (설계안, 미구현)
 
-스킬 정의는 공용으로 두고, 수치는 타워가 스킬을 꽂을 때 따로 가진다. 용어와 스킬 풀은 [슬라임TD_타워스킬목록.md](슬라임TD_타워스킬목록.md) 참고.
+스킬은 타워에 귀속되고, 발동 조건/확률/쿨타임/효과 종류 같은 부품은 공통으로 쓴다. 규칙과 용어는 [슬라임TD_타워스킬설계.md](슬라임TD_타워스킬설계.md) 참고.
 
 ```
-TowerSkillData (abstract SO, 공용 정의)
-└─ 무엇을 하는지 / 어떤 능력치에 적용하는지
+TowerData (확장)
+├─ basicAttack       : AttackBehaviourData
+├─ attackGrowth      : StatGrowth                 // 공격력 성장
+├─ attackSpeedGrowth : StatGrowth                 // 공격속도 성장 (고정이면 None)
+└─ skills            : TowerSkillEntry[]          // 개수 제한 없음
 
-TowerData.skills : TowerSkillEntry[]              // 여러 개 꽂을 수 있음
+StatGrowth
+├─ baseValue         : float                      // 타워 레벨 1의 값
+├─ mode              : None / PerLevel / AtLevels
+├─ perLevel          : float                      // PerLevel일 때 레벨당 증가폭
+└─ steps             : (level, value)[]           // AtLevels일 때 지정 레벨의 증가량
+
 TowerSkillEntry
-├─ skill             : TowerSkillData
-└─ values            : SkillValue[]               // 스킬이 요구하는 수치 슬롯 수만큼
-   ├─ baseValue      : float                      // 타워 레벨 1의 값
-   └─ perLevel       : float                      // 타워 레벨당 증가폭
+├─ skill             : TowerSkillData             // 이 타워 전용 정의
+└─ unlockLevel       : int = 1                    // 기본 장착이면 1
+
+TowerSkillData (타워별 SO, 공통 부품을 조합)
+├─ trigger           : Always / OnAttack / OnHit / OnKill / EveryNthAttack
+├─ nth               : int                        // EveryNthAttack일 때
+├─ chance            : float                      // 0이면 확률 판정 없음
+├─ cooldown          : float                      // 0이면 쿨타임 없음
+├─ target            : 기본 타겟 / 보스 우선 / 범위 내 전체 / 아군 전체
+└─ effects           : 효과 목록 + 수치
 ```
 
-- 값 = `baseValue + perLevel × (타워 레벨 - 1)`. 고정값이며 등급에 귀속되지 않는다
-- **타워 레벨**은 로비에서 올리는 영구 성장이다. 타워 종류별로 저장하며 합성과 무관하다
-- **타워 강화**(전투 중 성장)는 런타임 상태로만 존재하고 전투가 끝나면 초기화된다. 도입은 추후 결정
+- **타워 레벨**은 로비에서 올리는 영구 성장이며 최대 15다. 타워 종류별로 저장하며 합성과 무관하다
+- **타워 강화**(전투 중 성장)는 런타임 상태로만 존재하고 전투가 끝나면 초기화된다. 후순위
+- 치명타(기본 확률 10%, 보너스 100%)와 확률 판정은 공통 부품이다. 모든 타워가 기본값을 가지고 스킬이 가산한다
+- 효과 종류(이감, 공격력 업 등)가 합산 방식과 하드캡(없으면 무제한)을 가진다. 스킬은 종류와 수치만 넘긴다
+- 상시 합과 지속 합(수치 + 공유 타이머)을 효과 종류마다 따로 보관하고, 최종 값 = 상시 합 + 지속 합에 캡을 적용한다
+- 위 구조는 설계안이다. 필드 이름과 분할 단위는 구현 시 조정한다
 
 ## 런타임 상태
 
