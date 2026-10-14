@@ -4,10 +4,6 @@ public class MeleeAttack : AttackBehaviourBase
 {
     private AttackEffect _effect;
 
-    public MeleeAttack(TowerAttackSetting data) : base(data)
-    {
-    }
-
     public override void Initialize(ITowerContext context)
     {
         base.Initialize(context);

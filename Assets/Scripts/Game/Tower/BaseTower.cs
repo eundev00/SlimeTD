@@ -126,7 +126,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
             return;
         }
 
-        _attack = AttackBehaviourFactory.Create(_data.AttackSetting);
+        _attack = AttackBehaviourFactory.Create(_data);
         if (_attack == null)
         {
             Debug.Log("[BaseTower] 기본 공격을 만들지 못했습니다.", this);

@@ -18,9 +18,8 @@ MonoBehaviour:
   _towerName: "\uAD81\uC218"
   _prefab: {fileID: 751951308249362410, guid: b79adc6af80e9436f971d0e3a3776459, type: 3}
   _attackRange: 2
-  _attackSetting:
-    _type: 1
-    _projectilePrefab: {fileID: 2717176595723297759, guid: 6ce103a3c1f974b9586882c7ff946232, type: 3}
+  _attackType: 1
+  _projectilePrefab: {fileID: 2717176595723297759, guid: 6ce103a3c1f974b9586882c7ff946232, type: 3}
   _baseAttack: 100
   _attackGrowthRate: 5
   _attackCooldown: 1

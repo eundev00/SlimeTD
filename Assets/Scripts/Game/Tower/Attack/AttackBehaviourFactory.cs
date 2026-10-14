@@ -2,18 +2,18 @@ using UnityEngine;
 
 public static class AttackBehaviourFactory
 {
-    public static IAttackBehaviour Create(TowerAttackSetting setting)
+    public static IAttackBehaviour Create(TowerData data)
     {
-        switch (setting.Type)
+        switch (data.AttackType)
         {
             case TowerAttackType.Melee:
-                return new MeleeAttack(setting);
+                return new MeleeAttack();
 
             case TowerAttackType.Projectile:
-                return new ProjectileAttack(setting);
+                return new ProjectileAttack(data.ProjectilePrefab);
 
             default:
-                Debug.Log($"[AttackBehaviourFactory] 지원하지 않는 공격 타입입니다: {setting.Type}");
+                Debug.Log($"[AttackBehaviourFactory] 지원하지 않는 공격 타입입니다: {data.AttackType}");
                 return null;
         }
     }

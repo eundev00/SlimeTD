@@ -6,12 +6,12 @@ public class ProjectileAttack : AttackBehaviourBase
     private const int PoolCapacity = 10;
     private const int PoolMaxSize = 20;
 
-    private readonly TowerAttackSetting _data;
+    private readonly GameObject _projectilePrefab;
     private ProjectileLauncher _launcher;
 
-    public ProjectileAttack(TowerAttackSetting data) : base(data)
+    public ProjectileAttack(GameObject projectilePrefab)
     {
-        _data = data;
+        _projectilePrefab = projectilePrefab;
     }
 
     public override void Initialize(ITowerContext context)
@@ -25,13 +25,13 @@ public class ProjectileAttack : AttackBehaviourBase
             return;
         }
 
-        if (_data.ProjectilePrefab == null)
+        if (_projectilePrefab == null)
         {
             Debug.Log("[ProjectileAttack] 발사체 프리팹이 없습니다.", context.Transform);
             return;
         }
 
-        context.Pool.CreatePool(_data.ProjectilePrefab, PoolCapacity, PoolMaxSize);
+        context.Pool.CreatePool(_projectilePrefab, PoolCapacity, PoolMaxSize);
     }
 
     protected override void OnAttackStarted()
@@ -55,10 +55,10 @@ public class ProjectileAttack : AttackBehaviourBase
 
     protected override void Apply(in TargetInfo target)
     {
-        if (_launcher == null || _data.ProjectilePrefab == null)
+        if (_launcher == null || _projectilePrefab == null)
             return;
 
-        var projectileObject = Context.Pool.Get(_data.ProjectilePrefab);
+        var projectileObject = Context.Pool.Get(_projectilePrefab);
         if (projectileObject == null)
             return;
 

@@ -53,13 +53,10 @@ TowerData (SO, 종류당 1개)
 ├─ towerName         : string
 ├─ prefab            : GameObject
 ├─ attackRange       : float = 5                // 탐지 범위 (발사체 도달거리와 별개)
-└─ attackSetting     : TowerAttackSetting       // 기본 공격 연출/종류
-
-TowerAttackSetting (Serializable, TowerData에 포함)
-├─ type              : Melee / Projectile       // 근접 / 원거리(투사체)
+├─ attackType        : Melee / Projectile       // 근접 / 원거리(투사체)
 └─ projectilePrefab  : GameObject               // Projectile일 때. 풀 크기는 코드 상수
 
-AttackBehaviourFactory.Create(setting) -> MeleeAttack / ProjectileAttack
+AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 ```
 
 공격 애니메이션은 모든 타워가 Animator의 `Attack` 트리거 하나를 쓴다(`AttackBehaviourBase`의 상수). 타워 프리팹의 Animator Controller에 `Attack` Trigger 파라미터가 없으면 조용히 무시되고 애니메이션이 재생되지 않는다.
