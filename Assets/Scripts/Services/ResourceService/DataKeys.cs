@@ -15,10 +15,7 @@ public static class DataKeys
     public const string Boss_05 = "Boss_05";
     public const string GameConfig = "GameConfig";
     public const string GridMapData1 = "GridMapData1";
-    public const string GridMapData1_Old = "GridMapData1_Old";
-    public const string GridMapDataTemp = "GridMapDataTemp";
-    public const string GridMapDataTest = "GridMapDataTest";
-    public const string GridMapDataTest2 = "GridMapDataTest2";
+    public const string GridMapData2 = "GridMapData2";
     public const string SlimeDepthBucketSettings = "SlimeDepthBucketSettings";
     public const string Slime_01 = "Slime_01";
     public const string Slime_02 = "Slime_02";
@@ -50,10 +47,7 @@ public static class DataKeys
         { Boss_05, "Assets/Datas/Slimes/Boss_05.asset" },
         { GameConfig, "Assets/Datas/GameConfig.asset" },
         { GridMapData1, "Assets/Datas/Grid/GridMapData1.asset" },
-        { GridMapData1_Old, "Assets/Datas/Grid/GridMapData1_Old.asset" },
-        { GridMapDataTemp, "Assets/Datas/Grid/GridMapDataTemp.asset" },
-        { GridMapDataTest, "Assets/Datas/Grid/GridMapDataTest.asset" },
-        { GridMapDataTest2, "Assets/Datas/Grid/GridMapDataTest2.asset" },
+        { GridMapData2, "Assets/Datas/Grid/GridMapData2.asset" },
         { SlimeDepthBucketSettings, "Assets/Datas/SlimeDepthBucketSettings.asset" },
         { Slime_01, "Assets/Datas/Slimes/Slime_01.asset" },
         { Slime_02, "Assets/Datas/Slimes/Slime_02.asset" },
