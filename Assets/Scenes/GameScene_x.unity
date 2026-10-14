@@ -7156,7 +7156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameplayHudView
   _summonButton: {fileID: 2109228398}
-  _goldText: {fileID: 361942112}
+  _jellyText: {fileID: 361942112}
   _summonCostText: {fileID: 1983398}
   _testSummonButton: {fileID: 1266907872}
 --- !u!114 &2070556915

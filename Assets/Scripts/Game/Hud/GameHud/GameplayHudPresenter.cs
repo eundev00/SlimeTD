@@ -32,10 +32,10 @@ public class GameplayHudPresenter : IStartable, IDisposable
         _view.TestSummonButtonClicked += HandleTestSummonButtonClicked;
         _view.SetSummonButtonInteractable(false);
 
-        _gameplayService.Info.Gold
-            .Subscribe(gold =>
+        _gameplayService.Info.Jelly
+            .Subscribe(jelly =>
             {
-                _view.SetGold(gold);
+                _view.SetJelly(jelly);
                 ApplySummonInteractable();
             })
             .AddTo(_disposables);
@@ -60,8 +60,8 @@ public class GameplayHudPresenter : IStartable, IDisposable
         if (gameConfig == null)
             return;
 
-        bool affordable = gameConfig.IgnoreGoldCost
-            || _gameplayService.Info.Gold.Value >= _gameplayService.Info.SummonCost.Value;
+        bool affordable = gameConfig.IgnoreJellyCost
+            || _gameplayService.Info.Jelly.Value >= _gameplayService.Info.SummonCost.Value;
 
         _view.SetSummonButtonInteractable(!_gameEnded && affordable);
     }

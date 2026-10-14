@@ -68,10 +68,10 @@ public class TowerSpawner : MonoBehaviour
             return false;
         }
 
-        // 골드 차감은 실패 가능한 검증을 모두 통과한 뒤에 한다. 차감 후 실패하면 환불 경로가 없다.
+        // 젤리 차감은 실패 가능한 검증을 모두 통과한 뒤에 한다. 차감 후 실패하면 환불 경로가 없다.
         if (!_gameplayService.TrySpendSummonCost())
         {
-            Debug.Log($"[TowerSpawner] 골드가 부족합니다. 필요: {_gameplayService.Info.SummonCost.Value}, 보유: {_gameplayService.Info.Gold.Value}", this);
+            Debug.Log($"[TowerSpawner] 젤리가 부족합니다. 필요: {_gameplayService.Info.SummonCost.Value}, 보유: {_gameplayService.Info.Jelly.Value}", this);
             return false;
         }
 

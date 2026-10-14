@@ -1,9 +1,9 @@
 public readonly struct SlimeKilledEvent
 {
-    public readonly int GoldReward;
+    public readonly int JellyReward;
 
-    public SlimeKilledEvent(int goldReward)
+    public SlimeKilledEvent(int jellyReward)
     {
-        GoldReward = goldReward;
+        JellyReward = jellyReward;
     }
 }

@@ -2,14 +2,14 @@ public readonly struct SpawnPlan
 {
     public readonly SlimeDataBase SlimeData;
     public readonly int Health;
-    public readonly int GoldReward;
+    public readonly int JellyReward;
     public readonly float SpawnInterval;
 
-    public SpawnPlan(SlimeDataBase slimeData, int health, int goldReward, float spawnInterval)
+    public SpawnPlan(SlimeDataBase slimeData, int health, int jellyReward, float spawnInterval)
     {
         SlimeData = slimeData;
         Health = health;
-        GoldReward = goldReward;
+        JellyReward = jellyReward;
         SpawnInterval = spawnInterval;
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameplayHudView : MonoBehaviour
 {
     [NotNull][SerializeField] private Button _summonButton;
-    [NotNull][SerializeField] private TMP_Text _goldText;
+    [NotNull][SerializeField] private TMP_Text _jellyText;
     [NotNull][SerializeField] private TMP_Text _summonCostText;
     [SerializeField] private Button _testSummonButton;
 
@@ -55,10 +55,10 @@ public class GameplayHudView : MonoBehaviour
             _summonButton.interactable = interactable;
     }
 
-    public void SetGold(int gold)
+    public void SetJelly(int jelly)
     {
-        if (_goldText != null)
-            _goldText.text = gold.ToString();
+        if (_jellyText != null)
+            _jellyText.text = jelly.ToString();
     }
 
     public void SetSummonCost(int cost)

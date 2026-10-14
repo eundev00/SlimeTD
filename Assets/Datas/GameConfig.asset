@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
   _startingLife: 10
-  _startingGold: 50
+  _startingJelly: 50
   _summonBaseCost: 10
   _summonCostIncrease: 2
-  _ignoreGoldCost: 0
+  _ignoreJellyCost: 0
   _autoStartWave: 1
   _testTower: {fileID: 11400000, guid: 450481ff21ed489d9f830f61882607a3, type: 2}

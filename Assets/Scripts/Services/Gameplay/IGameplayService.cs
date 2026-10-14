@@ -10,7 +10,7 @@ public interface IGameplayService : IDisposable
     SlimeDepthBucketSettings DepthBucketSettings { get; }
 
     UniTask InitializeAsync();
-    bool TrySpendGold(int amount);
+    bool TrySpendJelly(int amount);
     bool TrySpendSummonCost();
     void SetMaxWave(int maxWave);
 }

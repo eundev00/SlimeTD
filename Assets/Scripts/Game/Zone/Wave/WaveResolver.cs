@@ -30,7 +30,7 @@ public static class WaveResolver
                 return;
             }
 
-            results.Add(new SpawnPlan(boss, boss.BaseHealth, boss.GoldReward, interval));
+            results.Add(new SpawnPlan(boss, boss.BaseHealth, boss.JellyReward, interval));
             return;
         }
 
@@ -44,7 +44,7 @@ public static class WaveResolver
 
         int health = ScaleHealth(slime.BaseHealth, table.NormalHpGrowth, waveNumber);
         for (int i = 0; i < zone.Count; i++)
-            results.Add(new SpawnPlan(slime, health, slime.GoldReward, interval));
+            results.Add(new SpawnPlan(slime, health, slime.JellyReward, interval));
     }
 
     public static float StartDelayFor(WaveTableData table, int waveNumber)

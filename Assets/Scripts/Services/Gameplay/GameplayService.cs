@@ -66,7 +66,7 @@ public class GameplayService : IGameplayService
             Debug.Log($"[GameplayService] {DataKeys.SlimeDepthBucketSettings} 로드에 실패했습니다.");
 
         _info.Life.SetValueAndForceNotify(Config.StartingLife);
-        _info.Gold.SetValueAndForceNotify(Config.StartingGold);
+        _info.Jelly.SetValueAndForceNotify(Config.StartingJelly);
         _summonCount = 0;
         _info.SummonCost.SetValueAndForceNotify(Config.SummonBaseCost);
     }
@@ -77,7 +77,7 @@ public class GameplayService : IGameplayService
             return false;
 
         int cost = _info.SummonCost.Value;
-        if (!Config.IgnoreGoldCost && cost > 0 && !TrySpendGold(cost))
+        if (!Config.IgnoreJellyCost && cost > 0 && !TrySpendJelly(cost))
             return false;
 
         _summonCount++;
@@ -90,15 +90,15 @@ public class GameplayService : IGameplayService
         _info.MaxWave.Value = maxWave;
     }
 
-    public bool TrySpendGold(int amount)
+    public bool TrySpendJelly(int amount)
     {
         if (amount <= 0)
             return false;
 
-        if (_info.Gold.Value < amount)
+        if (_info.Jelly.Value < amount)
             return false;
 
-        _info.Gold.Value -= amount;
+        _info.Jelly.Value -= amount;
         return true;
     }
 
@@ -160,8 +160,8 @@ public class GameplayService : IGameplayService
         if (_gameEnded)
             return;
 
-        _info.Gold.Value = Mathf.Max(0, _info.Gold.Value + e.GoldReward);
-        Debug.Log($"[GameplayService] 골드 {_info.Gold.Value}");
+        _info.Jelly.Value = Mathf.Max(0, _info.Jelly.Value + e.JellyReward);
+        Debug.Log($"[GameplayService] 젤리 {_info.Jelly.Value}");
 
         OnSlimeRemoved();
     }

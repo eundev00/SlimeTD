@@ -248,7 +248,7 @@ public class WaveSpawner : MonoBehaviour
 
         slime.SetDepthBucket(_spawnOrderCounter.NextBucket(slimeData.RenderGroup));
 
-        slime.Initialize(_splineContainer, slimeData, plan.Health, plan.GoldReward);
+        slime.Initialize(_splineContainer, slimeData, plan.Health, plan.JellyReward);
     }
 
     private void OnGameOver()

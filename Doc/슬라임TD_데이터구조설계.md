@@ -6,8 +6,11 @@
 
 ```
 GameConfig (SO, 1개)
-├─ startingLife      : int = 20
-└─ startingGold      : int = 0
+├─ startingLife      : int = 20                 // 에셋 값 10
+├─ startingJelly     : int = 0                  // 에셋 값 50 (인게임 재화)
+├─ summonBaseCost    : int = 50                 // 에셋 값 10. 소환 비용 = 기본 + 증가 × 소환 횟수
+├─ summonCostIncrease: int = 10                 // 에셋 값 2
+└─ summonGradeId     : int = 1                  // 소환 등급 (일반)
 ```
 
 ## 맵 / 그리드
