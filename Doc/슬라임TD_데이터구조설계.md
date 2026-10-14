@@ -1,6 +1,6 @@
 # 슬라임 TD 데이터 구조 설계
 
-모든 밸런스 수치는 ScriptableObject로 분리한다. 아래는 `Assets/Scripts/Game/Data/` 기준 실제 구조다.
+모든 밸런스 수치는 ScriptableObject로 분리한다. 아래는 `Assets/Scripts/Data/` 기준 실제 구조다.
 
 ## 게임 전역
 
