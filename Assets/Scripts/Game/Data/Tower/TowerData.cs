@@ -6,6 +6,7 @@ public class TowerData : ScriptableObject
     private const float BaseAttackSpeedPercent = 100f;
 
     [SerializeField] private int _id;
+    [SerializeField] private int _gradeId;
     [SerializeField] private string _towerName;
     [SerializeField] private GameObject _prefab;
     [SerializeField] private float _attackRange = 5f;
@@ -19,6 +20,7 @@ public class TowerData : ScriptableObject
     [SerializeField] private float _critBonus = 100f;
 
     public int Id => _id;
+    public int GradeId => _gradeId;
     public string TowerName => _towerName;
     public GameObject Prefab => _prefab;
     public float AttackRange => _attackRange;

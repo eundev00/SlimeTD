@@ -42,6 +42,18 @@ public static class TowerSheetImporter
             string codeName = Get(row, "codeName");
             int gradeId = id / GradeDivisor;
 
+            if (!TryGetInt(row, "gradeId", out int sheetGradeId))
+            {
+                Debug.Log($"[TowerSheetImporter] gradeId를 읽지 못했습니다. ID 대역({gradeId})을 사용합니다: {id}");
+            }
+            else
+            {
+                if (sheetGradeId != gradeId)
+                    Debug.Log($"[TowerSheetImporter] 등급 열({sheetGradeId})과 ID 대역({gradeId})이 다릅니다: {id}");
+
+                gradeId = sheetGradeId;
+            }
+
             if (!grades.TryGetValue(gradeId, out var grade))
             {
                 Debug.Log($"[TowerSheetImporter] 등급 {gradeId}을 찾을 수 없습니다. 타워 ID: {id}");
@@ -58,7 +70,7 @@ public static class TowerSheetImporter
                 created++;
             }
 
-            Apply(data, id, row, grade);
+            Apply(data, id, gradeId, row, grade);
             updated++;
         }
 
@@ -73,11 +85,12 @@ public static class TowerSheetImporter
         Debug.Log($"[TowerSheetImporter] 임포트 완료. 갱신 {updated}개, 신규 {created}개");
     }
 
-    private static void Apply(TowerData data, int id, Dictionary<string, string> row, GradeInfo grade)
+    private static void Apply(TowerData data, int id, int gradeId, Dictionary<string, string> row, GradeInfo grade)
     {
         var so = new SerializedObject(data);
 
         so.FindProperty("_id").intValue = id;
+        so.FindProperty("_gradeId").intValue = gradeId;
         so.FindProperty("_towerName").stringValue = Get(row, "name");
         so.FindProperty("_baseAttack").floatValue = grade.BaseAttack;
         so.FindProperty("_attackGrowthRate").floatValue = grade.AttackGrowthRate;

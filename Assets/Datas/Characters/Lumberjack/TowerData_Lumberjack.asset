@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TowerData_Lumberjack
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _id: 104
+  _gradeId: 1
   _towerName: "\uB098\uBB34\uAFBC"
   _prefab: {fileID: 3563958071284705386, guid: 84211fadc6d344ed2916a4027a232a3d, type: 3}
   _attackRange: 1

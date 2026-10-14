@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TowerData_GoodSlime
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _id: 105
+  _gradeId: 1
   _towerName: "\uCC29\uD55C \uC2AC\uB77C\uC784"
   _prefab: {fileID: 0}
   _attackRange: 2
