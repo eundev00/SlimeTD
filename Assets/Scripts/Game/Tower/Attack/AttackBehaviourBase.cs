@@ -77,7 +77,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
             OnAttackFinished();
 
             // 쿨다운은 공격이 끝난 뒤부터 흐른다. 시작 시점에 걸면 모션 시간과 겹쳐 값이 무의미해진다.
-            _remainingCooldown = _data.Cooldown / stats.AttackSpeed.Value;
+            _remainingCooldown = stats.AttackCooldown / stats.AttackSpeed.Value;
         }
     }
 

@@ -28,6 +28,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private IUpdateSubscriptionService _updateService;
     private IGameObjectPoolService _poolService;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
+    private ITowerLevelService _levelService;
 
     private CompositeDisposable _disposables;
     private CancellationTokenSource _attackCancellation;
@@ -63,11 +64,13 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     public void Construct(
         IUpdateSubscriptionService updateService,
         IGameObjectPoolService poolService,
-        ISubscriber<GameProgressEvent> gameProgressSubscriber)
+        ISubscriber<GameProgressEvent> gameProgressSubscriber,
+        ITowerLevelService levelService)
     {
         _updateService = updateService;
         _poolService = poolService;
         _gameProgressSubscriber = gameProgressSubscriber;
+        _levelService = levelService;
     }
 
 
@@ -103,7 +106,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
             return;
 
         _data = data;
-        _stats.Initialize(data);
+        _stats.Initialize(data, _levelService.GetLevel(data.Id));
 
         _animator.PlaySpawn();
     }

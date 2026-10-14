@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class MeleeAttack : AttackBehaviourBase
 {
-    private readonly MeleeAttackData _data;
     private AttackEffect _effect;
 
     public MeleeAttack(MeleeAttackData data) : base(data)
     {
-        _data = data;
     }
 
     public override void Initialize(ITowerContext context)
@@ -34,6 +32,6 @@ public class MeleeAttack : AttackBehaviourBase
 
     protected override void Apply(in TargetInfo target)
     {
-        target.Slime.TakeDamage(_data.Damage);
+        target.Slime.TakeDamage(Context.Stats.RollHit().Damage);
     }
 }

@@ -81,16 +81,17 @@ ProjectileAttackData (AttackBehaviourData 상속)
 
 ```
 TowerData (확장)
-├─ basicAttack       : AttackBehaviourData
-├─ attackGrowth      : StatGrowth                 // 공격력 성장
-├─ attackSpeedGrowth : StatGrowth                 // 공격속도 성장 (고정이면 None)
+├─ id                : int                        // 등급 대역을 가진 고유 ID (예: 101, 202)
+├─ basicAttack       : AttackBehaviourData        // 연출/발사체 참조만
+├─ baseAttack        : float                      // 등급 시트의 기준공격력 (임포터가 채움)
+├─ attackGrowthRate  : float                      // 레벨당 증가율(%) (임포터가 채움)
+├─ attackCooldown    : float
+├─ critChance        : float = 10                 // %
+├─ critBonus         : float = 100                // %
 └─ skills            : TowerSkillEntry[]          // 개수 제한 없음
 
-StatGrowth
-├─ baseValue         : float                      // 타워 레벨 1의 값
-├─ mode              : None / PerLevel / AtLevels
-├─ perLevel          : float                      // PerLevel일 때 레벨당 증가폭
-└─ steps             : (level, value)[]           // AtLevels일 때 지정 레벨의 증가량
+공격력(레벨) = baseAttack × (1 + attackGrowthRate / 100 × (레벨 - 1))
+공격속도는 레벨로 오르지 않는다. 기본 100%이고 스킬이 가산한다.
 
 TowerSkillEntry
 ├─ skill             : TowerSkillData             // 이 타워 전용 정의
@@ -105,7 +106,7 @@ TowerSkillData (타워별 SO, 공통 부품을 조합)
 └─ effects           : 효과 목록 + 수치
 ```
 
-- **타워 레벨**은 로비에서 올리는 영구 성장이며 최대 15다. 타워 종류별로 저장하며 합성과 무관하다
+- **타워 레벨**은 로비에서 올리는 영구 성장이며 최대 15다. 타워 종류별로 저장하며 합성과 무관하다. 인게임에서는 오르지 않고, 게임 시작 시 정해진 값을 타워 생성 시점에 스냅샷으로 받는다 (`ITowerLevelService`, 전역 스코프)
 - **타워 강화**(전투 중 성장)는 런타임 상태로만 존재하고 전투가 끝나면 초기화된다. 후순위
 - 치명타 확률과 보너스(기본 10%, 100%)는 타워 데이터가 가지며 스킬이 가산한다. 판정 로직과 확률 판정은 공통 부품이다
 - 효과 종류(이감, 공격력 업 등)가 합산 방식과 하드캡(없으면 무제한)을 가진다. 스킬은 종류와 수치만 넘긴다

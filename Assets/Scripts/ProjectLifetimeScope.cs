@@ -9,6 +9,7 @@ public class ProjectLifetimeScope : LifetimeScope
     {
         builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
         builder.Register<ResourceLoadService>(Lifetime.Singleton).As<IResourceLoadService>();
+        builder.Register<TowerLevelService>(Lifetime.Singleton).As<ITowerLevelService>();
         builder.RegisterEntryPoint<BootstrapEntryPoint>();
 
         builder.RegisterComponentInHierarchy<UpdateSubscriptionService>()

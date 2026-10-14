@@ -2,12 +2,7 @@ using UnityEngine;
 
 public abstract class AttackBehaviourData : ScriptableObject
 {
-    [SerializeField] private int _damage = 1;
-    [SerializeField] private float _cooldown = 1f;
     [SerializeField] private string[] _attackStates;
-
-    public int Damage => _damage;
-    public float Cooldown => _cooldown;
 
     // 여러 타워가 같은 에셋을 공유하므로 순환 인덱스는 여기가 아니라 부품 인스턴스가 갖는다.
     public string GetAttackState(int index)
