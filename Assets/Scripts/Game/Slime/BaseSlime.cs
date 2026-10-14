@@ -159,14 +159,14 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
         }
     }
 
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, bool isCritical = false)
     {
         int before = _stats.CurrentHealth.Value;
         _stats.TakeDamage(damage);
         int dealt = before - _stats.CurrentHealth.Value;
 
         if (dealt > 0)
-            _damageTextSpawner.Show(dealt, _damageTextAnchor.position);
+            _damageTextSpawner.Show(dealt, _damageTextAnchor.position, isCritical);
 
         if (_stats.IsDead)
         {

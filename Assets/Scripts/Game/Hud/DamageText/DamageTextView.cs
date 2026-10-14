@@ -8,8 +8,10 @@ public class DamageTextView : MonoBehaviour, IPoolItem
 {
     [NotNull][SerializeField] private TMP_Text _text;
     [NotNull][SerializeField] private RectTransform _rectTransform;
+    [SerializeField] private float _punchScale;
 
     private const float Duration = 1.5f;
+    private const float PunchDuration = 0.3f;
     private const float FadeDuration = 0.5f;
     private const float RiseDistance = 40f;
 
@@ -40,6 +42,9 @@ public class DamageTextView : MonoBehaviour, IPoolItem
             .Join(_text.DOFade(0f, FadeDuration).SetDelay(Duration - FadeDuration))
             .SetLink(gameObject)
             .OnComplete(() => _poolService.Release(gameObject));
+
+        if (_punchScale > 0f)
+            _sequence.Join(_rectTransform.DOPunchScale(Vector3.one * _punchScale, PunchDuration, 6, 0.5f));
     }
 
     public void OnGetFromPool()

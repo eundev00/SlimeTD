@@ -5,6 +5,7 @@ public static class PrefabKeys
     public const string Archer = "Archer";
     public const string ArcherArrow = "ArcherArrow";
     public const string ArcherBow = "ArcherBow";
+    public const string CriticalDamageText = "CriticalDamageText";
     public const string Crossbow = "Crossbow";
     public const string CrossbowBolt = "CrossbowBolt";
     public const string CrossbowBow = "CrossbowBow";
@@ -36,6 +37,7 @@ public static class PrefabKeys
         { Archer, "Assets/Prefabs/Game/Characters/Archer.prefab" },
         { ArcherArrow, "Assets/Prefabs/Game/Characters/ArcherArrow.prefab" },
         { ArcherBow, "Assets/Prefabs/Game/Characters/ArcherBow.prefab" },
+        { CriticalDamageText, "Assets/Prefabs/Game/UI/CriticalDamageText.prefab" },
         { Crossbow, "Assets/Prefabs/Game/Characters/Crossbow.prefab" },
         { CrossbowBolt, "Assets/Prefabs/Game/Characters/CrossbowBolt.prefab" },
         { CrossbowBow, "Assets/Prefabs/Game/Characters/CrossbowBow.prefab" },

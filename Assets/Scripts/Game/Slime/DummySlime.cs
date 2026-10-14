@@ -14,7 +14,7 @@ public class DummySlime : MonoBehaviour, ISlime
         _stats = new SlimeStats(_health);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool isCritical = false)
     {
         _stats.TakeDamage(damage);
     }

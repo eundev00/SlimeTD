@@ -13,6 +13,7 @@ public class DamageTextSpawner : MonoBehaviour
     private Canvas _canvas;
     private Camera _camera;
     private GameObject _damageTextPrefab;
+    private GameObject _criticalDamageTextPrefab;
 
     [Inject]
     public void Construct(
@@ -42,20 +43,33 @@ public class DamageTextSpawner : MonoBehaviour
         }
 
         _poolService.CreatePool(_damageTextPrefab, _poolCapacity, _poolMaxSize);
+
+        _criticalDamageTextPrefab = await _resourceLoadService.LoadAsync<GameObject>(PrefabKeys.CriticalDamageText);
+        if (_criticalDamageTextPrefab == null)
+        {
+            Debug.Log("[DamageTextSpawner] CriticalDamageText 프리팹 로드 실패. 일반 데미지 텍스트로 대체합니다.", this);
+            return;
+        }
+
+        _poolService.CreatePool(_criticalDamageTextPrefab, _poolCapacity, _poolMaxSize);
     }
 
-    public void Show(int damage, Vector3 worldPosition)
+    public void Show(int damage, Vector3 worldPosition, bool isCritical = false)
     {
         if (_camera == null)
             _camera = Camera.main;
 
-        if (_canvas == null || _camera == null || _damageTextPrefab == null)
+        var prefab = isCritical && _criticalDamageTextPrefab != null
+            ? _criticalDamageTextPrefab
+            : _damageTextPrefab;
+
+        if (_canvas == null || _camera == null || prefab == null)
         {
-            Debug.Log($"[DamageTextSpawner] null 체크 실패: canvas={_canvas != null}, camera={_camera != null}, prefab={_damageTextPrefab != null}");
+            Debug.Log($"[DamageTextSpawner] null 체크 실패: canvas={_canvas != null}, camera={_camera != null}, prefab={prefab != null}");
             return;
         }
 
-        var instance = _poolService.Get(_damageTextPrefab);
+        var instance = _poolService.Get(prefab);
         if (instance == null)
         {
             Debug.Log("[DamageTextSpawner] 인스턴스 Get 실패");
