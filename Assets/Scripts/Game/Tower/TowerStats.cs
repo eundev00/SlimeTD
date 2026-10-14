@@ -30,7 +30,6 @@ public class TowerStats : IDisposable
         _attackSpeed.Value = Mathf.Max(0.01f, data.AttackSpeedPercent / 100f);
     }
 
-    // 화살(발)마다 한 번씩 호출한다. 다중 발사는 발마다 따로 판정한다.
     public HitResult RollHit()
     {
         float damage = Attack;
