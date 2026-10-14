@@ -57,9 +57,7 @@ TowerData (SO, 종류당 1개)
 
 TowerAttackSetting (Serializable, TowerData에 포함)
 ├─ type              : Melee / Projectile       // 근접 / 원거리(투사체)
-├─ projectilePrefab  : GameObject               // Projectile일 때
-├─ poolCapacity      : int = 10
-└─ poolMaxSize       : int = 50
+└─ projectilePrefab  : GameObject               // Projectile일 때. 풀 크기는 코드 상수
 
 AttackBehaviourFactory.Create(setting) -> MeleeAttack / ProjectileAttack
 ```

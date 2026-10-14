@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class ProjectileAttack : AttackBehaviourBase
 {
+    // 풀은 투사체 프리팹 단위로 하나만 만들어져서 타워별로 다른 값을 둘 수 없다.
+    private const int PoolCapacity = 10;
+    private const int PoolMaxSize = 20;
+
     private readonly TowerAttackSetting _data;
     private ProjectileLauncher _launcher;
 
@@ -27,7 +31,7 @@ public class ProjectileAttack : AttackBehaviourBase
             return;
         }
 
-        context.Pool.CreatePool(_data.ProjectilePrefab, _data.PoolCapacity, _data.PoolMaxSize);
+        context.Pool.CreatePool(_data.ProjectilePrefab, PoolCapacity, PoolMaxSize);
     }
 
     protected override void OnAttackStarted()
