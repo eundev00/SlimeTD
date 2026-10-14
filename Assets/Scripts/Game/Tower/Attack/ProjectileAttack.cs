@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class ProjectileAttack : AttackBehaviourBase
 {
-    private readonly ProjectileAttackData _data;
+    private readonly TowerAttackSetting _data;
     private ProjectileLauncher _launcher;
 
-    public ProjectileAttack(ProjectileAttackData data) : base(data)
+    public ProjectileAttack(TowerAttackSetting data) : base(data)
     {
         _data = data;
     }
@@ -23,7 +23,7 @@ public class ProjectileAttack : AttackBehaviourBase
 
         if (_data.ProjectilePrefab == null)
         {
-            Debug.Log("[ProjectileAttack] 발사체 프리팹이 없습니다.", _data);
+            Debug.Log("[ProjectileAttack] 발사체 프리팹이 없습니다.", context.Transform);
             return;
         }
 

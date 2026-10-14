@@ -4,7 +4,7 @@ public class MeleeAttack : AttackBehaviourBase
 {
     private AttackEffect _effect;
 
-    public MeleeAttack(MeleeAttackData data) : base(data)
+    public MeleeAttack(TowerAttackSetting data) : base(data)
     {
     }
 

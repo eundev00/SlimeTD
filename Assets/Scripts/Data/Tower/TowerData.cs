@@ -11,7 +11,7 @@ public class TowerData : ScriptableObject
     [SerializeField] private string _towerName;
     [SerializeField] private GameObject _prefab;
     [SerializeField] private float _attackRange = 5f;
-    [SerializeField] private AttackBehaviourData _basicAttack;
+    [SerializeField] private TowerAttackSetting _attackSetting = new TowerAttackSetting();
 
     [Header("기본 수치 (레벨 1)")]
     [SerializeField] private float _baseAttack = 1f;
@@ -26,7 +26,7 @@ public class TowerData : ScriptableObject
     public string TowerName => _towerName;
     public GameObject Prefab => _prefab;
     public float AttackRange => _attackRange;
-    public AttackBehaviourData BasicAttack => _basicAttack;
+    public TowerAttackSetting AttackSetting => _attackSetting;
     public float BaseAttack => _baseAttack;
     public float AttackCooldown => _attackCooldown;
     public float CritChance => _critChance;

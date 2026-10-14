@@ -18,7 +18,13 @@ MonoBehaviour:
   _towerName: "\uCC29\uD55C \uC2AC\uB77C\uC784"
   _prefab: {fileID: 0}
   _attackRange: 2
-  _basicAttack: {fileID: 0}
+  _attackSetting:
+    _type: 1
+    _attackStates:
+    - Attack
+    _projectilePrefab: {fileID: 0}
+    _poolCapacity: 10
+    _poolMaxSize: 20
   _baseAttack: 100
   _attackGrowthRate: 5
   _attackCooldown: 1

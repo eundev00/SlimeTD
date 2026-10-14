@@ -53,20 +53,16 @@ TowerData (SO, 종류당 1개)
 ├─ towerName         : string
 ├─ prefab            : GameObject
 ├─ attackRange       : float = 5                // 탐지 범위 (발사체 도달거리와 별개)
-└─ basicAttack       : AttackBehaviourData
+└─ attackSetting     : TowerAttackSetting       // 기본 공격 연출/종류
 
-AttackBehaviourData (abstract SO)                // 숫자는 TowerData가 갖고 여기에는 연출만 둔다
+TowerAttackSetting (Serializable, TowerData에 포함)
+├─ type              : Melee / Projectile       // 근접 / 원거리(투사체)
 ├─ attackStates      : string[]                 // 순환 사용, Animator 트리거 이름
-└─ CreateBehaviour() : IAttackBehaviour         // 런타임 인스턴스 생성
-
-MeleeAttackData (AttackBehaviourData 상속)
-└─ (추가 필드 없음) -> MeleeAttack
-
-ProjectileAttackData (AttackBehaviourData 상속)
-├─ projectilePrefab  : GameObject
+├─ projectilePrefab  : GameObject               // Projectile일 때
 ├─ poolCapacity      : int = 10
-├─ poolMaxSize       : int = 50
-└─ -> ProjectileAttack
+└─ poolMaxSize       : int = 50
+
+AttackBehaviourFactory.Create(setting) -> MeleeAttack / ProjectileAttack
 ```
 
 `attackStates`의 문자열은 Animator Controller의 **Trigger 파라미터 이름**과 일치해야 한다. 없는 이름이면 조용히 무시되고 애니메이션이 재생되지 않는다.

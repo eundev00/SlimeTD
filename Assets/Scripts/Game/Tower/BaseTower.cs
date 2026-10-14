@@ -126,14 +126,14 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
             return;
         }
 
-        if (_data.BasicAttack == null)
+        _attack = AttackBehaviourFactory.Create(_data.AttackSetting);
+        if (_attack == null)
         {
-            Debug.Log("[BaseTower] TowerData에 기본 공격이 없습니다.", this);
+            Debug.Log("[BaseTower] 기본 공격을 만들지 못했습니다.", this);
             return;
         }
 
         _attackCancellation = new CancellationTokenSource();
-        _attack = _data.BasicAttack.CreateBehaviour();
         _attack.Initialize(this);
 
         if (_animationEventListener != null)

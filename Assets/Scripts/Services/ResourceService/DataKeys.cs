@@ -2,12 +2,6 @@ using System.Collections.Generic;
 
 public static class DataKeys
 {
-    public const string Attack_Archer_Basic = "Attack_Archer_Basic";
-    public const string Attack_Crossbow_Basic = "Attack_Crossbow_Basic";
-    public const string Attack_Knight_Basic = "Attack_Knight_Basic";
-    public const string Attack_Lumberjack_Basic = "Attack_Lumberjack_Basic";
-    public const string Attack_Ranger_Basic = "Attack_Ranger_Basic";
-    public const string Attack_Swordsman_Basic = "Attack_Swordsman_Basic";
     public const string Boss_01 = "Boss_01";
     public const string Boss_02 = "Boss_02";
     public const string Boss_03 = "Boss_03";
@@ -34,12 +28,6 @@ public static class DataKeys
 
     public static readonly Dictionary<string, string> DataPaths = new Dictionary<string, string>()
     {
-        { Attack_Archer_Basic, "Assets/Datas/Characters/Archer/Attack_Archer_Basic.asset" },
-        { Attack_Crossbow_Basic, "Assets/Datas/Characters/Crossbow/Attack_Crossbow_Basic.asset" },
-        { Attack_Knight_Basic, "Assets/Datas/Characters/Knight/Attack_Knight_Basic.asset" },
-        { Attack_Lumberjack_Basic, "Assets/Datas/Characters/Lumberjack/Attack_Lumberjack_Basic.asset" },
-        { Attack_Ranger_Basic, "Assets/Datas/Characters/Ranger/Attack_Ranger_Basic.asset" },
-        { Attack_Swordsman_Basic, "Assets/Datas/Characters/Swordsman/Attack_Swordsman_Basic.asset" },
         { Boss_01, "Assets/Datas/Slimes/Boss_01.asset" },
         { Boss_02, "Assets/Datas/Slimes/Boss_02.asset" },
         { Boss_03, "Assets/Datas/Slimes/Boss_03.asset" },

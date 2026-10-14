@@ -18,7 +18,13 @@ MonoBehaviour:
   _towerName: "\uC77C\uBCD1"
   _prefab: {fileID: 2621857700972423482, guid: a19fd15b27fca45519391f504f46874f, type: 3}
   _attackRange: 1
-  _basicAttack: {fileID: 11400000, guid: 028f44f7aca345a29d91642f41b9cfe3, type: 2}
+  _attackSetting:
+    _type: 0
+    _attackStates:
+    - Attack
+    _projectilePrefab: {fileID: 0}
+    _poolCapacity: 10
+    _poolMaxSize: 20
   _baseAttack: 100
   _attackGrowthRate: 5
   _attackCooldown: 1

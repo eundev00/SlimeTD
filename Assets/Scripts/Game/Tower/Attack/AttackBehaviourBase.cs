@@ -7,7 +7,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 {
     private const float EndEventTimeout = 10f;
 
-    private readonly AttackBehaviourData _data;
+    private readonly TowerAttackSetting _data;
     private float _remainingCooldown;
     private int _attackStateIndex;
 
@@ -16,13 +16,13 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
     private UniTaskCompletionSource _endSource;
 
     protected ITowerContext Context { get; private set; }
-    protected AttackBehaviourData Data => _data;
+    protected TowerAttackSetting Data => _data;
 
     public virtual bool RequiresFacing => true;
     public bool IsReady => _remainingCooldown <= 0f;
     public bool IsAiming { get; private set; }
 
-    protected AttackBehaviourBase(AttackBehaviourData data)
+    protected AttackBehaviourBase(TowerAttackSetting data)
     {
         _data = data;
     }
