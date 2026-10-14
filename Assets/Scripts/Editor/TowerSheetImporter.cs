@@ -11,6 +11,7 @@ public static class TowerSheetImporter
     private const string GradesFile = "Grades.csv";
     private const string TowersFile = "Towers.csv";
     private const string CharacterFolder = "Assets/Datas/Characters";
+    private const string CatalogPath = "Assets/Datas/TowerCatalog.asset";
     private const int GradeDivisor = 100;
 
     [MenuItem("SlimeTD/Data/Import Tower Sheets")]
@@ -22,6 +23,7 @@ public static class TowerSheetImporter
         var grades = ParseGrades(gradeRows);
         var assets = CollectTowerAssets();
         var usedIds = new HashSet<int>();
+        var imported = new SortedDictionary<int, TowerData>();
         int updated = 0;
         int created = 0;
 
@@ -71,8 +73,11 @@ public static class TowerSheetImporter
             }
 
             Apply(data, id, gradeId, row, grade);
+            imported[id] = data;
             updated++;
         }
+
+        UpdateCatalog(imported);
 
         foreach (var pair in assets)
         {
@@ -91,6 +96,7 @@ public static class TowerSheetImporter
 
         so.FindProperty("_id").intValue = id;
         so.FindProperty("_gradeId").intValue = gradeId;
+        so.FindProperty("_enabled").boolValue = !TryGetInt(row, "enabled", out int enabled) || enabled != 0;
         so.FindProperty("_towerName").stringValue = Get(row, "name");
         so.FindProperty("_baseAttack").floatValue = grade.BaseAttack;
         so.FindProperty("_attackGrowthRate").floatValue = grade.AttackGrowthRate;
@@ -102,6 +108,28 @@ public static class TowerSheetImporter
 
         so.ApplyModifiedPropertiesWithoutUndo();
         EditorUtility.SetDirty(data);
+    }
+
+    private static void UpdateCatalog(SortedDictionary<int, TowerData> towers)
+    {
+        var catalog = AssetDatabase.LoadAssetAtPath<TowerCatalog>(CatalogPath);
+        if (catalog == null)
+        {
+            catalog = ScriptableObject.CreateInstance<TowerCatalog>();
+            AssetDatabase.CreateAsset(catalog, CatalogPath);
+            Debug.Log($"[TowerSheetImporter] TowerCatalog를 만들었습니다: {CatalogPath}", catalog);
+        }
+
+        var so = new SerializedObject(catalog);
+        var list = so.FindProperty("_towers");
+        list.arraySize = towers.Count;
+
+        int index = 0;
+        foreach (var pair in towers)
+            list.GetArrayElementAtIndex(index++).objectReferenceValue = pair.Value;
+
+        so.ApplyModifiedPropertiesWithoutUndo();
+        EditorUtility.SetDirty(catalog);
     }
 
     private static void SetFloat(SerializedObject so, string property, Dictionary<string, string> row, string key)

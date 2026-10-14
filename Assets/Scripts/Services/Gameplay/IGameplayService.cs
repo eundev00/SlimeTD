@@ -5,7 +5,7 @@ public interface IGameplayService : IDisposable
 {
     GameplayInfo Info { get; }
     GameConfig Config { get; }
-    TowerTierTable TierTable { get; }
+    TowerCatalog Catalog { get; }
     WaveTableData WaveTable { get; }
     SlimeDepthBucketSettings DepthBucketSettings { get; }
 

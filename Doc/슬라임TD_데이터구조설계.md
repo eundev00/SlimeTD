@@ -41,24 +41,22 @@ SlimeRenderGroup (enum)
 ## 타워 / 공격
 
 ```
-TowerSpawnConfig (SO, 1개)
-├─ towerPool         : TowerData[]              // 뽑기 대상
-├─ cost              : int = 50
-└─ ignoreGoldCost    : bool = true              // 개발용 무료 배치
+TowerCatalog (SO, 1개)
+└─ towers            : TowerData[]              // 전체 타워 목록. 임포터가 시트 기준으로 채움
+   런타임 인덱스: ID -> TowerData, 등급 -> 뽑기 후보(활성 + 프리팹 있음)
+   TryDraw(등급), TryDrawNextGrade(소스) — 소환과 합성 결과에 사용
 
 TowerData (SO, 종류당 1개)
+├─ id                : int                      // 시트 ID. 등급 대역을 가짐
+├─ gradeId           : int                      // 시트 등급. 등급의 유일한 원천
+├─ enabled           : bool                     // false면 뽑기 후보에서 제외
 ├─ towerName         : string
 ├─ prefab            : GameObject
 ├─ attackRange       : float = 5                // 탐지 범위 (발사체 도달거리와 별개)
 └─ basicAttack       : AttackBehaviourData
 
-AttackBehaviourData (abstract SO)
-├─ damage            : int = 1
-├─ cooldown          : float = 1                // 공격 종료 후부터 흐른다
-├─ chargeState       : string                   // Animator 트리거 이름
+AttackBehaviourData (abstract SO)                // 숫자는 TowerData가 갖고 여기에는 연출만 둔다
 ├─ attackStates      : string[]                 // 순환 사용, Animator 트리거 이름
-├─ chargeDuration    : float = 0                // 0이면 차징 생략
-├─ attackDuration    : float = 0.5
 └─ CreateBehaviour() : IAttackBehaviour         // 런타임 인스턴스 생성
 
 MeleeAttackData (AttackBehaviourData 상속)
@@ -71,7 +69,7 @@ ProjectileAttackData (AttackBehaviourData 상속)
 └─ -> ProjectileAttack
 ```
 
-`attackStates`/`chargeState`의 문자열은 Animator Controller의 **Trigger 파라미터 이름**과 일치해야 한다. 없는 이름이면 조용히 무시되고 애니메이션이 재생되지 않는다.
+`attackStates`의 문자열은 Animator Controller의 **Trigger 파라미터 이름**과 일치해야 한다. 없는 이름이면 조용히 무시되고 애니메이션이 재생되지 않는다.
 
 `AttackBehaviourData`는 여러 타워가 공유하는 에셋이므로 `attackStates` 순환 인덱스를 SO가 갖지 않는다. 인덱스는 `CreateBehaviour()`로 만든 런타임 인스턴스가 보유한다.
 

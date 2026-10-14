@@ -3,7 +3,7 @@ using VContainer;
 
 public class TowerSpawner : MonoBehaviour
 {
-    private const int DrawableTier = 1;
+    private const int DefaultSummonGradeId = 1;
 
     private IObjectResolver _resolver;
     private IGameplayService _gameplayService;
@@ -148,16 +148,19 @@ public class TowerSpawner : MonoBehaviour
     {
         towerData = null;
 
-        var tierTable = _gameplayService?.TierTable;
-        if (tierTable == null)
+        var catalog = _gameplayService?.Catalog;
+        if (catalog == null)
         {
-            Debug.Log("[TowerSpawner] TowerTierTable이 없어 타워를 뽑을 수 없습니다.", this);
+            Debug.Log("[TowerSpawner] TowerCatalog가 없어 타워를 뽑을 수 없습니다.", this);
             return false;
         }
 
-        if (!tierTable.TryDraw(DrawableTier, out towerData))
+        var config = _gameplayService.Config;
+        int gradeId = config != null ? config.SummonGradeId : DefaultSummonGradeId;
+
+        if (!catalog.TryDraw(gradeId, out towerData))
         {
-            Debug.Log($"[TowerSpawner] 티어 {DrawableTier}에서 뽑을 타워가 없습니다.", this);
+            Debug.Log($"[TowerSpawner] 등급 {gradeId}에서 뽑을 타워가 없습니다.", this);
             return false;
         }
 

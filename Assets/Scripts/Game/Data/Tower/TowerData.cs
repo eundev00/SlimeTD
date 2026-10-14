@@ -7,6 +7,7 @@ public class TowerData : ScriptableObject
 
     [SerializeField] private int _id;
     [SerializeField] private int _gradeId;
+    [SerializeField] private bool _enabled = true;
     [SerializeField] private string _towerName;
     [SerializeField] private GameObject _prefab;
     [SerializeField] private float _attackRange = 5f;
@@ -21,6 +22,7 @@ public class TowerData : ScriptableObject
 
     public int Id => _id;
     public int GradeId => _gradeId;
+    public bool Enabled => _enabled;
     public string TowerName => _towerName;
     public GameObject Prefab => _prefab;
     public float AttackRange => _attackRange;

@@ -3,21 +3,21 @@ using UnityEngine;
 public class TowerMergeFinder
 {
     private readonly TowerCells _towerCells;
-    private readonly TowerTierTable _tierTable;
+    private readonly TowerCatalog _catalog;
 
-    public TowerMergeFinder(TowerCells towerCells, TowerTierTable tierTable)
+    public TowerMergeFinder(TowerCells towerCells, TowerCatalog catalog)
     {
         _towerCells = towerCells;
-        _tierTable = tierTable;
+        _catalog = catalog;
 
         if (_towerCells == null)
         {
             Debug.Log("[TowerMergeFinder] TowerCells가 없어 합성이 비활성화됩니다.");
         }
 
-        if (_tierTable == null)
+        if (_catalog == null)
         {
-            Debug.Log("[TowerMergeFinder] TowerTierTable이 없어 합성이 비활성화됩니다.");
+            Debug.Log("[TowerMergeFinder] TowerCatalog가 없어 합성이 비활성화됩니다.");
         }
     }
 
@@ -56,7 +56,7 @@ public class TowerMergeFinder
             if (entry.Value is not BaseTower candidate || candidate == null)
                 continue;
 
-            if (candidate.Data != sourceTower.Data)
+            if (candidate.Data == null || candidate.Data.Id != sourceTower.Data.Id)
                 continue;
 
             int distance = (entry.Key - sourceCell).sqrMagnitude;
@@ -91,12 +91,9 @@ public class TowerMergeFinder
     {
         resultData = null;
 
-        if (_tierTable == null || sourceData == null)
+        if (_catalog == null || sourceData == null)
             return false;
 
-        if (!_tierTable.TryGetTier(sourceData, out int tier))
-            return false;
-
-        return _tierTable.TryDraw(tier + 1, out resultData);
+        return _catalog.TryDrawNextGrade(sourceData, out resultData);
     }
 }

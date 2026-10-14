@@ -10,6 +10,7 @@ public class GameConfig : ScriptableObject
     [Header("타워 소환")]
     [SerializeField] private int _summonBaseCost = 50;
     [SerializeField] private int _summonCostIncrease = 10;
+    [SerializeField] private int _summonGradeId = 1;
 
     [Header("디버그")]
     [SerializeField] private bool _ignoreGoldCost;
@@ -21,6 +22,7 @@ public class GameConfig : ScriptableObject
     public int StartingGold => _startingGold;
     public int SummonBaseCost => _summonBaseCost;
     public int SummonCostIncrease => _summonCostIncrease;
+    public int SummonGradeId => _summonGradeId;
     public bool IgnoreGoldCost => _ignoreGoldCost;
     public bool AutoStartWave => _autoStartWave;
     public TowerData TestTower => _testTower;

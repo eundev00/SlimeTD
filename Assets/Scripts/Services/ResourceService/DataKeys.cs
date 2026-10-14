@@ -25,15 +25,14 @@ public static class DataKeys
     public const string Slime_03 = "Slime_03";
     public const string Slime_04 = "Slime_04";
     public const string Slime_05 = "Slime_05";
+    public const string TowerCatalog = "TowerCatalog";
     public const string TowerData_Archer = "TowerData_Archer";
     public const string TowerData_Crossbow = "TowerData_Crossbow";
+    public const string TowerData_GoodSlime = "TowerData_GoodSlime";
     public const string TowerData_Knight = "TowerData_Knight";
     public const string TowerData_Lumberjack = "TowerData_Lumberjack";
     public const string TowerData_Ranger = "TowerData_Ranger";
     public const string TowerData_Swordsman = "TowerData_Swordsman";
-    public const string TowerTierTable = "TowerTierTable";
-    public const string TowerTier_01 = "TowerTier_01";
-    public const string TowerTier_02 = "TowerTier_02";
     public const string WaveEasyTable = "WaveEasyTable";
 
     public static readonly Dictionary<string, string> DataPaths = new Dictionary<string, string>()
@@ -61,15 +60,14 @@ public static class DataKeys
         { Slime_03, "Assets/Datas/Slimes/Slime_03.asset" },
         { Slime_04, "Assets/Datas/Slimes/Slime_04.asset" },
         { Slime_05, "Assets/Datas/Slimes/Slime_05.asset" },
+        { TowerCatalog, "Assets/Datas/TowerCatalog.asset" },
         { TowerData_Archer, "Assets/Datas/Characters/Archer/TowerData_Archer.asset" },
         { TowerData_Crossbow, "Assets/Datas/Characters/Crossbow/TowerData_Crossbow.asset" },
+        { TowerData_GoodSlime, "Assets/Datas/Characters/GoodSlime/TowerData_GoodSlime.asset" },
         { TowerData_Knight, "Assets/Datas/Characters/Knight/TowerData_Knight.asset" },
         { TowerData_Lumberjack, "Assets/Datas/Characters/Lumberjack/TowerData_Lumberjack.asset" },
         { TowerData_Ranger, "Assets/Datas/Characters/Ranger/TowerData_Ranger.asset" },
         { TowerData_Swordsman, "Assets/Datas/Characters/Swordsman/TowerData_Swordsman.asset" },
-        { TowerTierTable, "Assets/Datas/TowerTierTable.asset" },
-        { TowerTier_01, "Assets/Datas/TowerTier_01.asset" },
-        { TowerTier_02, "Assets/Datas/TowerTier_02.asset" },
         { WaveEasyTable, "Assets/Datas/Waves/Easy/WaveEasyTable.asset" },
     };
 

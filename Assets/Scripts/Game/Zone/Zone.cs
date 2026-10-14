@@ -44,7 +44,7 @@ public class Zone : MonoBehaviour
         }
 
         _towerCells = new TowerCells(_gridMapReference.GridMapData);
-        _mergeFinder = new TowerMergeFinder(_towerCells, _gameplayService?.TierTable);
+        _mergeFinder = new TowerMergeFinder(_towerCells, _gameplayService?.Catalog);
 
         if (_towerSpawner != null)
         {

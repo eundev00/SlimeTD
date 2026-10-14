@@ -1,9 +1,9 @@
-﻿towerId,codeName,name,gradeId,attackRange,attackCooldown,critChance,critBonus
-타워ID,코드명,이름,등급ID,사거리,공격쿨다운,치명타확률(%),치명타보너스(%)
-101,Archer,궁수,1,2,1,10,100
-103,Swordsman,일병,1,1,1,10,100
-104,Lumberjack,나무꾼,1,1,1.5,10,100
-105,GoodSlime,착한 슬라임,1,2,1,10,100
-202,Ranger,레인저,2,2,1,10,100
-203,Knight,기사,2,1,1,10,100
-204,Crossbow,석궁병,2,2,1.5,10,100
+﻿towerId,codeName,name,gradeId,enabled,attackRange,attackCooldown,critChance,critBonus
+타워ID,코드명,이름,등급ID,활성,사거리,공격쿨다운,치명타확률(%),치명타보너스(%)
+101,Archer,궁수,1,1,2,1,10,100
+103,Swordsman,일병,1,1,1,1,10,100
+104,Lumberjack,나무꾼,1,1,1,1.5,10,100
+105,GoodSlime,착한 슬라임,1,0,2,1,10,100
+202,Ranger,레인저,2,1,2,1,10,100
+203,Knight,기사,2,1,1,1,10,100
+204,Crossbow,석궁병,2,1,2,1.5,10,100
