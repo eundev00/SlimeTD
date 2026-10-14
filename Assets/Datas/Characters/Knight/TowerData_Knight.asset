@@ -20,10 +20,6 @@ MonoBehaviour:
   _attackRange: 1
   _attackSetting:
     _type: 0
-    _attackStates:
-    - Attack
-    - Attack
-    - AttackSlice
     _projectilePrefab: {fileID: 0}
     _poolCapacity: 10
     _poolMaxSize: 20

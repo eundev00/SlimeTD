@@ -57,7 +57,6 @@ TowerData (SO, 종류당 1개)
 
 TowerAttackSetting (Serializable, TowerData에 포함)
 ├─ type              : Melee / Projectile       // 근접 / 원거리(투사체)
-├─ attackStates      : string[]                 // 순환 사용, Animator 트리거 이름
 ├─ projectilePrefab  : GameObject               // Projectile일 때
 ├─ poolCapacity      : int = 10
 └─ poolMaxSize       : int = 50
@@ -65,9 +64,7 @@ TowerAttackSetting (Serializable, TowerData에 포함)
 AttackBehaviourFactory.Create(setting) -> MeleeAttack / ProjectileAttack
 ```
 
-`attackStates`의 문자열은 Animator Controller의 **Trigger 파라미터 이름**과 일치해야 한다. 없는 이름이면 조용히 무시되고 애니메이션이 재생되지 않는다.
-
-`AttackBehaviourData`는 여러 타워가 공유하는 에셋이므로 `attackStates` 순환 인덱스를 SO가 갖지 않는다. 인덱스는 `CreateBehaviour()`로 만든 런타임 인스턴스가 보유한다.
+공격 애니메이션은 모든 타워가 Animator의 `Attack` 트리거 하나를 쓴다(`AttackBehaviourBase`의 상수). 타워 프리팹의 Animator Controller에 `Attack` Trigger 파라미터가 없으면 조용히 무시되고 애니메이션이 재생되지 않는다.
 
 ## 타워 스킬 (설계안, 미구현)
 

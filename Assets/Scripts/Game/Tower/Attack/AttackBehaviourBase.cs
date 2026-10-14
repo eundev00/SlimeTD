@@ -6,10 +6,10 @@ using UnityEngine;
 public abstract class AttackBehaviourBase : IAttackBehaviour
 {
     private const float EndEventTimeout = 10f;
+    private const string AttackTrigger = "Attack";
 
     private readonly TowerAttackSetting _data;
     private float _remainingCooldown;
-    private int _attackStateIndex;
 
     private TargetInfo _pendingTarget;
     private bool _hasPendingTarget;
@@ -42,7 +42,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
     {
         var animator = Context.Animator;
         var stats = Context.Stats;
-        string attackState = _data.GetAttackState(_attackStateIndex);
+        string attackState = AttackTrigger;
 
         _pendingTarget = target;
         _hasPendingTarget = true;
@@ -55,7 +55,6 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
             OnAttackStarted();
 
             animator.SetTrigger(attackState);
-            _attackStateIndex = _data.GetNextAttackStateIndex(_attackStateIndex);
 
             // 클립의 OnAttackEnd 이벤트가 완료시킨다. 이벤트가 없으면 타임아웃까지 대기한다.
             TimeoutEndSourceAsync(_endSource, token).Forget();
