@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1111
+  m_text: 1234
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0e2fc2ffe8b664d118b56342e1d170a4, type: 2}
   m_sharedMaterial: {fileID: -5299783662446701556, guid: 0e2fc2ffe8b664d118b56342e1d170a4, type: 2}
@@ -92,8 +92,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -5
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -188,3 +188,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageTextView
   _text: {fileID: 7631422579725014491}
   _rectTransform: {fileID: 4251970275408798749}
+  _punchScale: 0
