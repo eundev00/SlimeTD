@@ -11,11 +11,17 @@ public static class PrefabKeys
     public const string CrossbowBow = "CrossbowBow";
     public const string DamageText = "DamageText";
     public const string GameResultPopup = "GameResultPopup";
+    public const string GoodSlime = "GoodSlime";
+    public const string GoodSlimeBall = "GoodSlimeBall";
     public const string Knight = "Knight";
     public const string KnightShield = "KnightShield";
     public const string KnightSword = "KnightSword";
     public const string Lumberjack = "Lumberjack";
     public const string LumberjackAxe = "LumberjackAxe";
+    public const string PlaneBlock1 = "PlaneBlock1";
+    public const string PlanePath1 = "PlanePath1";
+    public const string PlanePlace1 = "PlanePlace1";
+    public const string PlanePlace2 = "PlanePlace2";
     public const string Ranger = "Ranger";
     public const string RangerArrow = "RangerArrow";
     public const string RangerBow = "RangerBow";
@@ -43,11 +49,17 @@ public static class PrefabKeys
         { CrossbowBow, "Assets/Prefabs/Game/Characters/CrossbowBow.prefab" },
         { DamageText, "Assets/Prefabs/Game/UI/DamageText.prefab" },
         { GameResultPopup, "Assets/Prefabs/Game/UI/Popup/GameResultPopup.prefab" },
+        { GoodSlime, "Assets/Prefabs/Game/Characters/GoodSlime.prefab" },
+        { GoodSlimeBall, "Assets/Prefabs/Game/Characters/GoodSlimeBall.prefab" },
         { Knight, "Assets/Prefabs/Game/Characters/Knight.prefab" },
         { KnightShield, "Assets/Prefabs/Game/Characters/KnightShield.prefab" },
         { KnightSword, "Assets/Prefabs/Game/Characters/KnightSword.prefab" },
         { Lumberjack, "Assets/Prefabs/Game/Characters/Lumberjack.prefab" },
         { LumberjackAxe, "Assets/Prefabs/Game/Characters/LumberjackAxe.prefab" },
+        { PlaneBlock1, "Assets/Prefabs/Game/Ground/PlaneBlock1.prefab" },
+        { PlanePath1, "Assets/Prefabs/Game/Ground/PlanePath1.prefab" },
+        { PlanePlace1, "Assets/Prefabs/Game/Ground/PlanePlace1.prefab" },
+        { PlanePlace2, "Assets/Prefabs/Game/Ground/PlanePlace2.prefab" },
         { Ranger, "Assets/Prefabs/Game/Characters/Ranger.prefab" },
         { RangerArrow, "Assets/Prefabs/Game/Characters/RangerArrow.prefab" },
         { RangerBow, "Assets/Prefabs/Game/Characters/RangerBow.prefab" },
