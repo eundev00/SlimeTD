@@ -16,7 +16,10 @@ public interface IPlayerDataService
     bool IsAvailable(int towerId);
     void UnlockHunter(int towerId);
 
+    bool TryPurchaseHunter(int towerId);
+
     void AddGold(int amount);
+    void AddGem(int amount);
     void AddCards(int amount);
     bool TryGetLevelUpCost(int towerId, out int cards, out int gold);
     bool CanLevelUp(int towerId);

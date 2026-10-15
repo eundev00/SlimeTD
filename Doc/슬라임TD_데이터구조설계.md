@@ -121,6 +121,7 @@ IPlayerDataService (Project 스코프)
 
 - 레벨업 비용은 `TowerData.levelUpCost`(등급 시트 값을 임포터가 채움)에서 읽는다. `Grades.csv`의 `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
 - 로드와 레벨업 때 `ITowerLevelService`에 레벨을 반영하며, 게임 씬은 이 값을 그대로 읽는다
+- 해금: 시작 해금은 `Grades.csv`의 `startUnlocked`(등급 기본)와 `Towers.csv`의 `startUnlocked`(타워별 예외)로 정한다. 잠긴 헌터는 `unlockGemPrice`만큼 보석을 써서 `TryPurchaseHunter`로 해금한다
 - 소환/합성 후보는 `IsAvailable`로 해금된 헌터만 거른다. 로비를 거치지 않은 에디터 테스트에서는 제한이 없다
 
 ## 런타임 상태

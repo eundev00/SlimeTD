@@ -100,7 +100,11 @@ public static class TowerSheetImporter
         so.FindProperty("_towerName").stringValue = Get(row, "name");
         so.FindProperty("_baseAttack").floatValue = grade.BaseAttack;
         so.FindProperty("_attackGrowthRate").floatValue = grade.AttackGrowthRate;
-        so.FindProperty("_startUnlocked").boolValue = grade.StartUnlocked;
+        // 타워 시트의 startUnlocked가 있으면 등급 기본값보다 우선한다.
+        so.FindProperty("_startUnlocked").boolValue = TryGetInt(row, "startUnlocked", out int unlockOverride)
+            ? unlockOverride != 0
+            : grade.StartUnlocked;
+        so.FindProperty("_unlockGemPrice").intValue = TryGetInt(row, "unlockGemPrice", out int gemPrice) ? gemPrice : 0;
         so.FindProperty("_levelUpCost._cardBase").intValue = grade.CardBase;
         so.FindProperty("_levelUpCost._cardPerLevel").intValue = grade.CardPerLevel;
         so.FindProperty("_levelUpCost._goldBase").intValue = grade.GoldBase;

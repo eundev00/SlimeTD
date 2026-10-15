@@ -1,9 +1,9 @@
-﻿towerId,codeName,name,gradeId,enabled,attackRange,attackCooldown,critChance,critBonus
-타워ID,코드명,이름,등급ID,활성,사거리,공격쿨다운,치명타확률(%),치명타보너스(%)
-101,Archer,궁수,1,1,2,1,10,100
-103,Swordsman,일병,1,1,1,1,10,100
-104,Lumberjack,나무꾼,1,1,1,1.5,10,100
-105,GoodSlime,착한 슬라임,1,0,2,1,10,100
-202,Ranger,레인저,2,1,2,1,10,100
-203,Knight,기사,2,1,1,1,10,100
-204,Crossbow,석궁병,2,1,2,1.5,10,100
+﻿towerId,codeName,name,gradeId,enabled,attackRange,attackCooldown,critChance,critBonus,startUnlocked,unlockGemPrice
+타워ID,코드명,이름,등급ID,활성,사거리,공격쿨다운,치명타확률(%),치명타보너스(%),시작해금(비우면 등급 기본),해금 보석 가격(0=구매불가)
+101,Archer,궁수,1,1,2,1,10,100,,0
+103,Swordsman,일병,1,1,1,1,10,100,,0
+104,Lumberjack,나무꾼,1,1,1,1.5,10,100,,0
+105,GoodSlime,착한 슬라임,1,0,2,1,10,100,,0
+202,Ranger,레인저,2,1,2,1,10,100,,0
+203,Knight,기사,2,1,1,1,10,100,,0
+204,Crossbow,석궁병,2,1,2,1.5,10,100,,0

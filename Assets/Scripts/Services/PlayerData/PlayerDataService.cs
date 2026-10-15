@@ -116,12 +116,37 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         SaveAsync().Forget();
     }
 
+    // 잠긴 헌터는 보석으로 구매해 해금한다. 가격이 0이면 구매할 수 없다.
+    public bool TryPurchaseHunter(int towerId)
+    {
+        if (!_huntersById.TryGetValue(towerId, out var hunter) || hunter.Unlocked.Value)
+            return false;
+
+        int price = hunter.Data.UnlockGemPrice;
+        if (price <= 0 || _gem.Value < price)
+            return false;
+
+        _gem.Value -= price;
+        hunter.Unlocked.Value = true;
+        SaveAsync().Forget();
+        return true;
+    }
+
     public void AddGold(int amount)
     {
         if (amount == 0)
             return;
 
         _gold.Value = Mathf.Max(0, _gold.Value + amount);
+        SaveAsync().Forget();
+    }
+
+    public void AddGem(int amount)
+    {
+        if (amount == 0)
+            return;
+
+        _gem.Value = Mathf.Max(0, _gem.Value + amount);
         SaveAsync().Forget();
     }
 
