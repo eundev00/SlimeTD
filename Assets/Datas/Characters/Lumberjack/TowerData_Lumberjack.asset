@@ -25,3 +25,9 @@ MonoBehaviour:
   _attackCooldown: 1.5
   _critChance: 10
   _critBonus: 100
+  _startUnlocked: 1
+  _levelUpCost:
+    _cardBase: 10
+    _cardPerLevel: 2
+    _goldBase: 100
+    _goldPerLevel: 20

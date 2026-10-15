@@ -8,6 +8,7 @@ public class TowerSpawner : MonoBehaviour
     private IObjectResolver _resolver;
     private IGameplayService _gameplayService;
     private IGroundHeightSampler _groundHeightSampler;
+    private IPlayerDataService _playerDataService;
     private TowerCells _towerCells;
 
     private Transform _spawnRoot;
@@ -17,11 +18,13 @@ public class TowerSpawner : MonoBehaviour
     public void Construct(
         IObjectResolver resolver,
         IGameplayService gameplayService,
-        IGroundHeightSampler groundHeightSampler)
+        IGroundHeightSampler groundHeightSampler,
+        IPlayerDataService playerDataService)
     {
         _resolver = resolver;
         _gameplayService = gameplayService;
         _groundHeightSampler = groundHeightSampler;
+        _playerDataService = playerDataService;
     }
 
     public void Initialize(TowerCells towerCells, Transform spawnRoot)
@@ -158,13 +161,18 @@ public class TowerSpawner : MonoBehaviour
         var config = _gameplayService.Config;
         int gradeId = config != null ? config.SummonGradeId : DefaultSummonGradeId;
 
-        if (!catalog.TryDraw(gradeId, out towerData))
+        if (!catalog.TryDraw(gradeId, out towerData, IsAvailable))
         {
             Debug.Log($"[TowerSpawner] 등급 {gradeId}에서 뽑을 타워가 없습니다.", this);
             return false;
         }
 
         return true;
+    }
+
+    private bool IsAvailable(TowerData towerData)
+    {
+        return _playerDataService == null || _playerDataService.IsAvailable(towerData.Id);
     }
 
     private GameObject CreateTower(TowerData towerData, Vector3 position)

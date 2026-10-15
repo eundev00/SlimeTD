@@ -100,6 +100,11 @@ public static class TowerSheetImporter
         so.FindProperty("_towerName").stringValue = Get(row, "name");
         so.FindProperty("_baseAttack").floatValue = grade.BaseAttack;
         so.FindProperty("_attackGrowthRate").floatValue = grade.AttackGrowthRate;
+        so.FindProperty("_startUnlocked").boolValue = grade.StartUnlocked;
+        so.FindProperty("_levelUpCost._cardBase").intValue = grade.CardBase;
+        so.FindProperty("_levelUpCost._cardPerLevel").intValue = grade.CardPerLevel;
+        so.FindProperty("_levelUpCost._goldBase").intValue = grade.GoldBase;
+        so.FindProperty("_levelUpCost._goldPerLevel").intValue = grade.GoldPerLevel;
 
         SetFloat(so, "_attackRange", row, "attackRange");
         SetFloat(so, "_attackCooldown", row, "attackCooldown");
@@ -220,7 +225,13 @@ public static class TowerSheetImporter
                 continue;
             }
 
-            result[gradeId] = new GradeInfo(baseAttack, growthRate);
+            TryGetInt(row, "startUnlocked", out int startUnlocked);
+            TryGetInt(row, "cardBase", out int cardBase);
+            TryGetInt(row, "cardPerLevel", out int cardPerLevel);
+            TryGetInt(row, "goldBase", out int goldBase);
+            TryGetInt(row, "goldPerLevel", out int goldPerLevel);
+
+            result[gradeId] = new GradeInfo(baseAttack, growthRate, startUnlocked != 0, cardBase, cardPerLevel, goldBase, goldPerLevel);
         }
 
         return result;
@@ -287,11 +298,21 @@ public static class TowerSheetImporter
     {
         public readonly float BaseAttack;
         public readonly float AttackGrowthRate;
+        public readonly bool StartUnlocked;
+        public readonly int CardBase;
+        public readonly int CardPerLevel;
+        public readonly int GoldBase;
+        public readonly int GoldPerLevel;
 
-        public GradeInfo(float baseAttack, float attackGrowthRate)
+        public GradeInfo(float baseAttack, float attackGrowthRate, bool startUnlocked, int cardBase, int cardPerLevel, int goldBase, int goldPerLevel)
         {
             BaseAttack = baseAttack;
             AttackGrowthRate = attackGrowthRate;
+            StartUnlocked = startUnlocked;
+            CardBase = cardBase;
+            CardPerLevel = cardPerLevel;
+            GoldBase = goldBase;
+            GoldPerLevel = goldPerLevel;
         }
     }
 }

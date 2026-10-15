@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class TowerCatalog : ScriptableObject
 
     private readonly Dictionary<int, TowerData> _byId = new Dictionary<int, TowerData>();
     private readonly Dictionary<int, List<TowerData>> _byGrade = new Dictionary<int, List<TowerData>>();
+    private readonly List<TowerData> _drawBuffer = new List<TowerData>();
     private bool _indexed;
 
     public TowerData[] Towers => _towers;
@@ -23,8 +25,8 @@ public class TowerCatalog : ScriptableObject
         return _byId.TryGetValue(id, out data);
     }
 
-    // 비활성이거나 프리팹이 없는 타워는 뽑기 후보에서 제외한다.
-    public bool TryDraw(int gradeId, out TowerData data)
+    // 비활성이거나 프리팹이 없는 타워는 뽑기 후보에서 제외한다. filter가 있으면 통과한 타워만 후보가 된다.
+    public bool TryDraw(int gradeId, out TowerData data, Func<TowerData, bool> filter = null)
     {
         data = null;
         EnsureIndex();
@@ -32,18 +34,29 @@ public class TowerCatalog : ScriptableObject
         if (!_byGrade.TryGetValue(gradeId, out var candidates) || candidates.Count == 0)
             return false;
 
-        data = candidates[Random.Range(0, candidates.Count)];
+        _drawBuffer.Clear();
+
+        for (int i = 0; i < candidates.Count; i++)
+        {
+            if (filter == null || filter(candidates[i]))
+                _drawBuffer.Add(candidates[i]);
+        }
+
+        if (_drawBuffer.Count == 0)
+            return false;
+
+        data = _drawBuffer[UnityEngine.Random.Range(0, _drawBuffer.Count)];
         return true;
     }
 
-    public bool TryDrawNextGrade(TowerData source, out TowerData result)
+    public bool TryDrawNextGrade(TowerData source, out TowerData result, Func<TowerData, bool> filter = null)
     {
         result = null;
 
         if (source == null)
             return false;
 
-        return TryDraw(source.GradeId + 1, out result);
+        return TryDraw(source.GradeId + 1, out result, filter);
     }
 
     private void EnsureIndex()

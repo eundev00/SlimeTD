@@ -21,6 +21,10 @@ public class TowerData : ScriptableObject
     [SerializeField] private float _critChance = 10f;
     [SerializeField] private float _critBonus = 100f;
 
+    [Header("메타")]
+    [SerializeField] private bool _startUnlocked;
+    [SerializeField] private LevelUpCostRule _levelUpCost;
+
     public int Id => _id;
     public int GradeId => _gradeId;
     public bool Enabled => _enabled;
@@ -34,6 +38,8 @@ public class TowerData : ScriptableObject
     public float CritChance => _critChance;
     public float CritBonus => _critBonus;
     public float AttackSpeedPercent => BaseAttackSpeedPercent;
+    public bool StartUnlocked => _startUnlocked;
+    public LevelUpCostRule LevelUpCost => _levelUpCost;
 
     public float GetAttack(int level)
     {

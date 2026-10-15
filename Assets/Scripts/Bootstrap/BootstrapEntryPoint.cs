@@ -1,17 +1,21 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using VContainer.Unity;
 
-public class BootstrapEntryPoint : IStartable
+public class BootstrapEntryPoint : IAsyncStartable
 {
     private readonly ISceneLoader _sceneLoader;
+    private readonly IPlayerDataService _playerDataService;
 
-    public BootstrapEntryPoint(ISceneLoader sceneLoader)
+    public BootstrapEntryPoint(ISceneLoader sceneLoader, IPlayerDataService playerDataService)
     {
         _sceneLoader = sceneLoader;
+        _playerDataService = playerDataService;
     }
 
-    public void Start()
+    public async UniTask StartAsync(CancellationToken ct)
     {
-        _sceneLoader.LoadAdditiveAsync(SceneNames.Lobby).Forget();
+        await _playerDataService.InitializeAsync();
+        await _sceneLoader.LoadAdditiveAsync(SceneNames.Lobby);
     }
 }

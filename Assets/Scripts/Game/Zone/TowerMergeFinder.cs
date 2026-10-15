@@ -1,14 +1,17 @@
+using System;
 using UnityEngine;
 
 public class TowerMergeFinder
 {
     private readonly TowerCells _towerCells;
     private readonly TowerCatalog _catalog;
+    private readonly Func<TowerData, bool> _resultFilter;
 
-    public TowerMergeFinder(TowerCells towerCells, TowerCatalog catalog)
+    public TowerMergeFinder(TowerCells towerCells, TowerCatalog catalog, Func<TowerData, bool> resultFilter = null)
     {
         _towerCells = towerCells;
         _catalog = catalog;
+        _resultFilter = resultFilter;
 
         if (_towerCells == null)
         {
@@ -94,6 +97,6 @@ public class TowerMergeFinder
         if (_catalog == null || sourceData == null)
             return false;
 
-        return _catalog.TryDrawNextGrade(sourceData, out resultData);
+        return _catalog.TryDrawNextGrade(sourceData, out resultData, _resultFilter);
     }
 }

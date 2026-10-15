@@ -102,6 +102,27 @@ TowerSkillData (타워별 SO, 공통 부품을 조합)
 - 상시 합과 지속 합(수치 + 공유 타이머)을 효과 종류마다 따로 보관하고, 최종 값 = 상시 합 + 지속 합에 캡을 적용한다
 - 위 구조는 설계안이다. 필드 이름과 분할 단위는 구현 시 조정한다
 
+## 플레이어 데이터 (메타)
+
+```
+IPlayerDataStore                                // 저장 위치를 숨기는 경계
+├─ LoadAsync() / SaveAsync(PlayerData)
+└─ LocalPlayerDataStore (persistentDataPath/player.json) — 서버 전환 시 구현체만 교체
+
+PlayerData (저장 대상)
+├─ gold, gem        : int
+└─ hunters          : HunterRecord[] { towerId, level, cards, unlocked }
+
+IPlayerDataService (Project 스코프)
+├─ Gold, Gem        : ReactiveProperty<int>
+├─ Hunters          : HunterState[] { Level, Cards, Unlocked : ReactiveProperty }
+└─ AddGold / AddCards / TryLevelUp / IsUnlocked / IsAvailable
+```
+
+- 레벨업 비용은 `TowerData.levelUpCost`(등급 시트 값을 임포터가 채움)에서 읽는다. `Grades.csv`의 `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
+- 로드와 레벨업 때 `ITowerLevelService`에 레벨을 반영하며, 게임 씬은 이 값을 그대로 읽는다
+- 소환/합성 후보는 `IsAvailable`로 해금된 헌터만 거른다. 로비를 거치지 않은 에디터 테스트에서는 제한이 없다
+
 ## 런타임 상태
 
 SO는 기준값만 담고, 변화하는 상태는 아래 클래스가 `ReactiveProperty`로 노출한다.
