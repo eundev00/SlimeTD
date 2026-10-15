@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
-public class PlayerDataService : IPlayerDataService, System.IDisposable
+public class PlayerDataService : IPlayerDataService, IDisposable
 {
     private readonly IPlayerDataStore _store;
     private readonly IResourceLoadService _resourceLoadService;
@@ -11,12 +12,14 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
 
     private readonly ReactiveProperty<int> _gold = new ReactiveProperty<int>();
     private readonly ReactiveProperty<int> _gem = new ReactiveProperty<int>();
+    private readonly ReactiveProperty<int> _cards = new ReactiveProperty<int>();
     private readonly List<HunterState> _hunters = new List<HunterState>();
     private readonly Dictionary<int, HunterState> _huntersById = new Dictionary<int, HunterState>();
 
     public bool IsInitialized { get; private set; }
     public IReadOnlyReactiveProperty<int> Gold => _gold;
     public IReadOnlyReactiveProperty<int> Gem => _gem;
+    public IReadOnlyReactiveProperty<int> Cards => _cards;
     public IReadOnlyList<HunterState> Hunters => _hunters;
 
     public PlayerDataService(
@@ -65,7 +68,6 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
                 {
                     TowerId = tower.Id,
                     Level = TowerLevelService.MinLevel,
-                    Cards = 0,
                     Unlocked = tower.StartUnlocked,
                 };
 
@@ -82,6 +84,7 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
 
         _gold.Value = data.Gold;
         _gem.Value = data.Gem;
+        _cards.Value = data.Cards;
         IsInitialized = true;
 
         if (isNew || created)
@@ -104,6 +107,15 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
         return !IsInitialized || IsUnlocked(towerId);
     }
 
+    public void UnlockHunter(int towerId)
+    {
+        if (!_huntersById.TryGetValue(towerId, out var hunter) || hunter.Unlocked.Value)
+            return;
+
+        hunter.Unlocked.Value = true;
+        SaveAsync().Forget();
+    }
+
     public void AddGold(int amount)
     {
         if (amount == 0)
@@ -113,14 +125,13 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
         SaveAsync().Forget();
     }
 
-    // 첫 카드를 얻으면 헌터가 해금된다.
-    public void AddCards(int towerId, int amount)
+    // 헌터 카드는 하나의 공용 재화다. 어느 헌터를 올릴지는 유저가 고른다.
+    public void AddCards(int amount)
     {
-        if (amount <= 0 || !_huntersById.TryGetValue(towerId, out var hunter))
+        if (amount == 0)
             return;
 
-        hunter.Cards.Value += amount;
-        hunter.Unlocked.Value = true;
+        _cards.Value = Mathf.Max(0, _cards.Value + amount);
         SaveAsync().Forget();
     }
 
@@ -148,10 +159,9 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
             return false;
 
         var hunter = _huntersById[towerId];
-        return hunter.Unlocked.Value && hunter.Cards.Value >= cards && _gold.Value >= gold;
+        return hunter.Unlocked.Value && _cards.Value >= cards && _gold.Value >= gold;
     }
 
-    // 카드는 필요한 장수만큼만 빠지고 남은 카드는 다음 레벨로 이월된다.
     public bool TryLevelUp(int towerId)
     {
         if (!CanLevelUp(towerId))
@@ -160,7 +170,7 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
         TryGetLevelUpCost(towerId, out int cards, out int gold);
 
         var hunter = _huntersById[towerId];
-        hunter.Cards.Value -= cards;
+        _cards.Value -= cards;
         _gold.Value -= gold;
         hunter.Level.Value += 1;
 
@@ -178,6 +188,7 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
         _huntersById.Clear();
         _gold.Dispose();
         _gem.Dispose();
+        _cards.Dispose();
     }
 
     private async UniTaskVoid SaveAsync()
@@ -186,6 +197,7 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
         {
             Gold = _gold.Value,
             Gem = _gem.Value,
+            Cards = _cards.Value,
         };
 
         for (int i = 0; i < _hunters.Count; i++)
@@ -195,7 +207,6 @@ public class PlayerDataService : IPlayerDataService, System.IDisposable
             {
                 TowerId = hunter.TowerId,
                 Level = hunter.Level.Value,
-                Cards = hunter.Cards.Value,
                 Unlocked = hunter.Unlocked.Value,
             });
         }

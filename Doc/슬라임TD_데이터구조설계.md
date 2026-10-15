@@ -110,13 +110,13 @@ IPlayerDataStore                                // 저장 위치를 숨기는 �
 └─ LocalPlayerDataStore (persistentDataPath/player.json) — 서버 전환 시 구현체만 교체
 
 PlayerData (저장 대상)
-├─ gold, gem        : int
-└─ hunters          : HunterRecord[] { towerId, level, cards, unlocked }
+├─ gold, gem, cards : int                      // 헌터 카드는 공용 재화 하나
+└─ hunters          : HunterRecord[] { towerId, level, unlocked }
 
 IPlayerDataService (Project 스코프)
-├─ Gold, Gem        : ReactiveProperty<int>
-├─ Hunters          : HunterState[] { Level, Cards, Unlocked : ReactiveProperty }
-└─ AddGold / AddCards / TryLevelUp / IsUnlocked / IsAvailable
+├─ Gold, Gem, Cards : ReactiveProperty<int>
+├─ Hunters          : HunterState[] { Level, Unlocked : ReactiveProperty }
+└─ AddGold / AddCards / UnlockHunter / TryLevelUp / IsUnlocked / IsAvailable
 ```
 
 - 레벨업 비용은 `TowerData.levelUpCost`(등급 시트 값을 임포터가 채움)에서 읽는다. `Grades.csv`의 `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
