@@ -57,26 +57,39 @@ TowerData (SO, 종류당 1개)
 ├─ prefab            : GameObject
 ├─ attackRange       : float = 5                // 탐지 범위 (발사체 도달거리와 별개)
 ├─ attackType        : Melee / Projectile       // 근접 / 원거리(투사체)
-└─ projectilePrefab  : GameObject               // Projectile일 때. 풀 크기는 코드 상수
+├─ projectilePrefab  : GameObject               // Projectile일 때. 풀 크기는 코드 상수
+├─ baseAttack        : float                    // 등급 시트의 기준공격력 (임포터가 채움)
+├─ attackGrowthRate  : float                    // 레벨당 공격력 증가율 % (임포터가 채움)
+├─ attackCooldown    : float                    // 시트
+├─ critChance        : float = 10               // %. 시트
+├─ critBonus         : float = 100              // %. 시트
+├─ startUnlocked     : bool                     // 시작 해금 (등급 기본, 타워 시트로 예외 지정)
+├─ unlockGemPrice    : int                      // 잠긴 헌터의 보석 구매 가격. 0이면 구매 불가
+└─ levelUpCost       : LevelUpCostRule          // 등급 시트의 카드/골드 기본값과 레벨당 증가
 
 AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 ```
 
 공격 애니메이션은 모든 타워가 Animator의 `Attack` 트리거 하나를 쓴다(`AttackBehaviourBase`의 상수). 타워 프리팹의 Animator Controller에 `Attack` Trigger 파라미터가 없으면 조용히 무시되고 애니메이션이 재생되지 않는다.
 
+## 시트 → SO 임포트
+ 숫자의 원천은 CSV다. 1줄은 영문 키, 2줄은 한글 설명이며, 임포터는 1줄만 읽는다. 위치는 `Assets/Datas/Sheets/`다.
+
+| 시트 | 키 | 열 |
+|---|---|---|
+| `Grades.csv` | `gradeId` | `name`, `baseAttack`, `attackGrowthRate`, `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel` |
+| `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(비우면 등급 기본), `unlockGemPrice` |
+
+- 실행: 메뉴 `SlimeTD > Data > Import Tower Sheets`. `TowerData`를 ID로 찾아(없으면 `TowerData_<코드명>` 이름, 그래도 없으면 새로 생성) 숫자 필드를 덮어쓰고 `TowerCatalog`를 시트 기준으로 채운다
+- 프리팹, 투사체 프리팹 같은 에셋 참조는 임포터가 건드리지 않으므로 인스펙터에서 한 번 연결한다
+- 숫자는 시트에서만 고친다. 인스펙터에서 고쳐도 다음 임포트 때 덮어써진다
+
 ## 타워 스킬 (설계안, 미구현)
 
 스킬은 타워에 귀속되고, 발동 조건/확률/쿨타임/효과 종류 같은 부품은 공통으로 쓴다. 규칙과 용어는 [슬라임TD_타워스킬설계.md](슬라임TD_타워스킬설계.md) 참고.
 
 ```
-TowerData (확장)
-├─ id                : int                        // 등급 대역을 가진 고유 ID (예: 101, 202)
-├─ basicAttack       : AttackBehaviourData        // 연출/발사체 참조만
-├─ baseAttack        : float                      // 등급 시트의 기준공격력 (임포터가 채움)
-├─ attackGrowthRate  : float                      // 레벨당 증가율(%) (임포터가 채움)
-├─ attackCooldown    : float
-├─ critChance        : float = 10                 // %
-├─ critBonus         : float = 100                // %
+TowerData (스킬 추가 시 확장)
 └─ skills            : TowerSkillEntry[]          // 개수 제한 없음
 
 공격력(레벨) = baseAttack × (1 + attackGrowthRate / 100 × (레벨 - 1))
