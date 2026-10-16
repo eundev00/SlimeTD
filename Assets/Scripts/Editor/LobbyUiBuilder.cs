@@ -47,8 +47,9 @@ public static class LobbyUiBuilder
         content.offsetMin = new Vector2(0f, 200f);
         content.offsetMax = new Vector2(0f, -150f);
 
+        var cardPrefab = BuildHunterCardPrefab();
         var battle = BuildBattleTab(content);
-        var hunter = BuildHunterTab(content);
+        var hunter = BuildHunterTab(content, cardPrefab);
         BuildTabBar(root, battle.gameObject, hunter.gameObject);
         hunter.gameObject.SetActive(false);
 
@@ -145,7 +146,7 @@ public static class LobbyUiBuilder
         return tab;
     }
 
-    private static RectTransform BuildHunterTab(RectTransform parent)
+    private static RectTransform BuildHunterTab(RectTransform parent, HunterCard cardPrefab)
     {
         var tab = NewRect("HunterTab", parent);
         Stretch(tab);
@@ -172,7 +173,7 @@ public static class LobbyUiBuilder
         var cardText = Label("TXT_Cards", cards, "0", 34, TextDark, true, TextAlignmentOptions.Right, false);
         SetOffsets(cardText.rectTransform, new Vector2(70f, 0f), new Vector2(-16f, 0f));
 
-        ButtonBlock("BTN_Sort", info, White, "등급순", 28, TextDark, true, TopRight(-30f, 0f, 220f, 80f));
+        var sort = ButtonBlock("BTN_Sort", info, White, "등급순", 28, TextDark, true, TopRight(-30f, 0f, 220f, 80f));
 
         var area = Block("IMG_GridArea", tab, "#F5F7F4", null);
         area.anchorMin = Vector2.zero;
@@ -180,21 +181,112 @@ public static class LobbyUiBuilder
         area.offsetMin = new Vector2(20f, 10f);
         area.offsetMax = new Vector2(-20f, -500f);
 
-        var grid = NewRect("Grid", area);
-        Stretch(grid);
-        grid.offsetMin = new Vector2(10f, 10f);
-        grid.offsetMax = new Vector2(-10f, -10f);
+        var viewport = NewRect("Viewport", area);
+        Stretch(viewport);
+        viewport.gameObject.AddComponent<RectMask2D>();
+
+        var grid = NewRect("Grid", viewport);
+        grid.anchorMin = new Vector2(0f, 1f);
+        grid.anchorMax = new Vector2(1f, 1f);
+        grid.pivot = new Vector2(0.5f, 1f);
+        grid.sizeDelta = Vector2.zero;
+        grid.anchoredPosition = Vector2.zero;
+
         var layout = grid.gameObject.AddComponent<GridLayoutGroup>();
         layout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         layout.constraintCount = 4;
         layout.cellSize = new Vector2(230f, 290f);
         layout.spacing = new Vector2(15f, 20f);
-        layout.padding = new RectOffset(10, 10, 10, 10);
+        layout.padding = new RectOffset(15, 15, 15, 15);
         layout.childAlignment = TextAnchor.UpperCenter;
 
-        Label("TXT_GridHint", area, "[헌터 카드 그리드 (4열)]", 28, "#8E978F", false, TextAlignmentOptions.Center, true);
+        var fitter = grid.gameObject.AddComponent<ContentSizeFitter>();
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        var scroll = area.gameObject.AddComponent<ScrollRect>();
+        scroll.content = grid;
+        scroll.viewport = viewport;
+        scroll.horizontal = false;
+        scroll.vertical = true;
+        scroll.movementType = ScrollRect.MovementType.Elastic;
+
+        var view = tab.gameObject.AddComponent<HunterTab>();
+        var so = new SerializedObject(view);
+        so.FindProperty("_grid").objectReferenceValue = grid;
+        so.FindProperty("_cardPrefab").objectReferenceValue = cardPrefab;
+        so.FindProperty("_cardsText").objectReferenceValue = cardText;
+        so.FindProperty("_sortButton").objectReferenceValue = sort.GetComponent<Button>();
+        so.FindProperty("_sortLabel").objectReferenceValue = sort.Find("TXT_Label").GetComponent<TMP_Text>();
+        so.ApplyModifiedPropertiesWithoutUndo();
 
         return tab;
+    }
+
+    private static HunterCard BuildHunterCardPrefab()
+    {
+        const string cardPath = PrefabFolder + "/HunterCard.prefab";
+
+        if (!Directory.Exists(PrefabFolder))
+            Directory.CreateDirectory(PrefabFolder);
+
+        var root = NewRect("HunterCard", null);
+        root.sizeDelta = new Vector2(230f, 290f);
+
+        var hit = AddImage(root, "#FFFFFF");
+        hit.color = new Color(1f, 1f, 1f, 0f);
+        var button = root.gameObject.AddComponent<Button>();
+        button.targetGraphic = hit;
+        button.transition = Selectable.Transition.None;
+
+        var borderRect = Block("FRAME_Border", root, "#A79F8F", Anchored(new Vector2(0.5f, 1f), Vector2.zero, new Vector2(230f, 240f), new Vector2(0.5f, 1f)));
+        var fillRect = Block("IMG_Fill", borderRect, "#BFB7A6", null);
+        fillRect.offsetMin = new Vector2(8f, 8f);
+        fillRect.offsetMax = new Vector2(-8f, -8f);
+
+        var face = Block("ICON_Face", fillRect, "#FFFFFF", Anchored(new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(120f, 110f), new Vector2(0.5f, 1f)));
+        face.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.35f);
+        Label("TXT_FaceHint", face, "[얼굴]", 22, "#5E665F", false, TextAlignmentOptions.Center, true);
+
+        var level = Label("TXT_Level", fillRect, "Lv.1", 34, White, true, TextAlignmentOptions.Center, false,
+            Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 58f), new Vector2(200f, 44f), new Vector2(0.5f, 0f)));
+
+        var progressRoot = Block("Progress", fillRect, "#000000", Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 10f), new Vector2(200f, 38f), new Vector2(0.5f, 0f)));
+        progressRoot.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.35f);
+        var progressFill = Block("IMG_ProgressFill", progressRoot, "#3FA85A", null);
+        progressFill.anchorMin = Vector2.zero;
+        progressFill.anchorMax = new Vector2(0f, 1f);
+        progressFill.offsetMin = Vector2.zero;
+        progressFill.offsetMax = Vector2.zero;
+        var progressText = Label("TXT_Progress", progressRoot, "0 / 10", 22, White, true, TextAlignmentOptions.Center, true);
+
+        var badge = Block("ICON_UpgradeBadge", borderRect, "#3FA85A", Anchored(new Vector2(1f, 1f), new Vector2(-6f, -6f), new Vector2(46f, 46f), new Vector2(1f, 1f)));
+        Label("TXT_Badge", badge, "▲", 26, White, true, TextAlignmentOptions.Center, true);
+
+        var lockOverlay = Block("Lock", fillRect, "#2A2E2B", null);
+        lockOverlay.GetComponent<Image>().color = new Color(0.16f, 0.18f, 0.17f, 0.25f);
+        Label("TXT_Lock", lockOverlay, "잠금", 30, "#5E665F", true, TextAlignmentOptions.Center, true);
+
+        var name = Label("TXT_Name", root, "이름", 28, TextDark, false, TextAlignmentOptions.Center, false,
+            Anchored(new Vector2(0.5f, 0f), Vector2.zero, new Vector2(230f, 44f), new Vector2(0.5f, 0f)));
+
+        var card = root.gameObject.AddComponent<HunterCard>();
+        var so = new SerializedObject(card);
+        so.FindProperty("_border").objectReferenceValue = borderRect.GetComponent<Image>();
+        so.FindProperty("_fill").objectReferenceValue = fillRect.GetComponent<Image>();
+        so.FindProperty("_nameText").objectReferenceValue = name;
+        so.FindProperty("_levelText").objectReferenceValue = level;
+        so.FindProperty("_progressText").objectReferenceValue = progressText;
+        so.FindProperty("_progressFill").objectReferenceValue = progressFill;
+        so.FindProperty("_progressRoot").objectReferenceValue = progressRoot.gameObject;
+        so.FindProperty("_lockOverlay").objectReferenceValue = lockOverlay.gameObject;
+        so.FindProperty("_upgradeBadge").objectReferenceValue = badge.gameObject;
+        so.FindProperty("_button").objectReferenceValue = button;
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        var saved = PrefabUtility.SaveAsPrefabAsset(root.gameObject, cardPath);
+        Object.DestroyImmediate(root.gameObject);
+
+        return saved.GetComponent<HunterCard>();
     }
 
     private static void BuildTabBar(RectTransform parent, GameObject battlePanel, GameObject hunterPanel)

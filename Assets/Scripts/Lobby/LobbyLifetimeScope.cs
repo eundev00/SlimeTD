@@ -10,5 +10,8 @@ public class LobbyLifetimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<LobbyHeader>();
         builder.RegisterEntryPoint<LobbyHeaderPresenter>();
+
+        builder.RegisterComponentInHierarchy<HunterTab>();
+        builder.RegisterEntryPoint<HunterTabPresenter>();
     }
 }
