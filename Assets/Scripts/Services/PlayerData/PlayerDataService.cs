@@ -47,7 +47,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         var data = await _store.LoadAsync();
         bool isNew = data == null;
         if (isNew)
-            data = new PlayerData();
+            data = await CreateNewPlayerDataAsync();
 
         var recordsById = new Dictionary<int, HunterRecord>();
         foreach (var record in data.Hunters)
@@ -89,6 +89,24 @@ public class PlayerDataService : IPlayerDataService, IDisposable
 
         if (isNew || created)
             SaveAsync().Forget();
+    }
+
+    // 저장 데이터가 없는 새 계정은 GameConfig의 시작 재화로 시작한다.
+    private async UniTask<PlayerData> CreateNewPlayerDataAsync()
+    {
+        var data = new PlayerData();
+
+        var config = await _resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
+        if (config == null)
+        {
+            Debug.Log($"[PlayerDataService] {DataKeys.GameConfig} 로드에 실패해 시작 재화를 0으로 둡니다.");
+            return data;
+        }
+
+        data.Gold = config.InitialLobbyGold;
+        data.Gem = config.InitialGem;
+        data.Cards = config.InitialCards;
+        return data;
     }
 
     public bool TryGetHunter(int towerId, out HunterState hunter)

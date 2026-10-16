@@ -10,7 +10,10 @@ GameConfig (SO, 1개)
 ├─ startingJelly     : int = 0                  // 에셋 값 50 (인게임 재화)
 ├─ summonBaseCost    : int = 50                 // 에셋 값 10. 소환 비용 = 기본 + 증가 × 소환 횟수
 ├─ summonCostIncrease: int = 10                 // 에셋 값 2
-└─ summonGradeId     : int = 1                  // 소환 등급 (일반)
+├─ summonGradeId     : int = 1                  // 소환 등급 (일반)
+├─ initialLobbyGold  : int = 10000               // 새 계정 시작 골드 (개발용 임시)
+├─ initialGem        : int = 10000               // 새 계정 시작 보석 (개발용 임시)
+└─ initialCards      : int = 10000               // 새 계정 시작 헌터 카드 (개발용 임시)
 ```
 
 ## 맵 / 그리드
