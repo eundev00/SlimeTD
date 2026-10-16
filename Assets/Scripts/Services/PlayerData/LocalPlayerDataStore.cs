@@ -7,7 +7,7 @@ public class LocalPlayerDataStore : IPlayerDataStore
 {
     private const string FileName = "player.json";
 
-    private string FilePath => Path.Combine(Application.persistentDataPath, FileName);
+    public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
 
     public async UniTask<PlayerData> LoadAsync()
     {

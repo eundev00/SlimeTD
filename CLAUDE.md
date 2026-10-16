@@ -117,7 +117,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 - **밸런스 수치**: 체력/데미지/젤리/라이프 차감량은 ScriptableObject로 분리해 코드에 하드코딩하지 않는다
 - **타워 데이터 파이프라인**: 타워 숫자는 Assets/Datas/Sheets/의 CSV(Grades.csv, Towers.csv)가 원천이다. 메뉴 SlimeTD > Data > Import Tower Sheets가 TowerData 에셋과 TowerCatalog를 채우며, 에셋의 숫자 필드를 인스펙터에서 직접 고치지 않는다. 프리팹/투사체 연결은 인스펙터에서 한다. 상세는 [Doc/슬라임TD_데이터구조설계.md](Doc/슬라임TD_데이터구조설계.md) 참고
 - **데이터 스크립트 위치**: ScriptableObject 정의는 Assets/Scripts/Data/에 둔다 (Game/ 아래에 두지 않는다)
-- **플레이어 데이터(메타)**: 골드/보석/헌터 카드/헌터 레벨은 IPlayerDataService(전역)가 들고 IPlayerDataStore로 저장한다. 저장 위치는 구현체 교체로 서버 전환이 가능해야 한다. 타워 레벨은 로비에서 정하고 인게임에서는 오르지 않는다
+- **플레이어 데이터(메타)**: 골드/보석/헌터 카드/헌터 레벨은 IPlayerDataService(전역)가 들고 IPlayerDataStore로 저장한다. 저장 위치는 구현체 교체로 서버 전환이 가능해야 한다. 로컬 저장을 지워 새 계정으로 시작하려면 메뉴 `SlimeTD > Data > Reset Player Data`를 쓴다. 타워 레벨은 로비에서 정하고 인게임에서는 오르지 않는다
 - **"손맛"이 이 프로젝트의 최우선 품질 기준**이다. 피격/처치 연출은 비용을 아끼지 않는다
 - **그리드 배치**: 맵은 `GridMapData`(ScriptableObject)로 셀 단위 관리한다. 배치 가능/불가/경로 상태를 셀마다 지정하고, 에디터 도구(`GridMapDataInspector`, `GridSceneViewDrawer`, `GridPaintMode`)로 편집한다
 - **슬라임 렌더 순서**: `SlimeRenderOrderService`가 슬라임 간 깊이(Z-order)를 관리한다. 상세 설계는 [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md) 참고
