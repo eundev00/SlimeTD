@@ -7,7 +7,7 @@ public class LobbyStartButton : MonoBehaviour
 {
     [NotNull][SerializeField] private Button _startButton;
     [SerializeField] private Button _testStartButton;
-    [SerializeField] private Button _game2StartButton;
+    [SerializeField] private Button _game1StartButton;
 
     private ISceneLoader _sceneLoader;
 
@@ -30,8 +30,8 @@ public class LobbyStartButton : MonoBehaviour
         if (_testStartButton != null)
             _testStartButton.onClick.AddListener(OnTestStartButtonClicked);
 
-        if (_game2StartButton != null)
-            _game2StartButton.onClick.AddListener(OnGame2StartButtonClicked);
+        if (_game1StartButton != null)
+            _game1StartButton.onClick.AddListener(OnGame1StartButtonClicked);
     }
 
     private void OnDestroy()
@@ -42,8 +42,8 @@ public class LobbyStartButton : MonoBehaviour
         if (_testStartButton != null)
             _testStartButton.onClick.RemoveListener(OnTestStartButtonClicked);
 
-        if (_game2StartButton != null)
-            _game2StartButton.onClick.RemoveListener(OnGame2StartButtonClicked);
+        if (_game1StartButton != null)
+            _game1StartButton.onClick.RemoveListener(OnGame1StartButtonClicked);
     }
 
     private void OnStartButtonClicked()
@@ -56,9 +56,9 @@ public class LobbyStartButton : MonoBehaviour
         LoadScene(SceneNames.GameTest);
     }
 
-    private void OnGame2StartButtonClicked()
+    private void OnGame1StartButtonClicked()
     {
-        LoadScene(SceneNames.Game2);
+        LoadScene(SceneNames.Game1);
     }
 
     private void LoadScene(string sceneName)
@@ -68,8 +68,8 @@ public class LobbyStartButton : MonoBehaviour
         if (_testStartButton != null)
             _testStartButton.interactable = false;
 
-        if (_game2StartButton != null)
-            _game2StartButton.interactable = false;
+        if (_game1StartButton != null)
+            _game1StartButton.interactable = false;
 
         // 취소 토큰을 붙이지 말 것: 전환 도중 이 오브젝트가 파괴되어 자기 전환을 취소한다
         _sceneLoader.TransitionAsync(SceneNames.Lobby, sceneName).Forget();

@@ -131,10 +131,8 @@ public static class LobbyUiBuilder
         var recordLabel = record.Find("TXT_RecordLabel");
         SetOffsets((RectTransform)recordLabel, new Vector2(30f, 0f), new Vector2(-30f, 0f));
 
-        var devGame = ButtonBlock("BTN_DevGame", tab, "#D9DED8", "DEV 게임", 24, TextMuted, false, BottomLeft(30f, 190f, 300f, 70f));
-        var devTest = ButtonBlock("BTN_DevTest", tab, "#D9DED8", "DEV 테스트", 24, TextMuted, false, BottomLeft(350f, 190f, 300f, 70f));
-        var devGame2 = ButtonBlock("BTN_DevGame2", tab, "#D9DED8", "DEV 게임2", 24, TextMuted, false, BottomLeft(670f, 190f, 300f, 70f));
-        devGame = null; devTest = null; devGame2 = null;
+        ButtonBlock("BTN_DevGame1", tab, "#D9DED8", "DEV 게임1", 24, TextMuted, false, BottomLeft(30f, 190f, 300f, 70f));
+        ButtonBlock("BTN_DevTest", tab, "#D9DED8", "DEV 테스트", 24, TextMuted, false, BottomLeft(350f, 190f, 300f, 70f));
 
         var start = ButtonBlock("BTN_Start", tab, Accent, "전투 시작", 60, White, true, null);
         start.anchorMin = new Vector2(0f, 0f);
@@ -380,23 +378,19 @@ public static class LobbyUiBuilder
         var component = lobbyStart.GetComponent<LobbyStartButton>();
         var start = lobbyMain.Find("Content/BattleTab/BTN_Start")?.GetComponent<Button>();
         var devTest = lobbyMain.Find("Content/BattleTab/BTN_DevTest")?.GetComponent<Button>();
-        var devGame2 = lobbyMain.Find("Content/BattleTab/BTN_DevGame2")?.GetComponent<Button>();
+        var devGame1 = lobbyMain.Find("Content/BattleTab/BTN_DevGame1")?.GetComponent<Button>();
 
         if (component != null)
         {
             var so = new SerializedObject(component);
             so.FindProperty("_startButton").objectReferenceValue = start;
             so.FindProperty("_testStartButton").objectReferenceValue = devTest;
-            so.FindProperty("_game2StartButton").objectReferenceValue = devGame2;
+            so.FindProperty("_game1StartButton").objectReferenceValue = devGame1;
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 
         foreach (Transform child in lobbyStart)
             child.gameObject.SetActive(false);
-
-        var devGame = lobbyMain.Find("Content/BattleTab/BTN_DevGame")?.gameObject;
-        if (devGame != null)
-            devGame.SetActive(false);
     }
 
     private static Transform FindInScene(UnityEngine.SceneManagement.Scene scene, string name)
