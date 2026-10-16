@@ -93,6 +93,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 
 - private 필드: `_camelCase`, `[SerializeField] private`로 인스펙터 노출 (public 필드 금지)
 - 인터페이스는 `I` 접두사, 구현체와 파일 분리
+- 오브젝트, 프리팹, 에셋 파일 이름은 영문으로 짓는다 (화면에 보이는 텍스트만 한글). 에디터 빌더로 만드는 UI 계층도 같다
 - 로그 태그: `[클래스명] 메시지` (예: `Debug.Log($"[SceneLoader] 씬 로드 실패: {sceneName}")`)
 - MonoBehaviour 참조는 `Start()`에서 null 체크 후 조기 반환하고, 실패 시 `Debug.Log(..., this)`로 대상 오브젝트를 함께 넘긴다
 - 주석과 로그 메시지는 한국어로 작성한다

@@ -300,6 +300,7 @@ public static class LobbyUiBuilder
         AddImage(bar, Bar);
 
         string[] names = { "상점", "헌터", "전투", "컨텐츠1", "컨텐츠2" };
+        string[] keys = { "Shop", "Hunter", "Battle", "Content1", "Content2" };
         bool[] locked = { true, false, false, true, true };
         GameObject[] panels = { null, hunterPanel, battlePanel, null, null };
 
@@ -310,7 +311,7 @@ public static class LobbyUiBuilder
 
         for (int i = 0; i < names.Length; i++)
         {
-            var button = NewRect("Tab_" + names[i], bar);
+            var button = NewRect("Tab_" + keys[i], bar);
             button.anchorMin = new Vector2(i / 5f, 0f);
             button.anchorMax = new Vector2((i + 1) / 5f, 1f);
             button.offsetMin = new Vector2(4f, 4f);
@@ -321,7 +322,7 @@ public static class LobbyUiBuilder
             btn.targetGraphic = image;
             btn.transition = Selectable.Transition.None;
 
-            var icon = Block("ICON_" + names[i], button, Placeholder, Anchored(new Vector2(0.5f, 1f), new Vector2(0f, -30f), new Vector2(64f, 64f), new Vector2(0.5f, 1f)));
+            var icon = Block("ICON_" + keys[i], button, Placeholder, Anchored(new Vector2(0.5f, 1f), new Vector2(0f, -30f), new Vector2(64f, 64f), new Vector2(0.5f, 1f)));
             icon = null;
             var label = Label("TXT_Label", button, names[i], 30, TextMuted, false, TextAlignmentOptions.Center, false, Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 24f), new Vector2(0f, 50f), new Vector2(0.5f, 0f)));
             label.rectTransform.anchorMin = new Vector2(0f, 0f);
