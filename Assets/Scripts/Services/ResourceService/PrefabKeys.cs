@@ -11,6 +11,7 @@ public static class PrefabKeys
     public const string CrossbowBow = "CrossbowBow";
     public const string DamageText = "DamageText";
     public const string GameResultPopup = "GameResultPopup";
+    public const string HunterDetailPopup = "HunterDetailPopup";
     public const string GoodSlime = "GoodSlime";
     public const string GoodSlimeBall = "GoodSlimeBall";
     public const string Knight = "Knight";
@@ -49,6 +50,7 @@ public static class PrefabKeys
         { CrossbowBow, "Assets/Prefabs/Game/Characters/CrossbowBow.prefab" },
         { DamageText, "Assets/Prefabs/Game/UI/DamageText.prefab" },
         { GameResultPopup, "Assets/Prefabs/Game/UI/Popup/GameResultPopup.prefab" },
+        { HunterDetailPopup, "Assets/Prefabs/Lobby/HunterDetailPopup.prefab" },
         { GoodSlime, "Assets/Prefabs/Game/Characters/GoodSlime.prefab" },
         { GoodSlimeBall, "Assets/Prefabs/Game/Characters/GoodSlimeBall.prefab" },
         { Knight, "Assets/Prefabs/Game/Characters/Knight.prefab" },

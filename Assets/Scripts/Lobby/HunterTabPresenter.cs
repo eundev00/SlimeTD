@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using VContainer.Unity;
 
@@ -24,15 +25,17 @@ public class HunterTabPresenter : IStartable, IDisposable
     }
 
     private readonly IPlayerDataService _playerDataService;
+    private readonly IPopupService _popupService;
     private readonly HunterTab _view;
     private readonly List<Entry> _entries = new List<Entry>();
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     private SortMode _sortMode = SortMode.Grade;
 
-    public HunterTabPresenter(IPlayerDataService playerDataService, HunterTab view)
+    public HunterTabPresenter(IPlayerDataService playerDataService, IPopupService popupService, HunterTab view)
     {
         _playerDataService = playerDataService;
+        _popupService = popupService;
         _view = view;
     }
 
@@ -45,6 +48,11 @@ public class HunterTabPresenter : IStartable, IDisposable
 
             var entry = new Entry(hunter, _view.CreateCard());
             _entries.Add(entry);
+
+            int towerId = hunter.TowerId;
+            entry.Card.Button.OnClickAsObservable()
+                .Subscribe(_ => OpenDetailAsync(towerId).Forget())
+                .AddTo(_disposables);
 
             hunter.Unlocked
                 .Subscribe(_ => Refresh(entry))
@@ -82,6 +90,16 @@ public class HunterTabPresenter : IStartable, IDisposable
     public void Dispose()
     {
         _disposables.Dispose();
+    }
+
+    private async UniTaskVoid OpenDetailAsync(int towerId)
+    {
+        if (_popupService.HasOpenPopup)
+            return;
+
+        var popup = await _popupService.OpenAsync<HunterDetailPopup>(PrefabKeys.HunterDetailPopup);
+        if (popup != null)
+            popup.SetTowerId(towerId);
     }
 
     private void RefreshAll()
