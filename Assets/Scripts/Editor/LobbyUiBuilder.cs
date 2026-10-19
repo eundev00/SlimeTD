@@ -441,10 +441,6 @@ public static class LobbyUiBuilder
         expFill.offsetMin = Vector2.zero;
         expFill.offsetMax = Vector2.zero;
 
-        var stamina = Block("Chip_Stamina", header, White, TopLeft(380f, -40f, 200f, 70f));
-        SetSprite(stamina.GetComponent<Image>(), "ResourceBar_Bg", "Theme_Light", new Color(1f, 1f, 1f, 0.45f));
-        Label("TXT_Stamina", stamina, "[스태미나 자리]", 22, BrownDark, false, TextAlignmentOptions.Center, true);
-
         ResourceChip("Chip_Gold", header, "ResourceBar_Icon_Gold", "Gold", TopLeft(595f, -40f, 210f, 70f), out var goldText);
         ResourceChip("Chip_Gem", header, "ResourceBar_Icon_Gem", "Gem", TopLeft(820f, -40f, 210f, 70f), out var gemText);
 
@@ -505,13 +501,7 @@ public static class LobbyUiBuilder
 
         var startLabel = start.GetComponentInChildren<TMP_Text>(true);
         if (startLabel != null)
-        {
             startLabel.fontSizeMax = 60f;
-            startLabel.rectTransform.anchoredPosition += new Vector2(0f, 22f);
-        }
-
-        Label("TXT_StaminaCost", start, "스태미나 5 소모", 28, White, false, TextAlignmentOptions.Center, false,
-            Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 14f), new Vector2(500f, 40f), new Vector2(0.5f, 0f)));
 
         return tab;
     }
