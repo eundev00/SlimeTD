@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -22,8 +22,125 @@ public static class LobbyUiBuilder
     private const string TextDark = "#2A2E2B";
     private const string TextMuted = "#5E665F";
     private const string Placeholder = "#B9C3B8";
+    private const string Sky = "#86E1FF";
+    private const string Cream = "#FBF3E4";
+    private const string Brown = "#4B3A2A";
+    private const string BrownText = "#7A4A22";
+
+    private const string ThemeFolder = "Assets/ThirdParty/Layer Lab/GUI Pro-MinimalGame";
+    private const string ThemePrefabFolder = ThemeFolder + "/Theme_Light/Prefabs";
 
     private static TMP_FontAsset _font;
+
+    private static T FindAsset<T>(string name, string folder, string pathHint = null) where T : Object
+    {
+        foreach (var guid in AssetDatabase.FindAssets(name + " t:" + typeof(T).Name, new[] { folder }))
+        {
+            var path = AssetDatabase.GUIDToAssetPath(guid);
+            if (Path.GetFileNameWithoutExtension(path) != name)
+                continue;
+
+            if (pathHint != null && !path.Contains(pathHint))
+                continue;
+
+            return AssetDatabase.LoadAssetAtPath<T>(path);
+        }
+
+        Debug.Log($"[LobbyUiBuilder] 에셋을 찾지 못했습니다: {name}");
+        return null;
+    }
+
+    private static Image SetSprite(Image image, string spriteName, string pathHint = null, Color? tint = null)
+    {
+        var sprite = FindAsset<Sprite>(spriteName, ThemeFolder, pathHint);
+        if (sprite == null)
+            return image;
+
+        image.sprite = sprite;
+        image.type = sprite.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
+        image.preserveAspect = image.type == Image.Type.Simple;
+        image.color = tint ?? Color.white;
+        return image;
+    }
+
+    private static Image SetIcon(RectTransform rt, string spriteName, string pathHint = "PictoIcon/128")
+    {
+        var image = rt.GetComponent<Image>();
+        return SetSprite(image, spriteName, pathHint);
+    }
+
+    // 둥근 사각 배경 + 테두리 스프라이트로 만든 패널. 에셋이 흰색이라 색은 틴트로 준다.
+    private static RectTransform FrameBlock(string name, Transform parent, string fillHex, string borderHex, Placement? placement)
+    {
+        var rt = Block(name, parent, fillHex, placement);
+        SetSprite(rt.GetComponent<Image>(), "BasicFrame_Rectangle_01~04_White_Bg", "Sprite_Common", ParseColor(fillHex));
+
+        var border = Block("IMG_Border", rt, borderHex, null);
+        border.GetComponent<Image>().raycastTarget = false;
+        SetSprite(border.GetComponent<Image>(), "BasicFrame_Rectangle_01~04_White_Border1", "Sprite_Common", ParseColor(borderHex));
+        return rt;
+    }
+
+    private static RectTransform Skin(string prefabName, string name, Transform parent, Placement? placement)
+    {
+        var prefab = FindAsset<GameObject>(prefabName, ThemePrefabFolder);
+        if (prefab == null)
+            return Block(name, parent, Placeholder, placement);
+
+        var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
+        go.name = name;
+
+        var rt = (RectTransform)go.transform;
+        if (placement.HasValue)
+            Apply(rt, placement);
+        else
+            Stretch(rt);
+
+        // 에셋 폰트에는 한글이 없다
+        if (_font != null)
+        {
+            foreach (var tmp in rt.GetComponentsInChildren<TMP_Text>(true))
+                tmp.font = _font;
+        }
+
+        return rt;
+    }
+
+    private static TMP_Text SetLabel(RectTransform rt, string text)
+    {
+        var tmp = rt.GetComponentInChildren<TMP_Text>(true);
+        if (tmp == null)
+            return null;
+
+        tmp.text = text;
+        tmp.enableAutoSizing = true;
+        tmp.fontSizeMax = tmp.fontSize;
+        tmp.fontSizeMin = 20f;
+        return tmp;
+    }
+
+    private static Button EnsureButton(RectTransform rt)
+    {
+        var button = rt.GetComponent<Button>();
+        if (button == null)
+            button = rt.gameObject.AddComponent<Button>();
+
+        if (button.targetGraphic == null)
+            button.targetGraphic = rt.GetComponentInChildren<Image>(true);
+
+        return button;
+    }
+
+    private static RectTransform SkinButton(string prefabName, string name, Transform parent, string text, Placement? placement, string textHex = null)
+    {
+        var rt = Skin(prefabName, name, parent, placement);
+        EnsureButton(rt);
+        var label = SetLabel(rt, text);
+        if (label != null && textHex != null)
+            label.color = ParseColor(textHex);
+
+        return rt;
+    }
 
     [MenuItem("SlimeTD/Lobby/Build Lobby UI")]
     public static void Build()
@@ -256,16 +373,25 @@ public static class LobbyUiBuilder
         so.ApplyModifiedPropertiesWithoutUndo();
     }
 
+    private const string Beige = "#EBDEC0";
+    private const string BeigeBand = "#E3CDAA";
+    private const string BrownDark = "#5A3D2B";
+    private const float HeaderHeight = 150f;
+    private const float TabBarHeight = 200f;
+
     private static GameObject BuildPrefab()
     {
         var root = NewRect("LobbyMain", null);
         Stretch(root);
 
-        var header = BuildHeader(root);
+        var background = Block("IMG_Background", root, Beige, null);
+        background.GetComponent<Image>().raycastTarget = false;
+
+        BuildHeader(root);
         var content = NewRect("Content", root);
         Stretch(content);
-        content.offsetMin = new Vector2(0f, 200f);
-        content.offsetMax = new Vector2(0f, -150f);
+        content.offsetMin = new Vector2(0f, TabBarHeight);
+        content.offsetMax = new Vector2(0f, -HeaderHeight);
 
         var cardPrefab = BuildHunterCardPrefab();
         var battle = BuildBattleTab(content);
@@ -278,9 +404,19 @@ public static class LobbyUiBuilder
 
         var saved = PrefabUtility.SaveAsPrefabAsset(root.gameObject, PrefabPath);
         Object.DestroyImmediate(root.gameObject);
-
-        header = null;
         return saved;
+    }
+
+    private static RectTransform ResourceChip(string name, Transform parent, string iconSprite, string valueName, Placement? placement, out TMP_Text value)
+    {
+        var chip = Block(name, parent, White, placement);
+        SetSprite(chip.GetComponent<Image>(), "ResourceBar_Bg", "Theme_Light", new Color(0.4f, 0.34f, 0.27f));
+        var icon = Block("ICON_" + valueName, chip, White, Anchored(new Vector2(0f, 0.5f), new Vector2(14f, 0f), new Vector2(52f, 52f)));
+        icon.GetComponent<Image>().raycastTarget = false;
+        SetSprite(icon.GetComponent<Image>(), iconSprite, "Theme_Light");
+        value = Label("TXT_" + valueName, chip, "0", 30, White, true, TextAlignmentOptions.Right, false);
+        SetOffsets(value.rectTransform, new Vector2(70f, 0f), new Vector2(-14f, 0f));
+        return chip;
     }
 
     private static RectTransform BuildHeader(RectTransform parent)
@@ -289,33 +425,28 @@ public static class LobbyUiBuilder
         header.anchorMin = new Vector2(0f, 1f);
         header.anchorMax = new Vector2(1f, 1f);
         header.pivot = new Vector2(0.5f, 1f);
-        header.sizeDelta = new Vector2(0f, 150f);
+        header.sizeDelta = new Vector2(0f, HeaderHeight);
         header.anchoredPosition = Vector2.zero;
-        AddImage(header, Bar);
+        Block("IMG_HeaderBand", header, BeigeBand, null).GetComponent<Image>().raycastTarget = false;
 
-        var profile = Block("FRAME_Profile", header, Placeholder, TopLeft(20f, -20f, 110f, 110f));
-        Label("TXT_Level", profile, "LV 1", 28, "#4A524B", true, TextAlignmentOptions.Center, true);
+        var profile = Skin("ProfileFrame_02_Yellow", "FRAME_Profile", header, TopLeft(20f, -20f, 110f, 110f));
+        var levelBadge = FrameBlock("FRAME_LevelBadge", profile, "#F2A33A", Brown, Anchored(new Vector2(1f, 0f), new Vector2(8f, -8f), new Vector2(76f, 40f), new Vector2(1f, 0f)));
+        Label("TXT_Level", levelBadge, "LV 1", 24, White, true, TextAlignmentOptions.Center, true);
 
-        Label("TXT_Nickname", header, "[닉네임]", 30, TextDark, true, TextAlignmentOptions.Left, false, TopLeft(145f, -26f, 220f, 44f));
-        var expBg = Block("IMG_ExpBar", header, "#C3CBC2", TopLeft(145f, -84f, 200f, 14f));
-        var expFill = Block("IMG_ExpFill", expBg, Accent, null);
+        Label("TXT_Nickname", header, "[닉네임]", 30, BrownDark, true, TextAlignmentOptions.Left, false, TopLeft(145f, -26f, 220f, 44f));
+        var expBg = Block("IMG_ExpBar", header, "#C9B48C", TopLeft(145f, -84f, 200f, 14f));
+        var expFill = Block("IMG_ExpFill", expBg, "#F2B83A", null);
         expFill.anchorMin = Vector2.zero;
         expFill.anchorMax = new Vector2(0.4f, 1f);
         expFill.offsetMin = Vector2.zero;
         expFill.offsetMax = Vector2.zero;
 
-        var stamina = Block("Chip_Stamina", header, "#E9ECE8", TopLeft(380f, -40f, 200f, 70f));
-        Label("TXT_Stamina", stamina, "[스태미나 자리]", 22, "#8E978F", false, TextAlignmentOptions.Center, true);
+        var stamina = Block("Chip_Stamina", header, White, TopLeft(380f, -40f, 200f, 70f));
+        SetSprite(stamina.GetComponent<Image>(), "ResourceBar_Bg", "Theme_Light", new Color(1f, 1f, 1f, 0.45f));
+        Label("TXT_Stamina", stamina, "[스태미나 자리]", 22, BrownDark, false, TextAlignmentOptions.Center, true);
 
-        var gold = Block("Chip_Gold", header, White, TopLeft(595f, -40f, 210f, 70f));
-        Block("ICON_Gold", gold, "#E0B54A", Anchored(new Vector2(0f, 0.5f), new Vector2(14f, 0f), new Vector2(40f, 40f)));
-        var goldText = Label("TXT_Gold", gold, "0", 30, TextDark, true, TextAlignmentOptions.Right, false);
-        SetOffsets(goldText.rectTransform, new Vector2(60f, 0f), new Vector2(-14f, 0f));
-
-        var gem = Block("Chip_Gem", header, White, TopLeft(820f, -40f, 210f, 70f));
-        Block("ICON_Gem", gem, "#6E8FD6", Anchored(new Vector2(0f, 0.5f), new Vector2(14f, 0f), new Vector2(40f, 40f)));
-        var gemText = Label("TXT_Gem", gem, "0", 30, TextDark, true, TextAlignmentOptions.Right, false);
-        SetOffsets(gemText.rectTransform, new Vector2(60f, 0f), new Vector2(-14f, 0f));
+        ResourceChip("Chip_Gold", header, "ResourceBar_Icon_Gold", "Gold", TopLeft(595f, -40f, 210f, 70f), out var goldText);
+        ResourceChip("Chip_Gem", header, "ResourceBar_Icon_Gem", "Gem", TopLeft(820f, -40f, 210f, 70f), out var gemText);
 
         var view = header.gameObject.AddComponent<LobbyHeader>();
         var so = new SerializedObject(view);
@@ -331,35 +462,56 @@ public static class LobbyUiBuilder
         var tab = NewRect("BattleTab", parent);
         Stretch(tab);
 
-        var mail = ButtonBlock("BTN_Mail", tab, White, "우편", 26, TextDark, false, TopRight(-340f, -20f, 150f, 80f));
-        var quest = ButtonBlock("BTN_Quest", tab, White, "퀘스트", 26, TextDark, false, TopRight(-180f, -20f, 150f, 80f));
-        var setting = ButtonBlock("BTN_Setting", tab, White, "설정", 26, TextDark, false, TopRight(-20f, -20f, 150f, 80f));
-        mail = null; quest = null; setting = null;
+        SkinButton("Button_01_OffWhite", "BTN_Mail", tab, "우편", TopRight(-340f, -20f, 150f, 80f), BrownDark);
+        SkinButton("Button_01_OffWhite", "BTN_Quest", tab, "퀘스트", TopRight(-180f, -20f, 150f, 80f), BrownDark);
+        SkinButton("Button_01_OffWhite", "BTN_Setting", tab, "설정", TopRight(-20f, -20f, 150f, 80f), BrownDark);
 
-        Label("TXT_StageLabel", tab, "STAGE 1", 30, TextMuted, false, TextAlignmentOptions.Center, false, TopCenter(0f, -130f, 600f, 44f));
-        Label("TXT_StageName", tab, "말랑 숲", 72, TextDark, true, TextAlignmentOptions.Center, false, TopCenter(0f, -180f, 800f, 100f));
+        Label("TXT_StageLabel", tab, "STAGE 1", 30, "#7A4A22", true, TextAlignmentOptions.Center, false, TopCenter(0f, -130f, 600f, 44f));
+        Label("TXT_StageName", tab, "말랑 숲", 72, BrownDark, true, TextAlignmentOptions.Center, false, TopCenter(0f, -180f, 800f, 100f));
 
-        var boss = Block("IMG_BossShowcase", tab, Panel, TopCenter(0f, -310f, 700f, 520f));
-        Label("TXT_BossHint", boss, "[스테이지 대표 보스 슬라임 3D]", 28, TextMuted, false, TextAlignmentOptions.Center, true);
-        ButtonBlock("BTN_PrevStage", tab, White, "<", 40, TextDark, true, Anchored(new Vector2(0f, 1f), new Vector2(60f, -520f), new Vector2(90f, 90f), new Vector2(0f, 1f)));
-        ButtonBlock("BTN_NextStage", tab, White, ">", 40, TextDark, true, Anchored(new Vector2(1f, 1f), new Vector2(-60f, -520f), new Vector2(90f, 90f), new Vector2(1f, 1f)));
+        var boss = FrameBlock("IMG_BossShowcase", tab, Cream, "#C9B48C", TopCenter(0f, -310f, 700f, 520f));
+        var island = Block("IMG_StageSample", boss, White, Anchored(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(420f, 500f)));
+        island.GetComponent<Image>().raycastTarget = false;
+        SetSprite(island.GetComponent<Image>(), "Image_Map_Forest", "Demo_Image");
 
-        var record = Block("IMG_BestRecord", tab, White, TopCenter(0f, -860f, 960f, 90f));
-        Label("TXT_RecordLabel", record, "최고 기록", 28, TextMuted, false, TextAlignmentOptions.Left, false);
-        var recordText = Label("TXT_RecordValue", record, "WAVE 0 / 50", 32, TextDark, true, TextAlignmentOptions.Right, false);
-        SetOffsets(((TMP_Text)recordText).rectTransform, new Vector2(30f, 0f), new Vector2(-30f, 0f));
-        var recordLabel = record.Find("TXT_RecordLabel");
-        SetOffsets((RectTransform)recordLabel, new Vector2(30f, 0f), new Vector2(-30f, 0f));
+        var prev = Skin("ArrowButton_01_Prev", "BTN_PrevStage", tab, Anchored(new Vector2(0f, 1f), new Vector2(60f, -520f), new Vector2(90f, 90f), new Vector2(0f, 1f)));
+        EnsureButton(prev);
+        var next = Skin("ArrowButton_01_Next", "BTN_NextStage", tab, Anchored(new Vector2(1f, 1f), new Vector2(-60f, -520f), new Vector2(90f, 90f), new Vector2(1f, 1f)));
+        EnsureButton(next);
 
-        ButtonBlock("BTN_DevGame1", tab, "#D9DED8", "DEV 게임1", 24, TextMuted, false, BottomLeft(30f, 190f, 300f, 70f));
-        ButtonBlock("BTN_DevTest", tab, "#D9DED8", "DEV 테스트", 24, TextMuted, false, BottomLeft(350f, 190f, 300f, 70f));
+        var dots = NewRect("PageDots", tab);
+        Apply(dots, TopCenter(0f, -842f, 120f, 20f));
+        for (int i = 0; i < 3; i++)
+        {
+            var dot = Block("IMG_Dot_" + (i + 1), dots, White, Anchored(new Vector2(0.5f, 0.5f), new Vector2((i - 1) * 40f, 0f), new Vector2(20f, 20f)));
+            SetSprite(dot.GetComponent<Image>(), i == 0 ? "Status_Dot_01_On" : "Status_Dot_01_Off", "Theme_Light");
+        }
 
-        var start = ButtonBlock("BTN_Start", tab, Accent, "전투 시작", 60, White, true, null);
+        var record = Skin("BasicFrame_Rectangle_01_Border_Ivory", "IMG_BestRecord", tab, TopCenter(0f, -880f, 960f, 90f));
+        var recordLabel = Label("TXT_RecordLabel", record, "최고 기록", 30, "#7A4A22", true, TextAlignmentOptions.Left, false);
+        SetOffsets(recordLabel.rectTransform, new Vector2(30f, 0f), new Vector2(-30f, 0f));
+        var recordText = Label("TXT_RecordValue", record, "WAVE 0 / 50", 36, BrownDark, true, TextAlignmentOptions.Right, false);
+        SetOffsets(recordText.rectTransform, new Vector2(30f, 0f), new Vector2(-30f, 0f));
+
+        ButtonBlock("BTN_DevGame1", tab, "#D9CBA8", "DEV 게임1", 24, BrownDark, false, BottomLeft(30f, 190f, 300f, 70f));
+        ButtonBlock("BTN_DevTest", tab, "#D9CBA8", "DEV 테스트", 24, BrownDark, false, BottomLeft(350f, 190f, 300f, 70f));
+
+        var start = SkinButton("Button_03_Red", "BTN_Start", tab, "전투 시작", null);
         start.anchorMin = new Vector2(0f, 0f);
         start.anchorMax = new Vector2(1f, 0f);
         start.pivot = new Vector2(0.5f, 0f);
         start.offsetMin = new Vector2(30f, 30f);
         start.offsetMax = new Vector2(-30f, 160f);
+
+        var startLabel = start.GetComponentInChildren<TMP_Text>(true);
+        if (startLabel != null)
+        {
+            startLabel.fontSizeMax = 60f;
+            startLabel.rectTransform.anchoredPosition += new Vector2(0f, 22f);
+        }
+
+        Label("TXT_StaminaCost", start, "스태미나 5 소모", 28, White, false, TextAlignmentOptions.Center, false,
+            Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 14f), new Vector2(500f, 40f), new Vector2(0.5f, 0f)));
 
         return tab;
     }
@@ -369,15 +521,15 @@ public static class LobbyUiBuilder
         var tab = NewRect("HunterTab", parent);
         Stretch(tab);
 
-        var showcase = Block("IMG_HunterShowcase", tab, Panel, null);
+        var showcase = Block("IMG_HunterShowcase", tab, BeigeBand, null);
         showcase.anchorMin = new Vector2(0f, 1f);
         showcase.anchorMax = new Vector2(1f, 1f);
         showcase.pivot = new Vector2(0.5f, 1f);
         showcase.sizeDelta = new Vector2(0f, 380f);
         showcase.anchoredPosition = Vector2.zero;
-        Label("TXT_ShowcaseHint", showcase, "[대표 헌터 쇼케이스]", 30, TextMuted, false, TextAlignmentOptions.Center, true);
-        var pet = Block("IMG_PetSlot", showcase, "#D5DBD4", Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 20f), new Vector2(520f, 80f), new Vector2(0.5f, 0f)));
-        Label("TXT_PetHint", pet, "[펫 영역 (예정)]", 24, "#8E978F", false, TextAlignmentOptions.Center, true);
+        Label("TXT_ShowcaseHint", showcase, "[대표 헌터 쇼케이스]", 30, BrownDark, false, TextAlignmentOptions.Center, true);
+        var pet = FrameBlock("IMG_PetSlot", showcase, Cream, "#C9B48C", Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 20f), new Vector2(520f, 80f), new Vector2(0.5f, 0f)));
+        Label("TXT_PetHint", pet, "[펫 영역 (예정)]", 24, "#8A7A5C", false, TextAlignmentOptions.Center, true);
 
         var info = NewRect("InfoRow", tab);
         info.anchorMin = new Vector2(0f, 1f);
@@ -386,18 +538,38 @@ public static class LobbyUiBuilder
         info.sizeDelta = new Vector2(0f, 90f);
         info.anchoredPosition = new Vector2(0f, -400f);
 
-        var cards = Block("Chip_Cards", info, White, TopLeft(30f, 0f, 300f, 80f));
-        Block("ICON_Card", cards, "#E58A4A", Anchored(new Vector2(0f, 0.5f), new Vector2(16f, 0f), new Vector2(44f, 44f)));
-        var cardText = Label("TXT_Cards", cards, "0", 34, TextDark, true, TextAlignmentOptions.Right, false);
-        SetOffsets(cardText.rectTransform, new Vector2(70f, 0f), new Vector2(-16f, 0f));
+        ResourceChip("Chip_Cards", info, "ResourceBar_Icon_Ticket", "Cards", TopLeft(30f, 0f, 300f, 80f), out var cardText);
 
-        var sort = ButtonBlock("BTN_Sort", info, White, "등급순", 28, TextDark, true, TopRight(-30f, 0f, 220f, 80f));
+        // 드롭다운은 Selectable이라 Button을 같이 못 붙인다. 열리지 않게 끄고 클릭은 덮개 버튼으로 받는다.
+        var sort = Skin("Dropdown_01_Arrow", "Dropdown_Sort", info, TopRight(-30f, 0f, 220f, 80f));
+        foreach (var selectable in sort.GetComponents<Selectable>())
+            selectable.enabled = false;
 
-        var area = Block("IMG_GridArea", tab, "#F5F7F4", null);
+        var template = FindRecursive(sort, "Template");
+        if (template != null)
+            template.gameObject.SetActive(false);
+
+        var sortHit = Block("BTN_Sort", sort, White, null);
+        sortHit.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0f);
+        var sortButton = sortHit.gameObject.AddComponent<Button>();
+        sortButton.targetGraphic = sortHit.GetComponent<Image>();
+        TMP_Text sortLabel = null;
+        foreach (var tmp in sort.GetComponentsInChildren<TMP_Text>(true))
+        {
+            if (sortLabel == null || tmp.name == "Label")
+                sortLabel = tmp;
+        }
+
+        if (sortLabel != null)
+            sortLabel.text = "등급순";
+
+        var area = NewRect("IMG_GridArea", tab);
         area.anchorMin = Vector2.zero;
         area.anchorMax = Vector2.one;
         area.offsetMin = new Vector2(20f, 10f);
         area.offsetMax = new Vector2(-20f, -500f);
+        var areaImage = AddImage(area, White);
+        areaImage.color = new Color(1f, 1f, 1f, 0f);
 
         var viewport = NewRect("Viewport", area);
         Stretch(viewport);
@@ -433,12 +605,18 @@ public static class LobbyUiBuilder
         so.FindProperty("_grid").objectReferenceValue = grid;
         so.FindProperty("_cardPrefab").objectReferenceValue = cardPrefab;
         so.FindProperty("_cardsText").objectReferenceValue = cardText;
-        so.FindProperty("_sortButton").objectReferenceValue = sort.GetComponent<Button>();
-        so.FindProperty("_sortLabel").objectReferenceValue = sort.Find("TXT_Label").GetComponent<TMP_Text>();
+        so.FindProperty("_sortButton").objectReferenceValue = sortButton;
+        so.FindProperty("_sortLabel").objectReferenceValue = sortLabel;
         so.ApplyModifiedPropertiesWithoutUndo();
 
         return tab;
     }
+
+    // 등급 인덱스는 gradeId - 1: 일반(갈색) 희귀(파랑) 영웅(보라) 전설(주황)
+    private static readonly string[] GradeFrames =
+    {
+        "CardFrame_02_Brown", "CardFrame_02_Blue", "CardFrame_02_Plum", "CardFrame_02_Yellow",
+    };
 
     private static HunterCard BuildHunterCardPrefab()
     {
@@ -450,53 +628,76 @@ public static class LobbyUiBuilder
         var root = NewRect("HunterCard", null);
         root.sizeDelta = new Vector2(230f, 290f);
 
-        var hit = AddImage(root, "#FFFFFF");
+        var hit = AddImage(root, White);
         hit.color = new Color(1f, 1f, 1f, 0f);
         var button = root.gameObject.AddComponent<Button>();
         button.targetGraphic = hit;
         button.transition = Selectable.Transition.None;
 
-        var borderRect = Block("FRAME_Border", root, "#A79F8F", Anchored(new Vector2(0.5f, 1f), Vector2.zero, new Vector2(230f, 240f), new Vector2(0.5f, 1f)));
-        var fillRect = Block("IMG_Fill", borderRect, "#BFB7A6", null);
-        fillRect.offsetMin = new Vector2(8f, 8f);
-        fillRect.offsetMax = new Vector2(-8f, -8f);
+        var area = NewRect("CardArea", root);
+        Apply(area, TopCenter(0f, 0f, 230f, 240f));
 
-        var face = Block("ICON_Face", fillRect, "#FFFFFF", Anchored(new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(120f, 110f), new Vector2(0.5f, 1f)));
-        face.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.35f);
-        Label("TXT_FaceHint", face, "[얼굴]", 22, "#5E665F", false, TextAlignmentOptions.Center, true);
+        var frames = new GameObject[GradeFrames.Length];
+        for (int i = 0; i < GradeFrames.Length; i++)
+        {
+            var frame = Skin(GradeFrames[i], "FRAME_Grade" + (i + 1), area, null);
+            frame.gameObject.SetActive(i == 0);
+            frames[i] = frame.gameObject;
+        }
 
-        var level = Label("TXT_Level", fillRect, "Lv.1", 34, White, true, TextAlignmentOptions.Center, false,
+        var lockedFrame = Skin("CardFrame_02_Disable", "FRAME_Locked", area, null);
+        lockedFrame.gameObject.SetActive(false);
+
+        var level = Label("TXT_Level", area, "Lv.1", 34, White, true, TextAlignmentOptions.Center, false,
             Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 58f), new Vector2(200f, 44f), new Vector2(0.5f, 0f)));
 
-        var progressRoot = Block("Progress", fillRect, "#000000", Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 10f), new Vector2(200f, 38f), new Vector2(0.5f, 0f)));
-        progressRoot.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.35f);
-        var progressFill = Block("IMG_ProgressFill", progressRoot, "#3FA85A", null);
-        progressFill.anchorMin = Vector2.zero;
-        progressFill.anchorMax = new Vector2(0f, 1f);
-        progressFill.offsetMin = Vector2.zero;
-        progressFill.offsetMax = Vector2.zero;
-        var progressText = Label("TXT_Progress", progressRoot, "0 / 10", 22, White, true, TextAlignmentOptions.Center, true);
+        var badge = Block("ICON_UpgradeBadge", area, White, Anchored(new Vector2(1f, 1f), new Vector2(-6f, -6f), new Vector2(46f, 46f), new Vector2(1f, 1f)));
+        badge.GetComponent<Image>().raycastTarget = false;
+        SetSprite(badge.GetComponent<Image>(), "Icon_Arrow_Up_02", "Theme_Light");
 
-        var badge = Block("ICON_UpgradeBadge", borderRect, "#3FA85A", Anchored(new Vector2(1f, 1f), new Vector2(-6f, -6f), new Vector2(46f, 46f), new Vector2(1f, 1f)));
-        Label("TXT_Badge", badge, "▲", 26, White, true, TextAlignmentOptions.Center, true);
+        var slider = Skin("Slider_Upgrade_01", "Slider", area, Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 10f), new Vector2(200f, 38f), new Vector2(0.5f, 0f)));
+        var orange = FindRecursive(slider, "Slider_02_Orange");
+        if (orange != null)
+        {
+            var innerText = orange.GetComponentInChildren<TMP_Text>(true);
+            if (innerText != null)
+                innerText.gameObject.SetActive(false);
+        }
 
-        var lockOverlay = Block("Lock", fillRect, "#2A2E2B", null);
-        lockOverlay.GetComponent<Image>().color = new Color(0.16f, 0.18f, 0.17f, 0.25f);
-        Label("TXT_Lock", lockOverlay, "잠금", 30, "#5E665F", true, TextAlignmentOptions.Center, true);
+        var fill = FindRecursive(slider, "Fill") as RectTransform;
+        var upgradeBar = FindRecursive(slider, "Upgrade");
+        var lockedBar = FindRecursive(slider, "Lock");
+        var upgradeIcon = FindRecursive(slider, "Icon_Upgrade");
+        if (upgradeIcon != null)
+            upgradeIcon.gameObject.SetActive(false);
 
-        var name = Label("TXT_Name", root, "이름", 28, TextDark, false, TextAlignmentOptions.Center, false,
+        TMP_Text progressText = null;
+        foreach (Transform child in slider)
+        {
+            if (child.name == "Text (TMP)")
+                progressText = child.GetComponent<TMP_Text>();
+        }
+
+        if (upgradeBar != null) upgradeBar.gameObject.SetActive(false);
+        if (lockedBar != null) lockedBar.gameObject.SetActive(false);
+
+        var name = Label("TXT_Name", root, "이름", 28, BrownDark, true, TextAlignmentOptions.Center, false,
             Anchored(new Vector2(0.5f, 0f), Vector2.zero, new Vector2(230f, 44f), new Vector2(0.5f, 0f)));
 
         var card = root.gameObject.AddComponent<HunterCard>();
         var so = new SerializedObject(card);
-        so.FindProperty("_border").objectReferenceValue = borderRect.GetComponent<Image>();
-        so.FindProperty("_fill").objectReferenceValue = fillRect.GetComponent<Image>();
+        var frameList = so.FindProperty("_gradeFrames");
+        frameList.arraySize = frames.Length;
+        for (int i = 0; i < frames.Length; i++)
+            frameList.GetArrayElementAtIndex(i).objectReferenceValue = frames[i];
+
+        so.FindProperty("_lockedFrame").objectReferenceValue = lockedFrame.gameObject;
         so.FindProperty("_nameText").objectReferenceValue = name;
         so.FindProperty("_levelText").objectReferenceValue = level;
         so.FindProperty("_progressText").objectReferenceValue = progressText;
-        so.FindProperty("_progressFill").objectReferenceValue = progressFill;
-        so.FindProperty("_progressRoot").objectReferenceValue = progressRoot.gameObject;
-        so.FindProperty("_lockOverlay").objectReferenceValue = lockOverlay.gameObject;
+        so.FindProperty("_progressFill").objectReferenceValue = fill;
+        so.FindProperty("_upgradeBar").objectReferenceValue = upgradeBar != null ? upgradeBar.gameObject : null;
+        so.FindProperty("_lockedBar").objectReferenceValue = lockedBar != null ? lockedBar.gameObject : null;
         so.FindProperty("_upgradeBadge").objectReferenceValue = badge.gameObject;
         so.FindProperty("_button").objectReferenceValue = button;
         so.ApplyModifiedPropertiesWithoutUndo();
@@ -513,14 +714,21 @@ public static class LobbyUiBuilder
         bar.anchorMin = new Vector2(0f, 0f);
         bar.anchorMax = new Vector2(1f, 0f);
         bar.pivot = new Vector2(0.5f, 0f);
-        bar.sizeDelta = new Vector2(0f, 200f);
+        bar.sizeDelta = new Vector2(0f, TabBarHeight);
         bar.anchoredPosition = Vector2.zero;
-        AddImage(bar, Bar);
 
         string[] names = { "상점", "헌터", "전투", "컨텐츠1", "컨텐츠2" };
         string[] keys = { "Shop", "Hunter", "Battle", "Content1", "Content2" };
         bool[] locked = { true, false, false, true, true };
         GameObject[] panels = { null, hunterPanel, battlePanel, null, null };
+        (string Name, string Hint)[] iconSprites =
+        {
+            ("UI_Shop_01_Red", "UniqueIcon/128"),
+            ("Gear_Helmet_04", "UniqueIcon/128"),
+            ("UI_Play_Battle_01_Color", "UniqueIcon/128"),
+            ("UI_Common_Lock_01_Silver", "UniqueIcon/128"),
+            ("UI_Common_Lock_01_Silver", "UniqueIcon/128"),
+        };
 
         var tabs = bar.gameObject.AddComponent<LobbyTabs>();
         var so = new SerializedObject(tabs);
@@ -529,31 +737,44 @@ public static class LobbyUiBuilder
 
         for (int i = 0; i < names.Length; i++)
         {
-            var button = NewRect("Tab_" + keys[i], bar);
+            var button = Skin("Tab_01", "Tab_" + keys[i], bar, null);
             button.anchorMin = new Vector2(i / 5f, 0f);
             button.anchorMax = new Vector2((i + 1) / 5f, 1f);
             button.offsetMin = new Vector2(4f, 4f);
             button.offsetMax = new Vector2(-4f, -4f);
 
-            var image = AddImage(button, Bar);
-            var btn = button.gameObject.AddComponent<Button>();
-            btn.targetGraphic = image;
+            var btn = EnsureButton(button);
             btn.transition = Selectable.Transition.None;
 
-            var icon = Block("ICON_" + keys[i], button, Placeholder, Anchored(new Vector2(0.5f, 1f), new Vector2(0f, -30f), new Vector2(64f, 64f), new Vector2(0.5f, 1f)));
-            icon = null;
-            var label = Label("TXT_Label", button, names[i], 30, TextMuted, false, TextAlignmentOptions.Center, false, Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 24f), new Vector2(0f, 50f), new Vector2(0.5f, 0f)));
-            label.rectTransform.anchorMin = new Vector2(0f, 0f);
-            label.rectTransform.anchorMax = new Vector2(1f, 0f);
-            label.rectTransform.offsetMin = new Vector2(0f, 24f);
-            label.rectTransform.offsetMax = new Vector2(0f, 74f);
+            var label = SetLabel(button, names[i]);
+            var normal = FindRecursive(button, "Normal");
+            var focus = FindRecursive(button, "Focus");
+
+            foreach (var iconName in new[] { "Icon", "Icon_Focus" })
+            {
+                var iconTransform = FindRecursive(button, iconName);
+                if (iconTransform == null)
+                    continue;
+
+                var iconImage = iconTransform.GetComponent<Image>();
+                if (iconImage == null)
+                    continue;
+
+                if (iconSprites[i].Hint != null)
+                    SetSprite(iconImage, iconSprites[i].Name, iconSprites[i].Hint);
+
+                if (locked[i])
+                    iconImage.color = new Color(1f, 1f, 1f, 0.5f);
+            }
 
             var element = list.GetArrayElementAtIndex(i);
             element.FindPropertyRelative("_button").objectReferenceValue = btn;
             element.FindPropertyRelative("_panel").objectReferenceValue = panels[i];
-            element.FindPropertyRelative("_background").objectReferenceValue = image;
+            element.FindPropertyRelative("_background").objectReferenceValue = button.GetComponentInChildren<Image>(true);
             element.FindPropertyRelative("_label").objectReferenceValue = label;
             element.FindPropertyRelative("_locked").boolValue = locked[i];
+            element.FindPropertyRelative("_normalState").objectReferenceValue = normal != null ? normal.gameObject : null;
+            element.FindPropertyRelative("_focusState").objectReferenceValue = focus != null ? focus.gameObject : null;
         }
 
         so.FindProperty("_defaultIndex").intValue = 2;
