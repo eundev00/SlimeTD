@@ -505,41 +505,70 @@ public static class LobbyUiBuilder
         return header;
     }
 
+    private const float MapBaseOffset = 330f;
+    private const float MapPixelsPerWave = 112f;
+    private const int MapMaxWave = 50;
+    private const string WaveMapFolder = "Assets/Art/UI/Lobby/WaveMap";
+    private const float MapSpriteScale = 1.7f;
+    private const float MapGrassEdge = 230f;
+    private const float MapTopMargin = 760f;
+    private const int MapPropSeed = 20260;
+    private const float MapHeavyPropSpacing = 450f;
+    private const int PropIndexRockSmall = 2;
+    private const int PropIndexGrass = 3;
+    private const int PropIndexFlower = 4;
+
+    private static Sprite LoadWaveMapSprite(string name)
+    {
+        string path = $"{WaveMapFolder}/{name}.png";
+        var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        if (importer == null)
+        {
+            Debug.Log($"[LobbyUiBuilder] 웨이브 맵 스프라이트를 찾지 못했습니다: {path}");
+            return null;
+        }
+
+        if (importer.textureType != TextureImporterType.Sprite || !importer.alphaIsTransparency || importer.mipmapEnabled)
+        {
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.alphaIsTransparency = true;
+            importer.mipmapEnabled = false;
+            importer.maxTextureSize = 2048;
+            importer.SaveAndReimport();
+        }
+
+        return AssetDatabase.LoadAssetAtPath<Sprite>(path);
+    }
+
+    private static RectTransform MapSprite(string name, Transform parent, Sprite sprite, Vector2 anchoredPos, Vector2 pivot, float scale, bool flipY = false, bool flipX = false)
+    {
+        var rt = NewRect(name, parent);
+        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0f);
+        rt.pivot = pivot;
+        rt.sizeDelta = sprite.rect.size * scale;
+        rt.anchoredPosition = anchoredPos;
+        rt.localScale = new Vector3(flipX ? -1f : 1f, flipY ? -1f : 1f, 1f);
+
+        var image = rt.gameObject.AddComponent<Image>();
+        image.sprite = sprite;
+        image.raycastTarget = false;
+        return rt;
+    }
+
     private static RectTransform BuildBattleTab(RectTransform parent)
     {
         var tab = NewRect("BattleTab", parent);
         Stretch(tab);
 
+        BuildBattleMap(tab);
+
         SkinButton("Button_01_OffWhite", "BTN_Mail", tab, "우편", TopRight(-340f, -20f, 150f, 80f), BrownDark);
         SkinButton("Button_01_OffWhite", "BTN_Quest", tab, "퀘스트", TopRight(-180f, -20f, 150f, 80f), BrownDark);
         SkinButton("Button_01_OffWhite", "BTN_Setting", tab, "설정", TopRight(-20f, -20f, 150f, 80f), BrownDark);
 
-        Label("TXT_StageLabel", tab, "STAGE 1", 30, "#7A4A22", true, TextAlignmentOptions.Center, false, TopCenter(0f, -130f, 600f, 44f));
-        Label("TXT_StageName", tab, "말랑 숲", 72, BrownDark, true, TextAlignmentOptions.Center, false, TopCenter(0f, -180f, 800f, 100f));
-
-        var boss = FrameBlock("IMG_BossShowcase", tab, Cream, "#C9B48C", TopCenter(0f, -310f, 700f, 520f));
-        var island = Block("IMG_StageSample", boss, White, Anchored(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(420f, 500f)));
-        island.GetComponent<Image>().raycastTarget = false;
-        SetSprite(island.GetComponent<Image>(), "Image_Map_Forest", "Demo_Image");
-
-        var prev = Skin("ArrowButton_01_Prev", "BTN_PrevStage", tab, Anchored(new Vector2(0f, 1f), new Vector2(60f, -520f), new Vector2(90f, 90f), new Vector2(0f, 1f)));
-        EnsureButton(prev);
-        var next = Skin("ArrowButton_01_Next", "BTN_NextStage", tab, Anchored(new Vector2(1f, 1f), new Vector2(-60f, -520f), new Vector2(90f, 90f), new Vector2(1f, 1f)));
-        EnsureButton(next);
-
-        var dots = NewRect("PageDots", tab);
-        Apply(dots, TopCenter(0f, -842f, 120f, 20f));
-        for (int i = 0; i < 3; i++)
-        {
-            var dot = Block("IMG_Dot_" + (i + 1), dots, White, Anchored(new Vector2(0.5f, 0.5f), new Vector2((i - 1) * 40f, 0f), new Vector2(20f, 20f)));
-            SetSprite(dot.GetComponent<Image>(), i == 0 ? "Status_Dot_01_On" : "Status_Dot_01_Off", "Theme_Light");
-        }
-
-        var record = Skin("BasicFrame_Rectangle_01_Border_Ivory", "IMG_BestRecord", tab, TopCenter(0f, -880f, 960f, 90f));
-        var recordLabel = Label("TXT_RecordLabel", record, "최고 기록", 30, "#7A4A22", true, TextAlignmentOptions.Left, false);
-        SetOffsets(recordLabel.rectTransform, new Vector2(30f, 0f), new Vector2(-30f, 0f));
-        var recordText = Label("TXT_RecordValue", record, "WAVE 0 / 50", 36, BrownDark, true, TextAlignmentOptions.Right, false);
-        SetOffsets(recordText.rectTransform, new Vector2(30f, 0f), new Vector2(-30f, 0f));
+        Label("TXT_StageLabel", tab, "STAGE 1", 30, "#7A4A22", true, TextAlignmentOptions.Left, false, TopLeft(40f, -20f, 400f, 44f));
+        Label("TXT_StageName", tab, "말랑 숲", 64, BrownDark, true, TextAlignmentOptions.Left, false, TopLeft(40f, -62f, 500f, 90f));
 
         ButtonBlock("BTN_DevGame1", tab, "#D9CBA8", "DEV 게임1", 24, BrownDark, false, BottomLeft(30f, 190f, 300f, 70f));
         ButtonBlock("BTN_DevTest", tab, "#D9CBA8", "DEV 테스트", 24, BrownDark, false, BottomLeft(350f, 190f, 300f, 70f));
@@ -548,14 +577,209 @@ public static class LobbyUiBuilder
         start.anchorMin = new Vector2(0f, 0f);
         start.anchorMax = new Vector2(1f, 0f);
         start.pivot = new Vector2(0.5f, 0f);
-        start.offsetMin = new Vector2(30f, 30f);
-        start.offsetMax = new Vector2(-30f, 160f);
+        start.offsetMin = new Vector2(30f, 20f);
+        start.offsetMax = new Vector2(-30f, 170f);
 
         var startLabel = start.GetComponentInChildren<TMP_Text>(true);
         if (startLabel != null)
             startLabel.fontSizeMax = 60f;
 
         return tab;
+    }
+
+    // 10~50웨이브를 10단위 표식으로 깔아 둔 세로 스크롤 맵. 맨 위에 웨이브 완료 표시가 나온다.
+    private static void BuildBattleMap(RectTransform tab)
+    {
+        const string lineHex = "#FFF6DC";
+        const string numberHex = "#7A5A35";
+
+        var scrollRoot = NewRect("MapScroll", tab);
+        Stretch(scrollRoot);
+        var scrollImage = AddImage(scrollRoot, White);
+        scrollImage.color = new Color(1f, 1f, 1f, 0f);
+
+        var viewport = NewRect("Viewport", scrollRoot);
+        Stretch(viewport);
+        viewport.gameObject.AddComponent<RectMask2D>();
+
+        float waveTopY = MapBaseOffset + MapPixelsPerWave * MapMaxWave;
+        float contentHeight = waveTopY + MapTopMargin;
+        var content = NewRect("Content", viewport);
+        content.anchorMin = new Vector2(0f, 0f);
+        content.anchorMax = new Vector2(1f, 0f);
+        content.pivot = new Vector2(0.5f, 0f);
+        content.sizeDelta = new Vector2(0f, contentHeight);
+        content.anchoredPosition = Vector2.zero;
+
+        BuildMapGround(content, contentHeight);
+
+        for (int i = 1; i <= MapMaxWave / 10; i++)
+        {
+            float y = MapBaseOffset + MapPixelsPerWave * i * 10f;
+            var number = Label("TXT_Wave_" + i * 10, content, (i * 10).ToString(), 170, numberHex, true, TextAlignmentOptions.Center, false,
+                Anchored(new Vector2(0.5f, 0f), new Vector2(0f, y), new Vector2(300f, 200f), new Vector2(0.5f, 0.5f)));
+            number.alpha = 0.4f;
+            number.raycastTarget = false;
+
+            foreach (var side in new[] { -1f, 1f })
+            {
+                var line = Block("IMG_WaveLine", content, lineHex, Anchored(new Vector2(0.5f, 0f), new Vector2(side * 360f, y), new Vector2(340f, 8f), new Vector2(0.5f, 0.5f)));
+                line.GetComponent<Image>().raycastTarget = false;
+                line.GetComponent<Image>().color = new Color(1f, 0.96f, 0.86f, 0.6f);
+            }
+        }
+
+        var marker = NewRect("PlayerMarker", content);
+        Apply(marker, Anchored(new Vector2(0.5f, 0f), new Vector2(0f, MapBaseOffset), new Vector2(360f, 330f), new Vector2(0.5f, 0f)));
+        var character = Block("IMG_Player", marker, White, Anchored(new Vector2(0.5f, 0f), Vector2.zero, new Vector2(150f, 200f), new Vector2(0.5f, 0f)));
+        character.GetComponent<Image>().raycastTarget = false;
+        SetSprite(character.GetComponent<Image>(), "Sample_Cha02_s", "Demo_Character");
+        var tag = FrameBlock("IMG_BestTag", marker, Cream, "#C9B48C", Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 220f), new Vector2(340f, 70f), new Vector2(0.5f, 0f)));
+        var bestText = Label("TXT_BestWave", tag, "도전 시작!", 34, BrownDark, true, TextAlignmentOptions.Center, true);
+
+        var complete = NewRect("WaveComplete", content);
+        Apply(complete, Anchored(new Vector2(0.5f, 0f), new Vector2(0f, waveTopY + 330f), new Vector2(620f, 420f), new Vector2(0.5f, 0.5f)));
+        var completeGroup = complete.gameObject.AddComponent<CanvasGroup>();
+        completeGroup.blocksRaycasts = false;
+
+        var flag = Block("ICON_WaveCompleteFlag", complete, White, Anchored(new Vector2(0.5f, 1f), Vector2.zero, new Vector2(240f, 240f), new Vector2(0.5f, 1f)));
+        flag.GetComponent<Image>().raycastTarget = false;
+        SetSprite(flag.GetComponent<Image>(), "Item_Flag_01_Finish", "UniqueIcon/256");
+
+        var banner = FrameBlock("FRAME_WaveComplete", complete, Cream, "#C9B48C", Anchored(new Vector2(0.5f, 0f), Vector2.zero, new Vector2(560f, 120f), new Vector2(0.5f, 0f)));
+        Label("TXT_WaveComplete", banner, "웨이브 완료", 56, BrownDark, true, TextAlignmentOptions.Center, true);
+
+        var scroll = scrollRoot.gameObject.AddComponent<ScrollRect>();
+        scroll.viewport = viewport;
+        scroll.content = content;
+        scroll.horizontal = false;
+        scroll.vertical = true;
+        scroll.movementType = ScrollRect.MovementType.Elastic;
+
+        var map = scrollRoot.gameObject.AddComponent<BattleMap>();
+        var so = new SerializedObject(map);
+        so.FindProperty("_scroll").objectReferenceValue = scroll;
+        so.FindProperty("_content").objectReferenceValue = content;
+        so.FindProperty("_playerMarker").objectReferenceValue = marker;
+        so.FindProperty("_bestWaveText").objectReferenceValue = bestText;
+        so.FindProperty("_completeGroup").objectReferenceValue = completeGroup;
+        so.FindProperty("_baseOffset").floatValue = MapBaseOffset;
+        so.FindProperty("_pixelsPerWave").floatValue = MapPixelsPerWave;
+        so.FindProperty("_maxWave").intValue = MapMaxWave;
+        so.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    // 흙길 → 풀밭 → 소품 순으로 쌓아 풀밭이 흙길 위에 그려지게 한다 (풀밭 안쪽 외곽선이 흙길 경계선이 된다).
+    private static void BuildMapGround(RectTransform content, float contentHeight)
+    {
+        var path = LoadWaveMapSprite("Path_Dirt");
+        var grassLeft = LoadWaveMapSprite("Bg_Grass_Left");
+        var grassRight = LoadWaveMapSprite("Bg_Grass_Right");
+        if (path == null || grassLeft == null || grassRight == null)
+            return;
+
+        var pathLayer = NewRect("Layer_Path", content);
+        Stretch(pathLayer);
+        var grassLayer = NewRect("Layer_Grass", content);
+        Stretch(grassLayer);
+        var propLayer = NewRect("Layer_Props", content);
+        Stretch(propLayer);
+
+        float tileHeight = path.rect.height * MapSpriteScale;
+        int tileCount = Mathf.CeilToInt(contentHeight / tileHeight);
+
+        // 홀수 번째 타일은 위아래를 뒤집어, 맞닿는 가장자리가 같아져 이음새가 보이지 않게 한다.
+        for (int i = 0; i < tileCount; i++)
+        {
+            bool flipped = i % 2 == 1;
+            float edgeY = i * tileHeight;
+            float pivotY = flipped ? 1f : 0f;
+
+            MapSprite("IMG_Path_" + i, pathLayer, path, new Vector2(0f, edgeY), new Vector2(0.5f, pivotY), MapSpriteScale, flipped);
+            MapSprite("IMG_GrassLeft_" + i, grassLayer, grassLeft, new Vector2(-MapGrassEdge, edgeY), new Vector2(1f, pivotY), MapSpriteScale, flipped);
+            MapSprite("IMG_GrassRight_" + i, grassLayer, grassRight, new Vector2(MapGrassEdge, edgeY), new Vector2(0f, pivotY), MapSpriteScale, flipped);
+        }
+
+        BuildMapProps(propLayer, contentHeight);
+    }
+
+    // 시드를 고정해 다시 빌드해도 같은 배치가 나온다. 웨이브 구분선 근처는 비워 둔다.
+    private static void BuildMapProps(RectTransform layer, float contentHeight)
+    {
+        string[] names = { "Prop_Tree", "Prop_Rock", "Prop_RockSmall", "Prop_Grass", "Prop_Flower" };
+        float[] weights = { 0.14f, 0.2f, 0.2f, 0.26f, 0.2f };
+
+        var sprites = new Sprite[names.Length];
+        for (int i = 0; i < names.Length; i++)
+        {
+            sprites[i] = LoadWaveMapSprite(names[i]);
+            if (sprites[i] == null)
+                return;
+        }
+
+        var rng = new System.Random(MapPropSeed);
+        int count = 0;
+        var heavyYs = new System.Collections.Generic.List<float>();
+
+        foreach (float side in new[] { -1f, 1f })
+        {
+            float y = 60f;
+            int last = -1;
+            while (y < contentHeight - 80f)
+            {
+                if (!NearWaveLine(y))
+                {
+                    float roll = (float)rng.NextDouble();
+                    int index = 0;
+                    for (; index < weights.Length - 1; index++)
+                    {
+                        roll -= weights[index];
+                        if (roll <= 0f)
+                            break;
+                    }
+
+                    // 나무/바위는 좌우 구분 없이 일정 간격 이상 띄우고, 가까우면 풀/꽃으로 바꾼다
+                    if (index <= PropIndexRockSmall && IsNearHeavy(heavyYs, y))
+                        index = rng.Next(2) == 0 ? PropIndexGrass : PropIndexFlower;
+
+                    if (index == last)
+                        index = index == PropIndexGrass ? PropIndexFlower : PropIndexGrass;
+
+                    last = index;
+                    if (index <= PropIndexRockSmall)
+                        heavyYs.Add(y);
+
+                    float x = side * Mathf.Lerp(310f, 440f, (float)rng.NextDouble());
+                    float scale = Mathf.Lerp(0.85f, 1.2f, (float)rng.NextDouble()) * 1.2f;
+                    bool flipX = rng.Next(2) == 0;
+                    MapSprite("IMG_" + names[index] + "_" + count++, layer, sprites[index], new Vector2(x, y), new Vector2(0.5f, 0f), scale, false, flipX);
+                }
+
+                y += Mathf.Lerp(130f, 280f, (float)rng.NextDouble());
+            }
+        }
+    }
+
+    private static bool IsNearHeavy(System.Collections.Generic.List<float> heavyYs, float y)
+    {
+        for (int i = 0; i < heavyYs.Count; i++)
+        {
+            if (Mathf.Abs(y - heavyYs[i]) < MapHeavyPropSpacing)
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool NearWaveLine(float y)
+    {
+        for (int i = 1; i <= MapMaxWave / 10; i++)
+        {
+            if (Mathf.Abs(y - (MapBaseOffset + MapPixelsPerWave * i * 10f)) < 90f)
+                return true;
+        }
+
+        return false;
     }
 
     private static RectTransform BuildHunterTab(RectTransform parent, HunterCard cardPrefab)

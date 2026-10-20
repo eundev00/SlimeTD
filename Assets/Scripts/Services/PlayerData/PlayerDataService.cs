@@ -13,6 +13,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
     private readonly ReactiveProperty<int> _gold = new ReactiveProperty<int>();
     private readonly ReactiveProperty<int> _gem = new ReactiveProperty<int>();
     private readonly ReactiveProperty<int> _cards = new ReactiveProperty<int>();
+    private readonly ReactiveProperty<int> _bestWave = new ReactiveProperty<int>();
     private readonly List<HunterState> _hunters = new List<HunterState>();
     private readonly Dictionary<int, HunterState> _huntersById = new Dictionary<int, HunterState>();
 
@@ -20,6 +21,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
     public IReadOnlyReactiveProperty<int> Gold => _gold;
     public IReadOnlyReactiveProperty<int> Gem => _gem;
     public IReadOnlyReactiveProperty<int> Cards => _cards;
+    public IReadOnlyReactiveProperty<int> BestWave => _bestWave;
     public IReadOnlyList<HunterState> Hunters => _hunters;
 
     public PlayerDataService(
@@ -85,6 +87,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         _gold.Value = data.Gold;
         _gem.Value = data.Gem;
         _cards.Value = data.Cards;
+        _bestWave.Value = data.BestWave;
         IsInitialized = true;
 
         if (isNew || created)
@@ -178,6 +181,16 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         SaveAsync().Forget();
     }
 
+    // 초기화 전(게임 씬 단독 실행)에 저장하면 빈 헌터 목록으로 기존 저장이 덮인다
+    public void ReportWaveReached(int wave)
+    {
+        if (!IsInitialized || wave <= _bestWave.Value)
+            return;
+
+        _bestWave.Value = wave;
+        SaveAsync().Forget();
+    }
+
     public bool TryGetLevelUpCost(int towerId, out int cards, out int gold)
     {
         cards = 0;
@@ -232,6 +245,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         _gold.Dispose();
         _gem.Dispose();
         _cards.Dispose();
+        _bestWave.Dispose();
     }
 
     private async UniTaskVoid SaveAsync()
@@ -241,6 +255,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
             Gold = _gold.Value,
             Gem = _gem.Value,
             Cards = _cards.Value,
+            BestWave = _bestWave.Value,
         };
 
         for (int i = 0; i < _hunters.Count; i++)
