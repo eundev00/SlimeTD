@@ -20,6 +20,7 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private TMP_Text _heroGradeBadgeText;
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private Image _gradeTagBackground;
+    [NotNull][SerializeField] private Image _gradeTagBorder;
     [NotNull][SerializeField] private TMP_Text _gradeTagText;
 
     [Header("레벨 줄")]
@@ -27,7 +28,6 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private TMP_Text _levelText;
     [NotNull][SerializeField] private RectTransform _progressFill;
     [NotNull][SerializeField] private TMP_Text _progressText;
-    [NotNull][SerializeField] private GameObject _upgradeBar;
     [NotNull][SerializeField] private GameObject _arrowBadge;
     [NotNull][SerializeField] private GameObject _lockedRow;
 
@@ -64,13 +64,23 @@ public class HunterDetailPopup : PopupBase
     [SerializeField] private Color _heroNormalColor = Color.white;
     [SerializeField] private Color _heroLockedColor = new Color(0.11f, 0.12f, 0.11f);
 
+    // 인덱스는 gradeId - 1: 일반 희귀 영웅 전설. 배지(채움) 색과 프레임(테두리) 색이다.
     [SerializeField]
     private Color[] _gradeColors =
     {
-        new Color(0.75f, 0.72f, 0.65f),
-        new Color(0.43f, 0.56f, 0.84f),
-        new Color(0.60f, 0.45f, 0.81f),
-        new Color(0.88f, 0.71f, 0.29f),
+        new Color32(0xD5, 0xA7, 0x7C, 0xFF),
+        new Color32(0x75, 0xC5, 0xFF, 0xFF),
+        new Color32(0xC5, 0x9A, 0xF2, 0xFF),
+        new Color32(0xFF, 0xD5, 0x6A, 0xFF),
+    };
+
+    [SerializeField]
+    private Color[] _gradeBorderColors =
+    {
+        new Color32(0xA8, 0x79, 0x52, 0xFF),
+        new Color32(0x25, 0x88, 0xE8, 0xFF),
+        new Color32(0x9B, 0x58, 0xD6, 0xFF),
+        new Color32(0xE7, 0xA5, 0x2E, 0xFF),
     };
 
     private readonly ReactiveProperty<int> _towerId = new ReactiveProperty<int>();
@@ -136,6 +146,7 @@ public class HunterDetailPopup : PopupBase
 
         int index = Mathf.Clamp(data.GradeId - 1, 0, _gradeColors.Length - 1);
         _gradeTagBackground.color = _gradeColors[index];
+        _gradeTagBorder.color = _gradeBorderColors[Mathf.Clamp(index, 0, _gradeBorderColors.Length - 1)];
         _gradeTagText.text = data.GradeName;
     }
 
@@ -149,7 +160,6 @@ public class HunterDetailPopup : PopupBase
 
         _levelText.text = $"Lv.{data.Level}/{data.MaxLevel}";
         _arrowBadge.SetActive(data.CanLevelUp);
-        _upgradeBar.SetActive(data.CanLevelUp);
 
         if (data.Mode == HunterDetailActionMode.MaxLevel)
         {

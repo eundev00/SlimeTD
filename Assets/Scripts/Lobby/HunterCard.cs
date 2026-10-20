@@ -11,7 +11,6 @@ public class HunterCard : MonoBehaviour
     [NotNull][SerializeField] private TMP_Text _levelText;
     [NotNull][SerializeField] private TMP_Text _progressText;
     [NotNull][SerializeField] private RectTransform _progressFill;
-    [NotNull][SerializeField] private GameObject _upgradeBar;
     [NotNull][SerializeField] private GameObject _lockedBar;
     [NotNull][SerializeField] private GameObject _upgradeBadge;
     [SerializeField] private Button _button;
@@ -42,7 +41,6 @@ public class HunterCard : MonoBehaviour
         _lockedBar.SetActive(!unlocked);
         _levelText.gameObject.SetActive(unlocked);
         _upgradeBadge.SetActive(unlocked && canLevelUp);
-        _upgradeBar.SetActive(unlocked && canLevelUp);
 
         if (!unlocked)
         {

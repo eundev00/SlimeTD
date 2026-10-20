@@ -220,8 +220,8 @@ public static class LobbyUiBuilder
 
         var nameText = Label("TXT_Name", fill, "궁수", 104, BrownDark, true, TextAlignmentOptions.Center, false, TopCenter(0f, -430f, 860f, 120f));
 
-        var gradeTag = Block("IMG_GradeTag", fill, White, TopCenter(0f, -562f, 190f, 52f));
-        SetSprite(gradeTag.GetComponent<Image>(), "BasicFrame_Rectangle_01~04_White_Bg", "Sprite_Common");
+        var gradeTag = FrameBlock("IMG_GradeTag", fill, White, White, TopCenter(0f, -562f, 190f, 52f));
+        var gradeTagBorder = gradeTag.Find("IMG_Border").GetComponent<Image>();
         var gradeTagText = Label("TXT_GradeTag", gradeTag, "일반", 28, BrownDark, true, TextAlignmentOptions.Center, true);
 
         var levelRow = NewRect("LevelRow", fill);
@@ -348,12 +348,12 @@ public static class LobbyUiBuilder
         so.FindProperty("_heroGradeBadgeText").objectReferenceValue = heroBadgeText;
         so.FindProperty("_nameText").objectReferenceValue = nameText;
         so.FindProperty("_gradeTagBackground").objectReferenceValue = gradeTag.GetComponent<Image>();
+        so.FindProperty("_gradeTagBorder").objectReferenceValue = gradeTagBorder;
         so.FindProperty("_gradeTagText").objectReferenceValue = gradeTagText;
         so.FindProperty("_levelRow").objectReferenceValue = levelRow.gameObject;
         so.FindProperty("_levelText").objectReferenceValue = levelText;
         so.FindProperty("_progressFill").objectReferenceValue = barFill;
         so.FindProperty("_progressText").objectReferenceValue = progressText;
-        so.FindProperty("_upgradeBar").objectReferenceValue = upgradeBar != null ? upgradeBar.gameObject : null;
         so.FindProperty("_arrowBadge").objectReferenceValue = arrow.gameObject;
         so.FindProperty("_lockedRow").objectReferenceValue = lockedRow.gameObject;
         so.FindProperty("_attackValueText").objectReferenceValue = attackValue;
@@ -647,7 +647,7 @@ public static class LobbyUiBuilder
 
         var fill = FindRecursive(orange, "Fill");
         if (fill != null && fill.GetComponent<Image>() != null)
-            fill.GetComponent<Image>().color = ParseColor("#3AB0FF");
+            fill.GetComponent<Image>().color = ParseColor("#16EF89");
     }
 
     private static SortButton BuildSortButtonPrefab()
@@ -693,6 +693,29 @@ public static class LobbyUiBuilder
         "CardFrame_02_Brown", "CardFrame_02_Blue", "CardFrame_02_Plum", "CardFrame_02_Yellow",
     };
 
+    // 에셋 변형 프레임의 대표색(렌더 실측)과 목표 등급색. 층별 음영은 비율 곱으로 유지한다.
+    private static readonly string[] GradeFrameBaseColors = { "#93562A", "#389AC9", "#A338D5", "#FAA41C" };
+    private static readonly string[] GradeFrameColors = { "#A87952", "#2588E8", "#9B58D6", "#E7A52E" };
+
+    private static void TintFrame(RectTransform frame, string fromHex, string toHex)
+    {
+        var from = ParseColor(fromHex);
+        var to = ParseColor(toHex);
+
+        foreach (var image in frame.GetComponentsInChildren<Image>(true))
+        {
+            var c = image.color;
+            if (c.r > 0.92f && c.g > 0.92f && c.b > 0.92f)
+                continue;
+
+            image.color = new Color(
+                Mathf.Clamp01(c.r * to.r / from.r),
+                Mathf.Clamp01(c.g * to.g / from.g),
+                Mathf.Clamp01(c.b * to.b / from.b),
+                c.a);
+        }
+    }
+
     private static HunterCard BuildHunterCardPrefab()
     {
         const string cardPath = PrefabFolder + "/HunterCard.prefab";
@@ -716,6 +739,7 @@ public static class LobbyUiBuilder
         for (int i = 0; i < GradeFrames.Length; i++)
         {
             var frame = Skin(GradeFrames[i], "FRAME_Grade" + (i + 1), area, null);
+            TintFrame(frame, GradeFrameBaseColors[i], GradeFrameColors[i]);
             frame.gameObject.SetActive(i == 0);
             frames[i] = frame.gameObject;
         }
@@ -772,7 +796,6 @@ public static class LobbyUiBuilder
         so.FindProperty("_levelText").objectReferenceValue = level;
         so.FindProperty("_progressText").objectReferenceValue = progressText;
         so.FindProperty("_progressFill").objectReferenceValue = fill;
-        so.FindProperty("_upgradeBar").objectReferenceValue = upgradeBar != null ? upgradeBar.gameObject : null;
         so.FindProperty("_lockedBar").objectReferenceValue = lockedBar != null ? lockedBar.gameObject : null;
         so.FindProperty("_upgradeBadge").objectReferenceValue = badge.gameObject;
         so.FindProperty("_button").objectReferenceValue = button;
