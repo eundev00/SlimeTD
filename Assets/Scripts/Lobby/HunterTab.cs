@@ -2,17 +2,15 @@ using System;
 using TMPro;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class HunterTab : MonoBehaviour
 {
     [NotNull][SerializeField] private RectTransform _grid;
     [NotNull][SerializeField] private HunterCard _cardPrefab;
     [NotNull][SerializeField] private TMP_Text _cardsText;
-    [NotNull][SerializeField] private Button _sortButton;
-    [NotNull][SerializeField] private TMP_Text _sortLabel;
+    [NotNull][SerializeField] private SortButton _sortButton;
 
-    public IObservable<Unit> SortClicked => _sortButton.OnClickAsObservable();
+    public IObservable<Unit> SortClicked => _sortButton.Clicked;
 
     public HunterCard CreateCard()
     {
@@ -24,8 +22,8 @@ public class HunterTab : MonoBehaviour
         _cardsText.text = cards.ToString("N0");
     }
 
-    public void SetSortLabel(string label)
+    public void SetSort(string label, bool ascending)
     {
-        _sortLabel.text = label;
+        _sortButton.Set(label, ascending);
     }
 }

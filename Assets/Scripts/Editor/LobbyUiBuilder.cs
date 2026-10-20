@@ -530,28 +530,9 @@ public static class LobbyUiBuilder
 
         ResourceChip("Chip_Cards", info, "ResourceBar_Icon_Ticket", "Cards", TopLeft(30f, 0f, 300f, 80f), out var cardText);
 
-        // 드롭다운은 Selectable이라 Button을 같이 못 붙인다. 열리지 않게 끄고 클릭은 덮개 버튼으로 받는다.
-        var sort = Skin("Dropdown_01_Arrow", "Dropdown_Sort", info, TopRight(-30f, 0f, 220f, 80f));
-        foreach (var selectable in sort.GetComponents<Selectable>())
-            selectable.enabled = false;
-
-        var template = FindRecursive(sort, "Template");
-        if (template != null)
-            template.gameObject.SetActive(false);
-
-        var sortHit = Block("BTN_Sort", sort, White, null);
-        sortHit.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0f);
-        var sortButton = sortHit.gameObject.AddComponent<Button>();
-        sortButton.targetGraphic = sortHit.GetComponent<Image>();
-        TMP_Text sortLabel = null;
-        foreach (var tmp in sort.GetComponentsInChildren<TMP_Text>(true))
-        {
-            if (sortLabel == null || tmp.name == "Label")
-                sortLabel = tmp;
-        }
-
-        if (sortLabel != null)
-            sortLabel.text = "등급순";
+        var sortButton = (SortButton)PrefabUtility.InstantiatePrefab(BuildSortButtonPrefab(), info);
+        sortButton.name = "SortButton";
+        Apply((RectTransform)sortButton.transform, TopRight(-30f, 0f, 220f, 80f));
 
         var area = NewRect("IMG_GridArea", tab);
         area.anchorMin = Vector2.zero;
@@ -596,10 +577,46 @@ public static class LobbyUiBuilder
         so.FindProperty("_cardPrefab").objectReferenceValue = cardPrefab;
         so.FindProperty("_cardsText").objectReferenceValue = cardText;
         so.FindProperty("_sortButton").objectReferenceValue = sortButton;
-        so.FindProperty("_sortLabel").objectReferenceValue = sortLabel;
         so.ApplyModifiedPropertiesWithoutUndo();
 
         return tab;
+    }
+
+    private static SortButton BuildSortButtonPrefab()
+    {
+        const string sortPath = PrefabFolder + "/SortButton.prefab";
+
+        if (!Directory.Exists(PrefabFolder))
+            Directory.CreateDirectory(PrefabFolder);
+
+        var root = NewRect("SortButton", null);
+        root.sizeDelta = new Vector2(220f, 80f);
+
+        var image = AddImage(root, White);
+        SetSprite(image, "Dropdown_01_Bg", "Theme_Light");
+        var button = root.gameObject.AddComponent<Button>();
+        button.targetGraphic = image;
+
+        var arrow = Block("ICON_Arrow", root, White, Anchored(new Vector2(0f, 0.5f), new Vector2(50f, 0f), new Vector2(36f, 28f)));
+        arrow.GetComponent<Image>().raycastTarget = false;
+        SetSprite(arrow.GetComponent<Image>(), "Dropdown_01_Icon_Arrow", "Theme_Light", ParseColor(BrownDark));
+
+        var label = Label("TXT_Label", root, "레벨순", 36, BrownDark, true, TextAlignmentOptions.Center, true);
+        SetOffsets(label.rectTransform, new Vector2(76f, 0f), new Vector2(-12f, 0f));
+        label.enableAutoSizing = true;
+        label.fontSizeMax = 36f;
+        label.fontSizeMin = 20f;
+
+        var sortButton = root.gameObject.AddComponent<SortButton>();
+        var so = new SerializedObject(sortButton);
+        so.FindProperty("_button").objectReferenceValue = button;
+        so.FindProperty("_label").objectReferenceValue = label;
+        so.FindProperty("_arrow").objectReferenceValue = arrow;
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        var saved = PrefabUtility.SaveAsPrefabAsset(root.gameObject, sortPath);
+        Object.DestroyImmediate(root.gameObject);
+        return saved.GetComponent<SortButton>();
     }
 
     // 등급 인덱스는 gradeId - 1: 일반(갈색) 희귀(파랑) 영웅(보라) 전설(주황)
