@@ -21,21 +21,18 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private Image _gradeTagBackground;
     [NotNull][SerializeField] private TMP_Text _gradeTagText;
-    [NotNull][SerializeField] private TMP_Text _attackTypeTagText;
 
     [Header("레벨 줄")]
     [NotNull][SerializeField] private GameObject _levelRow;
     [NotNull][SerializeField] private TMP_Text _levelText;
     [NotNull][SerializeField] private RectTransform _progressFill;
     [NotNull][SerializeField] private TMP_Text _progressText;
+    [NotNull][SerializeField] private GameObject _upgradeBar;
     [NotNull][SerializeField] private GameObject _arrowBadge;
     [NotNull][SerializeField] private GameObject _lockedRow;
 
     [Header("스탯")]
-    [NotNull][SerializeField] private Image _attackTileBorder;
     [NotNull][SerializeField] private TMP_Text _attackValueText;
-    [NotNull][SerializeField] private GameObject _attackBonusBadge;
-    [NotNull][SerializeField] private TMP_Text _attackBonusText;
     [NotNull][SerializeField] private TMP_Text _speedValueText;
 
     [Header("버튼")]
@@ -47,17 +44,24 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private TMP_Text _lockedNoticeText;
     [NotNull][SerializeField] private Button _closeButton;
 
+    [Header("비용 아이콘")]
+    [SerializeField] private Sprite _goldCostSprite;
+    [SerializeField] private Sprite _gemCostSprite;
+
     [Header("색")]
     [SerializeField] private Color _levelUpColor = new Color(0.91f, 0.75f, 0.29f);
     [SerializeField] private Color _unlockColor = new Color(0.43f, 0.56f, 0.84f);
-    [SerializeField] private Color _disabledColor = new Color(0.45f, 0.45f, 0.40f);
-    [SerializeField] private Color _goldIconColor = new Color(0.16f, 0.18f, 0.17f);
+    [SerializeField] private Color _disabledColor = new Color(0.55f, 0.44f, 0.12f);
+    [SerializeField] private Color _goldIconColor = Color.white;
     [SerializeField] private Color _gemIconColor = Color.white;
-    [SerializeField] private Color _costNormalColor = new Color(0.16f, 0.18f, 0.17f);
-    [SerializeField] private Color _costInsufficientColor = new Color(0.78f, 0.18f, 0.18f);
-    [SerializeField] private Color _tileActiveColor = new Color(0.25f, 0.66f, 0.35f);
-    [SerializeField] private Color _tileNormalColor = new Color(0.37f, 0.40f, 0.37f);
-    [SerializeField] private Color _heroNormalColor = new Color(0.55f, 0.59f, 0.55f);
+    [SerializeField] private Color _iconDisabledColor = new Color(0.6f, 0.6f, 0.6f);
+    [SerializeField] private Color _labelNormalColor = new Color(0.35f, 0.24f, 0.17f);
+    [SerializeField] private Color _labelDisabledColor = new Color(0.33f, 0.25f, 0.07f);
+    [SerializeField] private Color _costNormalColor = Color.white;
+    [SerializeField] private Color _costDisabledColor = new Color(0.62f, 0.62f, 0.62f);
+    [SerializeField] private Color _costInsufficientColor = new Color(0.95f, 0.32f, 0.32f);
+    [SerializeField] private Color _bonusColor = new Color(0.18f, 0.62f, 0.34f);
+    [SerializeField] private Color _heroNormalColor = Color.white;
     [SerializeField] private Color _heroLockedColor = new Color(0.11f, 0.12f, 0.11f);
 
     [SerializeField]
@@ -133,7 +137,6 @@ public class HunterDetailPopup : PopupBase
         int index = Mathf.Clamp(data.GradeId - 1, 0, _gradeColors.Length - 1);
         _gradeTagBackground.color = _gradeColors[index];
         _gradeTagText.text = data.GradeName;
-        _attackTypeTagText.text = data.AttackTypeName;
     }
 
     private void RenderLevelRow(HunterDetailViewData data)
@@ -146,6 +149,7 @@ public class HunterDetailPopup : PopupBase
 
         _levelText.text = $"Lv.{data.Level}/{data.MaxLevel}";
         _arrowBadge.SetActive(data.CanLevelUp);
+        _upgradeBar.SetActive(data.CanLevelUp);
 
         if (data.Mode == HunterDetailActionMode.MaxLevel)
         {
@@ -159,15 +163,15 @@ public class HunterDetailPopup : PopupBase
         _progressText.text = $"{data.OwnedCards}/{data.NeededCards}";
     }
 
+    // 레벨업으로 늘어나는 양은 박스 색이 아니라 값 옆의 초록 글씨로 보여 준다.
     private void RenderStats(HunterDetailViewData data)
     {
-        _attackValueText.text = data.AttackValue;
-        _speedValueText.text = data.AttackSpeed;
+        string bonus = string.IsNullOrEmpty(data.AttackBonus)
+            ? string.Empty
+            : $" <size=70%><color=#{ColorUtility.ToHtmlStringRGB(_bonusColor)}>{data.AttackBonus}</color></size>";
 
-        bool hasBonus = !string.IsNullOrEmpty(data.AttackBonus);
-        _attackBonusBadge.SetActive(hasBonus);
-        _attackBonusText.text = data.AttackBonus;
-        _attackTileBorder.color = data.CanLevelUp ? _tileActiveColor : _tileNormalColor;
+        _attackValueText.text = data.AttackValue + bonus;
+        _speedValueText.text = data.AttackSpeed;
     }
 
     private void RenderAction(HunterDetailViewData data)
@@ -182,21 +186,28 @@ public class HunterDetailPopup : PopupBase
         bool isUnlock = data.Mode == HunterDetailActionMode.Unlock;
         bool isMax = data.Mode == HunterDetailActionMode.MaxLevel;
 
+        bool dimmed = !data.ActionEnabled && !isUnlock;
+
         _actionButton.interactable = data.ActionEnabled;
         _actionLabel.text = isMax ? "MAX" : (isUnlock ? "해금" : "레벨업");
-        _actionLabel.color = isUnlock ? Color.white : _costNormalColor;
+        _actionLabel.color = isUnlock ? Color.white : (dimmed ? _labelDisabledColor : _labelNormalColor);
 
-        _actionBackground.color = !data.ActionEnabled && !isUnlock
+        _actionBackground.color = dimmed
             ? _disabledColor
             : (isUnlock ? _unlockColor : _levelUpColor);
 
         _actionCostText.gameObject.SetActive(!isMax);
         _actionCostIcon.gameObject.SetActive(!isMax);
         _actionCostText.text = data.CostText;
-        _actionCostIcon.color = isUnlock ? _gemIconColor : _goldIconColor;
+        _actionCostIcon.color = dimmed ? _iconDisabledColor : (isUnlock ? _gemIconColor : _goldIconColor);
 
-        Color costColor = isUnlock ? Color.white : _costNormalColor;
-        _actionCostText.color = data.CostInsufficient ? _costInsufficientColor : costColor;
+        var costSprite = isUnlock ? _gemCostSprite : _goldCostSprite;
+        if (costSprite != null)
+            _actionCostIcon.sprite = costSprite;
+
+        _actionCostText.color = data.CostInsufficient
+            ? _costInsufficientColor
+            : (dimmed ? _costDisabledColor : _costNormalColor);
     }
 
     private void OnActionButtonClicked()

@@ -158,6 +158,7 @@ public static class LobbyUiBuilder
     private static void BuildHunterDetailPopupPrefab()
     {
         const string popupPath = PrefabFolder + "/HunterDetailPopup.prefab";
+        const string tanHex = "#D8C7A3";
 
         var root = NewRect("HunterDetailPopup", null);
         Stretch(root);
@@ -181,9 +182,9 @@ public static class LobbyUiBuilder
         chipFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         chipFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        var cardsChip = BuildChip(chips, "Chip_Cards", "ICON_Card", "#E58A4A", out var cardsChipText);
-        var goldChip = BuildChip(chips, "Chip_Gold", "ICON_Gold", "#E0B54A", out var goldChipText);
-        var gemChip = BuildChip(chips, "Chip_Gem", "ICON_Gem", "#6E8FD6", out var gemChipText);
+        var cardsChip = BuildPopupChip(chips, "Chip_Cards", "ResourceBar_Icon_Ticket", "Cards", out var cardsChipText);
+        var goldChip = BuildPopupChip(chips, "Chip_Gold", "ResourceBar_Icon_Gold", "Gold", out var goldChipText);
+        var gemChip = BuildPopupChip(chips, "Chip_Gem", "ResourceBar_Icon_Gem", "Gem", out var gemChipText);
 
         var group = NewRect("Group", root);
         group.anchorMin = new Vector2(0.5f, 0.5f);
@@ -192,92 +193,148 @@ public static class LobbyUiBuilder
         group.sizeDelta = new Vector2(900f, 1670f);
         group.anchoredPosition = Vector2.zero;
 
-        var panel = Block("FRAME_Panel", group, "#5E665F", TopCenter(0f, 0f, 900f, 1500f));
-        var fill = Block("IMG_PanelFill", panel, "#2F3530", null);
-        SetOffsets(fill, new Vector2(4f, 4f), new Vector2(-4f, -4f));
+        var fill = FrameBlock("FRAME_Panel", group, "#F6EBD0", "#8A6A45", TopCenter(0f, 0f, 900f, 1500f));
 
-        Block("IMG_HeroShadow", fill, "#222723", TopCenter(0f, -395f, 380f, 56f));
-        var hero = Block("IMG_Hero", fill, "#8C968C", TopCenter(0f, -30f, 270f, 370f));
-        Label("TXT_HeroHint", hero, "[헌터 이미지]", 28, "#C3CBC2", false, TextAlignmentOptions.Center, true);
-        var heroBadge = Block("FRAME_GradeBadge", hero, "#BFB7A6", Anchored(new Vector2(0f, 1f), new Vector2(-20f, -12f), new Vector2(56f, 56f), new Vector2(0f, 1f)));
-        var heroBadgeText = Label("TXT_GradeBadge", heroBadge, "1", 30, TextDark, true, TextAlignmentOptions.Center, true);
+        var shadow = Block("IMG_HeroShadow", fill, White, TopCenter(0f, -395f, 380f, 56f));
+        shadow.GetComponent<Image>().raycastTarget = false;
+        SetSprite(shadow.GetComponent<Image>(), "Image_Circle_256", "Demo_Image", new Color(0.55f, 0.43f, 0.27f, 0.3f));
+        shadow.GetComponent<Image>().preserveAspect = false;
 
-        var nameText = Label("TXT_Name", fill, "궁수", 104, White, true, TextAlignmentOptions.Center, false, TopCenter(0f, -430f, 860f, 120f));
+        var hero = Block("IMG_Hero", fill, White, TopCenter(0f, -30f, 270f, 370f));
+        hero.GetComponent<Image>().raycastTarget = false;
+        SetSprite(hero.GetComponent<Image>(), "Sample_Cha02_l", "Demo_Character");
+        var heroBadge = Skin("Badge_Crimped_01_Yellow", "FRAME_GradeBadge", hero, Anchored(new Vector2(0f, 1f), new Vector2(-10f, -6f), new Vector2(76f, 76f), new Vector2(0f, 1f)));
+        var heroBadgeText = heroBadge.GetComponentInChildren<TMP_Text>(true);
+        if (heroBadgeText == null)
+            heroBadgeText = Label("TXT_GradeBadge", heroBadge, "1", 34, BrownDark, true, TextAlignmentOptions.Center, true);
 
-        var gradeTag = Block("IMG_GradeTag", fill, "#BFB7A6", TopCenter(-96f, -562f, 170f, 52f));
-        var gradeTagText = Label("TXT_GradeTag", gradeTag, "일반", 28, TextDark, true, TextAlignmentOptions.Center, true);
-        var typeTag = Block("IMG_AttackTypeTag", fill, "#454D46", TopCenter(96f, -562f, 170f, 52f));
-        var typeTagText = Label("TXT_AttackTypeTag", typeTag, "원거리", 28, White, true, TextAlignmentOptions.Center, true);
+        foreach (var extra in heroBadge.GetComponentsInChildren<TMP_Text>(true))
+        {
+            if (extra != heroBadgeText)
+                extra.gameObject.SetActive(false);
+        }
+
+        heroBadgeText.enableAutoSizing = true;
+        heroBadgeText.fontSizeMax = 40f;
+        heroBadgeText.fontSizeMin = 20f;
+
+        var nameText = Label("TXT_Name", fill, "궁수", 104, BrownDark, true, TextAlignmentOptions.Center, false, TopCenter(0f, -430f, 860f, 120f));
+
+        var gradeTag = Block("IMG_GradeTag", fill, White, TopCenter(0f, -562f, 190f, 52f));
+        SetSprite(gradeTag.GetComponent<Image>(), "BasicFrame_Rectangle_01~04_White_Bg", "Sprite_Common");
+        var gradeTagText = Label("TXT_GradeTag", gradeTag, "일반", 28, BrownDark, true, TextAlignmentOptions.Center, true);
 
         var levelRow = NewRect("LevelRow", fill);
         Apply(levelRow, TopCenter(0f, -650f, 760f, 66f));
-        var levelText = Label("TXT_Level", levelRow, "Lv.1/15", 40, White, true, TextAlignmentOptions.Left, false,
+        var levelText = Label("TXT_Level", levelRow, "Lv.1/15", 40, BrownDark, true, TextAlignmentOptions.Left, false,
             Anchored(new Vector2(0f, 0.5f), Vector2.zero, new Vector2(200f, 66f), new Vector2(0f, 0.5f)));
-        var bar = Block("IMG_ProgressBg", levelRow, "#222723", null);
+
+        var bar = NewRect("Bar", levelRow);
         bar.anchorMin = new Vector2(0f, 0.5f);
         bar.anchorMax = new Vector2(1f, 0.5f);
         bar.offsetMin = new Vector2(220f, -25f);
         bar.offsetMax = new Vector2(-76f, 25f);
-        var barFill = Block("IMG_ProgressFill", bar, "#3FA85A", null);
-        var progressText = Label("TXT_Progress", bar, "35/10", 28, White, true, TextAlignmentOptions.Center, true);
-        var arrow = Block("ICON_ArrowBadge", levelRow, "#3FA85A", Anchored(new Vector2(1f, 0.5f), Vector2.zero, new Vector2(56f, 56f), new Vector2(1f, 0.5f)));
-        Label("TXT_Arrow", arrow, "▲", 30, White, true, TextAlignmentOptions.Center, true);
+        var slider = Skin("Slider_Upgrade_01", "Slider", bar, null);
+        StyleGauge(slider);
+        var innerOrange = FindRecursive(slider, "Slider_02_Orange");
+        if (innerOrange != null)
+        {
+            var innerText = innerOrange.GetComponentInChildren<TMP_Text>(true);
+            if (innerText != null)
+                innerText.gameObject.SetActive(false);
+        }
+
+        var barFill = FindRecursive(slider, "Fill") as RectTransform;
+        var upgradeBar = FindRecursive(slider, "Upgrade");
+        var lockBar = FindRecursive(slider, "Lock");
+        var upgradeIcon = FindRecursive(slider, "Icon_Upgrade");
+        if (upgradeIcon != null)
+            upgradeIcon.gameObject.SetActive(false);
+
+        if (lockBar != null)
+            lockBar.gameObject.SetActive(false);
+
+        TMP_Text progressText = null;
+        foreach (Transform child in slider)
+        {
+            if (child.name == "Text (TMP)")
+                progressText = child.GetComponent<TMP_Text>();
+        }
+
+        if (progressText != null)
+        {
+            progressText.fontSizeMax = 40f;
+            progressText.fontSizeMin = 20f;
+        }
+
+        if (upgradeBar != null)
+            upgradeBar.gameObject.SetActive(false);
+
+        var arrow = Block("ICON_ArrowBadge", levelRow, White, Anchored(new Vector2(1f, 0.5f), Vector2.zero, new Vector2(56f, 52f), new Vector2(1f, 0.5f)));
+        arrow.GetComponent<Image>().raycastTarget = false;
+        SetSprite(arrow.GetComponent<Image>(), "Icon_Arrow_Up_02", "Theme_Light");
 
         var lockedRow = NewRect("LockedRow", fill);
         Apply(lockedRow, TopCenter(0f, -650f, 760f, 66f));
-        Block("IMG_LockedLineLeft", lockedRow, "#5E665F", Anchored(new Vector2(0f, 0.5f), Vector2.zero, new Vector2(240f, 2f), new Vector2(0f, 0.5f)));
-        Block("IMG_LockedLineRight", lockedRow, "#5E665F", Anchored(new Vector2(1f, 0.5f), Vector2.zero, new Vector2(240f, 2f), new Vector2(1f, 0.5f)));
-        Label("TXT_Locked", lockedRow, "[잠금 아이콘] 잠김", 38, "#C3CBC2", true, TextAlignmentOptions.Center, true);
+        Block("IMG_LockedLineLeft", lockedRow, "#C9B48C", Anchored(new Vector2(0f, 0.5f), Vector2.zero, new Vector2(230f, 4f), new Vector2(0f, 0.5f)));
+        Block("IMG_LockedLineRight", lockedRow, "#C9B48C", Anchored(new Vector2(1f, 0.5f), Vector2.zero, new Vector2(230f, 4f), new Vector2(1f, 0.5f)));
+        var lockIcon = Block("ICON_Lock", lockedRow, White, Anchored(new Vector2(0.5f, 0.5f), new Vector2(-70f, 0f), new Vector2(52f, 52f)));
+        lockIcon.GetComponent<Image>().raycastTarget = false;
+        SetSprite(lockIcon.GetComponent<Image>(), "UI_Common_Lock_01_Silver", "UniqueIcon/128");
+        Label("TXT_Locked", lockedRow, "잠김", 40, "#8A7A5C", true, TextAlignmentOptions.Center, false,
+            Anchored(new Vector2(0.5f, 0.5f), new Vector2(30f, 0f), new Vector2(200f, 66f)));
         lockedRow.gameObject.SetActive(false);
 
-        var attackTile = Block("FRAME_AttackTile", fill, "#5E665F", TopCenter(-194f, -745f, 368f, 150f));
-        var attackInner = Block("IMG_AttackTileFill", attackTile, "#222723", null);
-        SetOffsets(attackInner, new Vector2(4f, 4f), new Vector2(-4f, -4f));
-        Block("ICON_Attack", attackInner, "#3A423B", Anchored(new Vector2(0f, 0.5f), new Vector2(24f, 0f), new Vector2(80f, 80f), new Vector2(0f, 0.5f)));
-        Label("TXT_AttackLabel", attackInner, "공격력", 26, "#C3CBC2", false, TextAlignmentOptions.Left, false,
+        var attackTile = FrameBlock("FRAME_AttackTile", fill, tanHex, "#C9B48C", TopCenter(-194f, -745f, 368f, 150f));
+        var attackIcon = Block("ICON_Attack", attackTile, White, Anchored(new Vector2(0f, 0.5f), new Vector2(24f, 0f), new Vector2(80f, 80f), new Vector2(0f, 0.5f)));
+        attackIcon.GetComponent<Image>().raycastTarget = false;
+        SetSprite(attackIcon.GetComponent<Image>(), "Gear_Weapons_Sword_01", "UniqueIcon/128");
+        Label("TXT_AttackLabel", attackTile, "공격력", 26, "#7A4A22", false, TextAlignmentOptions.Left, false,
             Anchored(new Vector2(0f, 1f), new Vector2(124f, -16f), new Vector2(220f, 40f), new Vector2(0f, 1f)));
-        var attackValue = Label("TXT_AttackValue", attackInner, "100", 64, White, true, TextAlignmentOptions.Left, false,
-            Anchored(new Vector2(0f, 1f), new Vector2(124f, -56f), new Vector2(230f, 80f), new Vector2(0f, 1f)));
-        var bonusBadge = Block("ICON_AttackBonus", attackInner, "#3FA85A", Anchored(new Vector2(1f, 1f), new Vector2(-14f, -14f), new Vector2(96f, 44f), new Vector2(1f, 1f)));
-        var bonusText = Label("TXT_AttackBonus", bonusBadge, "+5", 28, White, true, TextAlignmentOptions.Center, true);
+        var attackValue = Label("TXT_AttackValue", attackTile, "100", 64, BrownDark, true, TextAlignmentOptions.Left, false,
+            Anchored(new Vector2(0f, 1f), new Vector2(124f, -56f), new Vector2(236f, 80f), new Vector2(0f, 1f)));
 
-        var speedTile = Block("FRAME_SpeedTile", fill, "#5E665F", TopCenter(194f, -745f, 368f, 150f));
-        var speedInner = Block("IMG_SpeedTileFill", speedTile, "#222723", null);
-        SetOffsets(speedInner, new Vector2(4f, 4f), new Vector2(-4f, -4f));
-        Block("ICON_Speed", speedInner, "#3A423B", Anchored(new Vector2(0f, 0.5f), new Vector2(24f, 0f), new Vector2(80f, 80f), new Vector2(0f, 0.5f)));
-        Label("TXT_SpeedLabel", speedInner, "공격 속도", 26, "#C3CBC2", false, TextAlignmentOptions.Left, false,
+        var speedTile = FrameBlock("FRAME_SpeedTile", fill, tanHex, "#C9B48C", TopCenter(194f, -745f, 368f, 150f));
+        var speedIcon = Block("ICON_Speed", speedTile, White, Anchored(new Vector2(0f, 0.5f), new Vector2(24f, 0f), new Vector2(80f, 80f), new Vector2(0f, 0.5f)));
+        speedIcon.GetComponent<Image>().raycastTarget = false;
+        SetSprite(speedIcon.GetComponent<Image>(), "atk_spd", "PictoIcon/128", ParseColor("#7A4A22"));
+        Label("TXT_SpeedLabel", speedTile, "공격 속도", 26, "#7A4A22", false, TextAlignmentOptions.Left, false,
             Anchored(new Vector2(0f, 1f), new Vector2(124f, -16f), new Vector2(220f, 40f), new Vector2(0f, 1f)));
-        var speedValue = Label("TXT_SpeedValue", speedInner, "1.0", 64, White, true, TextAlignmentOptions.Left, false,
+        var speedValue = Label("TXT_SpeedValue", speedTile, "1.0", 64, BrownDark, true, TextAlignmentOptions.Left, false,
             Anchored(new Vector2(0f, 1f), new Vector2(124f, -56f), new Vector2(230f, 80f), new Vector2(0f, 1f)));
 
-        Label("TXT_SkillHeader", fill, "기본 능력 · 스킬", 30, "#C3CBC2", true, TextAlignmentOptions.Center, false, TopCenter(0f, -930f, 860f, 45f));
+        Label("TXT_SkillHeader", fill, "기본 능력 · 스킬", 30, "#7A4A22", true, TextAlignmentOptions.Center, false, TopCenter(0f, -930f, 860f, 45f));
         for (int i = 0; i < 3; i++)
         {
-            var slot = Block("IMG_SkillSlot_" + (i + 1), fill, "#3A423B", TopCenter((i - 1) * 200f, -990f, 160f, 176f));
-            Label("TXT_SkillHint", slot, "[스킬]", 24, "#C3CBC2", false, TextAlignmentOptions.Center, true);
+            var slot = FrameBlock("IMG_SkillSlot_" + (i + 1), fill, tanHex, "#C9B48C", TopCenter((i - 1) * 200f, -990f, 160f, 176f));
+            Label("TXT_SkillHint", slot, "[스킬]", 24, "#8A7A5C", false, TextAlignmentOptions.Center, true);
         }
 
-        Label("TXT_SkillNote", fill, "스킬 준비 중", 26, "#9FA89F", false, TextAlignmentOptions.Center, false, TopCenter(0f, -1180f, 860f, 40f));
+        var action = Skin("Button_01_Yellow", "BTN_Action", fill, TopCenter(0f, -1280f, 760f, 170f));
+        var actionButton = EnsureButton(action);
+        actionButton.transition = Selectable.Transition.None;
+        var actionBg = FindRecursive(action, "Bg");
+        var actionImage = actionBg != null ? actionBg.GetComponent<Image>() : action.GetComponentInChildren<Image>(true);
+        var actionLabel = action.GetComponentInChildren<TMP_Text>(true);
+        actionLabel.text = "레벨업";
+        actionLabel.enableAutoSizing = true;
+        actionLabel.fontSizeMax = 60f;
+        actionLabel.fontSizeMin = 30f;
+        Apply(actionLabel.rectTransform, Anchored(new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(700f, 80f), new Vector2(0.5f, 1f)));
+        var costPill = Block("IMG_CostPill", action, White, Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 16f), new Vector2(420f, 64f), new Vector2(0.5f, 0f)));
+        costPill.GetComponent<Image>().raycastTarget = false;
+        SetSprite(costPill.GetComponent<Image>(), "BasicFrame_Rectangle_01~04_White_Bg", "Sprite_Common", new Color(0.1f, 0.1f, 0.12f, 0.9f));
+        var costIcon = Block("ICON_ActionCost", costPill, White, Anchored(new Vector2(0.5f, 0.5f), new Vector2(-90f, 0f), new Vector2(48f, 48f)));
+        costIcon.GetComponent<Image>().raycastTarget = false;
+        SetSprite(costIcon.GetComponent<Image>(), "ResourceBar_Icon_Gold", "Theme_Light");
+        var costText = Label("TXT_ActionCost", costPill, "100", 44, White, true, TextAlignmentOptions.Left, false,
+            Anchored(new Vector2(0.5f, 0.5f), new Vector2(-50f, 0f), new Vector2(240f, 56f), new Vector2(0f, 0.5f)));
 
-        var action = Block("BTN_Action", fill, "#E8BE4A", TopCenter(0f, -1280f, 760f, 170f));
-        var actionImage = action.GetComponent<Image>();
-        var actionButton = action.gameObject.AddComponent<Button>();
-        actionButton.targetGraphic = actionImage;
-        var actionLabel = Label("TXT_ActionLabel", action, "레벨업", 60, TextDark, true, TextAlignmentOptions.Center, false,
-            Anchored(new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(700f, 80f), new Vector2(0.5f, 1f)));
-        var costIcon = Block("ICON_ActionCost", action, TextDark, Anchored(new Vector2(0.5f, 0f), new Vector2(-70f, 24f), new Vector2(36f, 36f), new Vector2(0.5f, 0f)));
-        var costText = Label("TXT_ActionCost", action, "100", 44, TextDark, true, TextAlignmentOptions.Left, false,
-            Anchored(new Vector2(0.5f, 0f), new Vector2(-20f, 16f), new Vector2(240f, 56f), new Vector2(0f, 0f)));
-
-        var lockedNotice = Label("TXT_LockedNotice", fill, "잠김 · 획득 방법 미정", 40, "#C3CBC2", true, TextAlignmentOptions.Center, false, TopCenter(0f, -1320f, 760f, 90f));
+        var lockedNotice = Label("TXT_LockedNotice", fill, "잠김 · 획득 방법 미정", 40, "#8A7A5C", true, TextAlignmentOptions.Center, false, TopCenter(0f, -1320f, 760f, 90f));
         lockedNotice.gameObject.SetActive(false);
 
-        var closeFrame = Block("BTN_Close", group, "#E8E2E2", Anchored(new Vector2(0.5f, 0f), Vector2.zero, new Vector2(130f, 130f), new Vector2(0.5f, 0f)));
-        var closeInner = Block("IMG_CloseFill", closeFrame, "#B23A3A", null);
-        SetOffsets(closeInner, new Vector2(8f, 8f), new Vector2(-8f, -8f));
-        Label("TXT_Close", closeInner, "X", 80, White, true, TextAlignmentOptions.Center, true);
-        var closeButton = closeFrame.gameObject.AddComponent<Button>();
-        closeButton.targetGraphic = closeFrame.GetComponent<Image>();
+        var closeFrame = Skin("Button_Close_Circle_01", "BTN_Close", group, Anchored(new Vector2(0.5f, 0f), Vector2.zero, new Vector2(130f, 130f), new Vector2(0.5f, 0f)));
+        var closeButton = EnsureButton(closeFrame);
 
         var popup = root.gameObject.AddComponent<HunterDetailPopup>();
         var so = new SerializedObject(popup);
@@ -292,17 +349,14 @@ public static class LobbyUiBuilder
         so.FindProperty("_nameText").objectReferenceValue = nameText;
         so.FindProperty("_gradeTagBackground").objectReferenceValue = gradeTag.GetComponent<Image>();
         so.FindProperty("_gradeTagText").objectReferenceValue = gradeTagText;
-        so.FindProperty("_attackTypeTagText").objectReferenceValue = typeTagText;
         so.FindProperty("_levelRow").objectReferenceValue = levelRow.gameObject;
         so.FindProperty("_levelText").objectReferenceValue = levelText;
         so.FindProperty("_progressFill").objectReferenceValue = barFill;
         so.FindProperty("_progressText").objectReferenceValue = progressText;
+        so.FindProperty("_upgradeBar").objectReferenceValue = upgradeBar != null ? upgradeBar.gameObject : null;
         so.FindProperty("_arrowBadge").objectReferenceValue = arrow.gameObject;
         so.FindProperty("_lockedRow").objectReferenceValue = lockedRow.gameObject;
-        so.FindProperty("_attackTileBorder").objectReferenceValue = attackTile.GetComponent<Image>();
         so.FindProperty("_attackValueText").objectReferenceValue = attackValue;
-        so.FindProperty("_attackBonusBadge").objectReferenceValue = bonusBadge.gameObject;
-        so.FindProperty("_attackBonusText").objectReferenceValue = bonusText;
         so.FindProperty("_speedValueText").objectReferenceValue = speedValue;
         so.FindProperty("_actionButton").objectReferenceValue = actionButton;
         so.FindProperty("_actionBackground").objectReferenceValue = actionImage;
@@ -311,22 +365,20 @@ public static class LobbyUiBuilder
         so.FindProperty("_actionCostIcon").objectReferenceValue = costIcon.GetComponent<Image>();
         so.FindProperty("_lockedNoticeText").objectReferenceValue = lockedNotice;
         so.FindProperty("_closeButton").objectReferenceValue = closeButton;
+        so.FindProperty("_goldCostSprite").objectReferenceValue = FindAsset<Sprite>("ResourceBar_Icon_Gold", ThemeFolder, "Theme_Light");
+        so.FindProperty("_gemCostSprite").objectReferenceValue = FindAsset<Sprite>("ResourceBar_Icon_Gem", ThemeFolder, "Theme_Light");
         so.ApplyModifiedPropertiesWithoutUndo();
 
         PrefabUtility.SaveAsPrefabAsset(root.gameObject, popupPath);
         Object.DestroyImmediate(root.gameObject);
     }
 
-    private static RectTransform BuildChip(Transform parent, string name, string iconName, string iconHex, out TMP_Text text)
+    private static RectTransform BuildPopupChip(Transform parent, string name, string iconSprite, string valueName, out TMP_Text value)
     {
-        var chip = Block(name, parent, White, null);
+        var chip = ResourceChip(name, parent, iconSprite, valueName, null, out value);
         var element = chip.gameObject.AddComponent<LayoutElement>();
-        element.preferredWidth = 220f;
+        element.preferredWidth = 240f;
         element.preferredHeight = 80f;
-
-        Block(iconName, chip, iconHex, Anchored(new Vector2(0f, 0.5f), new Vector2(18f, 0f), new Vector2(40f, 40f), new Vector2(0f, 0.5f)));
-        text = Label("TXT_Value", chip, "0", 40, TextDark, true, TextAlignmentOptions.Right, false);
-        SetOffsets(text.rectTransform, new Vector2(70f, 0f), new Vector2(-18f, 0f));
         return chip;
     }
 
@@ -582,6 +634,22 @@ public static class LobbyUiBuilder
         return tab;
     }
 
+    // 어두운 트랙 위에 밝은 파란 채움으로 칠한다. 레벨업 가능 상태(Upgrade 오브젝트)는 에셋의 초록을 그대로 쓴다.
+    private static void StyleGauge(RectTransform slider)
+    {
+        var orange = FindRecursive(slider, "Slider_02_Orange");
+        if (orange == null)
+            return;
+
+        var track = FindRecursive(orange, "Bg");
+        if (track != null && track.GetComponent<Image>() != null)
+            track.GetComponent<Image>().color = ParseColor("#2B1F24");
+
+        var fill = FindRecursive(orange, "Fill");
+        if (fill != null && fill.GetComponent<Image>() != null)
+            fill.GetComponent<Image>().color = ParseColor("#3AB0FF");
+    }
+
     private static SortButton BuildSortButtonPrefab()
     {
         const string sortPath = PrefabFolder + "/SortButton.prefab";
@@ -663,6 +731,7 @@ public static class LobbyUiBuilder
         SetSprite(badge.GetComponent<Image>(), "Icon_Arrow_Up_02", "Theme_Light");
 
         var slider = Skin("Slider_Upgrade_01", "Slider", area, Anchored(new Vector2(0.5f, 0f), new Vector2(0f, 10f), new Vector2(200f, 38f), new Vector2(0.5f, 0f)));
+        StyleGauge(slider);
         var orange = FindRecursive(slider, "Slider_02_Orange");
         if (orange != null)
         {
