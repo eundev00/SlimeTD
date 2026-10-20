@@ -6,11 +6,33 @@ using VContainer.Unity;
 
 public class HunterTabPresenter : IStartable, IDisposable
 {
-    private enum SortMode
+    private enum SortKey
     {
-        Grade,
         Level,
+        Grade,
     }
+
+    private readonly struct SortState
+    {
+        public readonly SortKey Key;
+        public readonly bool Ascending;
+        public readonly string Label;
+
+        public SortState(SortKey key, bool ascending, string label)
+        {
+            Key = key;
+            Ascending = ascending;
+            Label = label;
+        }
+    }
+
+    private static readonly SortState[] SortCycle =
+    {
+        new SortState(SortKey.Level, true, "레벨순"),
+        new SortState(SortKey.Level, false, "레벨순"),
+        new SortState(SortKey.Grade, true, "등급순"),
+        new SortState(SortKey.Grade, false, "등급순"),
+    };
 
     private sealed class Entry
     {
@@ -30,7 +52,7 @@ public class HunterTabPresenter : IStartable, IDisposable
     private readonly List<Entry> _entries = new List<Entry>();
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-    private SortMode _sortMode = SortMode.Grade;
+    private int _sortIndex;
 
     public HunterTabPresenter(IPlayerDataService playerDataService, IPopupService popupService, HunterTab view)
     {
@@ -83,7 +105,6 @@ public class HunterTabPresenter : IStartable, IDisposable
             .Subscribe(_ => ToggleSort())
             .AddTo(_disposables);
 
-        _view.SetSortLabel(GetSortLabel());
         ApplySort();
     }
 
@@ -129,31 +150,34 @@ public class HunterTabPresenter : IStartable, IDisposable
 
     private void ToggleSort()
     {
-        _sortMode = _sortMode == SortMode.Grade ? SortMode.Level : SortMode.Grade;
-        _view.SetSortLabel(GetSortLabel());
+        _sortIndex = (_sortIndex + 1) % SortCycle.Length;
         ApplySort();
     }
 
-    private string GetSortLabel()
-    {
-        return _sortMode == SortMode.Grade ? "등급순" : "레벨순";
-    }
-
-    // 등급순은 낮은 등급부터, 레벨순은 높은 레벨부터 보여 준다. 같으면 타워 ID 순이다.
+    // 레벨순은 레벨이 같으면 등급 오름차순, 마지막은 항상 타워 ID 순이다.
     private void ApplySort()
     {
+        var state = SortCycle[_sortIndex];
+        int direction = state.Ascending ? 1 : -1;
+        _view.SetSort(state.Label, state.Ascending);
+
         _entries.Sort((a, b) =>
         {
             int result;
 
-            if (_sortMode == SortMode.Level)
+            if (state.Key == SortKey.Level)
             {
-                result = b.Hunter.Level.Value.CompareTo(a.Hunter.Level.Value);
+                result = direction * a.Hunter.Level.Value.CompareTo(b.Hunter.Level.Value);
                 if (result != 0)
                     return result;
+
+                result = a.Hunter.Data.GradeId.CompareTo(b.Hunter.Data.GradeId);
+            }
+            else
+            {
+                result = direction * a.Hunter.Data.GradeId.CompareTo(b.Hunter.Data.GradeId);
             }
 
-            result = a.Hunter.Data.GradeId.CompareTo(b.Hunter.Data.GradeId);
             if (result != 0)
                 return result;
 
