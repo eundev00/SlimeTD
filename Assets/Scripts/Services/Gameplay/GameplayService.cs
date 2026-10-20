@@ -7,6 +7,7 @@ public class GameplayService : IGameplayService
 {
     private readonly GameplayInfo _info;
     private readonly IPopupService _popupService;
+    private readonly IPlayerDataService _playerDataService;
     private readonly IPublisher<GameProgressEvent> _gameProgressPublisher;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
     private bool _gameOverPublished;
@@ -28,6 +29,7 @@ public class GameplayService : IGameplayService
     public GameplayService(
         IResourceLoadService resourceLoadService,
         IPopupService popupService,
+        IPlayerDataService playerDataService,
         ISubscriber<SlimeReachedEndEvent> reachedEndSubscriber,
         ISubscriber<SlimeKilledEvent> killedSubscriber,
         IPublisher<GameProgressEvent> gameProgressPublisher,
@@ -37,6 +39,7 @@ public class GameplayService : IGameplayService
         _gameProgressPublisher = gameProgressPublisher;
         _resourceLoadService = resourceLoadService;
         _popupService = popupService;
+        _playerDataService = playerDataService;
 
         reachedEndSubscriber.Subscribe(OnSlimeReachedEnd).AddTo(_disposables);
         killedSubscriber.Subscribe(OnSlimeKilled).AddTo(_disposables);
@@ -111,6 +114,10 @@ public class GameplayService : IGameplayService
 
             _gameEnded = true;
             _info.IsCleared.Value = e.EventType == GameProgressType.StageCleared;
+
+            if (_info.IsCleared.Value)
+                _playerDataService.ReportWaveReached(e.WaveIndex);
+
             _popupService.OpenAsync(PrefabKeys.GameResultPopup).Forget();
             return;
         }
@@ -125,6 +132,9 @@ public class GameplayService : IGameplayService
                 _currentWaveIndex = e.WaveIndex;
                 _info.CurrentWave.Value = e.WaveIndex;
                 _aliveCount += e.SlimeCount;
+
+                // 마지막 웨이브는 StageCleared에서만 기록해 완료 표시가 클리어 시에만 켜지게 한다
+                _playerDataService.ReportWaveReached(e.IsLastWave ? e.WaveIndex - 1 : e.WaveIndex);
                 Debug.Log($"[GameplayService] 웨이브 {_currentWaveIndex} 시작, 누적 슬라임: {_aliveCount}");
                 break;
 

@@ -14,6 +14,9 @@ public class LobbyLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<LobbyHeader>();
         builder.RegisterEntryPoint<LobbyHeaderPresenter>();
 
+        builder.RegisterComponentInHierarchy<BattleMap>();
+        builder.RegisterEntryPoint<BattleMapPresenter>();
+
         builder.RegisterInstance(_popupRoot);
         builder.RegisterEntryPoint<PopupService>();
 
