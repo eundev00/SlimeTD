@@ -2,22 +2,24 @@ using System;
 using UniRx;
 using VContainer.Unity;
 
-public class BattleMapPresenter : IStartable, IDisposable
+public class WaveScrollPresenter : IStartable, IDisposable
 {
     private readonly IPlayerDataService _playerDataService;
-    private readonly BattleMap _view;
+    private readonly WaveTableData _waveTable;
+    private readonly WaveScrollView _view;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-    public BattleMapPresenter(IPlayerDataService playerDataService, BattleMap view)
+    public WaveScrollPresenter(IPlayerDataService playerDataService, WaveTableData waveTable, WaveScrollView view)
     {
         _playerDataService = playerDataService;
+        _waveTable = waveTable;
         _view = view;
     }
 
     public void Start()
     {
         _playerDataService.BestWave
-            .Subscribe(_view.SetBestWave)
+            .Subscribe(wave => _view.SetBestWave(wave, _waveTable.MaxWave))
             .AddTo(_disposables);
     }
 

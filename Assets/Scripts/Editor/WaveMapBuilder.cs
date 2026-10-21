@@ -112,8 +112,6 @@ public static class WaveMapBuilder
 
         var complete = NewRect("WaveComplete", content);
         Place(complete, new Vector2(0.5f, 0f), new Vector2(0f, waveTopY + 330f), new Vector2(620f, 420f), new Vector2(0.5f, 0.5f));
-        var completeGroup = complete.gameObject.AddComponent<CanvasGroup>();
-        completeGroup.blocksRaycasts = false;
 
         var flag = Block("ICON_WaveCompleteFlag", complete, "#FFFFFF", new Vector2(0.5f, 1f), Vector2.zero, new Vector2(240f, 240f), new Vector2(0.5f, 1f));
         SetThemeSprite(flag, "Item_Flag_01_Finish", "UniqueIcon/256");
@@ -127,16 +125,15 @@ public static class WaveMapBuilder
         scroll.vertical = true;
         scroll.movementType = ScrollRect.MovementType.Elastic;
 
-        var map = root.gameObject.AddComponent<BattleMap>();
+        var map = root.gameObject.AddComponent<WaveScrollView>();
         var so = new SerializedObject(map);
         so.FindProperty("_scroll").objectReferenceValue = scroll;
         so.FindProperty("_content").objectReferenceValue = content;
         so.FindProperty("_playerMarker").objectReferenceValue = marker;
         so.FindProperty("_bestWaveText").objectReferenceValue = bestText;
-        so.FindProperty("_completeGroup").objectReferenceValue = completeGroup;
+        so.FindProperty("_completeMark").objectReferenceValue = complete.gameObject;
         so.FindProperty("_baseOffset").floatValue = BaseOffset;
         so.FindProperty("_pixelsPerWave").floatValue = PixelsPerWave;
-        so.FindProperty("_maxWave").intValue = MaxWave;
         so.ApplyModifiedPropertiesWithoutUndo();
 
         return root.gameObject;

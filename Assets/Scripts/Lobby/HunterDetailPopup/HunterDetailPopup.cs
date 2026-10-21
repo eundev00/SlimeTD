@@ -8,12 +8,9 @@ using UnityEngine.UI;
 public class HunterDetailPopup : PopupBase
 {
     [Header("재화 칩 (오른쪽 상단)")]
-    [NotNull][SerializeField] private GameObject _cardsChip;
-    [NotNull][SerializeField] private TMP_Text _cardsChipText;
-    [NotNull][SerializeField] private GameObject _goldChip;
-    [NotNull][SerializeField] private TMP_Text _goldChipText;
-    [NotNull][SerializeField] private GameObject _gemChip;
-    [NotNull][SerializeField] private TMP_Text _gemChipText;
+    [NotNull][SerializeField] private CurrencyChip _cardsChip;
+    [NotNull][SerializeField] private CurrencyChip _goldChip;
+    [NotNull][SerializeField] private CurrencyChip _gemChip;
 
     [Header("헌터 정보")]
     [NotNull][SerializeField] private Image _heroImage;
@@ -129,13 +126,13 @@ public class HunterDetailPopup : PopupBase
 
     private void RenderChips(HunterDetailViewData data)
     {
-        _cardsChip.SetActive(data.Unlocked);
-        _goldChip.SetActive(data.Unlocked);
-        _gemChip.SetActive(!data.Unlocked);
+        _cardsChip.gameObject.SetActive(data.Unlocked);
+        _goldChip.gameObject.SetActive(data.Unlocked);
+        _gemChip.gameObject.SetActive(!data.Unlocked);
 
-        _cardsChipText.text = data.Cards.ToString("N0");
-        _goldChipText.text = data.Gold.ToString("N0");
-        _gemChipText.text = data.Gem.ToString("N0");
+        _cardsChip.SetValue(data.Cards);
+        _goldChip.SetValue(data.Gold);
+        _gemChip.SetValue(data.Gem);
     }
 
     private void RenderInfo(HunterDetailViewData data)

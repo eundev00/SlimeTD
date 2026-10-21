@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using VContainer.Unity;
 
-public class HunterTabPresenter : IStartable, IDisposable
+public class HunterCardPresenter : IStartable, IDisposable
 {
     private enum SortKey
     {
@@ -48,13 +48,13 @@ public class HunterTabPresenter : IStartable, IDisposable
 
     private readonly IPlayerDataService _playerDataService;
     private readonly IPopupService _popupService;
-    private readonly HunterTab _view;
+    private readonly HunterCardView _view;
     private readonly List<Entry> _entries = new List<Entry>();
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     private int _sortIndex;
 
-    public HunterTabPresenter(IPlayerDataService playerDataService, IPopupService popupService, HunterTab view)
+    public HunterCardPresenter(IPlayerDataService playerDataService, IPopupService popupService, HunterCardView view)
     {
         _playerDataService = playerDataService;
         _popupService = popupService;

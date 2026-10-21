@@ -4180,16 +4180,14 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 964140f6ce40ac748aa423a3e0b9d7c8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BattleMap
+  m_EditorClassIdentifier: Assembly-CSharp::WaveScrollView
   _scroll: {fileID: 7402932803837865571}
   _content: {fileID: 7796730258449063733}
   _playerMarker: {fileID: 2241877060527166974}
   _bestWaveText: {fileID: 1762733471689971445}
-  _completeGroup: {fileID: 1148079633661725799}
+  _completeMark: {fileID: 7218702546624885376}
   _baseOffset: 330
   _pixelsPerWave: 112
-  _maxWave: 50
-  _incompleteAlpha: 0.45
 --- !u!1 &8621785851459341417
 GameObject:
   m_ObjectHideFlags: 0

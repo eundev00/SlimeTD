@@ -61,7 +61,7 @@ VContainer는 씬 전체를 자동 주입하지 않는다. `[Inject]`를 받는 
 | Presenter | Service ↔ View 중재. Service 구독 → View 갱신, View 입력 → Service 호출 |
 | View (MonoBehaviour) | 표현만 담당. 게임 로직을 갖지 않는다 |
 
-UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격한다 (예: [LobbyStartButton.cs](Assets/Scripts/Lobby/LobbyStartButton.cs)).
+UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격한다 (예: [LobbyHeader.cs](Assets/Scripts/Lobby/LobbyHeader.cs)).
 
 ### 이벤트 (MessagePipe)
 
@@ -192,4 +192,4 @@ Match를 0으로 두는 이유는 세로 게임에서 **가로 폭이 UI 레이�
 
 - 구조/설계를 논의할 때는 코드를 바로 작성하지 않는다. 역할 분리, 클래스/필드 구성, 데이터 흐름까지만 텍스트로 제시한다
 - 실제 코드는 사용자가 명시적으로 요청하거나, 구현 단계로 넘어가 실제로 필요한 시점에만 작성한다
-- MonoBehaviour 중 순수 표현(View) 역할만 하는 컴포넌트는 `View` 접미사를 붙이지 않는다 (예: `LobbyStartButton`처럼 이름 그대로). 슬라임 애니메이션 담당 컴포넌트는 `SlimeAnimationView`가 아니라 `SlimeAnimation`으로 부른다
+- MonoBehaviour 중 순수 표현(View) 역할만 하는 컴포넌트는 `View` 접미사를 붙이지 않는다 (예: `LobbyHeader`처럼 이름 그대로). 슬라임 애니메이션 담당 컴포넌트는 `SlimeAnimationView`가 아니라 `SlimeAnimation`으로 부른다

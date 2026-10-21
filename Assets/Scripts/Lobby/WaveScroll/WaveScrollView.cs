@@ -2,28 +2,26 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleMap : MonoBehaviour
+public class WaveScrollView : MonoBehaviour
 {
     [NotNull][SerializeField] private ScrollRect _scroll;
     [NotNull][SerializeField] private RectTransform _content;
     [NotNull][SerializeField] private RectTransform _playerMarker;
     [NotNull][SerializeField] private TMP_Text _bestWaveText;
-    [NotNull][SerializeField] private CanvasGroup _completeGroup;
+    [NotNull][SerializeField] private GameObject _completeMark;
     [SerializeField] private float _baseOffset = 330f;
     [SerializeField] private float _pixelsPerWave = 112f;
-    [SerializeField] private int _maxWave = 50;
-    [SerializeField] private float _incompleteAlpha = 0.45f;
 
-    public void SetBestWave(int wave)
+    public void SetBestWave(int wave, int maxWave)
     {
         Canvas.ForceUpdateCanvases();
 
-        wave = Mathf.Clamp(wave, 0, _maxWave);
+        wave = Mathf.Clamp(wave, 0, maxWave);
 
         float y = _baseOffset + wave * _pixelsPerWave;
         _playerMarker.anchoredPosition = new Vector2(_playerMarker.anchoredPosition.x, y);
         _bestWaveText.text = wave == 0 ? "도전 시작!" : $"최고 웨이브 {wave}";
-        _completeGroup.alpha = wave >= _maxWave ? 1f : _incompleteAlpha;
+        _completeMark.SetActive(wave >= maxWave);
 
         ScrollTo(y);
     }

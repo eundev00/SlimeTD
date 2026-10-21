@@ -3,7 +3,7 @@ using TMPro;
 using UniRx;
 using UnityEngine;
 
-public class HunterTab : MonoBehaviour
+public class HunterCardView : MonoBehaviour
 {
     [NotNull][SerializeField] private RectTransform _grid;
     [NotNull][SerializeField] private HunterCard _cardPrefab;
