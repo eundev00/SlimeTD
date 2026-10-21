@@ -1081,7 +1081,7 @@ GameObject:
   - component: {fileID: 6885003873076258776}
   - component: {fileID: 8449905041849892484}
   m_Layer: 0
-  m_Name: FRAME_Profile
+  m_Name: LobbyProfile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

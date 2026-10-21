@@ -129,10 +129,6 @@ public class HunterDetailPopup : PopupBase
         _cardsChip.gameObject.SetActive(data.Unlocked);
         _goldChip.gameObject.SetActive(data.Unlocked);
         _gemChip.gameObject.SetActive(!data.Unlocked);
-
-        _cardsChip.SetValue(data.Cards);
-        _goldChip.SetValue(data.Gold);
-        _gemChip.SetValue(data.Gem);
     }
 
     private void RenderInfo(HunterDetailViewData data)

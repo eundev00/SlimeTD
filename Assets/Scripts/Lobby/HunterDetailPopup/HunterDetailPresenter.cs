@@ -153,9 +153,6 @@ public class HunterDetailPresenter : IPopupPresenter
             mode,
             actionEnabled,
             costText,
-            costInsufficient,
-            cards,
-            gold,
-            gem);
+            costInsufficient);
     }
 }

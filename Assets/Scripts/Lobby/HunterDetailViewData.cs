@@ -29,10 +29,6 @@ public readonly struct HunterDetailViewData
     public readonly string CostText;
     public readonly bool CostInsufficient;
 
-    public readonly int Cards;
-    public readonly int Gold;
-    public readonly int Gem;
-
     public HunterDetailViewData(
         string name,
         int gradeId,
@@ -50,10 +46,7 @@ public readonly struct HunterDetailViewData
         HunterDetailActionMode mode,
         bool actionEnabled,
         string costText,
-        bool costInsufficient,
-        int cards,
-        int gold,
-        int gem)
+        bool costInsufficient)
     {
         Name = name;
         GradeId = gradeId;
@@ -72,8 +65,5 @@ public readonly struct HunterDetailViewData
         ActionEnabled = actionEnabled;
         CostText = costText;
         CostInsufficient = costInsufficient;
-        Cards = cards;
-        Gold = gold;
-        Gem = gem;
     }
 }

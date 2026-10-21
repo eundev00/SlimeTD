@@ -5,18 +5,26 @@ public static class PrefabKeys
     public const string Archer = "Archer";
     public const string ArcherArrow = "ArcherArrow";
     public const string ArcherBow = "ArcherBow";
+    public const string Chip_Cards = "Chip_Cards";
+    public const string Chip_Gem = "Chip_Gem";
+    public const string Chip_Gold = "Chip_Gold";
     public const string CriticalDamageText = "CriticalDamageText";
     public const string Crossbow = "Crossbow";
     public const string CrossbowBolt = "CrossbowBolt";
     public const string CrossbowBow = "CrossbowBow";
     public const string DamageText = "DamageText";
+    public const string DropdownSort = "DropdownSort";
     public const string GameResultPopup = "GameResultPopup";
-    public const string HunterDetailPopup = "HunterDetailPopup";
     public const string GoodSlime = "GoodSlime";
     public const string GoodSlimeBall = "GoodSlimeBall";
+    public const string HunterCard = "HunterCard";
+    public const string HunterDetailPopup = "HunterDetailPopup";
     public const string Knight = "Knight";
     public const string KnightShield = "KnightShield";
     public const string KnightSword = "KnightSword";
+    public const string LobbyMain = "LobbyMain";
+    public const string LobbyProfile = "LobbyProfile";
+    public const string LobbyTab = "LobbyTab";
     public const string Lumberjack = "Lumberjack";
     public const string LumberjackAxe = "LumberjackAxe";
     public const string PlaneBlock1 = "PlaneBlock1";
@@ -36,26 +44,36 @@ public static class PrefabKeys
     public const string SlimeNormal_03 = "SlimeNormal_03";
     public const string SlimeNormal_04 = "SlimeNormal_04";
     public const string SlimeNormal_05 = "SlimeNormal_05";
+    public const string SortButton = "SortButton";
     public const string Sword = "Sword";
     public const string Swordsman = "Swordsman";
+    public const string WaveForest = "WaveForest";
 
     public static readonly Dictionary<string, string> PrefabPaths = new Dictionary<string, string>()
     {
         { Archer, "Assets/Prefabs/Game/Characters/Archer.prefab" },
         { ArcherArrow, "Assets/Prefabs/Game/Characters/ArcherArrow.prefab" },
         { ArcherBow, "Assets/Prefabs/Game/Characters/ArcherBow.prefab" },
+        { Chip_Cards, "Assets/Prefabs/Lobby/Chip_Cards.prefab" },
+        { Chip_Gem, "Assets/Prefabs/Lobby/Chip_Gem.prefab" },
+        { Chip_Gold, "Assets/Prefabs/Lobby/Chip_Gold.prefab" },
         { CriticalDamageText, "Assets/Prefabs/Game/UI/CriticalDamageText.prefab" },
         { Crossbow, "Assets/Prefabs/Game/Characters/Crossbow.prefab" },
         { CrossbowBolt, "Assets/Prefabs/Game/Characters/CrossbowBolt.prefab" },
         { CrossbowBow, "Assets/Prefabs/Game/Characters/CrossbowBow.prefab" },
         { DamageText, "Assets/Prefabs/Game/UI/DamageText.prefab" },
+        { DropdownSort, "Assets/Prefabs/Lobby/DropdownSort.prefab" },
         { GameResultPopup, "Assets/Prefabs/Game/UI/Popup/GameResultPopup.prefab" },
-        { HunterDetailPopup, "Assets/Prefabs/Lobby/HunterDetailPopup.prefab" },
         { GoodSlime, "Assets/Prefabs/Game/Characters/GoodSlime.prefab" },
         { GoodSlimeBall, "Assets/Prefabs/Game/Characters/GoodSlimeBall.prefab" },
+        { HunterCard, "Assets/Prefabs/Lobby/HunterCard.prefab" },
+        { HunterDetailPopup, "Assets/Prefabs/Lobby/HunterDetailPopup.prefab" },
         { Knight, "Assets/Prefabs/Game/Characters/Knight.prefab" },
         { KnightShield, "Assets/Prefabs/Game/Characters/KnightShield.prefab" },
         { KnightSword, "Assets/Prefabs/Game/Characters/KnightSword.prefab" },
+        { LobbyMain, "Assets/Prefabs/Lobby/LobbyMain.prefab" },
+        { LobbyProfile, "Assets/Prefabs/Lobby/LobbyProfile.prefab" },
+        { LobbyTab, "Assets/Prefabs/Lobby/LobbyTab.prefab" },
         { Lumberjack, "Assets/Prefabs/Game/Characters/Lumberjack.prefab" },
         { LumberjackAxe, "Assets/Prefabs/Game/Characters/LumberjackAxe.prefab" },
         { PlaneBlock1, "Assets/Prefabs/Game/Ground/PlaneBlock1.prefab" },
@@ -75,8 +93,10 @@ public static class PrefabKeys
         { SlimeNormal_03, "Assets/Prefabs/Game/Slime/SlimeNormal_03.prefab" },
         { SlimeNormal_04, "Assets/Prefabs/Game/Slime/SlimeNormal_04.prefab" },
         { SlimeNormal_05, "Assets/Prefabs/Game/Slime/SlimeNormal_05.prefab" },
+        { SortButton, "Assets/Prefabs/Lobby/SortButton.prefab" },
         { Sword, "Assets/Prefabs/Game/Characters/Sword.prefab" },
         { Swordsman, "Assets/Prefabs/Game/Characters/Swordsman.prefab" },
+        { WaveForest, "Assets/Prefabs/Lobby/WaveForest.prefab" },
     };
 
     public static string GetPrefabPath(string key)
