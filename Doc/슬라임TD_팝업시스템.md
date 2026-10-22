@@ -1,17 +1,21 @@
 # 슬라임TD — 팝업 시스템
 
-인게임 팝업을 씬마다 따로 두지 않고, 프리팹으로 분리해 `PopupService`로 열고 닫는다.
+팝업을 씬마다 따로 두지 않고, 프리팹으로 분리해 `PopupService`로 열고 닫는다. 인게임(결과 팝업)과 로비(헌터 상세 팝업) 모두 같은 시스템을 쓴다.
 
 ## 구조
 
 ```
-GameScene / GameScene2 / GameSceneTest
+GameScene1 / GameScene2 / GameSceneTest / LobbyScene
  └─ PopupRoot (프리팹, 씬마다 1개)        팝업이 붙는 Canvas + 딤
 GameLifetimeScope
  ├─ PopupService (EntryPoint, 구현 인터페이스 자동 등록)   열기/닫기/스택/딤/백키
  └─ GameResultPresenter (EntryPoint)           결과 이벤트 → 결과 팝업 열기
+LobbyLifetimeScope
+ ├─ PopupService (EntryPoint)                  _popupRoot를 인스펙터에서 받아 등록
+ └─ HunterCardPresenter (EntryPoint)           카드 클릭 → 헌터 상세 팝업 열기
 Addressables
- └─ GameResultPopup.prefab
+ ├─ GameResultPopup.prefab
+ └─ HunterDetailPopup.prefab
 ```
 
 | 클래스 | 위치 | 역할 |
@@ -20,11 +24,13 @@ Addressables
 | `PopupRoot` | 〃 | 팝업 부모 `_container`와 딤 `_dim`. 씬 LifetimeScope에 `RegisterComponentInHierarchy`로 등록 |
 | `IPopupService` / `PopupService` | 〃 | 프리팹 키로 팝업 생성(`IObjectResolver.Instantiate`로 주입 포함), 재사용, 스택, 딤 위치, 백키 |
 | `GameResultPopup` | `Scripts/Game/Hud/Result` | 결과 팝업. 백키 = 로비 버튼 |
+| `HunterDetailPopup` | `Scripts/Lobby/HunterDetailPopup` | 로비 헌터 상세. `[PopupPresenter(typeof(HunterDetailPresenter))]`로 Presenter를 붙이고, `SetTowerId`로 대상을 정한다 |
 
 ## 규칙
 
 - 팝업은 `IObjectResolver.Instantiate`로 생성되므로 `[Inject] public void Construct(...)`로 씬·프로젝트 서비스를 주입받을 수 있다. 주입은 `Awake`보다 먼저 끝난다
 - 팝업은 닫히면 비활성화되고 다음에 재사용된다. 주입은 처음 생성할 때 한 번뿐이므로, 구독은 `OnOpen`에서 걸고 `OnClose`에서 해제한다
+- 팝업에 `[PopupPresenter(typeof(X))]`를 붙이면 팝업이 열릴 때 자식 스코프에서 Presenter(`IPopupPresenter`)를 만들어 `Initialize()`를 호출하고, 닫히면 스코프와 함께 해제한다. 팝업 인스턴스는 스코프에 등록되므로 Presenter가 생성자로 받는다 (예: `HunterDetailPresenter`)
 - `OpenAsync`는 열림 연출을 기다리지 않고 바로 인스턴스를 돌려준다. 받은 즉시 내용을 채운다
 - 팝업이 열려도 게임은 멈추지 않는다. 딤의 레이캐스트가 팝업 아래 터치(타워 소환/선택)를 막는다
 - 백키(Escape / 안드로이드 Back): 맨 위 팝업의 `OnBackPressed` 호출. 기본은 닫기, 연출 중에는 무시

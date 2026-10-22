@@ -127,13 +127,16 @@ IPlayerDataStore                                // 저장 위치를 숨기는 �
 
 PlayerData (저장 대상)
 ├─ gold, gem, cards : int                      // 헌터 카드는 공용 재화 하나
+├─ bestWave         : int                      // 도달한 최고 웨이브. 저장 파일에 없으면 0
 └─ hunters          : HunterRecord[] { towerId, level, unlocked }
 
 IPlayerDataService (Project 스코프)
-├─ Gold, Gem, Cards : ReactiveProperty<int>
+├─ Gold, Gem, Cards, BestWave : ReactiveProperty<int>
 ├─ Hunters          : HunterState[] { Level, Unlocked : ReactiveProperty }
-└─ AddGold / AddCards / UnlockHunter / TryLevelUp / IsUnlocked / IsAvailable
+└─ AddGold / AddCards / UnlockHunter / TryLevelUp / IsUnlocked / IsAvailable / ReportWaveReached
 ```
+
+- `ReportWaveReached(n)`은 기존 값보다 클 때만 갱신·저장한다. 초기화 전(게임 씬만 단독 실행)에는 저장하지 않는다. 호출 시점과 값 규칙은 [로비 UI](슬라임TD_로비UI.md#최고-웨이브-기록-규칙) 참고
 
 - 레벨업 비용은 `TowerData.levelUpCost`(등급 시트 값을 임포터가 채움)에서 읽는다. `Grades.csv`의 `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
 - 로드와 레벨업 때 `ITowerLevelService`에 레벨을 반영하며, 게임 씬은 이 값을 그대로 읽는다
