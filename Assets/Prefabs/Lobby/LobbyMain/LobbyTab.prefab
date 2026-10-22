@@ -525,7 +525,7 @@ GameObject:
   - component: {fileID: 3311184540001382098}
   - component: {fileID: 8015823371638422234}
   m_Layer: 5
-  m_Name: Icon_Focus
+  m_Name: IconFocus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

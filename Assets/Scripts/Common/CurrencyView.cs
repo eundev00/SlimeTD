@@ -4,29 +4,29 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CurrencyChip : MonoBehaviour
+public class CurrencyView : MonoBehaviour
 {
     [SerializeField] private CurrencyType _type;
     [NotNull][SerializeField] private TMP_Text _text;
     [NotNull][SerializeField] private Button _button;
 
-    private CurrencyChipPresenter _presenter;
+    private CurrencyViewPresenter _presenter;
 
     public CurrencyType Type => _type;
 
     public event Action Clicked;
 
-    public void Initialize(IPlayerDataService playerDataService, IPublisher<CurrencyChipClickedEvent> clickedPublisher)
+    public void Initialize(IPlayerDataService playerDataService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
     {
         _presenter?.Dispose();
-        _presenter = new CurrencyChipPresenter(this, playerDataService, clickedPublisher);
+        _presenter = new CurrencyViewPresenter(this, playerDataService, clickedPublisher);
     }
 
     private void Start()
     {
         if (_button == null)
         {
-            Debug.Log("[CurrencyChip] 버튼이 연결되지 않았다", this);
+            Debug.Log("[CurrencyView] 버튼이 연결되지 않았다", this);
             return;
         }
 

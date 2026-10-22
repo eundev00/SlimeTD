@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7763585854080250623}
   - component: {fileID: 3179236713900188710}
   m_Layer: 0
-  m_Name: ICON_UpgradeBadge
+  m_Name: IconUpgradeBadge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 1087556359463534169}
   - component: {fileID: 6182106411762335947}
   m_Layer: 0
-  m_Name: TXT_Name
+  m_Name: TxtName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -417,7 +417,7 @@ GameObject:
   - component: {fileID: 488056391971450635}
   - component: {fileID: 1423467659252963326}
   m_Layer: 0
-  m_Name: TXT_Level
+  m_Name: TxtLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -708,7 +708,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7856816956929351102, guid: 4303f8e0606ad4436b095dda759ff1f9, type: 3}
       propertyPath: m_Name
-      value: FRAME_Grade4
+      value: FrameGrade4
       objectReference: {fileID: 0}
     - target: {fileID: 7856816956929351102, guid: 4303f8e0606ad4436b095dda759ff1f9, type: 3}
       propertyPath: m_IsActive
@@ -875,7 +875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5666682083044831440, guid: da583fa3d61d646e9b3345e499901a5c, type: 3}
       propertyPath: m_Name
-      value: FRAME_Grade2
+      value: FrameGrade2
       objectReference: {fileID: 0}
     - target: {fileID: 5666682083044831440, guid: da583fa3d61d646e9b3345e499901a5c, type: 3}
       propertyPath: m_IsActive
@@ -946,7 +946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1007333432698564741, guid: c9c2c5803850f40c2ab10c1084f60a56, type: 3}
       propertyPath: m_Name
-      value: FRAME_Grade3
+      value: FrameGrade3
       objectReference: {fileID: 0}
     - target: {fileID: 1007333432698564741, guid: c9c2c5803850f40c2ab10c1084f60a56, type: 3}
       propertyPath: m_IsActive
@@ -1109,7 +1109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1657299458118578877, guid: 8d5efb357df8349418f6c42ff628faeb, type: 3}
       propertyPath: m_Name
-      value: FRAME_Grade1
+      value: FrameGrade1
       objectReference: {fileID: 0}
     - target: {fileID: 1763510983948308117, guid: 8d5efb357df8349418f6c42ff628faeb, type: 3}
       propertyPath: m_Color.b
@@ -1272,7 +1272,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2459287332673225234, guid: 5d9956c1d0d0c44bca2d1288eba0a7cd, type: 3}
       propertyPath: m_Name
-      value: FRAME_Locked
+      value: FrameLocked
       objectReference: {fileID: 0}
     - target: {fileID: 2459287332673225234, guid: 5d9956c1d0d0c44bca2d1288eba0a7cd, type: 3}
       propertyPath: m_IsActive

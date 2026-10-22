@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7590591423437496384}
   - component: {fileID: 7155744760414031949}
   m_Layer: 0
-  m_Name: ICON_Arrow
+  m_Name: IconArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 4642397071084549802}
   - component: {fileID: 6250783461021816599}
   m_Layer: 0
-  m_Name: TXT_Label
+  m_Name: TxtLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

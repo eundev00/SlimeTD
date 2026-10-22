@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class HunterDetailPresenter : IPopupPresenter
 {
-    private static readonly string[] GradeNames = { "일반", "희귀", "영웅", "전설" };
-
     private readonly HunterDetailPopup _popup;
     private readonly IPlayerDataService _playerDataService;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
@@ -29,13 +27,15 @@ public class HunterDetailPresenter : IPopupPresenter
         _playerDataService.Gem.Subscribe(_ => Render()).AddTo(_disposables);
         _playerDataService.Cards.Subscribe(_ => Render()).AddTo(_disposables);
 
-        _popup.ActionClicked += HandleActionClicked;
+        _popup.UpgradeClicked += HandleUpgradeClicked;
+        _popup.BuyClicked += HandleBuyClicked;
         _popup.CloseClicked += HandleCloseClicked;
     }
 
     public void Dispose()
     {
-        _popup.ActionClicked -= HandleActionClicked;
+        _popup.UpgradeClicked -= HandleUpgradeClicked;
+        _popup.BuyClicked -= HandleBuyClicked;
         _popup.CloseClicked -= HandleCloseClicked;
         _disposables.Dispose();
     }
@@ -59,15 +59,20 @@ public class HunterDetailPresenter : IPopupPresenter
 
     private CompositeDisposable _hunterDisposables;
 
-    private void HandleActionClicked()
+    private void HandleUpgradeClicked()
     {
         if (_hunter == null)
             return;
 
-        if (_hunter.Unlocked.Value)
-            _playerDataService.TryLevelUp(_hunter.TowerId);
-        else
-            _playerDataService.TryPurchaseHunter(_hunter.TowerId);
+        _playerDataService.TryLevelUp(_hunter.TowerId);
+    }
+
+    private void HandleBuyClicked()
+    {
+        if (_hunter == null)
+            return;
+
+        _playerDataService.TryPurchaseHunter(_hunter.TowerId);
     }
 
     private void HandleCloseClicked()
@@ -80,25 +85,47 @@ public class HunterDetailPresenter : IPopupPresenter
         if (_hunter == null)
             return;
 
-        _popup.Render(BuildViewData(_hunter));
+        bool unlocked = _hunter.Unlocked.Value;
+        int level = _hunter.Level.Value;
+        bool maxLevel = level >= TowerLevelService.MaxLevel;
+        bool canLevelUp = unlocked && !maxLevel && _playerDataService.CanLevelUp(_hunter.TowerId);
+
+        RenderInfo();
+        _popup.SetUnlocked(unlocked);
+
+        if (unlocked)
+            RenderLevel(level, maxLevel, canLevelUp);
+
+        RenderStats(level, canLevelUp);
+        RenderAction(unlocked, maxLevel);
     }
 
-    private HunterDetailViewData BuildViewData(HunterState hunter)
+    private void RenderInfo()
     {
-        var data = hunter.Data;
-        int towerId = hunter.TowerId;
-        int level = hunter.Level.Value;
-        bool unlocked = hunter.Unlocked.Value;
-        bool maxLevel = level >= TowerLevelService.MaxLevel;
+        var data = _hunter.Data;
+        _popup.SetHunterInfo(data.TowerName, data.GradeId, data.GradeName);
+    }
 
-        int cards = _playerDataService.Cards.Value;
-        int gold = _playerDataService.Gold.Value;
-        int gem = _playerDataService.Gem.Value;
+    private void RenderLevel(int level, bool maxLevel, bool canLevelUp)
+    {
+        _popup.SetLevel(level, TowerLevelService.MaxLevel, canLevelUp);
 
-        _playerDataService.TryGetLevelUpCost(towerId, out int neededCards, out int neededGold);
+        if (maxLevel)
+        {
+            _popup.SetCardProgressMax();
+            return;
+        }
+
+        _playerDataService.TryGetLevelUpCost(_hunter.TowerId, out int neededCards, out _);
+        _popup.SetCardProgress(_playerDataService.Cards.Value, neededCards);
+    }
+
+    private void RenderStats(int level, bool canLevelUp)
+    {
+        var data = _hunter.Data;
 
         string attackBonus = string.Empty;
-        if (!maxLevel)
+        if (canLevelUp)
         {
             int delta = Mathf.RoundToInt(data.GetAttack(level + 1)) - Mathf.RoundToInt(data.GetAttack(level));
             attackBonus = delta > 0 ? $"+{delta}" : string.Empty;
@@ -106,53 +133,36 @@ public class HunterDetailPresenter : IPopupPresenter
 
         float attackSpeed = data.AttackCooldown > 0f ? data.AttackSpeedPercent / 100f / data.AttackCooldown : 0f;
 
-        HunterDetailActionMode mode;
-        bool actionEnabled;
-        string costText;
-        bool costInsufficient;
+        _popup.SetStats(
+            Mathf.RoundToInt(data.GetAttack(level)).ToString("N0"),
+            attackBonus,
+            attackSpeed.ToString("0.0#"));
+    }
+
+    private void RenderAction(bool unlocked, bool maxLevel)
+    {
+        int towerId = _hunter.TowerId;
 
         if (!unlocked)
         {
-            int price = data.UnlockGemPrice;
-            mode = price > 0 ? HunterDetailActionMode.Unlock : HunterDetailActionMode.UnlockUnavailable;
-            actionEnabled = price > 0 && gem >= price;
-            costText = price.ToString("N0");
-            costInsufficient = price > 0 && gem < price;
-        }
-        else if (maxLevel)
-        {
-            mode = HunterDetailActionMode.MaxLevel;
-            actionEnabled = false;
-            costText = string.Empty;
-            costInsufficient = false;
-        }
-        else
-        {
-            mode = HunterDetailActionMode.LevelUp;
-            actionEnabled = _playerDataService.CanLevelUp(towerId);
-            costText = neededGold.ToString("N0");
-            costInsufficient = gold < neededGold;
+            int price = _hunter.Data.UnlockGemPrice;
+            if (price <= 0)
+            {
+                _popup.ShowUnavailable();
+                return;
+            }
+
+            _popup.ShowBuy(price.ToString("N0"), _playerDataService.Gem.Value >= price);
+            return;
         }
 
-        int gradeIndex = Mathf.Clamp(data.GradeId - 1, 0, GradeNames.Length - 1);
+        if (maxLevel)
+        {
+            _popup.ShowMaxLevel();
+            return;
+        }
 
-        return new HunterDetailViewData(
-            data.TowerName,
-            data.GradeId,
-            GradeNames[gradeIndex],
-            data.AttackType == TowerAttackType.Melee ? "근접" : "원거리",
-            unlocked,
-            level,
-            TowerLevelService.MaxLevel,
-            cards,
-            neededCards,
-            unlocked && !maxLevel && _playerDataService.CanLevelUp(towerId),
-            Mathf.RoundToInt(data.GetAttack(level)).ToString("N0"),
-            attackBonus,
-            attackSpeed.ToString("0.0#"),
-            mode,
-            actionEnabled,
-            costText,
-            costInsufficient);
+        _playerDataService.TryGetLevelUpCost(towerId, out _, out int neededGold);
+        _popup.ShowUpgrade(neededGold.ToString("N0"), _playerDataService.CanLevelUp(towerId));
     }
 }

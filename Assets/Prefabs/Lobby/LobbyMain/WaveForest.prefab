@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8704845281972399588}
   - component: {fileID: 2475581371706603866}
   m_Layer: 0
-  m_Name: IMG_Prop_Tree_4
+  m_Name: ImgPropTree4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 7983837869954512460}
   - component: {fileID: 4363928688608360412}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass1_2 (4)
+  m_Name: ImgPropGrass12 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 7796719759202551193}
   - component: {fileID: 7370397870812338184}
   m_Layer: 0
-  m_Name: IMG_GrassRight_5
+  m_Name: ImgGrassRight5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 7365739749745840113}
   - component: {fileID: 7367794005691059929}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass2_3
+  m_Name: ImgPropGrass23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 1938284393059633119}
   - component: {fileID: 8141321234944609845}
   m_Layer: 0
-  m_Name: IMG_GrassRight_2
+  m_Name: ImgGrassRight2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -387,7 +387,7 @@ GameObject:
   - component: {fileID: 2145114395078480587}
   - component: {fileID: 7497082324747341306}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass2_9 (1)
+  m_Name: ImgPropGrass29 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 8006969384531709125}
   - component: {fileID: 6225836296039216963}
   m_Layer: 0
-  m_Name: IMG_GrassLeft_5
+  m_Name: ImgGrassLeft5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,7 +535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7413376831527587086}
   m_Layer: 0
-  m_Name: Layer_Grass
+  m_Name: LayerGrass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -584,7 +584,7 @@ GameObject:
   - component: {fileID: 127494859482613727}
   - component: {fileID: 3549108254852160409}
   m_Layer: 0
-  m_Name: IMG_Prop_Rock_0
+  m_Name: ImgPropRock0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -659,7 +659,7 @@ GameObject:
   - component: {fileID: 698176494247876968}
   - component: {fileID: 1685752383414068700}
   m_Layer: 0
-  m_Name: IMG_Prop_Flower_8
+  m_Name: ImgPropFlower8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -734,7 +734,7 @@ GameObject:
   - component: {fileID: 6526997121612543663}
   - component: {fileID: 6246493526997393373}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass1_2 (3)
+  m_Name: ImgPropGrass12 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -809,7 +809,7 @@ GameObject:
   - component: {fileID: 4523309570554873669}
   - component: {fileID: 2053930259352443913}
   m_Layer: 0
-  m_Name: IMG_Prop_Tree_6
+  m_Name: ImgPropTree6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -884,7 +884,7 @@ GameObject:
   - component: {fileID: 9046576651623718630}
   - component: {fileID: 882239335361172665}
   m_Layer: 0
-  m_Name: IMG_GrassRight_0
+  m_Name: ImgGrassRight0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 8756329581226463066}
   - component: {fileID: 361902902636257861}
   m_Layer: 0
-  m_Name: FRAME_WaveComplete
+  m_Name: FrameWaveComplete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1036,7 +1036,7 @@ GameObject:
   - component: {fileID: 4365358202492429356}
   - component: {fileID: 8312969907650629196}
   m_Layer: 0
-  m_Name: IMG_Path_0
+  m_Name: ImgPath0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1111,7 +1111,7 @@ GameObject:
   - component: {fileID: 2570829607293320239}
   - component: {fileID: 6611872468937012421}
   m_Layer: 0
-  m_Name: IMG_Border
+  m_Name: ImgBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1186,7 +1186,7 @@ GameObject:
   - component: {fileID: 7751052196677846486}
   - component: {fileID: 1654117087431469508}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass2_11
+  m_Name: ImgPropGrass211
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1261,7 +1261,7 @@ GameObject:
   - component: {fileID: 6353726071322666884}
   - component: {fileID: 3935252131144007705}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass1_2 (7)
+  m_Name: ImgPropGrass12 (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1336,7 +1336,7 @@ GameObject:
   - component: {fileID: 5010889276560025528}
   - component: {fileID: 1671152269423705314}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass1_2 (6)
+  m_Name: ImgPropGrass12 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1411,7 +1411,7 @@ GameObject:
   - component: {fileID: 7956761167590972305}
   - component: {fileID: 541817586483570137}
   m_Layer: 0
-  m_Name: IMG_GrassLeft_4
+  m_Name: ImgGrassLeft4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1486,7 +1486,7 @@ GameObject:
   - component: {fileID: 5872975136442084278}
   - component: {fileID: 7608627599024500633}
   m_Layer: 0
-  m_Name: TXT_Wave_10
+  m_Name: TxtWave10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1623,7 +1623,7 @@ GameObject:
   - component: {fileID: 5487708338609847364}
   - component: {fileID: 4032396601083783711}
   m_Layer: 0
-  m_Name: IMG_Prop_Flower_5
+  m_Name: ImgPropFlower5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1698,7 +1698,7 @@ GameObject:
   - component: {fileID: 6322997734716367112}
   - component: {fileID: 8256414096634404842}
   m_Layer: 0
-  m_Name: IMG_GrassRight_1
+  m_Name: ImgGrassRight1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1773,7 +1773,7 @@ GameObject:
   - component: {fileID: 2407122017725971400}
   - component: {fileID: 5705770601016622956}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass1_2
+  m_Name: ImgPropGrass12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1848,7 +1848,7 @@ GameObject:
   - component: {fileID: 7243006086961416722}
   - component: {fileID: 4290068435968797766}
   m_Layer: 0
-  m_Name: IMG_BestTag
+  m_Name: ImgBestTag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1925,7 +1925,7 @@ GameObject:
   - component: {fileID: 3300337585495067209}
   - component: {fileID: 523383857095240670}
   m_Layer: 0
-  m_Name: IMG_GrassLeft_0
+  m_Name: ImgGrassLeft0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2000,7 +2000,7 @@ GameObject:
   - component: {fileID: 6579509349887028271}
   - component: {fileID: 1881191775540958631}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass1_2 (2)
+  m_Name: ImgPropGrass12 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2075,7 +2075,7 @@ GameObject:
   - component: {fileID: 4025504170764414631}
   - component: {fileID: 6844450923421755312}
   m_Layer: 0
-  m_Name: IMG_GrassRight_3
+  m_Name: ImgGrassRight3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2150,7 +2150,7 @@ GameObject:
   - component: {fileID: 4076102358296917525}
   - component: {fileID: 3266565799535047736}
   m_Layer: 0
-  m_Name: IMG_Prop_Flower_7
+  m_Name: ImgPropFlower7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2225,7 +2225,7 @@ GameObject:
   - component: {fileID: 411109739105914474}
   - component: {fileID: 1838486202406961835}
   m_Layer: 0
-  m_Name: IMG_Prop_Flower_10
+  m_Name: ImgPropFlower10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2300,7 +2300,7 @@ GameObject:
   - component: {fileID: 1598656732487586814}
   - component: {fileID: 4791827353155383714}
   m_Layer: 0
-  m_Name: IMG_GrassLeft_2
+  m_Name: ImgGrassLeft2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2420,7 +2420,7 @@ GameObject:
   - component: {fileID: 3827375794946068816}
   - component: {fileID: 4739948335370156973}
   m_Layer: 0
-  m_Name: ICON_WaveCompleteFlag
+  m_Name: IconWaveCompleteFlag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2495,7 +2495,7 @@ GameObject:
   - component: {fileID: 2890550846618487058}
   - component: {fileID: 14363238788941601}
   m_Layer: 0
-  m_Name: TXT_Wave_20
+  m_Name: TxtWave20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2632,7 +2632,7 @@ GameObject:
   - component: {fileID: 231488580234509691}
   - component: {fileID: 4739783300969569653}
   m_Layer: 0
-  m_Name: TXT_Wave_50
+  m_Name: TxtWave50
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2769,7 +2769,7 @@ GameObject:
   - component: {fileID: 6989287855358451608}
   - component: {fileID: 7841303963079589484}
   m_Layer: 0
-  m_Name: IMG_Path_2
+  m_Name: ImgPath2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2844,7 +2844,7 @@ GameObject:
   - component: {fileID: 4091870321365726502}
   - component: {fileID: 1420249280743212231}
   m_Layer: 0
-  m_Name: IMG_Path_1
+  m_Name: ImgPath1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2919,7 +2919,7 @@ GameObject:
   - component: {fileID: 8732660699380029294}
   - component: {fileID: 3653058323738532525}
   m_Layer: 0
-  m_Name: IMG_Path_3
+  m_Name: ImgPath3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2994,7 +2994,7 @@ GameObject:
   - component: {fileID: 7144140606366432762}
   - component: {fileID: 5219059230514019274}
   m_Layer: 0
-  m_Name: IMG_Border
+  m_Name: ImgBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3106,7 +3106,7 @@ GameObject:
   - component: {fileID: 5948845640981402979}
   - component: {fileID: 5065772378929747182}
   m_Layer: 0
-  m_Name: TXT_Wave_30
+  m_Name: TxtWave30
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3243,7 +3243,7 @@ GameObject:
   - component: {fileID: 8177352784295352320}
   - component: {fileID: 3109972000115868898}
   m_Layer: 0
-  m_Name: IMG_GrassLeft_1
+  m_Name: ImgGrassLeft1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3316,7 +3316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1168158725591135626}
   m_Layer: 0
-  m_Name: Layer_Props
+  m_Name: LayerProps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3424,7 +3424,7 @@ GameObject:
   - component: {fileID: 3106877820628862490}
   - component: {fileID: 2458214801096953958}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass1_2 (5)
+  m_Name: ImgPropGrass12 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3499,7 +3499,7 @@ GameObject:
   - component: {fileID: 7460777773779415429}
   - component: {fileID: 5224878429939541561}
   m_Layer: 0
-  m_Name: IMG_GrassRight_4
+  m_Name: ImgGrassRight4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3574,7 +3574,7 @@ GameObject:
   - component: {fileID: 5500837120040614389}
   - component: {fileID: 1762733471689971445}
   m_Layer: 0
-  m_Name: TXT_BestWave
+  m_Name: TxtBestWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3711,7 +3711,7 @@ GameObject:
   - component: {fileID: 6801669728708166200}
   - component: {fileID: 1700923931406850236}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass1_2 (1)
+  m_Name: ImgPropGrass12 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3786,7 +3786,7 @@ GameObject:
   - component: {fileID: 5885863056187128837}
   - component: {fileID: 5039500131292524495}
   m_Layer: 0
-  m_Name: TXT_Wave_40
+  m_Name: TxtWave40
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3959,7 +3959,7 @@ GameObject:
   - component: {fileID: 179327471426710074}
   - component: {fileID: 2739623655895338011}
   m_Layer: 0
-  m_Name: IMG_Prop_Grass2_9
+  m_Name: ImgPropGrass29
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4032,7 +4032,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2725352811885563740}
   m_Layer: 0
-  m_Name: Layer_Path
+  m_Name: LayerPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4200,7 +4200,7 @@ GameObject:
   - component: {fileID: 2483246153574672043}
   - component: {fileID: 2825065373913987461}
   m_Layer: 0
-  m_Name: IMG_GrassLeft_3
+  m_Name: ImgGrassLeft3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4275,7 +4275,7 @@ GameObject:
   - component: {fileID: 5081378845061195944}
   - component: {fileID: 7100882765299793906}
   m_Layer: 0
-  m_Name: TXT_WaveComplete
+  m_Name: TxtWaveComplete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4412,7 +4412,7 @@ GameObject:
   - component: {fileID: 422507154075979668}
   - component: {fileID: 5373736195623453218}
   m_Layer: 0
-  m_Name: IMG_Prop_Flower_1
+  m_Name: ImgPropFlower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4487,7 +4487,7 @@ GameObject:
   - component: {fileID: 9165399431130337153}
   - component: {fileID: 4984990511213182300}
   m_Layer: 0
-  m_Name: IMG_Player
+  m_Name: ImgPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4562,7 +4562,7 @@ GameObject:
   - component: {fileID: 3667359372761026023}
   - component: {fileID: 6753672876063510231}
   m_Layer: 0
-  m_Name: IMG_Prop_Rock_12
+  m_Name: ImgPropRock12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

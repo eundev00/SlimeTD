@@ -5,13 +5,13 @@ public static class PrefabKeys
     public const string Archer = "Archer";
     public const string ArcherArrow = "ArcherArrow";
     public const string ArcherBow = "ArcherBow";
-    public const string Chip_Cards = "Chip_Cards";
-    public const string Chip_Gem = "Chip_Gem";
-    public const string Chip_Gold = "Chip_Gold";
     public const string CriticalDamageText = "CriticalDamageText";
     public const string Crossbow = "Crossbow";
     public const string CrossbowBolt = "CrossbowBolt";
     public const string CrossbowBow = "CrossbowBow";
+    public const string CurrencyCards = "CurrencyCards";
+    public const string CurrencyGem = "CurrencyGem";
+    public const string CurrencyGold = "CurrencyGold";
     public const string DamageText = "DamageText";
     public const string DropdownSort = "DropdownSort";
     public const string GameResultPopup = "GameResultPopup";
@@ -54,13 +54,13 @@ public static class PrefabKeys
         { Archer, "Assets/Prefabs/Game/Characters/Archer.prefab" },
         { ArcherArrow, "Assets/Prefabs/Game/Characters/ArcherArrow.prefab" },
         { ArcherBow, "Assets/Prefabs/Game/Characters/ArcherBow.prefab" },
-        { Chip_Cards, "Assets/Prefabs/Lobby/Chip_Cards.prefab" },
-        { Chip_Gem, "Assets/Prefabs/Lobby/Chip_Gem.prefab" },
-        { Chip_Gold, "Assets/Prefabs/Lobby/Chip_Gold.prefab" },
         { CriticalDamageText, "Assets/Prefabs/Game/UI/CriticalDamageText.prefab" },
         { Crossbow, "Assets/Prefabs/Game/Characters/Crossbow.prefab" },
         { CrossbowBolt, "Assets/Prefabs/Game/Characters/CrossbowBolt.prefab" },
         { CrossbowBow, "Assets/Prefabs/Game/Characters/CrossbowBow.prefab" },
+        { CurrencyCards, "Assets/Prefabs/Lobby/CurrencyCards.prefab" },
+        { CurrencyGem, "Assets/Prefabs/Lobby/CurrencyGem.prefab" },
+        { CurrencyGold, "Assets/Prefabs/Lobby/CurrencyGold.prefab" },
         { DamageText, "Assets/Prefabs/Game/UI/DamageText.prefab" },
         { DropdownSort, "Assets/Prefabs/Lobby/DropdownSort.prefab" },
         { GameResultPopup, "Assets/Prefabs/Game/UI/Popup/GameResultPopup.prefab" },

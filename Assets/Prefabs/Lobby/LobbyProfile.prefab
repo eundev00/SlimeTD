@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 8511674908419289924}
   - component: {fileID: 3663062727153933123}
   m_Layer: 0
-  m_Name: TXT_Nickname
+  m_Name: TxtNickname
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 68028059152173900}
   - component: {fileID: 6086127346877802244}
   m_Layer: 0
-  m_Name: IMG_Border
+  m_Name: ImgBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -450,7 +450,7 @@ GameObject:
   - component: {fileID: 4153919578022816753}
   - component: {fileID: 5562183309365279116}
   m_Layer: 0
-  m_Name: Bg_MainColor(Mask)
+  m_Name: BgMainColor(Mask)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -539,7 +539,7 @@ GameObject:
   - component: {fileID: 3975668136729921543}
   - component: {fileID: 8955854340713813265}
   m_Layer: 0
-  m_Name: FRAME_LevelBadge
+  m_Name: FrameLevelBadge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -765,7 +765,7 @@ GameObject:
   - component: {fileID: 7301304494977854809}
   - component: {fileID: 7301304494977854814}
   m_Layer: 5
-  m_Name: Slider_Handle_01
+  m_Name: SliderHandle01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1161,7 +1161,7 @@ GameObject:
   - component: {fileID: 3880540567975992036}
   - component: {fileID: 8569361195402856294}
   m_Layer: 0
-  m_Name: TXT_Level
+  m_Name: TxtLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

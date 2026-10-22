@@ -3,13 +3,13 @@ using MessagePipe;
 using UniRx;
 using UnityEngine;
 
-public class CurrencyChipPresenter : IDisposable
+public class CurrencyViewPresenter : IDisposable
 {
-    private readonly CurrencyChip _view;
-    private readonly IPublisher<CurrencyChipClickedEvent> _clickedPublisher;
+    private readonly CurrencyView _view;
+    private readonly IPublisher<CurrencyViewClickedEvent> _clickedPublisher;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-    public CurrencyChipPresenter(CurrencyChip view, IPlayerDataService playerDataService, IPublisher<CurrencyChipClickedEvent> clickedPublisher)
+    public CurrencyViewPresenter(CurrencyView view, IPlayerDataService playerDataService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
     {
         _view = view;
         _clickedPublisher = clickedPublisher;
@@ -29,9 +29,9 @@ public class CurrencyChipPresenter : IDisposable
 
     private void HandleClicked()
     {
-        Debug.Log($"[CurrencyChipPresenter] 클릭: {_view.Type}");
-        _clickedPublisher.Publish(new CurrencyChipClickedEvent(_view.Type));
-        // TODO: 상점이 생기면 CurrencyChipClickedEvent를 받아 상점 열기
+        Debug.Log($"[CurrencyViewPresenter] 클릭: {_view.Type}");
+        _clickedPublisher.Publish(new CurrencyViewClickedEvent(_view.Type));
+        // TODO: 상점이 생기면 CurrencyViewClickedEvent를 받아 상점 열기
     }
 
     private static IReadOnlyReactiveProperty<int> GetSource(CurrencyType type, IPlayerDataService service)

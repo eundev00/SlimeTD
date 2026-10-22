@@ -55,6 +55,7 @@ TowerCatalog (SO, 1개)
 TowerData (SO, 종류당 1개)
 ├─ id                : int                      // 시트 ID. 등급 대역을 가짐
 ├─ gradeId           : int                      // 시트 등급. 등급의 유일한 원천
+├─ gradeName         : string                   // 등급 시트의 이름 (임포터가 채움)
 ├─ enabled           : bool                     // false면 뽑기 후보에서 제외
 ├─ towerName         : string
 ├─ prefab            : GameObject

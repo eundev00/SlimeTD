@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7474403679703214716}
   - component: {fileID: 3233920366710599655}
   m_Layer: 0
-  m_Name: ICON_Cards
+  m_Name: IconGold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 34f162c3cdbe34d45989ba1611d523ef, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1a9ecca12e9da45568bcb8fc473f7c74, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 5863268816871521316}
   - component: {fileID: 4107331908325682223}
   m_Layer: 0
-  m_Name: TXT_Cards
+  m_Name: TxtGold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 7100000000000000002}
   - component: {fileID: 7100000000000000003}
   m_Layer: 0
-  m_Name: Chip_Cards
+  m_Name: CurrencyGold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -301,8 +301,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98de13d10200545cebde356d614b4484, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CurrencyChip
-  _type: 0
+  m_EditorClassIdentifier: Assembly-CSharp::CurrencyView
+  _type: 1
   _text: {fileID: 4107331908325682223}
   _button: {fileID: 7100000000000000002}
 --- !u!114 &7100000000000000002

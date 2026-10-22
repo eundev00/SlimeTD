@@ -96,6 +96,7 @@ public static class TowerSheetImporter
 
         so.FindProperty("_id").intValue = id;
         so.FindProperty("_gradeId").intValue = gradeId;
+        so.FindProperty("_gradeName").stringValue = grade.Name;
         so.FindProperty("_enabled").boolValue = !TryGetInt(row, "enabled", out int enabled) || enabled != 0;
         so.FindProperty("_towerName").stringValue = Get(row, "name");
         so.FindProperty("_baseAttack").floatValue = grade.BaseAttack;
@@ -235,7 +236,7 @@ public static class TowerSheetImporter
             TryGetInt(row, "goldBase", out int goldBase);
             TryGetInt(row, "goldPerLevel", out int goldPerLevel);
 
-            result[gradeId] = new GradeInfo(baseAttack, growthRate, startUnlocked != 0, cardBase, cardPerLevel, goldBase, goldPerLevel);
+            result[gradeId] = new GradeInfo(Get(row, "name"), baseAttack, growthRate, startUnlocked != 0, cardBase, cardPerLevel, goldBase, goldPerLevel);
         }
 
         return result;
@@ -300,6 +301,7 @@ public static class TowerSheetImporter
 
     private readonly struct GradeInfo
     {
+        public readonly string Name;
         public readonly float BaseAttack;
         public readonly float AttackGrowthRate;
         public readonly bool StartUnlocked;
@@ -308,8 +310,9 @@ public static class TowerSheetImporter
         public readonly int GoldBase;
         public readonly int GoldPerLevel;
 
-        public GradeInfo(float baseAttack, float attackGrowthRate, bool startUnlocked, int cardBase, int cardPerLevel, int goldBase, int goldPerLevel)
+        public GradeInfo(string name, float baseAttack, float attackGrowthRate, bool startUnlocked, int cardBase, int cardPerLevel, int goldBase, int goldPerLevel)
         {
+            Name = name;
             BaseAttack = baseAttack;
             AttackGrowthRate = attackGrowthRate;
             StartUnlocked = startUnlocked;

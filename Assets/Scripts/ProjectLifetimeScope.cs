@@ -22,6 +22,6 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterMessageBroker<SlimeReachedEndEvent>(options);
         builder.RegisterMessageBroker<GameProgressEvent>(options);
         builder.RegisterMessageBroker<TowerSpawnRequestedEvent>(options);
-        builder.RegisterMessageBroker<CurrencyChipClickedEvent>(options);
+        builder.RegisterMessageBroker<CurrencyViewClickedEvent>(options);
     }
 }

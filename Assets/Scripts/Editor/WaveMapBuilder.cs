@@ -77,46 +77,46 @@ public static class WaveMapBuilder
         content.pivot = new Vector2(0.5f, 0f);
         content.sizeDelta = new Vector2(0f, contentHeight);
 
-        var grassLayer = NewRect("Layer_Grass", content);
+        var grassLayer = NewRect("LayerGrass", content);
         Stretch(grassLayer);
-        var pathLayer = NewRect("Layer_Path", content);
+        var pathLayer = NewRect("LayerPath", content);
         Stretch(pathLayer);
-        var propLayer = NewRect("Layer_Props", content);
+        var propLayer = NewRect("LayerProps", content);
         Stretch(propLayer);
 
         // 풀밭은 중앙에서 화면 가장자리까지 채우고, 흙길을 그 위에 얹는다. 레이어마다 이미지 높이가 달라 각자 자기 높이로 쌓는다.
         float grassScale = HalfScreenWidth / ground[1].rect.width;
-        TileVertically(grassLayer, "IMG_GrassLeft_", ground[1], 0f, 1f, grassScale, contentHeight);
-        TileVertically(grassLayer, "IMG_GrassRight_", ground[2], 0f, 0f, grassScale, contentHeight);
+        TileVertically(grassLayer, "ImgGrassLeft", ground[1], 0f, 1f, grassScale, contentHeight);
+        TileVertically(grassLayer, "ImgGrassRight", ground[2], 0f, 0f, grassScale, contentHeight);
 
         // 흙길 이미지는 좌우에 투명 여백이 있어, 실제 흙 폭이 PathVisibleWidth가 되도록 배율을 잡고 흙 중심을 화면 중앙에 맞춘다.
         PathSpan(ground[0], out float pathLeft, out float pathRight);
         float pathScale = PathVisibleWidth / (pathRight - pathLeft);
         float pathCenterX = ((pathLeft + pathRight) * 0.5f - ground[0].rect.width * 0.5f) * pathScale;
-        TileVertically(pathLayer, "IMG_Path_", ground[0], -pathCenterX, 0.5f, pathScale, contentHeight);
+        TileVertically(pathLayer, "ImgPath", ground[0], -pathCenterX, 0.5f, pathScale, contentHeight);
         BuildProps(propLayer, props, contentHeight);
 
         for (int i = 1; i <= MaxWave / 10; i++)
         {
-            var number = Label("TXT_Wave_" + i * 10, content, (i * 10).ToString(), 170, NumberHex, TextAlignmentOptions.Center, false,
+            var number = Label("TxtWave" + i * 10, content, (i * 10).ToString(), 170, NumberHex, TextAlignmentOptions.Center, false,
                 new Vector2(0.5f, 0f), new Vector2(0f, WaveY(i * 10)), new Vector2(300f, 200f), new Vector2(0.5f, 0.5f));
             number.alpha = 0.4f;
         }
 
         var marker = NewRect("PlayerMarker", content);
         Place(marker, new Vector2(0.5f, 0f), new Vector2(0f, BaseOffset), new Vector2(360f, 330f), new Vector2(0.5f, 0f));
-        var character = Block("IMG_Player", marker, "#FFFFFF", new Vector2(0.5f, 0f), Vector2.zero, new Vector2(150f, 200f), new Vector2(0.5f, 0f));
+        var character = Block("ImgPlayer", marker, "#FFFFFF", new Vector2(0.5f, 0f), Vector2.zero, new Vector2(150f, 200f), new Vector2(0.5f, 0f));
         SetThemeSprite(character, "Sample_Cha02_s", "Demo_Character");
-        var tag = FrameBlock("IMG_BestTag", marker, new Vector2(0.5f, 0f), new Vector2(0f, 220f), new Vector2(340f, 70f), new Vector2(0.5f, 0f));
-        var bestText = Label("TXT_BestWave", tag, "도전 시작!", 34, BrownDark, TextAlignmentOptions.Center, true);
+        var tag = FrameBlock("ImgBestTag", marker, new Vector2(0.5f, 0f), new Vector2(0f, 220f), new Vector2(340f, 70f), new Vector2(0.5f, 0f));
+        var bestText = Label("TxtBestWave", tag, "도전 시작!", 34, BrownDark, TextAlignmentOptions.Center, true);
 
         var complete = NewRect("WaveComplete", content);
         Place(complete, new Vector2(0.5f, 0f), new Vector2(0f, waveTopY + 330f), new Vector2(620f, 420f), new Vector2(0.5f, 0.5f));
 
-        var flag = Block("ICON_WaveCompleteFlag", complete, "#FFFFFF", new Vector2(0.5f, 1f), Vector2.zero, new Vector2(240f, 240f), new Vector2(0.5f, 1f));
+        var flag = Block("IconWaveCompleteFlag", complete, "#FFFFFF", new Vector2(0.5f, 1f), Vector2.zero, new Vector2(240f, 240f), new Vector2(0.5f, 1f));
         SetThemeSprite(flag, "Item_Flag_01_Finish", "UniqueIcon/256");
-        var banner = FrameBlock("FRAME_WaveComplete", complete, new Vector2(0.5f, 0f), Vector2.zero, new Vector2(560f, 120f), new Vector2(0.5f, 0f));
-        Label("TXT_WaveComplete", banner, "웨이브 완료", 56, BrownDark, TextAlignmentOptions.Center, true);
+        var banner = FrameBlock("FrameWaveComplete", complete, new Vector2(0.5f, 0f), Vector2.zero, new Vector2(560f, 120f), new Vector2(0.5f, 0f));
+        Label("TxtWaveComplete", banner, "웨이브 완료", 56, BrownDark, TextAlignmentOptions.Center, true);
 
         var scroll = root.gameObject.AddComponent<ScrollRect>();
         scroll.viewport = viewport;
@@ -245,7 +245,7 @@ public static class WaveMapBuilder
                     }
 
                     bool flipX = rng.Next(2) == 0;
-                    SpriteImage($"IMG_{sprite.name}_{count++}", layer, sprite, new Vector2(x, y), new Vector2(0.5f, 0f), scale, false, flipX);
+                    SpriteImage($"Img{sprite.name.Replace("_", "")}{count++}", layer, sprite, new Vector2(x, y), new Vector2(0.5f, 0f), scale, false, flipX);
                 }
 
                 y += Mathf.Lerp(300f, 650f, (float)rng.NextDouble());
@@ -341,7 +341,7 @@ public static class WaveMapBuilder
         var rt = Block(name, parent, Cream, anchor, position, size, pivot);
         SetThemeSprite(rt, "BasicFrame_Rectangle_01~04_White_Bg", "Sprite_Common", ParseColor(Cream));
 
-        var border = NewRect("IMG_Border", rt);
+        var border = NewRect("ImgBorder", rt);
         Stretch(border);
         var image = border.gameObject.AddComponent<Image>();
         image.raycastTarget = false;

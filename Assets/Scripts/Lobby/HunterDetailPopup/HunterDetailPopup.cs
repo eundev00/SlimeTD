@@ -10,12 +10,12 @@ using VContainer;
 public class HunterDetailPopup : PopupBase
 {
     [Header("재화 칩 (오른쪽 상단)")]
-    [NotNull][SerializeField] private CurrencyChip _cardsChip;
-    [NotNull][SerializeField] private CurrencyChip _goldChip;
-    [NotNull][SerializeField] private CurrencyChip _gemChip;
+    [NotNull][SerializeField] private CurrencyView _cardsCurrency;
+    [NotNull][SerializeField] private CurrencyView _goldCurrency;
+    [NotNull][SerializeField] private CurrencyView _gemCurrency;
 
     [Header("헌터 정보")]
-    [NotNull][SerializeField] private TMP_Text _heroGradeBadgeText;
+    [NotNull][SerializeField] private GradeBadge _gradeBadge;
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private TMP_Text _gradeTagText;
 
@@ -29,25 +29,24 @@ public class HunterDetailPopup : PopupBase
 
     [Header("스탯")]
     [NotNull][SerializeField] private TMP_Text _attackValueText;
+    [NotNull][SerializeField] private TMP_Text _attackBonusText;
     [NotNull][SerializeField] private TMP_Text _speedValueText;
 
     [Header("버튼")]
-    [NotNull][SerializeField] private Button _actionButton;
-    [NotNull][SerializeField] private TMP_Text _actionLabel;
-    [NotNull][SerializeField] private TMP_Text _actionCostText;
-    [NotNull][SerializeField] private Image _actionCostIcon;
-    [NotNull][SerializeField] private TMP_Text _lockedNoticeText;
+    [NotNull][SerializeField] private Button _upgradeButton;
+    [NotNull][SerializeField] private TMP_Text _upgradeCostText;
+    [NotNull][SerializeField] private GameObject _upgradeDisabled;
+    [NotNull][SerializeField] private GameObject _upgradeMax;
+    [NotNull][SerializeField] private Button _buyButton;
+    [NotNull][SerializeField] private TMP_Text _buyCostText;
     [NotNull][SerializeField] private Button _closeButton;
-
-    [Header("비용 아이콘")]
-    [SerializeField] private Sprite _goldCostSprite;
-    [SerializeField] private Sprite _gemCostSprite;
 
     private readonly ReactiveProperty<int> _towerId = new ReactiveProperty<int>();
 
     public IReadOnlyReactiveProperty<int> TowerId => _towerId;
 
-    public event Action ActionClicked;
+    public event Action UpgradeClicked;
+    public event Action BuyClicked;
     public event Action CloseClicked;
 
     // 같은 헌터를 다시 열어도 값이 같아 알림이 생략되지 않도록 강제로 알린다.
@@ -57,23 +56,27 @@ public class HunterDetailPopup : PopupBase
     }
 
     [Inject]
-    public void Construct(IPlayerDataService playerDataService, IPublisher<CurrencyChipClickedEvent> clickedPublisher)
+    public void Construct(IPlayerDataService playerDataService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
     {
-        _cardsChip.Initialize(playerDataService, clickedPublisher);
-        _goldChip.Initialize(playerDataService, clickedPublisher);
-        _gemChip.Initialize(playerDataService, clickedPublisher);
+        _cardsCurrency.Initialize(playerDataService, clickedPublisher);
+        _goldCurrency.Initialize(playerDataService, clickedPublisher);
+        _gemCurrency.Initialize(playerDataService, clickedPublisher);
     }
 
     private void Start()
     {
-        _actionButton.onClick.AddListener(OnActionButtonClicked);
+        _upgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
+        _buyButton.onClick.AddListener(OnBuyButtonClicked);
         _closeButton.onClick.AddListener(OnCloseButtonClicked);
     }
 
     private void OnDestroy()
     {
-        if (_actionButton != null)
-            _actionButton.onClick.RemoveListener(OnActionButtonClicked);
+        if (_upgradeButton != null)
+            _upgradeButton.onClick.RemoveListener(OnUpgradeButtonClicked);
+
+        if (_buyButton != null)
+            _buyButton.onClick.RemoveListener(OnBuyButtonClicked);
 
         if (_closeButton != null)
             _closeButton.onClick.RemoveListener(OnCloseButtonClicked);
@@ -86,89 +89,99 @@ public class HunterDetailPopup : PopupBase
         _towerId.Value = 0;
     }
 
-    public void Render(HunterDetailViewData data)
+    public void SetHunterInfo(string name, int gradeId, string gradeName)
     {
-        RenderChips(data);
-        RenderInfo(data);
-        RenderLevelRow(data);
-        RenderStats(data);
-        RenderAction(data);
+        _nameText.text = name;
+        _gradeBadge.Show(gradeId, gradeName);
+        _gradeTagText.text = gradeName;
     }
 
-    private void RenderChips(HunterDetailViewData data)
+    public void SetUnlocked(bool unlocked)
     {
-        _cardsChip.gameObject.SetActive(data.Unlocked);
-        _goldChip.gameObject.SetActive(data.Unlocked);
-        _gemChip.gameObject.SetActive(!data.Unlocked);
+        _cardsCurrency.gameObject.SetActive(unlocked);
+        _goldCurrency.gameObject.SetActive(unlocked);
+        _gemCurrency.gameObject.SetActive(!unlocked);
+
+        _levelRow.SetActive(unlocked);
+        _lockedRow.SetActive(!unlocked);
     }
 
-    private void RenderInfo(HunterDetailViewData data)
+    public void SetLevel(int level, int maxLevel, bool canLevelUp)
     {
-        _nameText.text = data.Name;
-        _heroGradeBadgeText.text = data.GradeId.ToString();
-
-        _gradeTagText.text = data.GradeName;
+        _levelText.text = $"Lv.{level}/{maxLevel}";
+        _arrowBadge.SetActive(canLevelUp);
     }
 
-    private void RenderLevelRow(HunterDetailViewData data)
+    public void SetCardProgress(int owned, int needed)
     {
-        _levelRow.SetActive(data.Unlocked);
-        _lockedRow.SetActive(!data.Unlocked);
-
-        if (!data.Unlocked)
-            return;
-
-        _levelText.text = $"Lv.{data.Level}/{data.MaxLevel}";
-        _arrowBadge.SetActive(data.CanLevelUp);
-
-        if (data.Mode == HunterDetailActionMode.MaxLevel)
-        {
-            _progressFill.anchorMax = new Vector2(1f, 1f);
-            _progressText.text = "MAX";
-            return;
-        }
-
-        float ratio = data.NeededCards > 0 ? Mathf.Clamp01((float)data.OwnedCards / data.NeededCards) : 1f;
+        float ratio = needed > 0 ? Mathf.Clamp01((float)owned / needed) : 1f;
         _progressFill.anchorMax = new Vector2(ratio, 1f);
-        _progressText.text = $"{data.OwnedCards}/{data.NeededCards}";
+        _progressText.text = $"{owned}/{needed}";
     }
 
-    private void RenderStats(HunterDetailViewData data)
+    public void SetCardProgressMax()
     {
-        string bonus = string.IsNullOrEmpty(data.AttackBonus)
-            ? string.Empty
-            : $" <size=70%>{data.AttackBonus}</size>";
-
-        _attackValueText.text = data.AttackValue + bonus;
-        _speedValueText.text = data.AttackSpeed;
+        _progressFill.anchorMax = new Vector2(1f, 1f);
+        _progressText.text = "MAX";
     }
 
-    private void RenderAction(HunterDetailViewData data)
+    public void SetStats(string attack, string attackBonus, string attackSpeed)
     {
-        bool unavailable = data.Mode == HunterDetailActionMode.UnlockUnavailable;
-        _actionButton.gameObject.SetActive(!unavailable);
-        _lockedNoticeText.gameObject.SetActive(unavailable);
+        bool hasBonus = !string.IsNullOrEmpty(attackBonus);
 
-        if (unavailable)
-            return;
-
-        bool isUnlock = data.Mode == HunterDetailActionMode.Unlock;
-        bool isMax = data.Mode == HunterDetailActionMode.MaxLevel;
-
-        _actionButton.interactable = data.ActionEnabled;
-        _actionLabel.text = isMax ? "MAX" : (isUnlock ? "해금" : "레벨업");
-        _actionCostText.gameObject.SetActive(!isMax);
-        _actionCostIcon.gameObject.SetActive(!isMax);
-        _actionCostText.text = data.CostText;
-
-        var costSprite = isUnlock ? _gemCostSprite : _goldCostSprite;
-        if (costSprite != null)
-            _actionCostIcon.sprite = costSprite;
+        _attackValueText.text = attack;
+        _attackBonusText.gameObject.SetActive(hasBonus);
+        _attackBonusText.text = hasBonus ? $"({attackBonus})" : string.Empty;
+        _speedValueText.text = attackSpeed;
     }
 
-    private void OnActionButtonClicked()
+    public void ShowBuy(string costText, bool enabled)
     {
-        ActionClicked?.Invoke();
+        SetActionVisible(buy: true, upgrade: false);
+
+        _buyButton.interactable = enabled;
+        _buyCostText.text = costText;
+    }
+
+    public void ShowUpgrade(string costText, bool enabled)
+    {
+        SetActionVisible(buy: false, upgrade: true);
+
+        _upgradeButton.interactable = enabled;
+        _upgradeDisabled.SetActive(!enabled);
+        _upgradeMax.SetActive(false);
+        _upgradeCostText.text = costText;
+    }
+
+    public void ShowMaxLevel()
+    {
+        SetActionVisible(buy: false, upgrade: true);
+
+        _upgradeButton.interactable = false;
+        _upgradeDisabled.SetActive(true);
+        _upgradeMax.SetActive(true);
+        _upgradeCostText.text = string.Empty;
+    }
+
+    public void ShowUnavailable()
+    {
+        SetActionVisible(buy: false, upgrade: false);
+    }
+
+    private void SetActionVisible(bool buy, bool upgrade)
+    {
+        _buyButton.gameObject.SetActive(buy);
+        _upgradeButton.gameObject.SetActive(upgrade);
+    }
+
+    private void OnUpgradeButtonClicked()
+    {
+        UpgradeClicked?.Invoke();
+    }
+
+    private void OnBuyButtonClicked()
+    {
+        BuyClicked?.Invoke();
     }
 
     private void OnCloseButtonClicked()

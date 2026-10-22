@@ -19,17 +19,17 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 | 클래스 | 위치 | 역할 |
 |---|---|---|
 | `LobbyTabs` | `Scripts/Lobby` | 탭 버튼 ↔ 패널 전환. 잠긴 탭은 선택 불가 |
-| `LobbyHeader` | 〃 | 골드/보석 `CurrencyChip` 초기화 (메서드 주입) |
+| `LobbyHeader` | 〃 | 골드/보석 `CurrencyView` 초기화 (메서드 주입) |
 | `BattleView` | `Scripts/Lobby/BattleView` | 전투 탭. `WaveScrollSlot`만 노출한다 |
 | `WaveScrollView` / `WaveScrollPresenter` | `Scripts/Lobby/WaveScroll` | 웨이브 진행도 맵 (아래) |
 | `HunterCardView` / `HunterCardPresenter` / `HunterCard` / `SortButton` | `Scripts/Lobby/HunterView` | 헌터 탭. 카드는 레벨순/등급순 4단계 정렬 |
 | `HunterDetailPopup` / `HunterDetailPresenter` | `Scripts/Lobby/HunterDetailPopup` | 헌터 상세 팝업. 레벨업/해금/MAX 버튼 |
-| `CurrencyChip` / `CurrencyChipPresenter` | `Scripts/Common` | 재화 칩(골드/보석/카드). 값 구독과 클릭 이벤트 발행 |
+| `CurrencyView` / `CurrencyViewPresenter` | `Scripts/Common` | 재화 칩(골드/보석/카드). 값 구독과 클릭 이벤트 발행 |
 
-- `CurrencyChip`은 클릭하면 `CurrencyChipClickedEvent(CurrencyType)`를 MessagePipe로 발행한다. 상점이 생기면 이 이벤트를 받아 연다 (`// TODO` 상태)
+- `CurrencyView`은 클릭하면 `CurrencyViewClickedEvent(CurrencyType)`를 MessagePipe로 발행한다. 상점이 생기면 이 이벤트를 받아 연다 (`// TODO` 상태)
 - 헌터 카드는 `hunter.Data.Enabled`인 헌터만 만든다. 레벨/해금/카드/골드가 바뀌면 카드를 갱신한다
-- 로비에서 게임 씬으로 넘어가는 코드는 현재 없다 (`BTN_Start`, `BTN_DevGame1`, `BTN_DevTest` 오브젝트는 남아 있지만 연결된 스크립트가 없다). 게임 → 로비 복귀만 `TransitionAsync`로 구현돼 있다
-- `LobbyProfile`, `LobbyTab`, `Chip_*` 프리팹은 `PrefabKeys`에 등록돼 있다. `LobbyProfile`의 구성과 쓰임은 이 문서에 반영하지 못했다
+- 로비에서 게임 씬으로 넘어가는 코드는 현재 없다 (`BtnStart`, `BtnDevGame1`, `BtnDevTest` 오브젝트는 남아 있지만 연결된 스크립트가 없다). 게임 → 로비 복귀만 `TransitionAsync`로 구현돼 있다
+- `LobbyProfile`, `LobbyTab`, `Currency*` 프리팹은 `PrefabKeys`에 등록돼 있다. `LobbyProfile`의 구성과 쓰임은 이 문서에 반영하지 못했다
 
 ## 웨이브 진행도 맵 (전투 탭)
 
@@ -58,7 +58,7 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 
 메뉴 `SlimeTD > Wave > Build Wave Map Forest`가 `WaveMapBuilder`로 `Assets/Prefabs/Lobby/WaveForest.prefab`을 만든다. 실행할 때마다 소품 배치를 새로 뽑아 기존 프리팹을 덮어쓴다 (시드는 로그에 남는다).
 
-- 레이어 순서: `Layer_Grass`(풀밭) → `Layer_Path`(흙길) → `Layer_Props`(소품). 풀밭은 중앙에서 화면 가장자리까지 채우고 흙길을 위에 얹는다
+- 레이어 순서: `LayerGrass`(풀밭) → `LayerPath`(흙길) → `LayerProps`(소품). 풀밭은 중앙에서 화면 가장자리까지 채우고 흙길을 위에 얹는다
 - 흙길 이미지의 투명 여백을 계산해 실제 흙 폭이 `PathVisibleWidth`(460)가 되도록 배율을 잡는다. 세로 타일은 `TileOverlap`만큼 겹쳐 이음새를 숨긴다
 - 소품 배치: 나무/바위/작은바위는 좌우 구분 없이 Y 간격 450px 이상 띄운다. 가까우면 풀/꽃으로 바꾸고, 같은 소품 연속은 피한다. 웨이브 숫자 ±90px 안은 비우고, 일부는 확률적으로 건너뛴다
 - 콘텐츠 높이는 최대 웨이브 위치 + `TopMargin`(760). 상단 HUD에 완료 표시가 가리지 않게 하는 여백이다
@@ -69,5 +69,5 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 ## 미구현 / 후속
 
 - 로비에서 게임 씬을 시작하는 버튼과 진입 흐름
-- 상점 (`CurrencyChipClickedEvent` 수신)
+- 상점 (`CurrencyViewClickedEvent` 수신)
 - 난이도 시스템 (웨이브 맵 위쪽 확장 지점)
