@@ -13,6 +13,9 @@ public class LobbyLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<LobbyHeader>();
 
         builder.RegisterInstance(_waveTable);
+        builder.RegisterComponentInHierarchy<BattleView>();
+        builder.RegisterEntryPoint<BattlePresenter>();
+
         builder.RegisterComponentInHierarchy<WaveScrollView>();
         builder.RegisterEntryPoint<WaveScrollPresenter>();
 

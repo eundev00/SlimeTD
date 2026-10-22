@@ -11,6 +11,11 @@ public class BattleView : MonoBehaviour
 
     public event Action StartClicked;
 
+    public void SetStartInteractable(bool interactable)
+    {
+        _startButton.interactable = interactable;
+    }
+
     private void Start()
     {
         if (_startButton == null)

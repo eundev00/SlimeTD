@@ -316,6 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleView
   _waveScrollSlot: {fileID: 3834856808243006162}
+  _startButton: {fileID: 7917080950870663345}
 --- !u!1 &1526976347959898761
 GameObject:
   m_ObjectHideFlags: 0
