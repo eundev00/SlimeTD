@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _id: 203
   _gradeId: 2
+  _gradeName: 
   _enabled: 1
   _towerName: "\uAE30\uC0AC"
   _prefab: {fileID: 2107671493890513731, guid: e34aa2de0595740edb531d9413d9e106, type: 3}
   _attackRange: 1
   _attackType: 0
   _projectilePrefab: {fileID: 0}
+  _thumbnailSmall: {fileID: 21300000, guid: 5b5e2449462aaab086ad875436d4a31e, type: 3}
+  _thumbnailLarge: {fileID: 21300000, guid: d5cee3cc4e424f065a731238cfd2e1e4, type: 3}
   _baseAttack: 200
   _attackGrowthRate: 5
   _attackCooldown: 1

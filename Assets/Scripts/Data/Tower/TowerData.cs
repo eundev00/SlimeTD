@@ -15,6 +15,10 @@ public class TowerData : ScriptableObject
     [SerializeField] private TowerAttackType _attackType = TowerAttackType.Projectile;
     [SerializeField] private GameObject _projectilePrefab;
 
+    [Header("썸네일")]
+    [SerializeField] private Sprite _thumbnailSmall;
+    [SerializeField] private Sprite _thumbnailLarge;
+
     [Header("기본 수치 (레벨 1)")]
     [SerializeField] private float _baseAttack = 1f;
     [SerializeField] private float _attackGrowthRate = 5f;
@@ -36,6 +40,8 @@ public class TowerData : ScriptableObject
     public float AttackRange => _attackRange;
     public TowerAttackType AttackType => _attackType;
     public GameObject ProjectilePrefab => _projectilePrefab;
+    public Sprite ThumbnailSmall => _thumbnailSmall;
+    public Sprite ThumbnailLarge => _thumbnailLarge;
     public float BaseAttack => _baseAttack;
     public float AttackCooldown => _attackCooldown;
     public float CritChance => _critChance;
