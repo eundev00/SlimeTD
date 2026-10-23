@@ -4,8 +4,11 @@ using UnityEngine.UI;
 
 public class HunterCard : MonoBehaviour
 {
-    // 인덱스는 gradeId - 1이다.
-    [NotNull][SerializeField] private GameObject[] _gradeFrames;
+    [NotNull][SerializeField] private GradeStyle _gradeStyle;
+    [NotNull][SerializeField] private GameObject _gradeFrame;
+    [NotNull][SerializeField] private Image _frameBackground;
+    [NotNull][SerializeField] private Image _frameBorder;
+    [NotNull][SerializeField] private Image _frameInnerBorder;
     [NotNull][SerializeField] private GameObject _lockedFrame;
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private TMP_Text _levelText;
@@ -33,9 +36,9 @@ public class HunterCard : MonoBehaviour
         _nameText.text = towerName;
         _nameText.color = unlocked ? _nameColor : _lockedNameColor;
 
-        int index = Mathf.Clamp(gradeId - 1, 0, _gradeFrames.Length - 1);
-        for (int i = 0; i < _gradeFrames.Length; i++)
-            _gradeFrames[i].SetActive(unlocked && i == index);
+        _gradeFrame.SetActive(unlocked);
+        if (unlocked)
+            ApplyGradeColors(gradeId);
 
         _lockedFrame.SetActive(!unlocked);
         _lockedBar.SetActive(!unlocked);
@@ -60,5 +63,18 @@ public class HunterCard : MonoBehaviour
         float ratio = neededCards > 0 ? Mathf.Clamp01((float)ownedCards / neededCards) : 1f;
         _progressFill.anchorMax = new Vector2(ratio, 1f);
         _progressText.text = $"{ownedCards}/{neededCards}";
+    }
+
+    private void ApplyGradeColors(int gradeId)
+    {
+        if (!_gradeStyle.TryGetColors(gradeId, out var colors))
+        {
+            Debug.Log($"[HunterCard] 등급 스타일이 없다: {gradeId}", this);
+            return;
+        }
+
+        _frameBackground.color = colors.Fill;
+        _frameBorder.color = colors.Border;
+        _frameInnerBorder.color = colors.Border;
     }
 }
