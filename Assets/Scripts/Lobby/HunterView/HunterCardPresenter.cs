@@ -139,6 +139,7 @@ public class HunterCardPresenter : IStartable, IDisposable
 
         entry.Card.Set(
             hunter.Data.TowerName,
+            hunter.Data.ThumbnailSmall,
             hunter.Data.GradeId,
             hunter.Unlocked.Value,
             level,

@@ -91,6 +91,7 @@ public class HunterDetailPresenter : IPopupPresenter
         bool canLevelUp = unlocked && !maxLevel && _playerDataService.CanLevelUp(_hunter.TowerId);
 
         RenderInfo();
+        _popup.SetThumbnail(_hunter.Data.ThumbnailLarge, unlocked);
         _popup.SetUnlocked(unlocked);
 
         if (unlocked)

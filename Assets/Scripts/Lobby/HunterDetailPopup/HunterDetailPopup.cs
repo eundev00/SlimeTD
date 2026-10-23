@@ -15,6 +15,7 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private CurrencyView _gemCurrency;
 
     [Header("헌터 정보")]
+    [NotNull][SerializeField] private Image _thumbnail;
     [NotNull][SerializeField] private GradeBadge _gradeBadge;
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private TMP_Text _gradeTagText;
@@ -40,6 +41,8 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private Button _buyButton;
     [NotNull][SerializeField] private TMP_Text _buyCostText;
     [NotNull][SerializeField] private Button _closeButton;
+
+    [SerializeField] private Color _lockedThumbnailColor = new Color(0.11f, 0.12f, 0.11f);
 
     private readonly ReactiveProperty<int> _towerId = new ReactiveProperty<int>();
 
@@ -94,6 +97,13 @@ public class HunterDetailPopup : PopupBase
         _nameText.text = name;
         _gradeBadge.Show(gradeId, gradeName);
         _gradeTagText.text = gradeName;
+    }
+
+    public void SetThumbnail(Sprite thumbnail, bool unlocked)
+    {
+        _thumbnail.sprite = thumbnail;
+        _thumbnail.enabled = thumbnail != null;
+        _thumbnail.color = unlocked ? Color.white : _lockedThumbnailColor;
     }
 
     public void SetUnlocked(bool unlocked)

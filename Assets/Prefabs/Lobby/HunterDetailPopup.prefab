@@ -3922,7 +3922,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 26}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8653769522477566851
@@ -3947,7 +3947,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3955,7 +3955,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 0}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -6226,6 +6226,7 @@ MonoBehaviour:
   _cardsCurrency: {fileID: 7567305920202389836}
   _goldCurrency: {fileID: 608462664496963978}
   _gemCurrency: {fileID: 6325191209594061940}
+  _thumbnail: {fileID: 8837716729948167443}
   _gradeBadge: {fileID: 5756867906589342636}
   _nameText: {fileID: 4179898477297837515}
   _gradeTagText: {fileID: 8527911328958239822}
@@ -6245,6 +6246,7 @@ MonoBehaviour:
   _buyButton: {fileID: 245709555661298374}
   _buyCostText: {fileID: 2680121053286353407}
   _closeButton: {fileID: 7925731904981271441}
+  _lockedThumbnailColor: {r: 0.11, g: 0.12, b: 0.11, a: 1}
 --- !u!1 &8070040027005283844
 GameObject:
   m_ObjectHideFlags: 0

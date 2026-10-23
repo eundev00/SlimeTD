@@ -10,6 +10,7 @@ public class HunterCard : MonoBehaviour
     [NotNull][SerializeField] private Image _frameBorder;
     [NotNull][SerializeField] private Image _frameInnerBorder;
     [NotNull][SerializeField] private GameObject _lockedFrame;
+    [NotNull][SerializeField] private Image _thumbnail;
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private TMP_Text _levelText;
     [NotNull][SerializeField] private TMP_Text _progressText;
@@ -20,11 +21,13 @@ public class HunterCard : MonoBehaviour
 
     [SerializeField] private Color _nameColor = new Color(0.35f, 0.24f, 0.17f);
     [SerializeField] private Color _lockedNameColor = new Color(0.55f, 0.48f, 0.38f);
+    [SerializeField] private Color _lockedThumbnailColor = new Color(0.11f, 0.12f, 0.11f);
 
     public Button Button => _button;
 
     public void Set(
         string towerName,
+        Sprite thumbnail,
         int gradeId,
         bool unlocked,
         int level,
@@ -35,6 +38,10 @@ public class HunterCard : MonoBehaviour
     {
         _nameText.text = towerName;
         _nameText.color = unlocked ? _nameColor : _lockedNameColor;
+
+        _thumbnail.sprite = thumbnail;
+        _thumbnail.enabled = thumbnail != null;
+        _thumbnail.color = unlocked ? Color.white : _lockedThumbnailColor;
 
         _gradeFrame.SetActive(unlocked);
         if (unlocked)
