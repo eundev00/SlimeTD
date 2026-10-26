@@ -1,0 +1,6 @@
+﻿skillId,effectType,value,valueType,duration
+스킬ID,효과 종류(CritChance/CritBonus/AttackSpeed/Attack/MultiShot/Pierce/Slow/JellyGain),수치,단위(Fixed 고정/Percent 퍼센트),지속 시간 초(비우면 상시)
+9001,MultiShot,1,Fixed,
+9002,CritChance,10,Fixed,
+9003,Pierce,2,Fixed,
+9004,JellyGain,2,Fixed,

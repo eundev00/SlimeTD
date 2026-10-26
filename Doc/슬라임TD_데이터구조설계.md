@@ -69,7 +69,10 @@ TowerData (SO, 종류당 1개)
 ├─ critBonus         : float = 100              // %. 시트
 ├─ startUnlocked     : bool                     // 시작 해금 (등급 기본, 타워 시트로 예외 지정)
 ├─ unlockGemPrice    : int                      // 잠긴 헌터의 보석 구매 가격. 0이면 구매 불가
-└─ levelUpCost       : LevelUpCostRule          // 등급 시트의 카드/골드 기본값과 레벨당 증가
+├─ levelUpCost       : LevelUpCostRule          // 등급 시트의 카드/골드 기본값과 레벨당 증가
+└─ thumbnailSmall/Large : Sprite                // 카드(54px) / 상세 팝업(128px). 인스펙터에서 연결
+
+스킬은 TowerData가 가지지 않는다. SkillCatalog가 towerId로 찾아 준다 (아래 "타워 스킬")
 
 AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 ```
@@ -83,41 +86,58 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 |---|---|---|
 | `Grades.csv` | `gradeId` | `name`, `baseAttack`, `attackGrowthRate`, `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel` |
 | `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(비우면 등급 기본), `unlockGemPrice` |
+| `Skills.csv`, `SkillEffects.csv` | `skillId` | 아래 [타워 스킬](#타워-스킬) 참고 |
 
 - 실행: 메뉴 `SlimeTD > Data > Import Tower Sheets`. `TowerData`를 ID로 찾아(없으면 `TowerData_<코드명>` 이름, 그래도 없으면 새로 생성) 숫자 필드를 덮어쓰고 `TowerCatalog`를 시트 기준으로 채운다
 - 프리팹, 투사체 프리팹 같은 에셋 참조는 임포터가 건드리지 않으므로 인스펙터에서 한 번 연결한다
 - 숫자는 시트에서만 고친다. 인스펙터에서 고쳐도 다음 임포트 때 덮어써진다
 
-## 타워 스킬 (설계안, 미구현)
+## 타워 스킬
 
-스킬은 타워에 귀속되고, 발동 조건/확률/쿨타임/효과 종류 같은 부품은 공통으로 쓴다. 규칙과 용어는 [슬라임TD_타워스킬설계.md](슬라임TD_타워스킬설계.md) 참고.
+스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`, `SkillEffects.csv`)가 원천이다. 임포트하면 스킬 에셋(`TowerSkillData`)과 `SkillCatalog`가 만들어진다. `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 데이터 구조와 임포트까지 구현돼 있고, 전투에서 스킬을 실행하는 부분(발동 판정, 효과 적용)은 아직 없다. 스킬 내용은 미확정이라 시트의 `9xxx` 번호 스킬은 구조 검증용 테스트 스킬이다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
+
+**정의(SO)와 런타임을 나눈다.** SO는 읽기 전용이고, 타워가 만들어질 때(`BaseTower.Initialize`) `TowerData`와 `SkillCatalog.GetSkills(towerId)`를 합쳐 타워별 런타임 객체가 쿨타임, N번째 공격 카운터, 수치 합산을 들고 관리한다 (런타임 객체는 아직 없다).
 
 ```
-TowerData (스킬 추가 시 확장)
-└─ skills            : TowerSkillEntry[]          // 개수 제한 없음
+SkillCatalog (SO, 1개. Assets/Datas/SkillCatalog.asset)
+└─ skills            : TowerSkillData[]           // 임포터가 채움
+   런타임 인덱스: towerId -> 스킬 목록 (해금 레벨 순, 같으면 ID 순)
+   GetSkills(towerId) — 없으면 빈 목록. 해금 레벨에 따른 활성화는 호출한 쪽이 한다
 
-공격력(레벨) = baseAttack × (1 + attackGrowthRate / 100 × (레벨 - 1))
-공격속도는 레벨로 오르지 않는다. 기본 100%이고 스킬이 가산한다.
-
-TowerSkillEntry
-├─ skill             : TowerSkillData             // 이 타워 전용 정의
-└─ unlockLevel       : int = 1                    // 기본 장착이면 1
-
-TowerSkillData (타워별 SO, 공통 부품을 조합)
+TowerSkillData (SO, 스킬당 1개. Assets/Datas/Skills/<타워 코드명>/Skill_<코드명>.asset)
+├─ id, codeName, displayName, description
+├─ towerId           : int                        // 귀속된 타워
+├─ unlockLevel       : int = 1                    // 타워 레벨이 이 값 이상이면 활성
 ├─ trigger           : Always / OnAttack / OnHit / OnKill / EveryNthAttack
 ├─ nth               : int                        // EveryNthAttack일 때
-├─ chance            : float                      // 0이면 확률 판정 없음
-├─ cooldown          : float                      // 0이면 쿨타임 없음
-├─ target            : 기본 타겟 / 보스 우선 / 범위 내 전체 / 아군 전체
-└─ effects           : 효과 목록 + 수치
+├─ chance            : float                      // %. 0이면 확률 판정 없음
+├─ cooldown          : float                      // 초. 0이면 쿨타임 없음
+└─ effects           : SkillEffectEntry[]         // type, value, valueType, duration
 ```
 
+| 시트 | 키 | 열 |
+|---|---|---|
+| `Skills.csv` | `skillId` | `codeName`, `name`, `description`, `towerId`, `unlockLevel`(기본 1), `trigger`, `nth`, `chance`(%, 비우면 없음), `cooldown`(초, 비우면 없음) |
+| `SkillEffects.csv` | `skillId` (스킬 하나에 효과 여러 줄) | `effectType`, `value`, `valueType`, `duration`(초, 비우면 상시) |
+
+- 실행: 메뉴 `SlimeTD > Data > Import Skill Sheets`. 스킬을 ID로 찾아(없으면 새로 생성) 값을 덮어쓰고, 시트에 있는 스킬로 `SkillCatalog`를 채운다. 여러 번 실행해도 결과가 같다. `towerId`가 `Towers.csv`에 없는 행은 건너뛴다
+- `effectType`: `CritChance` / `CritBonus` / `AttackSpeed` / `Attack` / `MultiShot` / `Pierce` / `Slow` / `JellyGain`
+- `valueType`: `Fixed`(고정, 더하기) / `Percent`(퍼센트). 효과마다 쓸 수 있는 단위가 정해져 있다 (`SkillEffectRules`)
+
+| 효과 | 고정 | 퍼센트 |
+|---|---|---|
+| `Attack` (공격력) | +N | 레벨이 반영된 기본 공격력의 N% |
+| `AttackSpeed` | 없음 | +N% (예: +10% → 1.1배) |
+| `CritChance`, `CritBonus` | +N%p | 없음 |
+| `Slow` (이감) | 속도 −N | 슬라임 기본 속도의 N% |
+| `MultiShot`, `Pierce`, `JellyGain` | +N (발 수, 관통 수, 젤리) | 없음 |
+
+- 지원하지 않는 단위 조합이나 해석할 수 없는 값이 있는 행은 로그를 남기고 건너뛴다
+- 공격력(레벨) = `baseAttack × (1 + attackGrowthRate / 100 × (레벨 - 1))`. 공격속도는 레벨로 오르지 않는다. 기본 100%이고 스킬이 가산한다
+- 데미지는 발사 시점(근접은 타격 프레임)에 `DamageInfo`(데미지, 치명타 여부)로 확정되어 슬라임에게 전달된다. 효과 목록은 이후 단계에서 `DamageInfo`에 추가한다. 공격 시 확률로 젤리를 얻는 스킬(운빨존많겜 산적 방식)은 타워가 공격할 때 바로 지급한다
 - **타워 레벨**은 로비에서 올리는 영구 성장이며 최대 15다. 타워 종류별로 저장하며 합성과 무관하다. 인게임에서는 오르지 않고, 게임 시작 시 정해진 값을 타워 생성 시점에 스냅샷으로 받는다 (`ITowerLevelService`, 전역 스코프)
+- 같은 종류 효과의 중첩은 수치를 합산하고, 지속 효과는 같은 종류를 새로 걸면 타이머를 갱신한다. 상시 합과 지속 합(수치 + 공유 타이머)은 따로 보관하고 최종 값 = 상시 합 + 지속 합에 캡을 적용한다. 효과 종류마다 하드캡을 둘 수 있다 (상한 수치 미정)
 - **타워 강화**(전투 중 성장)는 런타임 상태로만 존재하고 전투가 끝나면 초기화된다. 후순위
-- 치명타 확률과 보너스(기본 10%, 100%)는 타워 데이터가 가지며 스킬이 가산한다. 판정 로직과 확률 판정은 공통 부품이다
-- 효과 종류(이감, 공격력 업 등)가 합산 방식과 하드캡(없으면 무제한)을 가진다. 스킬은 종류와 수치만 넘긴다
-- 상시 합과 지속 합(수치 + 공유 타이머)을 효과 종류마다 따로 보관하고, 최종 값 = 상시 합 + 지속 합에 캡을 적용한다
-- 위 구조는 설계안이다. 필드 이름과 분할 단위는 구현 시 조정한다
 
 ## 플레이어 데이터 (메타)
 

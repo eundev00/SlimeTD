@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba6f47d47911704b96aa5a3eaf291df, type: 3}
+  m_Name: Skill_TestCrossbowPierce
+  m_EditorClassIdentifier: Assembly-CSharp::TowerSkillData
+  _id: 9003
+  _codeName: TestCrossbowPierce
+  _displayName: "(\uD14C\uC2A4\uD2B8) \uAD00\uD1B5"
+  _description: "\uD654\uC0B4\uC774 \uC801 2\uB9C8\uB9AC\uB97C \uAD00\uD1B5"
+  _towerId: 204
+  _unlockLevel: 1
+  _trigger: 0
+  _nth: 0
+  _chance: 0
+  _cooldown: 0
+  _effects:
+  - _type: 5
+    _value: 2
+    _valueType: 0
+    _duration: 0

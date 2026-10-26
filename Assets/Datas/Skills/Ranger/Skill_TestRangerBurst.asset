@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba6f47d47911704b96aa5a3eaf291df, type: 3}
+  m_Name: Skill_TestRangerBurst
+  m_EditorClassIdentifier: Assembly-CSharp::TowerSkillData
+  _id: 9001
+  _codeName: TestRangerBurst
+  _displayName: "(\uD14C\uC2A4\uD2B8) \uC5F0\uBC1C"
+  _description: "3\uBC88\uC9F8 \uACF5\uACA9\uB9C8\uB2E4 \uD654\uC0B4 1\uBC1C \uCD94\uAC00"
+  _towerId: 202
+  _unlockLevel: 1
+  _trigger: 4
+  _nth: 3
+  _chance: 0
+  _cooldown: 0
+  _effects:
+  - _type: 4
+    _value: 1
+    _valueType: 0
+    _duration: 0

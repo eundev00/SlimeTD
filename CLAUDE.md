@@ -119,7 +119,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 - **슬라임 이동**: `SplineContainer` + `SplineAnimate`로 경로를 따르고, 갱신은 UpdateSubscriptionService에 붙인다. 타겟 탐색 로직은 Service 계층에 두고 View는 표현만 한다
 - **오브젝트 풀링**: 슬라임/발사체는 스폰 빈도가 높다. Unity `ObjectPool<T>`를 쓰고, 반환 시 `ReactiveProperty`와 구독 상태를 반드시 초기화한다
 - **밸런스 수치**: 체력/데미지/젤리/라이프 차감량은 ScriptableObject로 분리해 코드에 하드코딩하지 않는다
-- **타워 데이터 파이프라인**: 타워 숫자는 Assets/Datas/Sheets/의 CSV(Grades.csv, Towers.csv)가 원천이다. 메뉴 SlimeTD > Data > Import Tower Sheets가 TowerData 에셋과 TowerCatalog를 채우며, 에셋의 숫자 필드를 인스펙터에서 직접 고치지 않는다. 프리팹/투사체 연결은 인스펙터에서 한다. 상세는 [Doc/슬라임TD_데이터구조설계.md](Doc/슬라임TD_데이터구조설계.md) 참고
+- **타워 데이터 파이프라인**: 타워 숫자는 Assets/Datas/Sheets/의 CSV(Grades.csv, Towers.csv)가 원천이다. 메뉴 SlimeTD > Data > Import Tower Sheets가 TowerData 에셋과 TowerCatalog를 채우며, 에셋의 숫자 필드를 인스펙터에서 직접 고치지 않는다. 프리팹/투사체/썸네일 연결은 인스펙터에서 한다. 타워 스킬은 Skills.csv와 SkillEffects.csv가 원천이고 메뉴 SlimeTD > Data > Import Skill Sheets가 TowerSkillData 에셋과 SkillCatalog를 채운다 (스킬은 타워 한 개에 귀속되고 TowerData는 스킬을 모른다. 타워 생성 시 SkillCatalog.GetSkills(towerId)로 찾는다). 상세는 [Doc/슬라임TD_데이터구조설계.md](Doc/슬라임TD_데이터구조설계.md) 참고
 - **로비 웨이브 맵**: 전투 탭은 맵 선택 대신 세로 스크롤 웨이브 진행도 맵이다. 프리팹은 메뉴 `SlimeTD > Wave > Build Wave Map Forest`(`WaveMapBuilder`)가 만들며 실행마다 소품 배치가 바뀌고 `WaveForest.prefab`을 덮어쓴다. 상세는 [Doc/슬라임TD_로비UI.md](Doc/슬라임TD_로비UI.md) 참고
 - **데이터 스크립트 위치**: ScriptableObject 정의는 Assets/Scripts/Data/에 둔다 (Game/ 아래에 두지 않는다)
 - **플레이어 데이터(메타)**: 골드/보석/헌터 카드/헌터 레벨/최고 웨이브는 IPlayerDataService(전역)가 들고 IPlayerDataStore로 저장한다. 최고 웨이브는 GameplayService가 `ReportWaveReached`로 기록하고 로비 웨이브 맵이 구독한다. 저장 위치는 구현체 교체로 서버 전환이 가능해야 한다. 로컬 저장을 지워 새 계정으로 시작하려면 메뉴 `SlimeTD > Data > Reset Player Data`를 쓴다. 타워 레벨은 로비에서 정하고 인게임에서는 오르지 않는다

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _id: 105
   _gradeId: 1
-  _gradeName: 
+  _gradeName: "\uC77C\uBC18"
   _enabled: 0
   _towerName: "\uCC29\uD55C \uC2AC\uB77C\uC784"
   _prefab: {fileID: 0}
