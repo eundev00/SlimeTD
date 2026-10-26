@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b1d6afc360df34cb5988b2bf9e7471b6
+timeCreated: 1498896172
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Mage/Materials/skeleton_mage_mat.mat
+  uploadId: 336309

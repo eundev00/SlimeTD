@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 61921c56c31e64d689545392c184a167
+timeCreated: 1498235624
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Crossbowman/Animations/_skeleton_crossbowmen_animation_list.txt
+  uploadId: 336309

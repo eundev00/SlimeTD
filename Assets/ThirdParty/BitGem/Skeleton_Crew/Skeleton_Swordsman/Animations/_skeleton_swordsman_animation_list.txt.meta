@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d1334af723b6f4c7f984b1d83e7ba2f0
+timeCreated: 1498819503
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Swordsman/Animations/_skeleton_swordsman_animation_list.txt
+  uploadId: 336309

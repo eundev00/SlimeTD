@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f545404f9797f53479982d5a58357185
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Grunt/Animations/hit_back.anim
+  uploadId: 336309

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 88788daf2ab66454e96a07836c700a31
+timeCreated: 1495971952
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_King/Animations/_skeleton_king_animation_list.txt
+  uploadId: 336309

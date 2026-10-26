@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2662fc7f8b8d78a4eb94a4ec85a7a0ea
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Grunt/Animations/jump.anim
+  uploadId: 336309

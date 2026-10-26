@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a6f06f4a118e44c46b88e066c897bcab
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Grunt/Animations/strafe_right.anim
+  uploadId: 336309

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bac6e570b60844e7c8c640f3e5889bb8
+timeCreated: 1497955770
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Grunt/Animations/_skeleton_grunt_animation_list.txt
+  uploadId: 336309

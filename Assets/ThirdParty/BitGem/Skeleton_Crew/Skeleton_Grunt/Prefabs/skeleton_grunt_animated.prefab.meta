@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c8b6f3e5f1372674791007d8c9b6b926
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Grunt/Prefabs/skeleton_grunt_animated.prefab
+  uploadId: 336309

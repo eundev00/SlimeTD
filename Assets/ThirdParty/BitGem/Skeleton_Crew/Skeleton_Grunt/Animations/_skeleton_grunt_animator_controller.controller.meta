@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f5cdeaae4323949c289169ae47456d87
+timeCreated: 1497951925
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Grunt/Animations/_skeleton_grunt_animator_controller.controller
+  uploadId: 336309

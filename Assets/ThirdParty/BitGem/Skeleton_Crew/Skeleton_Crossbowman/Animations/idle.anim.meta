@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 78f2aae0219b861459cb29e8a6729a3a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148218
+  packageName: Skeleton Crew - Proto Series
+  packageVersion: 1.1
+  assetPath: Assets/BitGem/Skeleton_Crew/Skeleton_Crossbowman/Animations/idle.anim
+  uploadId: 336309
