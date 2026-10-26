@@ -1,6 +1,2 @@
 ﻿skillId,codeName,name,description,towerId,unlockLevel,trigger,nth,chance,cooldown
 스킬ID,코드명,이름,설명,타워ID,해금 레벨(기본 1),발동 시점(Always/OnAttack/OnHit/OnKill/EveryNthAttack),N번째 공격일 때 N,발동 확률 %(비우면 없음),쿨타임 초(비우면 없음)
-9001,TestRangerBurst,(테스트) 연발,3번째 공격마다 화살 1발 추가,202,1,EveryNthAttack,3,,
-9002,TestKnightCrit,(테스트) 치명 훈련,치명타 확률 +10%p,203,1,Always,,,
-9003,TestCrossbowPierce,(테스트) 관통,화살이 적 2마리를 관통,204,1,Always,,,
-9004,TestArcherLoot,(테스트) 노획,공격 시 5% 확률로 젤리 2 획득,101,1,OnAttack,,5,

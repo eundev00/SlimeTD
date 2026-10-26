@@ -12,10 +12,6 @@ public static class DataKeys
     public const string GridMapData1 = "GridMapData1";
     public const string GridMapData2 = "GridMapData2";
     public const string SkillCatalog = "SkillCatalog";
-    public const string Skill_TestArcherLoot = "Skill_TestArcherLoot";
-    public const string Skill_TestCrossbowPierce = "Skill_TestCrossbowPierce";
-    public const string Skill_TestKnightCrit = "Skill_TestKnightCrit";
-    public const string Skill_TestRangerBurst = "Skill_TestRangerBurst";
     public const string SlimeDepthBucketSettings = "SlimeDepthBucketSettings";
     public const string Slime_01 = "Slime_01";
     public const string Slime_02 = "Slime_02";
@@ -44,10 +40,6 @@ public static class DataKeys
         { GridMapData1, "Assets/Datas/Grid/GridMapData1.asset" },
         { GridMapData2, "Assets/Datas/Grid/GridMapData2.asset" },
         { SkillCatalog, "Assets/Datas/SkillCatalog.asset" },
-        { Skill_TestArcherLoot, "Assets/Datas/Skills/Archer/Skill_TestArcherLoot.asset" },
-        { Skill_TestCrossbowPierce, "Assets/Datas/Skills/Crossbow/Skill_TestCrossbowPierce.asset" },
-        { Skill_TestKnightCrit, "Assets/Datas/Skills/Knight/Skill_TestKnightCrit.asset" },
-        { Skill_TestRangerBurst, "Assets/Datas/Skills/Ranger/Skill_TestRangerBurst.asset" },
         { SlimeDepthBucketSettings, "Assets/Datas/SlimeDepthBucketSettings.asset" },
         { Slime_01, "Assets/Datas/Slimes/Slime_01.asset" },
         { Slime_02, "Assets/Datas/Slimes/Slime_02.asset" },
