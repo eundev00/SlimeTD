@@ -11,6 +11,7 @@ LobbyScene
      └─ 헌터 탭 (HunterCardView)
 LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
  ├─ LobbyHeader                 재화 칩 초기화
+ ├─ BattleView + BattlePresenter (EntryPoint)            전투 시작 버튼 → 게임 씬 전환
  ├─ WaveScrollView + WaveScrollPresenter (EntryPoint)    최고 웨이브 → 웨이브 맵
  ├─ PopupService (EntryPoint)   로비 팝업
  └─ HunterCardView + HunterCardPresenter (EntryPoint)    헌터 카드 목록, 정렬, 상세 팝업 열기
@@ -20,7 +21,7 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 |---|---|---|
 | `LobbyTabs` | `Scripts/Lobby` | 탭 버튼 ↔ 패널 전환. 잠긴 탭은 선택 불가 |
 | `LobbyHeader` | 〃 | 골드/보석 `CurrencyView` 초기화 (메서드 주입) |
-| `BattleView` | `Scripts/Lobby/BattleView` | 전투 탭. `WaveScrollSlot`만 노출한다 |
+| `BattleView` / `BattlePresenter` | `Scripts/Lobby/BattleView` | 전투 탭. `WaveScrollSlot`과 시작 버튼(`StartClicked`, `SetStartInteractable`)을 노출하고, Presenter가 `TransitionAsync(Lobby, Game)`으로 게임 씬에 들어간다 |
 | `WaveScrollView` / `WaveScrollPresenter` | `Scripts/Lobby/WaveScroll` | 웨이브 진행도 맵 (아래) |
 | `HunterCardView` / `HunterCardPresenter` / `HunterCard` / `SortButton` | `Scripts/Lobby/HunterView` | 헌터 탭. 카드는 레벨순/등급순 4단계 정렬 |
 | `HunterDetailPopup` / `HunterDetailPresenter` | `Scripts/Lobby/HunterDetailPopup` | 헌터 상세 팝업. 레벨업/해금/MAX 버튼 |
@@ -28,8 +29,10 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 
 - `CurrencyView`은 클릭하면 `CurrencyViewClickedEvent(CurrencyType)`를 MessagePipe로 발행한다. 상점이 생기면 이 이벤트를 받아 연다 (`// TODO` 상태)
 - 헌터 카드는 `hunter.Data.Enabled`인 헌터만 만든다. 레벨/해금/카드/골드가 바뀌면 카드를 갱신한다
-- 로비에서 게임 씬으로 넘어가는 코드는 현재 없다 (`BtnStart`, `BtnDevGame1`, `BtnDevTest` 오브젝트는 남아 있지만 연결된 스크립트가 없다). 게임 → 로비 복귀만 `TransitionAsync`로 구현돼 있다
-- `LobbyProfile`, `LobbyTab`, `Currency*` 프리팹은 `PrefabKeys`에 등록돼 있다. `LobbyProfile`의 구성과 쓰임은 이 문서에 반영하지 못했다
+- 전투 시작: `BattleView`의 시작 버튼 → `BattlePresenter`가 버튼을 잠그고 `SceneNames.Game`으로 전환한다. 게임 → 로비 복귀는 `TopHudPresenter`와 `GameResultPresenter`가 한다. 게임1/테스트 씬으로 가는 DEV 버튼은 지금 연결되어 있지 않다
+- 헌터 카드와 상세 팝업은 `TowerData`의 썸네일을 쓴다: 카드는 `ThumbnailSmall`(54px), 팝업은 `ThumbnailLarge`(128px). 잠긴 헌터는 어두운 실루엣으로 칠한다 (`_lockedThumbnailColor`)
+- 썸네일은 `Assets/Art/UI/Thumbnail/Thumb_{코드명}_Small|Large.png`이고, 새 타워는 `TowerData`의 썸네일 필드를 인스펙터에서 직접 연결한다 (시트 임포트는 이 필드를 건드리지 않는다)
+- `LobbyProfile`, `LobbyTab`, `Currency*`, `GradeBadge` 프리팹은 `PrefabKeys`에 등록돼 있다. `LobbyProfile`의 구성과 쓰임은 이 문서에 반영하지 못했다. 프리팹 경로를 옮기면 메뉴 `Tools > SlimeTD > Resource Keys > Create Prefab Keys`로 키를 다시 만든다
 
 ## 웨이브 진행도 맵 (전투 탭)
 
@@ -56,7 +59,7 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 
 ## 웨이브 맵 프리팹 제작
 
-메뉴 `SlimeTD > Wave > Build Wave Map Forest`가 `WaveMapBuilder`로 `Assets/Prefabs/Lobby/WaveForest.prefab`을 만든다. 실행할 때마다 소품 배치를 새로 뽑아 기존 프리팹을 덮어쓴다 (시드는 로그에 남는다).
+메뉴 `SlimeTD > Wave > Build Wave Map Forest`가 `WaveMapBuilder`로 `Assets/Prefabs/Lobby/LobbyMain/WaveForest.prefab`을 만든다. 실행할 때마다 소품 배치를 새로 뽑아 기존 프리팹을 덮어쓴다 (시드는 로그에 남는다).
 
 - 레이어 순서: `LayerGrass`(풀밭) → `LayerPath`(흙길) → `LayerProps`(소품). 풀밭은 중앙에서 화면 가장자리까지 채우고 흙길을 위에 얹는다
 - 흙길 이미지의 투명 여백을 계산해 실제 흙 폭이 `PathVisibleWidth`(460)가 되도록 배율을 잡는다. 세로 타일은 `TileOverlap`만큼 겹쳐 이음새를 숨긴다
@@ -68,6 +71,5 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 
 ## 미구현 / 후속
 
-- 로비에서 게임 씬을 시작하는 버튼과 진입 흐름
 - 상점 (`CurrencyViewClickedEvent` 수신)
 - 난이도 시스템 (웨이브 맵 위쪽 확장 지점)

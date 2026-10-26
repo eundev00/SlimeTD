@@ -8,7 +8,7 @@ using UnityEngine.UI;
 // 웨이브 맵 컨셉 하나를 프리팹으로 만든다. 기준 수치는 WaveForest.prefab이며, 실행할 때마다 소품 배치를 새로 뽑아 기존 프리팹을 덮어쓴다.
 public static class WaveMapBuilder
 {
-    private const string PrefabFolder = "Assets/Prefabs/Lobby";
+    private const string PrefabFolder = "Assets/Prefabs/Lobby/LobbyMain";
     private const string FontPath = "Assets/Fonts/Pretendard/Pretendard-SemiBold SDF.asset";
     private const string ThemeFolder = "Assets/ThirdParty/Layer Lab/GUI Pro-MinimalGame";
 

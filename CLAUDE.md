@@ -176,11 +176,9 @@ Match를 0으로 두는 이유는 세로 게임에서 **가로 폭이 UI 레이�
 - 카메라는 세로 비율 기준으로 프레이밍한다. 가로 FOV/orthographic size를 기준으로 잡으면 세로 화면에서 맵이 화면을 못 채운다
 - 맵은 한 화면에 다 들어오는 것을 기본으로 하되, 스크롤/줌이 필요하면 **세로 스크롤**만 허용한다
 
-### 미설정 항목
+### 화면 방향 설정
 
-현재 프로젝트는 아직 Unity 기본값(가로 기준)이라 아래 설정이 필요하다.
-
-- `ProjectSettings > Player > Resolution and Presentation`: Default Orientation을 **Portrait**로 변경 (현재 `defaultScreenOrientation: 1`이고 가로 회전 허용 플래그도 켜져 있어 확인이 필요하다)
+`ProjectSettings > Player > Resolution and Presentation`의 Default Orientation은 **Portrait**(`defaultScreenOrientation: 0`)로 고정했고, 가로·거꾸로 세로 회전 허용 플래그는 껐다.
 
 ---
 
