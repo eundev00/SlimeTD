@@ -10,6 +10,7 @@ public class TowerSkillData : ScriptableObject
     [SerializeField] private string _description;
     [SerializeField] private int _towerId;
     [SerializeField] private int _unlockLevel = 1;
+    [SerializeField] private int _upgradeOfId;
 
     [Header("발동 조건")]
     [SerializeField] private SkillTrigger _trigger;
@@ -26,6 +27,8 @@ public class TowerSkillData : ScriptableObject
     public string Description => _description;
     public int TowerId => _towerId;
     public int UnlockLevel => _unlockLevel;
+    public int UpgradeOfId => _upgradeOfId;
+    public bool IsUpgrade => _upgradeOfId != 0;
     public SkillTrigger Trigger => _trigger;
     public int Nth => _nth;
     public float Chance => _chance;

@@ -102,12 +102,17 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 SkillCatalog (SO, 1개. Assets/Datas/SkillCatalog.asset)
 └─ skills            : TowerSkillData[]           // 임포터가 채움
    런타임 인덱스: towerId -> 스킬 목록 (해금 레벨 순, 같으면 ID 순)
-   GetSkills(towerId) — 없으면 빈 목록. 해금 레벨에 따른 활성화는 호출한 쪽이 한다
+   GetSkills(towerId) — 없으면 빈 목록. 해금 여부와 상관없이 그 타워의 전체 스킬 (UI 슬롯용)
+   GetActiveSkills(towerId, level, buffer) — 레벨에 해금됐고, 해금된 업그레이드 스킬에 대체되지 않은 스킬만
+   GetSlots(towerId, level, buffer) — UI 슬롯용. 계열(upgradeOf로 이어진 스킬들) 하나가 슬롯 하나
+     SkillSlot: Root(계열 대표), Current(적용 중인 단계, 잠겼으면 없음), Next(다음에 해금될 단계, 없으면 끝)
+     IsLocked = Current 없음 → 자물쇠 / HasNextUpgrade = Current와 Next 둘 다 있음 → 화살표
 
 TowerSkillData (SO, 스킬당 1개. Assets/Datas/Skills/<타워 코드명>/Skill_<코드명>.asset)
 ├─ id, codeName, displayName, description
 ├─ towerId           : int                        // 귀속된 타워
 ├─ unlockLevel       : int = 1                    // 타워 레벨이 이 값 이상이면 활성
+├─ upgradeOfId       : int                        // 0이면 일반 스킬. 값이 있으면 그 스킬을 대체하는 업그레이드
 ├─ trigger           : Always / OnAttack / OnHit / OnKill / EveryNthAttack
 ├─ nth               : int                        // EveryNthAttack일 때
 ├─ chance            : float                      // %. 0이면 확률 판정 없음
@@ -117,7 +122,7 @@ TowerSkillData (SO, 스킬당 1개. Assets/Datas/Skills/<타워 코드명>/Skill
 
 | 시트 | 키 | 열 |
 |---|---|---|
-| `Skills.csv` | `skillId` | `codeName`, `name`, `description`, `towerId`, `unlockLevel`(기본 1), `trigger`, `nth`, `chance`(%, 비우면 없음), `cooldown`(초, 비우면 없음) |
+| `Skills.csv` | `skillId` | `codeName`, `name`, `description`, `towerId`, `unlockLevel`(기본 1), `upgradeOf`(대체할 스킬 ID, 비우면 없음), `trigger`, `nth`, `chance`(%, 비우면 없음), `cooldown`(초, 비우면 없음) |
 | `SkillEffects.csv` | `skillId` (스킬 하나에 효과 여러 줄) | `effectType`, `value`, `valueType`, `duration`(초, 비우면 상시) |
 
 - 실행: 메뉴 `SlimeTD > Data > Import Skill Sheets`. 스킬을 ID로 찾아(없으면 새로 생성) 값을 덮어쓰고, 시트에 있는 스킬로 `SkillCatalog`를 채운다. 여러 번 실행해도 결과가 같다. `towerId`가 `Towers.csv`에 없는 행은 건너뛴다
@@ -132,6 +137,7 @@ TowerSkillData (SO, 스킬당 1개. Assets/Datas/Skills/<타워 코드명>/Skill
 | `Slow` (이감) | 속도 −N | 슬라임 기본 속도의 N% |
 | `MultiShot`, `Pierce`, `JellyGain` | +N (발 수, 관통 수, 젤리) | 없음 |
 
+- 업그레이드: 같은 스킬을 강화하는 단계(예: 2연발 확률 10% → 20%)는 새 행을 만들고 `upgradeOf`에 이전 단계의 스킬 ID를 넣는다. 같은 계열인지는 이 연결로 안다 (대표 = `upgradeOf`가 없는 스킬, 따라가면 계열 전체). 업그레이드가 해금되면 이전 단계는 비활성이 되고 가장 높게 해금된 단계 하나만 활성이다. 대체 대상은 같은 타워의 더 낮은 해금 레벨 스킬이어야 하고, 아니면 임포트 때 경고한다
 - 지원하지 않는 단위 조합이나 해석할 수 없는 값이 있는 행은 로그를 남기고 건너뛴다
 - 공격력(레벨) = `baseAttack × (1 + attackGrowthRate / 100 × (레벨 - 1))`. 공격속도는 레벨로 오르지 않는다. 기본 100%이고 스킬이 가산한다
 - 데미지는 발사 시점(근접은 타격 프레임)에 `DamageInfo`(데미지, 치명타 여부)로 확정되어 슬라임에게 전달된다. 효과 목록은 이후 단계에서 `DamageInfo`에 추가한다. 공격 시 확률로 젤리를 얻는 스킬(운빨존많겜 산적 방식)은 타워가 공격할 때 바로 지급한다

@@ -87,6 +87,7 @@ public static class SkillSheetImporter
                 Debug.Log($"[{LogTag}] 시트에 없는 스킬 에셋입니다: {AssetDatabase.GetAssetPath(pair.Value)}");
         }
 
+        ValidateUpgrades(imported);
         UpdateCatalog(imported);
 
         AssetDatabase.SaveAssets();
@@ -104,6 +105,7 @@ public static class SkillSheetImporter
         so.FindProperty("_description").stringValue = SheetReader.Get(row, "description");
         so.FindProperty("_towerId").intValue = towerId;
         so.FindProperty("_unlockLevel").intValue = SheetReader.TryGetInt(row, "unlockLevel", out int level) ? Mathf.Max(1, level) : 1;
+        so.FindProperty("_upgradeOfId").intValue = SheetReader.TryGetInt(row, "upgradeOf", out int upgradeOf) ? upgradeOf : 0;
         so.FindProperty("_trigger").enumValueIndex = (int)trigger;
         so.FindProperty("_nth").intValue = SheetReader.TryGetInt(row, "nth", out int nth) ? nth : 0;
         so.FindProperty("_chance").floatValue = SheetReader.TryGetFloat(row, "chance", out float chance) ? Mathf.Clamp(chance, 0f, 100f) : 0f;
@@ -126,6 +128,27 @@ public static class SkillSheetImporter
 
         so.ApplyModifiedPropertiesWithoutUndo();
         EditorUtility.SetDirty(skill);
+    }
+
+    // 대체 대상은 같은 타워의 더 낮은 해금 레벨 스킬이어야 한다. 아니면 대체가 의도대로 동작하지 않는다.
+    private static void ValidateUpgrades(List<TowerSkillData> skills)
+    {
+        var byId = skills.ToDictionary(s => s.Id);
+
+        foreach (var skill in skills.Where(s => s.IsUpgrade))
+        {
+            if (!byId.TryGetValue(skill.UpgradeOfId, out var target))
+            {
+                Debug.Log($"[{LogTag}] upgradeOf 대상 스킬이 시트에 없습니다: {skill.Id} -> {skill.UpgradeOfId}", skill);
+                continue;
+            }
+
+            if (target.TowerId != skill.TowerId)
+                Debug.Log($"[{LogTag}] 다른 타워의 스킬을 대체할 수 없습니다: {skill.Id} -> {skill.UpgradeOfId}", skill);
+
+            if (target.UnlockLevel >= skill.UnlockLevel)
+                Debug.Log($"[{LogTag}] 대체 스킬의 해금 레벨이 대상보다 높아야 합니다: {skill.Id}(Lv.{skill.UnlockLevel}) -> {target.Id}(Lv.{target.UnlockLevel})", skill);
+        }
     }
 
     // 카탈로그는 시트에 있는 스킬만 담는다. 타워 에셋은 스킬을 알지 못한다.
