@@ -4,5 +4,5 @@ public interface ISlime
 {
     SlimeStats Stats { get; }
     Vector3 Position { get; }
-    void TakeDamage(int damage, bool isCritical = false);
+    void TakeDamage(DamageInfo info);
 }

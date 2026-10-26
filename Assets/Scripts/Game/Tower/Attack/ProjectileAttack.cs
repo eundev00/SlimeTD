@@ -72,8 +72,7 @@ public class ProjectileAttack : AttackBehaviourBase
             return;
         }
 
-        var hit = Context.Stats.RollHit();
-        projectile.Initialize(GetFireDirection(target, firePosition), hit.Damage, hit.IsCritical);
+        projectile.Initialize(GetFireDirection(target, firePosition), Context.Stats.RollHit());
     }
 
     private Vector3 GetFireDirection(in TargetInfo target, Vector3 firePosition)

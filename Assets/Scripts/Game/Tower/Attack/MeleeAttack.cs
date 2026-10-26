@@ -28,7 +28,6 @@ public class MeleeAttack : AttackBehaviourBase
 
     protected override void Apply(in TargetInfo target)
     {
-        var hit = Context.Stats.RollHit();
-        target.Slime.TakeDamage(hit.Damage, hit.IsCritical);
+        target.Slime.TakeDamage(Context.Stats.RollHit());
     }
 }

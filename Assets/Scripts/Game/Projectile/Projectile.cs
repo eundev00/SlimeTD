@@ -10,8 +10,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     [SerializeField] private float _hitRadius = 0.15f;
 
     private Vector3 _direction;
-    protected int Damage;
-    protected bool IsCritical;
+    protected DamageInfo Info;
     private float _elapsedTime;
     private bool _isActive;
 
@@ -35,10 +34,9 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _slimeLayer = LayerMask.GetMask(GameTags.SlimeLayer);
     }
 
-    public void Initialize(Vector3 direction, int damage, bool isCritical)
+    public void Initialize(Vector3 direction, DamageInfo info)
     {
-        Damage = damage;
-        IsCritical = isCritical;
+        Info = info;
         _direction = direction.normalized;
         _elapsedTime = 0f;
         _isActive = true;
@@ -116,15 +114,14 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _isActive = false;
         _updateService.UnregisterUpdatable(this);
         _direction = Vector3.zero;
-        Damage = 0;
-        IsCritical = false;
+        Info = default;
         _elapsedTime = 0f;
     }
 
 
     protected virtual void OnHit(BaseSlime slime)
     {
-        slime.TakeDamage(Damage, IsCritical);
+        slime.TakeDamage(Info);
         ReturnToPool();
     }
 

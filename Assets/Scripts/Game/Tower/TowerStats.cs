@@ -30,7 +30,7 @@ public class TowerStats : IDisposable
         _attackSpeed.Value = Mathf.Max(0.01f, data.AttackSpeedPercent / 100f);
     }
 
-    public HitResult RollHit()
+    public DamageInfo RollHit()
     {
         float damage = Attack;
         bool critical = UnityEngine.Random.value < CritChance;
@@ -38,7 +38,7 @@ public class TowerStats : IDisposable
         if (critical)
             damage += damage * CritBonus;
 
-        return new HitResult(Mathf.Max(1, Mathf.RoundToInt(damage)), critical);
+        return new DamageInfo(Mathf.Max(1, Mathf.RoundToInt(damage)), critical);
     }
 
     public void Dispose()
