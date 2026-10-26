@@ -15,10 +15,6 @@ public class GameResultPopup : PopupBase
     [SerializeField] private GameObject _newRecordMark;
     [SerializeField] private GameObject _rewardRoot;
 
-    [Header("제목 색")]
-    [SerializeField] private Color _clearedTitleColor = new Color(1f, 0.84f, 0.31f);
-    [SerializeField] private Color _gameOverTitleColor = new Color(0.95f, 0.38f, 0.34f);
-
     public event Action RestartButtonClicked;
     public event Action LobbyButtonClicked;
 
@@ -66,10 +62,7 @@ public class GameResultPopup : PopupBase
     public void Setup(bool isCleared, int reachedWave, bool isNewRecord)
     {
         if (_titleText != null)
-        {
             _titleText.text = isCleared ? "스테이지 클리어!" : "게임 오버";
-            _titleText.color = isCleared ? _clearedTitleColor : _gameOverTitleColor;
-        }
 
         if (_waveText != null)
             _waveText.text = reachedWave.ToString();
