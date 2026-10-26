@@ -27,7 +27,8 @@ public static class TmpFontTrimmer
             return;
         }
 
-        if (!EditorUtility.DisplayDialog("TMP 폰트 정리",
+        // 배치 모드에서는 확인 창이 자동으로 취소되므로 건너뛴다
+        if (!Application.isBatchMode && !EditorUtility.DisplayDialog("TMP 폰트 정리",
                 $"{FontFolder}의 폰트 에셋 {guids.Length}개를 사용 글자({charset.Length}자)만 남기고 다시 생성합니다.\n되돌릴 수 없으니 먼저 커밋하세요.",
                 "진행", "취소"))
             return;

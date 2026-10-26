@@ -23,7 +23,7 @@ Addressables
 | `PopupBase` | `Scripts/Services/PopupService` | 모든 팝업의 부모. Open/Close 애니메이터 연출, 닫기 요청, 백키 처리 |
 | `PopupRoot` | 〃 | 팝업 부모 `_container`와 딤 `_dim`. 씬 LifetimeScope에 `RegisterComponentInHierarchy`로 등록 |
 | `IPopupService` / `PopupService` | 〃 | 프리팹 키로 팝업 생성(`IObjectResolver.Instantiate`로 주입 포함), 재사용, 스택, 딤 위치, 백키 |
-| `GameResultPopup` | `Scripts/Game/Hud/Result` | 결과 팝업. 백키 = 로비 버튼 |
+| `GameResultPopup` | `Scripts/Game/Hud/Result` | 결과 팝업. 제목(클리어/게임오버), 도달 웨이브, 신기록 표시와 다시하기/로비 버튼. 백키 = 로비 버튼 |
 | `HunterDetailPopup` | `Scripts/Lobby/HunterDetailPopup` | 로비 헌터 상세. `[PopupPresenter(typeof(HunterDetailPresenter))]`로 Presenter를 붙이고, `SetTowerId`로 대상을 정한다 |
 
 ## 규칙
@@ -31,6 +31,7 @@ Addressables
 - 팝업은 `IObjectResolver.Instantiate`로 생성되므로 `[Inject] public void Construct(...)`로 씬·프로젝트 서비스를 주입받을 수 있다. 주입은 `Awake`보다 먼저 끝난다
 - 팝업은 닫히면 비활성화되고 다음에 재사용된다. 주입은 처음 생성할 때 한 번뿐이므로, 구독은 `OnOpen`에서 걸고 `OnClose`에서 해제한다
 - 팝업에 `[PopupPresenter(typeof(X))]`를 붙이면 팝업이 열릴 때 자식 스코프에서 Presenter(`IPopupPresenter`)를 만들어 `Initialize()`를 호출하고, 닫히면 스코프와 함께 해제한다. 팝업 인스턴스는 스코프에 등록되므로 Presenter가 생성자로 받는다 (예: `HunterDetailPresenter`)
+- Presenter가 쓰는 씬 서비스(예: `IGameplayService`)는 `Lifetime.Singleton`으로 등록한다. `Lifetime.Scoped`로 두면 팝업의 자식 스코프가 별도 인스턴스를 새로 만들어, 팝업이 게임과 다른 빈 상태를 읽는다
 - `OpenAsync`는 열림 연출을 기다리지 않고 바로 인스턴스를 돌려준다. 받은 즉시 내용을 채운다
 - 팝업이 열려도 게임은 멈추지 않는다. 딤의 레이캐스트가 팝업 아래 터치(타워 소환/선택)를 막는다
 - 백키(Escape / 안드로이드 Back): 맨 위 팝업의 `OnBackPressed` 호출. 기본은 닫기, 연출 중에는 무시
@@ -59,8 +60,10 @@ Addressables
 
 ## 남은 에디터 작업
 
-- 결과 팝업은 뼈대 상태다. 지금 코드가 다루는 것은 도달 웨이브(`_waveText`)와 다시하기/로비 버튼뿐이다
-- [ ] `_rewardRoot` 연결은 비어 있다 (보상 UI가 없다). `TitleText`는 프리팹에 있지만 `GameResultPopup`에 필드가 없어 코드가 바꾸지 못한다. 클리어/게임오버 구분(`Setup`의 `isCleared`)도 아직 쓰지 않는다
+- 결과 팝업 화면은 뼈대(배경은 임시 색)이고, 표시하는 값은 연결돼 있다: 제목(`스테이지 클리어!`/`게임 오버`, 색 구분), 도달 웨이브, `신기록!` 마크 (최고 웨이브 숫자는 표시하지 않는다)
+- 도달 웨이브는 `GameplayInfo.ReachedWave`(저장하는 최고 기록과 같은 규칙), 신기록은 `ReachedWave > PreviousBestWave`(게임 시작 때 저장 기록)로 판정한다. 로비를 거치지 않은 에디터 테스트에서는 기록이 저장되지 않아 신기록을 표시하지 않는다
+- [ ] `_rewardRoot` 연결은 비어 있다 (보상 UI가 없다)
+- 화면에 새 한글을 추가하면 폰트에 글자가 없어 네모(□)로 보인다. 메뉴 `SlimeTD > Data > Trim TMP Fonts To Used Characters`로 문자셋을 다시 만들고 폰트를 갱신한다 (배치 모드에서도 실행된다)
 - [ ] `Panel` 아래에 기존 패널 자체 `Dim`이 있다. `PopupRoot` 딤과 겹쳐 더 어두워지므로 하나를 정리한다 (`Panel/Dim` 삭제 또는 `_useDim` 끄기)
 - [ ] 연출 수치·딤 색은 취향대로 조정
 
@@ -68,6 +71,7 @@ Addressables
 
 - [x] 다시하기 버튼: 게임 씬이 새로 로드된다 (에디터 플레이 모드 자동 점검: 로비 시작 → 게임오버 이벤트 → 팝업 → 클릭)
 - [x] 로비 버튼: 로비로 전환되고 게임 씬은 언로드된다 (같은 점검, 재시작 뒤 두 번째 팝업에서도 확인)
-- [ ] 게임오버 / 클리어 시 결과 팝업이 연출과 함께 열린다 (게임오버 시 팝업이 열리는 것까지는 확인, 연출과 클리어 경로는 못 봤다)
+- [x] 게임오버 팝업의 값: 제목 "게임 오버", 도달 웨이브, 신기록 표시 (웨이브 3 도달 후 게임오버 → 신기록, 재시작 후 웨이브 2 → 신기록 아님으로 점검. 최고 웨이브 텍스트를 뺀 뒤에는 컴파일과 렌더만 다시 확인했다)
+- [ ] 클리어 경로(`StageCleared`)의 제목과 연출은 점검하지 못했다. 열림 연출도 못 봤다
 - [ ] 팝업 뒤 딤이 깔리고, 딤 위를 눌러도 타워가 소환·선택되지 않는다
 - [ ] Escape 키(에디터) / Back 키(기기)로 로비 이동

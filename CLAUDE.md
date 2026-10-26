@@ -55,6 +55,8 @@ Bootstrap (상주, ProjectLifetimeScope + UpdateSubscriptionService)
 
 VContainer는 씬 전체를 자동 주입하지 않는다. `[Inject]`를 받는 MonoBehaviour는 해당 씬 LifetimeScope에 `RegisterComponentInHierarchy<T>()`로 반드시 등록한다. 주입은 필드 어트리뷰트가 아니라 `[Inject] public void Construct(...)` 메서드 주입을 쓴다.
 
+팝업 Presenter는 `PopupService`가 만드는 자식 스코프에서 해결된다. Presenter가 읽는 씬 서비스는 `Lifetime.Scoped`가 아니라 `Lifetime.Singleton`으로 등록한다. Scoped면 자식 스코프가 별도 인스턴스를 새로 만들어 게임과 다른 빈 상태를 읽는다 (`GameplayService`가 그랬다).
+
 ### MVP
 
 | 계층 | 역할 |

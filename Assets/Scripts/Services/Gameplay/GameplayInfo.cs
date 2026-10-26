@@ -8,6 +8,8 @@ public class GameplayInfo
     public ReactiveProperty<int> Jelly { get; }
     public ReactiveProperty<int> CurrentWave { get; }
     public ReactiveProperty<int> MaxWave { get; }
+    public ReactiveProperty<int> ReachedWave { get; }
+    public ReactiveProperty<int> PreviousBestWave { get; }
     public ReactiveProperty<int> SummonCost { get; }
     public ReactiveProperty<bool> IsCleared { get; }
 
@@ -17,6 +19,8 @@ public class GameplayInfo
         Jelly = new ReactiveProperty<int>(startingJelly);
         CurrentWave = new ReactiveProperty<int>(0);
         MaxWave = new ReactiveProperty<int>(0);
+        ReachedWave = new ReactiveProperty<int>(0);
+        PreviousBestWave = new ReactiveProperty<int>(0);
         SummonCost = new ReactiveProperty<int>(0);
         IsCleared = new ReactiveProperty<bool>(false);
     }
@@ -27,6 +31,8 @@ public class GameplayInfo
         Jelly.Dispose();
         CurrentWave.Dispose();
         MaxWave.Dispose();
+        ReachedWave.Dispose();
+        PreviousBestWave.Dispose();
         SummonCost.Dispose();
         IsCleared.Dispose();
     }

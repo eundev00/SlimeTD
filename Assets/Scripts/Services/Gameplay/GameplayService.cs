@@ -48,7 +48,10 @@ public class GameplayService : IGameplayService
 
     public async UniTask InitializeAsync()
     {
-        Config = await _resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
+        _info.PreviousBestWave.Value = _playerDataService.BestWave.Value;
+        _info.ReachedWave.Value = 0;
+
+        Config =await _resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
         if (Config == null)
         {
             Debug.Log($"[GameplayService] {DataKeys.GameConfig} 로드에 실패했습니다.");
@@ -116,7 +119,7 @@ public class GameplayService : IGameplayService
             _info.IsCleared.Value = e.EventType == GameProgressType.StageCleared;
 
             if (_info.IsCleared.Value)
-                _playerDataService.ReportWaveReached(e.WaveIndex);
+                ReportWaveReached(e.WaveIndex);
 
             _popupService.OpenAsync(PrefabKeys.GameResultPopup).Forget();
             return;
@@ -134,7 +137,7 @@ public class GameplayService : IGameplayService
                 _aliveCount += e.SlimeCount;
 
                 // 마지막 웨이브는 StageCleared에서만 기록해 완료 표시가 클리어 시에만 켜지게 한다
-                _playerDataService.ReportWaveReached(e.IsLastWave ? e.WaveIndex - 1 : e.WaveIndex);
+                ReportWaveReached(e.IsLastWave ? e.WaveIndex - 1 : e.WaveIndex);
                 Debug.Log($"[GameplayService] 웨이브 {_currentWaveIndex} 시작, 누적 슬라임: {_aliveCount}");
                 break;
 
@@ -146,6 +149,13 @@ public class GameplayService : IGameplayService
                 CheckWaveCleared();
                 break;
         }
+    }
+
+    // 저장하는 최고 기록과 결과 팝업에 보이는 도달 웨이브가 같은 값이어야 해서 한 곳에서 처리한다
+    private void ReportWaveReached(int wave)
+    {
+        _info.ReachedWave.Value = Mathf.Max(_info.ReachedWave.Value, wave);
+        _playerDataService.ReportWaveReached(wave);
     }
 
     private void OnSlimeReachedEnd(SlimeReachedEndEvent e)
