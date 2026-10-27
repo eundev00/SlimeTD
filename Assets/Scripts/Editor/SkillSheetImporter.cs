@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -11,6 +12,8 @@ public static class SkillSheetImporter
     private const string SheetFolder = "Assets/Datas/Sheets";
     private const string SkillsFile = "Skills.csv";
     private const string CatalogPath = "Assets/Datas/SkillCatalog.asset";
+    private const string IconFolder = "Assets/Art/UI/SkillIcon";
+    private const string IconPrefix = "SkillIcon_";
 
     [MenuItem("SlimeTD/Data/Import Skill Sheets")]
     public static void Import()
@@ -153,6 +156,7 @@ public static class SkillSheetImporter
         element.FindPropertyRelative("_id").intValue = skill.Id;
         element.FindPropertyRelative("_displayName").stringValue = SheetReader.Get(row, "name");
         element.FindPropertyRelative("_description").stringValue = SheetReader.Get(row, "description");
+        element.FindPropertyRelative("_icon").objectReferenceValue = LoadIcon(skill.Id);
         element.FindPropertyRelative("_towerId").intValue = skill.TowerId;
         element.FindPropertyRelative("_unlockLevel").intValue = skill.UnlockLevel;
         element.FindPropertyRelative("_upgradeOfId").intValue = skill.UpgradeOf;
@@ -172,6 +176,25 @@ public static class SkillSheetImporter
         effect.FindPropertyRelative("_value").floatValue = skill.Effect.Value;
         effect.FindPropertyRelative("_valueType").enumValueIndex = (int)skill.Effect.ValueType;
         effect.FindPropertyRelative("_duration").floatValue = skill.Effect.Duration;
+    }
+
+    // 아이콘은 파일 이름의 스킬 ID로 연결한다. 파일이 없으면 비워 둔다.
+    private static Sprite LoadIcon(int skillId)
+    {
+        string path = $"{IconFolder}/{IconPrefix}{skillId}.png";
+        if (!File.Exists(path))
+            return null;
+
+        var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        if (importer != null && importer.textureType != TextureImporterType.Sprite)
+        {
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.mipmapEnabled = false;
+            importer.SaveAndReimport();
+        }
+
+        return AssetDatabase.LoadAssetAtPath<Sprite>(path);
     }
 
     private static bool TryParseEnum<T>(Dictionary<string, string> row, string key, out T value, int skillId) where T : struct

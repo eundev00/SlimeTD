@@ -62,6 +62,8 @@
 | value | 수치. `%`를 붙이면 퍼센트, 없으면 고정값 |
 | duration | 지속 시간(초). 비우면 상시 |
 
+스킬 아이콘은 시트에 적지 않는다. `Assets/Art/UI/SkillIcon/SkillIcon_{스킬ID}.png`(128x128)를 두고 임포트하면 자동 연결된다.
+
 ### effectType과 수치 해석
 
 | effectType | 허용 단위 | 의미 |

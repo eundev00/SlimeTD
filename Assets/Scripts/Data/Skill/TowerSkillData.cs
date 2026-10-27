@@ -8,6 +8,7 @@ public class TowerSkillData
     [SerializeField] private int _id;
     [SerializeField] private string _displayName;
     [SerializeField] private string _description;
+    [SerializeField] private Sprite _icon;
     [SerializeField] private int _towerId;
     [SerializeField] private int _unlockLevel = 1;
     [SerializeField] private int _upgradeOfId;
@@ -24,6 +25,7 @@ public class TowerSkillData
     public int Id => _id;
     public string DisplayName => _displayName;
     public string Description => _description;
+    public Sprite Icon => _icon;
     public int TowerId => _towerId;
     public int UnlockLevel => _unlockLevel;
     public int UpgradeOfId => _upgradeOfId;
