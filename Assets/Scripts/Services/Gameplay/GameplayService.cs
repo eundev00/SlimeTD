@@ -101,6 +101,14 @@ public class GameplayService : IGameplayService
         _info.MaxWave.Value = maxWave;
     }
 
+    public void AddJelly(int amount)
+    {
+        if (amount <= 0 || _gameEnded)
+            return;
+
+        _info.Jelly.Value += amount;
+    }
+
     public bool TrySpendJelly(int amount)
     {
         if (amount <= 0)

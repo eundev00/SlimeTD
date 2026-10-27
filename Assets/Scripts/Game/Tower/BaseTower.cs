@@ -61,6 +61,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     IGameObjectPoolService ITowerContext.Pool => _poolService;
     TowerAnimator ITowerContext.Animator => _animator;
     TowerSkillController ITowerContext.Skills => _skills;
+    void ITowerContext.AddJelly(int amount) => _gameplayService.AddJelly(amount);
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
     public IReadOnlyReactiveProperty<bool> IsDragging => _isDragging;

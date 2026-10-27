@@ -94,7 +94,7 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 
 ## 타워 스킬
 
-스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`) 한 파일이 원천이다. 임포트하면 `SkillCatalog` 하나가 스킬 데이터를 직접 가진다 (스킬별 에셋 파일은 없다). `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 궁수와 일병 스킬이 들어 있고, 전투에서 실행되는 것은 상시 스탯 효과(`Attack`, `AttackSpeed`, `CritChance`, `CritBonus`), 공격 시 확률 `MultiShot`, 공격 시 확률 `DamageMultiplier`다. 그 밖의 트리거와 효과는 아직 없다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
+스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`) 한 파일이 원천이다. 임포트하면 `SkillCatalog` 하나가 스킬 데이터를 직접 가진다 (스킬별 에셋 파일은 없다). `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 궁수, 일병, 나무꾼 스킬이 들어 있고, 전투에서 실행되는 것은 상시 스탯 효과(`Attack`, `AttackSpeed`, `CritChance`, `CritBonus`)와 공격 시 확률 효과(`MultiShot`, `DamageMultiplier`, `JellyGain`)다. 젤리는 공격 1회마다 확률을 굴려 `IGameplayService.AddJelly`로 바로 지급한다. 그 밖의 트리거와 효과는 아직 없다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
 
 **정의와 런타임을 나눈다.** `SkillCatalog`의 데이터는 읽기 전용이고, 타워가 만들어질 때(`BaseTower.Initialize`) 레벨에 맞는 활성 스킬을 구해 `TowerStats`(상시 스탯 합산)와 `TowerSkillController`(공격 시 확률 판정)에 넘긴다.
 

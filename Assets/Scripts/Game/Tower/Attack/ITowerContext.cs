@@ -9,4 +9,6 @@ public interface ITowerContext
     IGameObjectPoolService Pool { get; }
     TowerAnimator Animator { get; }
     TowerSkillController Skills { get; }
+
+    void AddJelly(int amount);
 }

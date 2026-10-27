@@ -90,8 +90,14 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 
         OnHitFrame();
 
-        if (target.IsValid)
-            Apply(target);
+        if (!target.IsValid)
+            return;
+
+        Apply(target);
+
+        int jelly = Context.Skills?.RollJellyGain() ?? 0;
+        if (jelly > 0)
+            Context.AddJelly(jelly);
     }
 
     public void OnAnimationEnd()
