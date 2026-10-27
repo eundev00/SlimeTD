@@ -21,6 +21,7 @@ public class GameplayService : IGameplayService
     public GameplayInfo Info => _info;
     public GameConfig Config { get; private set; }
     public TowerCatalog Catalog { get; private set; }
+    public SkillCatalog SkillCatalog { get; private set; }
     public WaveTableData WaveTable { get; private set; }
     public SlimeDepthBucketSettings DepthBucketSettings { get; private set; }
 
@@ -64,6 +65,10 @@ public class GameplayService : IGameplayService
             Debug.Log($"[GameplayService] {DataKeys.TowerCatalog} 로드에 실패했습니다.");
             return;
         }
+
+        SkillCatalog = await _resourceLoadService.LoadAsync<SkillCatalog>(DataKeys.SkillCatalog);
+        if (SkillCatalog == null)
+            Debug.Log($"[GameplayService] {DataKeys.SkillCatalog} 로드에 실패했습니다.");
 
         WaveTable = await _resourceLoadService.LoadAsync<WaveTableData>(DataKeys.WaveEasyTable);
 

@@ -8,4 +8,5 @@ public interface ITowerContext
     TowerStats Stats { get; }
     IGameObjectPoolService Pool { get; }
     TowerAnimator Animator { get; }
+    TowerSkillController Skills { get; }
 }

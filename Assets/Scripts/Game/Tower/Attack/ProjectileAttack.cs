@@ -1,12 +1,18 @@
+using Cysharp.Threading.Tasks;
+using System;
+using System.Threading;
 using UnityEngine;
 
 public class ProjectileAttack : AttackBehaviourBase
 {
+    private const float ExtraShotInterval = 0.15f;
+
     // 풀은 투사체 프리팹 단위로 하나만 만들어져서 타워별로 다른 값을 둘 수 없다.
     private const int PoolCapacity = 10;
     private const int PoolMaxSize = 20;
 
     private readonly GameObject _projectilePrefab;
+    private readonly CancellationTokenSource _disposeCancellation = new CancellationTokenSource();
     private ProjectileLauncher _launcher;
 
     public ProjectileAttack(GameObject projectilePrefab)
@@ -55,6 +61,35 @@ public class ProjectileAttack : AttackBehaviourBase
 
     protected override void Apply(in TargetInfo target)
     {
+        Fire(target);
+
+        int extra = Context.Skills?.RollExtraShots() ?? 0;
+        if (extra > 0)
+            FireExtraAsync(target, extra).Forget();
+    }
+
+    private async UniTaskVoid FireExtraAsync(TargetInfo target, int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            try
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(ExtraShotInterval), cancellationToken: _disposeCancellation.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
+            if (!target.IsValid)
+                return;
+
+            Fire(target);
+        }
+    }
+
+    private void Fire(in TargetInfo target)
+    {
         if (_launcher == null || _projectilePrefab == null)
             return;
 
@@ -73,6 +108,13 @@ public class ProjectileAttack : AttackBehaviourBase
         }
 
         projectile.Initialize(GetFireDirection(target, firePosition), Context.Stats.RollHit());
+    }
+
+    public override void Dispose()
+    {
+        _disposeCancellation.Cancel();
+        _disposeCancellation.Dispose();
+        base.Dispose();
     }
 
     private Vector3 GetFireDirection(in TargetInfo target, Vector3 firePosition)

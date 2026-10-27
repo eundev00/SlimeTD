@@ -3,6 +3,7 @@ using MessagePipe;
 using Services.PoolService;
 using Services.UpdateService;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using UniRx;
 using UnityEngine;
@@ -29,6 +30,9 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private IGameObjectPoolService _poolService;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private ITowerLevelService _levelService;
+    private IGameplayService _gameplayService;
+    private TowerSkillController _skills;
+    private readonly List<TowerSkillData> _activeSkills = new List<TowerSkillData>();
 
     private CompositeDisposable _disposables;
     private CancellationTokenSource _attackCancellation;
@@ -56,6 +60,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     Vector3 ITowerContext.AimDirection => transform.forward;
     IGameObjectPoolService ITowerContext.Pool => _poolService;
     TowerAnimator ITowerContext.Animator => _animator;
+    TowerSkillController ITowerContext.Skills => _skills;
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
     public IReadOnlyReactiveProperty<bool> IsDragging => _isDragging;
@@ -65,12 +70,14 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         IUpdateSubscriptionService updateService,
         IGameObjectPoolService poolService,
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
-        ITowerLevelService levelService)
+        ITowerLevelService levelService,
+        IGameplayService gameplayService)
     {
         _updateService = updateService;
         _poolService = poolService;
         _gameProgressSubscriber = gameProgressSubscriber;
         _levelService = levelService;
+        _gameplayService = gameplayService;
     }
 
 
@@ -106,7 +113,12 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
             return;
 
         _data = data;
-        _stats.Initialize(data, _levelService.GetLevel(data.Id));
+
+        int level = _levelService.GetLevel(data.Id);
+        _gameplayService.SkillCatalog?.GetActiveSkills(data.Id, level, _activeSkills);
+
+        _stats.Initialize(data, level, _activeSkills);
+        _skills = new TowerSkillController(_activeSkills);
 
         _animator.PlaySpawn();
     }
