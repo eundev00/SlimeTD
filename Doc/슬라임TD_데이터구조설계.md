@@ -112,7 +112,7 @@ SkillCatalog (SO, 1개. Assets/Datas/SkillCatalog.asset)
 
 TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
 ├─ id, displayName, description
-├─ icon              : Sprite                     // Assets/Art/UI/SkillIcon/SkillIcon_<ID>.png(128x128)를 임포터가 이름 규칙으로 연결. 없으면 비어 있음
+├─ IconName          : string (속성)               // SkillIcon_<ID>. 스킬 아이콘 아틀라스의 스프라이트 이름. 파일은 Assets/Art/UI/SkillIcon/SkillIcon_<ID>.png(128x128)
 ├─ towerId           : int                        // 귀속된 타워
 ├─ unlockLevel       : int = 1                    // 타워 레벨이 이 값 이상이면 활성
 ├─ upgradeOfId       : int                        // 0이면 일반 스킬. 값이 있으면 그 스킬을 대체하는 업그레이드

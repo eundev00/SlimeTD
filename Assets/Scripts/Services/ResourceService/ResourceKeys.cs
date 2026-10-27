@@ -7,6 +7,7 @@ public static class ResourceKeys
     {
         DataKeys.GetDataPath,
         PrefabKeys.GetPrefabPath,
+        AtlasKeys.GetAtlasPath,
     };
 
     public static string GetPath(string key)

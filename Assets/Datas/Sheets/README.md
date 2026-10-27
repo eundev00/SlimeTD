@@ -62,7 +62,7 @@
 | value | 수치. `%`를 붙이면 퍼센트, 없으면 고정값 |
 | duration | 지속 시간(초). 비우면 상시 |
 
-스킬 아이콘은 시트에 적지 않는다. `Assets/Art/UI/SkillIcon/SkillIcon_{스킬ID}.png`(128x128)를 두고 임포트하면 자동 연결된다.
+스킬 아이콘은 시트에 적지 않는다. `Assets/Art/UI/SkillIcon/SkillIcon_{스킬ID}.png`(128x128)를 두고 스킬 아이콘 아틀라스로 묶어 로드한다. 스프라이트 이름은 파일 이름이고 코드에서는 `TowerSkillData.IconName`으로 얻는다.
 
 ### effectType과 수치 해석
 

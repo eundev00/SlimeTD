@@ -16,7 +16,6 @@ MonoBehaviour:
   - _id: 10101
     _displayName: "\uB0A0\uCE74\uB85C\uC6B4 \uD654\uC0B4\uCD09"
     _description: "\uACF5\uACA9\uB825\uC774 3% \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 101
     _unlockLevel: 5
     _upgradeOfId: 0
@@ -33,7 +32,6 @@ MonoBehaviour:
     _displayName: "\uC30D\uBC1C \uC0AC\uACA9"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uD654\uC0B4\uC744
       2\uBC1C \uC3DC\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 101
     _unlockLevel: 10
     _upgradeOfId: 0
@@ -50,7 +48,6 @@ MonoBehaviour:
     _displayName: "\uC30D\uBC1C \uC0AC\uACA9 II"
     _description: "\uACF5\uACA9\uD560 \uB54C 20% \uD655\uB960\uB85C \uD654\uC0B4\uC744
       2\uBC1C \uC3DC\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 101
     _unlockLevel: 15
     _upgradeOfId: 10102
@@ -66,7 +63,6 @@ MonoBehaviour:
   - _id: 10301
     _displayName: "\uC7AC\uBE60\uB978 \uCE7C\uB180\uB9BC"
     _description: "\uACF5\uACA9\uC18D\uB3C4\uAC00 5% \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 103
     _unlockLevel: 5
     _upgradeOfId: 0
@@ -82,7 +78,6 @@ MonoBehaviour:
   - _id: 10302
     _displayName: "\uAE09\uC18C \uB178\uB9AC\uAE30"
     _description: "\uCE58\uBA85\uD0C0 \uD655\uB960\uC774 5%p \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 103
     _unlockLevel: 10
     _upgradeOfId: 0
@@ -99,7 +94,6 @@ MonoBehaviour:
     _displayName: "\uBD84\uC1C4 \uC77C\uACA9"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uACF5\uACA9\uB825\uC758
       300% \uD53C\uD574\uB97C \uC900\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 103
     _unlockLevel: 15
     _upgradeOfId: 0
@@ -115,7 +109,6 @@ MonoBehaviour:
   - _id: 10401
     _displayName: "\uB2E8\uB2E8\uD55C \uB3C4\uB07C\uB0A0"
     _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 104
     _unlockLevel: 5
     _upgradeOfId: 0
@@ -132,7 +125,6 @@ MonoBehaviour:
     _displayName: "\uBC8C\uBAA9 \uC218\uC775"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uC824\uB9AC\uB97C
       5 \uC5BB\uB294\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 104
     _unlockLevel: 10
     _upgradeOfId: 0
@@ -149,7 +141,6 @@ MonoBehaviour:
     _displayName: "\uBC8C\uBAA9 \uC218\uC775 II"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uC824\uB9AC\uB97C
       10 \uC5BB\uB294\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 104
     _unlockLevel: 15
     _upgradeOfId: 10402
@@ -165,7 +156,6 @@ MonoBehaviour:
   - _id: 20201
     _displayName: "\uC219\uB828\uB41C \uD65C\uC19C\uC528"
     _description: "\uACF5\uACA9\uB825\uC774 10% \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 202
     _unlockLevel: 5
     _upgradeOfId: 0
@@ -181,7 +171,6 @@ MonoBehaviour:
   - _id: 20202
     _displayName: "\uC18D\uC0AC"
     _description: "\uACF5\uACA9\uC18D\uB3C4\uAC00 10% \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 202
     _unlockLevel: 10
     _upgradeOfId: 0
@@ -198,7 +187,6 @@ MonoBehaviour:
     _displayName: "\uD3ED\uBC1C \uD654\uC0B4"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uB9DE\uC740
       \uC801 \uC8FC\uBCC0 \uBC18\uACBD 1.5\uC758 \uC801\uB3C4 \uD568\uAED8 \uACF5\uACA9\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 202
     _unlockLevel: 15
     _upgradeOfId: 0
@@ -214,7 +202,6 @@ MonoBehaviour:
   - _id: 20301
     _displayName: "\uB2E8\uB828 I"
     _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 203
     _unlockLevel: 5
     _upgradeOfId: 0
@@ -230,7 +217,6 @@ MonoBehaviour:
   - _id: 20302
     _displayName: "\uB2E8\uB828 II"
     _description: "\uACF5\uACA9\uB825\uC774 10% \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 203
     _unlockLevel: 10
     _upgradeOfId: 20301
@@ -246,7 +232,6 @@ MonoBehaviour:
   - _id: 20303
     _displayName: "\uB2E8\uB828 III"
     _description: "\uACF5\uACA9\uB825\uC774 20% \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 203
     _unlockLevel: 15
     _upgradeOfId: 20302
@@ -262,7 +247,6 @@ MonoBehaviour:
   - _id: 20401
     _displayName: "\uAC15\uD654 \uBCFC\uD2B8"
     _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 204
     _unlockLevel: 5
     _upgradeOfId: 0
@@ -278,7 +262,6 @@ MonoBehaviour:
   - _id: 20402
     _displayName: "\uC57D\uC810 \uC870\uC900"
     _description: "\uCE58\uBA85\uD0C0 \uD655\uB960\uC774 10%p \uC99D\uAC00\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 204
     _unlockLevel: 10
     _upgradeOfId: 0
@@ -295,7 +278,6 @@ MonoBehaviour:
     _displayName: "\uAD00\uD1B5 \uBCFC\uD2B8"
     _description: "\uD654\uC0B4\uC774 \uC801\uC744 \uAD00\uD1B5\uD574 \uCD5C\uB300
       2\uB9C8\uB9AC\uB97C \uACF5\uACA9\uD55C\uB2E4"
-    _icon: {fileID: 0}
     _towerId: 204
     _unlockLevel: 15
     _upgradeOfId: 0

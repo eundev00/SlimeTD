@@ -2,7 +2,7 @@
 
 - 크기 **128x128**, 배경 투명 PNG
 - 파일 이름 `SkillIcon_{스킬ID}.png` (예: `SkillIcon_10101.png`)
-- 이 폴더에 넣고 메뉴 `SlimeTD > Data > Import Skill Sheets`를 실행하면 파일 이름의 스킬 ID로 `SkillCatalog`에 자동 연결된다. 아이콘이 없는 스킬은 비어 있다
+- 이 폴더의 파일을 스킬 아이콘 아틀라스로 묶어 로드한다. 스프라이트 이름은 파일 이름(확장자 제외)이고, 코드에서는 `TowerSkillData.IconName`이 같은 이름을 돌려준다
 - 업그레이드 계열(쌍발 사격 / 쌍발 사격 II 등)은 단계마다 파일을 따로 둔다
 
 | 스킬 ID | 타워 | 이름 | 내용 |
