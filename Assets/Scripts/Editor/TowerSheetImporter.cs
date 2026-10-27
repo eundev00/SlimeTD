@@ -242,7 +242,7 @@ public static class TowerSheetImporter
         return result;
     }
 
-    // 1줄은 영문 키, 2줄은 한글 설명이라 건너뛴다.
+    // 1줄은 영문 키다. 열 설명은 시트 폴더의 README.md에 있다.
     private static bool TryReadTable(string fileName, out List<Dictionary<string, string>> rows)
     {
         rows = new List<Dictionary<string, string>>();
@@ -255,14 +255,14 @@ public static class TowerSheetImporter
         }
 
         string[] lines = File.ReadAllLines(path);
-        if (lines.Length < 2)
+        if (lines.Length < 1)
         {
             Debug.Log($"[TowerSheetImporter] 시트가 비어 있습니다: {path}");
             return false;
         }
 
         string[] keys = SplitLine(lines[0]);
-        for (int i = 2; i < lines.Length; i++)
+        for (int i = 1; i < lines.Length; i++)
         {
             if (string.IsNullOrWhiteSpace(lines[i]))
                 continue;

@@ -1,5 +1,4 @@
 ﻿skillId,name,description,towerId,unlockLevel,upgradeOf,trigger,nth,chance,cooldown,effectType,value,duration
-스킬ID(타워ID×100+순번),이름,설명,타워ID,해금 레벨(기본 1),대체하는 스킬ID(업그레이드일 때),발동 시점(Always/OnAttack/OnHit/OnKill/EveryNthAttack),N번째 공격일 때 N,발동 확률 %(비우면 없음),쿨타임 초(비우면 없음),효과 종류(CritChance/CritBonus/AttackSpeed/Attack/MultiShot/Pierce/Slow/JellyGain/DamageMultiplier),수치(% 붙이면 퍼센트. MultiShot은 추가 발수 / DamageMultiplier는 공격력의 총 배율 / CritChance·CritBonus는 %p),지속 시간 초(비우면 상시)
 10101,공격력 상승,공격력이 3% 증가한다,101,5,,Always,,,,Attack,3%,
 10102,2연발,공격할 때 10% 확률로 화살을 2발 쏜다,101,10,,OnAttack,,10,,MultiShot,1,
 10103,2연발,공격할 때 20% 확률로 화살을 2발 쏜다,101,15,10102,OnAttack,,20,,MultiShot,1,
