@@ -17,6 +17,7 @@ public enum SkillEffectType
     Pierce,
     Slow,
     JellyGain,
+    DamageMultiplier,
 }
 
 public enum SkillValueType
@@ -32,6 +33,7 @@ public static class SkillEffectRules
         switch (effectType)
         {
             case SkillEffectType.AttackSpeed:
+            case SkillEffectType.DamageMultiplier:
                 return valueType == SkillValueType.Percent;
 
             case SkillEffectType.Attack:

@@ -116,6 +116,15 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 
     protected abstract void Apply(in TargetInfo target);
 
+    // 스킬 발동 판정이 먼저고, 터지지 않았을 때만 치명타를 굴린다.
+    protected DamageInfo RollDamage()
+    {
+        if (Context.Skills != null && Context.Skills.TryRollDamageMultiplier(out float multiplier))
+            return Context.Stats.RollSkillHit(multiplier);
+
+        return Context.Stats.RollHit();
+    }
+
     protected virtual void OnAttackStarted() { }
     protected virtual void OnCastFrame() { }
     protected virtual void OnHitFrame() { }

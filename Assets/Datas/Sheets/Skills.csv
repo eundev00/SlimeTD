@@ -3,3 +3,6 @@
 10101,ArcherAttackUp,공격력 상승,공격력이 3% 증가한다,101,5,,Always,,,
 10102,ArcherDoubleShot,2연발,공격할 때 10% 확률로 화살을 2발 쏜다,101,10,,OnAttack,,10,
 10103,ArcherDoubleShotUp,2연발,공격할 때 20% 확률로 화살을 2발 쏜다,101,15,10102,OnAttack,,20,
+10301,SwordsmanAttackSpeedUp,공격속도 상승,공격속도가 5% 증가한다,103,5,,Always,,,
+10302,SwordsmanCritUp,치명타 확률 상승,치명타 확률이 5%p 증가한다,103,10,,Always,,,
+10303,SwordsmanSmash,강타,공격할 때 10% 확률로 공격력의 300% 피해를 준다,103,15,,OnAttack,,10,

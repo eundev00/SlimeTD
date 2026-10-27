@@ -28,6 +28,6 @@ public class MeleeAttack : AttackBehaviourBase
 
     protected override void Apply(in TargetInfo target)
     {
-        target.Slime.TakeDamage(Context.Stats.RollHit());
+        target.Slime.TakeDamage(RollDamage());
     }
 }

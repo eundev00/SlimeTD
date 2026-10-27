@@ -15,6 +15,9 @@ public static class DataKeys
     public const string Skill_ArcherAttackUp = "Skill_ArcherAttackUp";
     public const string Skill_ArcherDoubleShot = "Skill_ArcherDoubleShot";
     public const string Skill_ArcherDoubleShotUp = "Skill_ArcherDoubleShotUp";
+    public const string Skill_SwordsmanAttackSpeedUp = "Skill_SwordsmanAttackSpeedUp";
+    public const string Skill_SwordsmanCritUp = "Skill_SwordsmanCritUp";
+    public const string Skill_SwordsmanSmash = "Skill_SwordsmanSmash";
     public const string SlimeDepthBucketSettings = "SlimeDepthBucketSettings";
     public const string Slime_01 = "Slime_01";
     public const string Slime_02 = "Slime_02";
@@ -46,6 +49,9 @@ public static class DataKeys
         { Skill_ArcherAttackUp, "Assets/Datas/Skills/Archer/Skill_ArcherAttackUp.asset" },
         { Skill_ArcherDoubleShot, "Assets/Datas/Skills/Archer/Skill_ArcherDoubleShot.asset" },
         { Skill_ArcherDoubleShotUp, "Assets/Datas/Skills/Archer/Skill_ArcherDoubleShotUp.asset" },
+        { Skill_SwordsmanAttackSpeedUp, "Assets/Datas/Skills/Swordsman/Skill_SwordsmanAttackSpeedUp.asset" },
+        { Skill_SwordsmanCritUp, "Assets/Datas/Skills/Swordsman/Skill_SwordsmanCritUp.asset" },
+        { Skill_SwordsmanSmash, "Assets/Datas/Skills/Swordsman/Skill_SwordsmanSmash.asset" },
         { SlimeDepthBucketSettings, "Assets/Datas/SlimeDepthBucketSettings.asset" },
         { Slime_01, "Assets/Datas/Slimes/Slime_01.asset" },
         { Slime_02, "Assets/Datas/Slimes/Slime_02.asset" },

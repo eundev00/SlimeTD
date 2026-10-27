@@ -83,6 +83,12 @@ public class TowerStats : IDisposable
         return new DamageInfo(Mathf.Max(1, Mathf.RoundToInt(damage)), critical);
     }
 
+    // 스킬 배율 공격은 치명타 판정을 하지 않는다.
+    public DamageInfo RollSkillHit(float multiplier)
+    {
+        return new DamageInfo(Mathf.Max(1, Mathf.RoundToInt(Attack * multiplier)), false);
+    }
+
     public void Dispose()
     {
         _attackRange?.Dispose();
