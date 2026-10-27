@@ -1,5 +1,5 @@
 ﻿skillId,name,description,towerId,unlockLevel,upgradeOf,trigger,nth,chance,cooldown,effectType,value,duration
-10101,날카로운 화살촉,공격력이 3% 증가한다,101,5,,Always,,,,Attack,3%,
+10101,묵직한 화살,공격력이 3% 증가한다,101,5,,Always,,,,Attack,3%,
 10102,쌍발 사격,공격할 때 10% 확률로 화살을 2발 쏜다,101,10,,OnAttack,,10,,MultiShot,1,
 10103,쌍발 사격 II,공격할 때 20% 확률로 화살을 2발 쏜다,101,15,10102,OnAttack,,20,,MultiShot,1,
 10301,재빠른 칼놀림,공격속도가 5% 증가한다,103,5,,Always,,,,AttackSpeed,5%,
