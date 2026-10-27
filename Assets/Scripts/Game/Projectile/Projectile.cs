@@ -1,4 +1,5 @@
 using Services.PoolService;
+using System.Collections.Generic;
 using Services.UpdateService;
 using UnityEngine;
 using VContainer;
@@ -15,6 +16,8 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     private bool _isActive;
 
     private readonly RaycastHit[] _hitBuffer = new RaycastHit[8];
+    private readonly List<BaseSlime> _hitSlimes = new List<BaseSlime>(4);
+    private int _remainingPierce;
     private int _slimeLayer;
 
     private IUpdateSubscriptionService _updateService;
@@ -34,9 +37,11 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _slimeLayer = LayerMask.GetMask(GameTags.SlimeLayer);
     }
 
-    public void Initialize(Vector3 direction, DamageInfo info)
+    public void Initialize(Vector3 direction, DamageInfo info, int pierceCount = 0)
     {
         Info = info;
+        _remainingPierce = pierceCount;
+        _hitSlimes.Clear();
         _direction = direction.normalized;
         _elapsedTime = 0f;
         _isActive = true;
@@ -95,9 +100,13 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
             var hit = _hitBuffer[nearest];
             _hitBuffer[nearest].distance = -1f;
 
+            // 관통하는 동안 같은 슬라임을 다음 프레임에 또 맞히지 않게 이미 맞힌 대상을 기억한다.
             var slime = hit.collider.GetComponentInParent<BaseSlime>();
-            if (slime != null)
+            if (slime != null && !_hitSlimes.Contains(slime))
+            {
+                _hitSlimes.Add(slime);
                 OnHit(slime);
+            }
         }
     }
 
@@ -116,13 +125,19 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _direction = Vector3.zero;
         Info = default;
         _elapsedTime = 0f;
+        _remainingPierce = 0;
+        _hitSlimes.Clear();
     }
 
 
     protected virtual void OnHit(BaseSlime slime)
     {
         slime.TakeDamage(Info);
-        ReturnToPool();
+
+        if (_remainingPierce > 0)
+            _remainingPierce--;
+        else
+            ReturnToPool();
     }
 
     protected void ReturnToPool()

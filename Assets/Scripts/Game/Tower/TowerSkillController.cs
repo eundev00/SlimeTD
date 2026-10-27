@@ -5,12 +5,27 @@ public class TowerSkillController
 {
     private readonly List<TowerSkillData> _onAttackSkills = new List<TowerSkillData>();
 
+    // 처음 맞은 대상 말고 추가로 관통하는 대상 수다 (1이면 총 2마리).
+    public int PierceCount { get; }
+
     public TowerSkillController(IReadOnlyList<TowerSkillData> activeSkills)
     {
         for (int i = 0; i < activeSkills.Count; i++)
         {
-            if (activeSkills[i].Trigger == SkillTrigger.OnAttack)
-                _onAttackSkills.Add(activeSkills[i]);
+            var skill = activeSkills[i];
+
+            if (skill.Trigger == SkillTrigger.OnAttack)
+                _onAttackSkills.Add(skill);
+
+            if (skill.Trigger != SkillTrigger.Always)
+                continue;
+
+            var effects = skill.Effects;
+            for (int e = 0; e < effects.Count; e++)
+            {
+                if (effects[e].Type == SkillEffectType.Pierce)
+                    PierceCount += Mathf.RoundToInt(effects[e].Value);
+            }
         }
     }
 

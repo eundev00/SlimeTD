@@ -153,3 +153,49 @@ MonoBehaviour:
       _value: 10
       _valueType: 0
       _duration: 0
+  - _id: 20401
+    _displayName: "\uACF5\uACA9\uB825 \uC0C1\uC2B9"
+    _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 204
+    _unlockLevel: 5
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 3
+      _value: 5
+      _valueType: 1
+      _duration: 0
+  - _id: 20402
+    _displayName: "\uCE58\uBA85\uD0C0 \uD655\uB960 \uC0C1\uC2B9"
+    _description: "\uCE58\uBA85\uD0C0 \uD655\uB960\uC774 10%p \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 204
+    _unlockLevel: 10
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 0
+      _value: 10
+      _valueType: 0
+      _duration: 0
+  - _id: 20403
+    _displayName: "\uAD00\uD1B5"
+    _description: "\uD654\uC0B4\uC774 \uC801\uC744 \uAD00\uD1B5\uD574 \uCD5C\uB300
+      2\uB9C8\uB9AC\uB97C \uACF5\uACA9\uD55C\uB2E4"
+    _towerId: 204
+    _unlockLevel: 15
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 5
+      _value: 1
+      _valueType: 0
+      _duration: 0

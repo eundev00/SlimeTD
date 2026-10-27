@@ -107,7 +107,7 @@ public class ProjectileAttack : AttackBehaviourBase
             return;
         }
 
-        projectile.Initialize(GetFireDirection(target, firePosition), RollDamage());
+        projectile.Initialize(GetFireDirection(target, firePosition), RollDamage(), Context.Skills?.PierceCount ?? 0);
     }
 
     public override void Dispose()
