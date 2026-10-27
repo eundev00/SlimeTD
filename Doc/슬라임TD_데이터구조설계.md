@@ -94,7 +94,9 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 
 ## 타워 스킬
 
-스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`) 한 파일이 원천이다. 임포트하면 `SkillCatalog` 하나가 스킬 데이터를 직접 가진다 (스킬별 에셋 파일은 없다). `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 궁수, 일병, 나무꾼, 석궁병 스킬이 들어 있고, 전투에서 실행되는 것은 상시 스탯 효과(`Attack`, `AttackSpeed`, `CritChance`, `CritBonus`), 상시 관통(`Pierce`. 화살 한 발의 판정을 맞은 모든 대상이 공유한다)과 공격 시 확률 효과(`MultiShot`, `DamageMultiplier`, `JellyGain`)다. 젤리는 공격 1회마다 확률을 굴려 `IGameplayService.AddJelly`로 바로 지급한다. 그 밖의 트리거와 효과는 아직 없다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
+스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`) 한 파일이 원천이다. 임포트하면 `SkillCatalog` 하나가 스킬 데이터를 직접 가진다 (스킬별 에셋 파일은 없다). `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 궁수, 일병, 나무꾼, 석궁병, 레인저, 기사 스킬이 들어 있고, 전투에서 실행되는 것은 상시 스탯 효과(`Attack`, `AttackSpeed`, `CritChance`, `CritBonus`), 상시 관통(`Pierce`. 화살 한 발의 판정을 맞은 모든 대상이 공유한다)과 공격 시 발동 효과(`MultiShot`, `DamageMultiplier`, `Splash`, `JellyGain`)다.
+
+공격 1회마다 `OnAttack` 스킬의 확률과 쿨타임을 한 번만 판정해(`TowerSkillController.RollAttack`) 결과(`AttackSkillRoll`)를 공격 방식에 넘긴다. **데미지 스킬(`MultiShot`, `DamageMultiplier`, `Splash`)이 발동한 공격은 치명타 판정을 하지 않고**, 그 공격의 모든 화살이 같은 데미지를 가진다. 광역(`Splash`)은 맞은 대상 중심 반경 안의 다른 슬라임에게 같은 `DamageInfo`를 준다 (`SplashDamage`). 젤리는 데미지와 무관해 치명타 규칙에 영향이 없으며 `IGameplayService.AddJelly`로 바로 지급한다. 쿨타임은 발동했을 때부터 `Time.time` 기준으로 흐르고 공격속도와 무관하다. 그 밖의 트리거와 효과는 아직 없다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
 
 **정의와 런타임을 나눈다.** `SkillCatalog`의 데이터는 읽기 전용이고, 타워가 만들어질 때(`BaseTower.Initialize`) 레벨에 맞는 활성 스킬을 구해 `TowerStats`(상시 스탯 합산)와 `TowerSkillController`(공격 시 확률 판정)에 넘긴다.
 
@@ -127,7 +129,7 @@ TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
 - 스킬 하나에 효과는 한 개다. 효과가 둘인 스킬이 필요해지면 효과 열을 한 세트 더 추가한다
 - 실행: 메뉴 `SlimeTD > Data > Import Skill Sheets`. 시트 전체로 `SkillCatalog`의 스킬 목록을 새로 채운다. 여러 번 실행해도 결과가 같다. `towerId`가 `Towers.csv`에 없는 행은 건너뛴다
 - 스킬 ID는 `타워ID×100+순번`이다 (궁수 10101~, 일병 10301~). 한 번 정한 ID는 바꾸지 않고, 추가는 그 타워의 다음 빈 번호를 쓴다
-- `effectType`: `CritChance` / `CritBonus` / `AttackSpeed` / `Attack` / `MultiShot` / `Pierce` / `Slow` / `JellyGain` / `DamageMultiplier`
+- `effectType`: `CritChance` / `CritBonus` / `AttackSpeed` / `Attack` / `MultiShot` / `Pierce` / `Slow` / `JellyGain` / `DamageMultiplier` / `Splash`
 - `value`: `%`가 붙으면 `Percent`, 없으면 `Fixed`로 읽는다. 효과마다 쓸 수 있는 단위가 정해져 있다 (`SkillEffectRules`). `MultiShot`의 값은 추가로 쏘는 발수(2연발이면 1)이고, `DamageMultiplier`는 공격력의 총 배율(300%는 3배, 치명타 보너스와 달리 "더하기"가 아니다)이다
 
 | 효과 | 고정 | 퍼센트 |
@@ -138,6 +140,7 @@ TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
 | `Slow` (이감) | 속도 −N | 슬라임 기본 속도의 N% |
 | `MultiShot`, `Pierce`, `JellyGain` | +N (발 수, 관통 수, 젤리) | 없음 |
 | `DamageMultiplier` | 없음 | 공격력의 N% (스킬 발동 시 치명타 판정 없이 이 배율로만 계산) |
+| `Splash` (광역) | 반경 N (같은 데미지) | 없음 |
 
 - 업그레이드: 같은 스킬을 강화하는 단계(예: 2연발 확률 10% → 20%)는 새 행을 만들고 `upgradeOf`에 이전 단계의 스킬 ID를 넣는다. 같은 계열인지는 이 연결로 안다 (대표 = `upgradeOf`가 없는 스킬, 따라가면 계열 전체). 업그레이드가 해금되면 이전 단계는 비활성이 되고 가장 높게 해금된 단계 하나만 활성이다. 대체 대상은 같은 타워의 더 낮은 해금 레벨 스킬이어야 하고, 아니면 임포트 때 경고한다
 - 지원하지 않는 단위 조합이나 해석할 수 없는 값이 있는 행은 로그를 남기고 건너뛴다

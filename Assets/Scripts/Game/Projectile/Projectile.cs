@@ -18,6 +18,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     private readonly RaycastHit[] _hitBuffer = new RaycastHit[8];
     private readonly List<BaseSlime> _hitSlimes = new List<BaseSlime>(4);
     private int _remainingPierce;
+    private float _splashRadius;
     private int _slimeLayer;
 
     private IUpdateSubscriptionService _updateService;
@@ -37,10 +38,11 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _slimeLayer = LayerMask.GetMask(GameTags.SlimeLayer);
     }
 
-    public void Initialize(Vector3 direction, DamageInfo info, int pierceCount = 0)
+    public void Initialize(Vector3 direction, DamageInfo info, int pierceCount = 0, float splashRadius = 0f)
     {
         Info = info;
         _remainingPierce = pierceCount;
+        _splashRadius = splashRadius;
         _hitSlimes.Clear();
         _direction = direction.normalized;
         _elapsedTime = 0f;
@@ -102,7 +104,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
 
             // 관통하는 동안 같은 슬라임을 다음 프레임에 또 맞히지 않게 이미 맞힌 대상을 기억한다.
             var slime = hit.collider.GetComponentInParent<BaseSlime>();
-            if (slime != null && !_hitSlimes.Contains(slime))
+            if (slime != null && !slime.Stats.IsDead && !_hitSlimes.Contains(slime))
             {
                 _hitSlimes.Add(slime);
                 OnHit(slime);
@@ -126,6 +128,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         Info = default;
         _elapsedTime = 0f;
         _remainingPierce = 0;
+        _splashRadius = 0f;
         _hitSlimes.Clear();
     }
 
@@ -133,6 +136,12 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     protected virtual void OnHit(BaseSlime slime)
     {
         slime.TakeDamage(Info);
+
+        if (_splashRadius > 0f)
+        {
+            SplashDamage.Apply(slime.transform.position, _splashRadius, Info, slime);
+            _splashRadius = 0f;
+        }
 
         if (_remainingPierce > 0)
             _remainingPierce--;

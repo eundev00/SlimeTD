@@ -18,6 +18,7 @@ public enum SkillEffectType
     Slow,
     JellyGain,
     DamageMultiplier,
+    Splash,
 }
 
 public enum SkillValueType

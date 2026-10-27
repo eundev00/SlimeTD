@@ -153,6 +153,97 @@ MonoBehaviour:
       _value: 10
       _valueType: 0
       _duration: 0
+  - _id: 20201
+    _displayName: "\uACF5\uACA9\uB825 \uC0C1\uC2B9"
+    _description: "\uACF5\uACA9\uB825\uC774 10% \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 202
+    _unlockLevel: 5
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 3
+      _value: 10
+      _valueType: 1
+      _duration: 0
+  - _id: 20202
+    _displayName: "\uACF5\uACA9\uC18D\uB3C4 \uC0C1\uC2B9"
+    _description: "\uACF5\uACA9\uC18D\uB3C4\uAC00 10% \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 202
+    _unlockLevel: 10
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 2
+      _value: 10
+      _valueType: 1
+      _duration: 0
+  - _id: 20203
+    _displayName: "\uAD11\uC5ED \uD654\uC0B4"
+    _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uB9DE\uC740
+      \uC801 \uC8FC\uBCC0 \uBC18\uACBD 1.5\uC758 \uC801\uB3C4 \uD568\uAED8 \uACF5\uACA9\uD55C\uB2E4"
+    _towerId: 202
+    _unlockLevel: 15
+    _upgradeOfId: 0
+    _trigger: 1
+    _nth: 0
+    _chance: 10
+    _cooldown: 0
+    _effects:
+    - _type: 9
+      _value: 1.5
+      _valueType: 0
+      _duration: 0
+  - _id: 20301
+    _displayName: "\uACF5\uACA9\uB825 \uC0C1\uC2B9"
+    _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 203
+    _unlockLevel: 5
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 3
+      _value: 5
+      _valueType: 1
+      _duration: 0
+  - _id: 20302
+    _displayName: "\uACF5\uACA9\uB825 \uC0C1\uC2B9"
+    _description: "\uACF5\uACA9\uB825\uC774 10% \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 203
+    _unlockLevel: 10
+    _upgradeOfId: 20301
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 3
+      _value: 10
+      _valueType: 1
+      _duration: 0
+  - _id: 20303
+    _displayName: "\uACF5\uACA9\uB825 \uC0C1\uC2B9"
+    _description: "\uACF5\uACA9\uB825\uC774 20% \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 203
+    _unlockLevel: 15
+    _upgradeOfId: 20302
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 3
+      _value: 20
+      _valueType: 1
+      _duration: 0
   - _id: 20401
     _displayName: "\uACF5\uACA9\uB825 \uC0C1\uC2B9"
     _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"

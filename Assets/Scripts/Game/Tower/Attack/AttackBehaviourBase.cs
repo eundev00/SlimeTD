@@ -93,11 +93,11 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         if (!target.IsValid)
             return;
 
-        Apply(target);
+        var roll = Context.Skills != null ? Context.Skills.RollAttack() : default;
+        Apply(target, roll);
 
-        int jelly = Context.Skills?.RollJellyGain() ?? 0;
-        if (jelly > 0)
-            Context.AddJelly(jelly);
+        if (roll.Jelly > 0)
+            Context.AddJelly(roll.Jelly);
     }
 
     public void OnAnimationEnd()
@@ -120,15 +120,15 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
             Debug.Log($"[{GetType().Name}] 공격 종료 이벤트가 오지 않았습니다. 클립에 OnAttackEnd가 있는지 확인하세요.");
     }
 
-    protected abstract void Apply(in TargetInfo target);
+    protected abstract void Apply(in TargetInfo target, in AttackSkillRoll roll);
 
-    // 스킬 발동 판정이 먼저고, 터지지 않았을 때만 치명타를 굴린다.
-    protected DamageInfo RollDamage()
+    // 데미지 스킬이 발동한 공격은 치명타 없이 배율로만 계산하고, 아니면 치명타를 굴린다.
+    protected DamageInfo ResolveDamage(in AttackSkillRoll roll)
     {
-        if (Context.Skills != null && Context.Skills.TryRollDamageMultiplier(out float multiplier))
-            return Context.Stats.RollSkillHit(multiplier);
+        if (!roll.HasDamageProc)
+            return Context.Stats.RollHit();
 
-        return Context.Stats.RollHit();
+        return Context.Stats.RollSkillHit(roll.DamageMultiplier > 0f ? roll.DamageMultiplier : 1f);
     }
 
     protected virtual void OnAttackStarted() { }

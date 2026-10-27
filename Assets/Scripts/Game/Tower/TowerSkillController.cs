@@ -4,6 +4,7 @@ using UnityEngine;
 public class TowerSkillController
 {
     private readonly List<TowerSkillData> _onAttackSkills = new List<TowerSkillData>();
+    private readonly List<float> _nextReadyTimes = new List<float>();
 
     // 처음 맞은 대상 말고 추가로 관통하는 대상 수다 (1이면 총 2마리).
     public int PierceCount { get; }
@@ -15,7 +16,10 @@ public class TowerSkillController
             var skill = activeSkills[i];
 
             if (skill.Trigger == SkillTrigger.OnAttack)
+            {
                 _onAttackSkills.Add(skill);
+                _nextReadyTimes.Add(0f);
+            }
 
             if (skill.Trigger != SkillTrigger.Always)
                 continue;
@@ -29,69 +33,60 @@ public class TowerSkillController
         }
     }
 
-    // 공격 1회마다 한 번 굴린다. 화살이 여러 발이어도 젤리는 한 번만 얻는다.
-    public int RollJellyGain()
+    // 공격 1회마다 한 번 굴린다. 화살이 여러 발이어도 발동 판정은 공격당 한 번이다.
+    // TODO: OnHit / OnKill / EveryNthAttack 발동과 Slow 효과
+    public AttackSkillRoll RollAttack()
     {
+        int extraShots = 0;
+        float multiplier = 0f;
+        float splashRadius = 0f;
         int jelly = 0;
 
         for (int i = 0; i < _onAttackSkills.Count; i++)
         {
-            var skill = _onAttackSkills[i];
-            if (skill.Chance > 0f && Random.value * 100f >= skill.Chance)
+            if (!TryProc(i))
                 continue;
 
-            var effects = skill.Effects;
+            var effects = _onAttackSkills[i].Effects;
             for (int e = 0; e < effects.Count; e++)
             {
-                if (effects[e].Type == SkillEffectType.JellyGain)
-                    jelly += Mathf.RoundToInt(effects[e].Value);
+                var effect = effects[e];
+
+                switch (effect.Type)
+                {
+                    case SkillEffectType.MultiShot:
+                        extraShots += Mathf.RoundToInt(effect.Value);
+                        break;
+                    case SkillEffectType.DamageMultiplier:
+                        multiplier = Mathf.Max(multiplier, effect.Value / 100f);
+                        break;
+                    case SkillEffectType.Splash:
+                        splashRadius = Mathf.Max(splashRadius, effect.Value);
+                        break;
+                    case SkillEffectType.JellyGain:
+                        jelly += Mathf.RoundToInt(effect.Value);
+                        break;
+                }
             }
         }
 
-        return jelly;
+        return new AttackSkillRoll(extraShots, multiplier, splashRadius, jelly);
     }
 
-    // 발동한 스킬이 여럿이면 배율이 가장 큰 것만 쓴다. 반환값은 공격력에 곱하는 배수다(500% -> 5).
-    public bool TryRollDamageMultiplier(out float multiplier)
+    // 쿨타임은 공격속도와 독립이다. 발동했을 때만 시작한다.
+    private bool TryProc(int index)
     {
-        multiplier = 0f;
+        var skill = _onAttackSkills[index];
 
-        for (int i = 0; i < _onAttackSkills.Count; i++)
-        {
-            var skill = _onAttackSkills[i];
-            if (skill.Chance > 0f && Random.value * 100f >= skill.Chance)
-                continue;
+        if (skill.Cooldown > 0f && Time.time < _nextReadyTimes[index])
+            return false;
 
-            var effects = skill.Effects;
-            for (int e = 0; e < effects.Count; e++)
-            {
-                if (effects[e].Type == SkillEffectType.DamageMultiplier)
-                    multiplier = Mathf.Max(multiplier, effects[e].Value / 100f);
-            }
-        }
+        if (skill.Chance > 0f && Random.value * 100f >= skill.Chance)
+            return false;
 
-        return multiplier > 0f;
-    }
+        if (skill.Cooldown > 0f)
+            _nextReadyTimes[index] = Time.time + skill.Cooldown;
 
-    // TODO: OnHit / OnKill / EveryNthAttack 발동과 Slow / Pierce / JellyGain 효과
-    public int RollExtraShots()
-    {
-        int extra = 0;
-
-        for (int i = 0; i < _onAttackSkills.Count; i++)
-        {
-            var skill = _onAttackSkills[i];
-            if (skill.Chance > 0f && Random.value * 100f >= skill.Chance)
-                continue;
-
-            var effects = skill.Effects;
-            for (int e = 0; e < effects.Count; e++)
-            {
-                if (effects[e].Type == SkillEffectType.MultiShot)
-                    extra += Mathf.RoundToInt(effects[e].Value);
-            }
-        }
-
-        return extra;
+        return true;
     }
 }

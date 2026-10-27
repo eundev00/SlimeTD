@@ -59,16 +59,18 @@ public class ProjectileAttack : AttackBehaviourBase
             _launcher.SetHeldProjectileActive(false);
     }
 
-    protected override void Apply(in TargetInfo target)
+    protected override void Apply(in TargetInfo target, in AttackSkillRoll roll)
     {
-        Fire(target);
+        // 한 공격의 화살은 같은 데미지를 공유한다. 스킬이 발동했으면 치명타가 없으므로 값이 같아진다.
+        var info = ResolveDamage(roll);
 
-        int extra = Context.Skills?.RollExtraShots() ?? 0;
-        if (extra > 0)
-            FireExtraAsync(target, extra).Forget();
+        Fire(target, info, roll.SplashRadius);
+
+        if (roll.ExtraShots > 0)
+            FireExtraAsync(target, roll.ExtraShots, info, roll.SplashRadius).Forget();
     }
 
-    private async UniTaskVoid FireExtraAsync(TargetInfo target, int count)
+    private async UniTaskVoid FireExtraAsync(TargetInfo target, int count, DamageInfo info, float splashRadius)
     {
         for (int i = 0; i < count; i++)
         {
@@ -84,11 +86,11 @@ public class ProjectileAttack : AttackBehaviourBase
             if (!target.IsValid)
                 return;
 
-            Fire(target);
+            Fire(target, info, splashRadius);
         }
     }
 
-    private void Fire(in TargetInfo target)
+    private void Fire(in TargetInfo target, DamageInfo info, float splashRadius)
     {
         if (_launcher == null || _projectilePrefab == null)
             return;
@@ -107,7 +109,7 @@ public class ProjectileAttack : AttackBehaviourBase
             return;
         }
 
-        projectile.Initialize(GetFireDirection(target, firePosition), RollDamage(), Context.Skills?.PierceCount ?? 0);
+        projectile.Initialize(GetFireDirection(target, firePosition), info, Context.Skills?.PierceCount ?? 0, splashRadius);
     }
 
     public override void Dispose()

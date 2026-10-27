@@ -26,8 +26,15 @@ public class MeleeAttack : AttackBehaviourBase
             _effect.Stop();
     }
 
-    protected override void Apply(in TargetInfo target)
+    protected override void Apply(in TargetInfo target, in AttackSkillRoll roll)
     {
-        target.Slime.TakeDamage(RollDamage());
+        var info = ResolveDamage(roll);
+        target.Slime.TakeDamage(info);
+
+        if (roll.SplashRadius > 0f && target.Transform != null)
+        {
+            var center = target.Transform.GetComponentInParent<BaseSlime>();
+            SplashDamage.Apply(target.Transform.position, roll.SplashRadius, info, center);
+        }
     }
 }
