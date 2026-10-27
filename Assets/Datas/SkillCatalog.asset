@@ -13,9 +13,96 @@ MonoBehaviour:
   m_Name: SkillCatalog
   m_EditorClassIdentifier: Assembly-CSharp::SkillCatalog
   _skills:
-  - {fileID: 11400000, guid: da11edd96238d5246aa784faa5303af0, type: 2}
-  - {fileID: 11400000, guid: e51e8b5393e39824685e6264fec9c288, type: 2}
-  - {fileID: 11400000, guid: ca950d767c2c4c141aee634dd0a4894f, type: 2}
-  - {fileID: 11400000, guid: e278d797a295ed04da18386d7f311480, type: 2}
-  - {fileID: 11400000, guid: e45ea17835d113b47bd60a1d156f1ec1, type: 2}
-  - {fileID: 11400000, guid: 655cfc24fca077c4993a4f9c5556b33c, type: 2}
+  - _id: 10101
+    _displayName: "\uACF5\uACA9\uB825 \uC0C1\uC2B9"
+    _description: "\uACF5\uACA9\uB825\uC774 3% \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 101
+    _unlockLevel: 5
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 3
+      _value: 3
+      _valueType: 1
+      _duration: 0
+  - _id: 10102
+    _displayName: "2\uC5F0\uBC1C"
+    _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uD654\uC0B4\uC744
+      2\uBC1C \uC3DC\uB2E4"
+    _towerId: 101
+    _unlockLevel: 10
+    _upgradeOfId: 0
+    _trigger: 1
+    _nth: 0
+    _chance: 10
+    _cooldown: 0
+    _effects:
+    - _type: 4
+      _value: 1
+      _valueType: 0
+      _duration: 0
+  - _id: 10103
+    _displayName: "2\uC5F0\uBC1C"
+    _description: "\uACF5\uACA9\uD560 \uB54C 20% \uD655\uB960\uB85C \uD654\uC0B4\uC744
+      2\uBC1C \uC3DC\uB2E4"
+    _towerId: 101
+    _unlockLevel: 15
+    _upgradeOfId: 10102
+    _trigger: 1
+    _nth: 0
+    _chance: 20
+    _cooldown: 0
+    _effects:
+    - _type: 4
+      _value: 1
+      _valueType: 0
+      _duration: 0
+  - _id: 10301
+    _displayName: "\uACF5\uACA9\uC18D\uB3C4 \uC0C1\uC2B9"
+    _description: "\uACF5\uACA9\uC18D\uB3C4\uAC00 5% \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 103
+    _unlockLevel: 5
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 2
+      _value: 5
+      _valueType: 1
+      _duration: 0
+  - _id: 10302
+    _displayName: "\uCE58\uBA85\uD0C0 \uD655\uB960 \uC0C1\uC2B9"
+    _description: "\uCE58\uBA85\uD0C0 \uD655\uB960\uC774 5%p \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 103
+    _unlockLevel: 10
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 0
+      _value: 5
+      _valueType: 0
+      _duration: 0
+  - _id: 10303
+    _displayName: "\uAC15\uD0C0"
+    _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uACF5\uACA9\uB825\uC758
+      300% \uD53C\uD574\uB97C \uC900\uB2E4"
+    _towerId: 103
+    _unlockLevel: 15
+    _upgradeOfId: 0
+    _trigger: 1
+    _nth: 0
+    _chance: 10
+    _cooldown: 0
+    _effects:
+    - _type: 8
+      _value: 300
+      _valueType: 1
+      _duration: 0

@@ -1,11 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Skill_00", menuName = "SlimeTD/Tower Skill Data", order = 64)]
-public class TowerSkillData : ScriptableObject
+[Serializable]
+public class TowerSkillData
 {
     [SerializeField] private int _id;
-    [SerializeField] private string _codeName;
     [SerializeField] private string _displayName;
     [SerializeField] private string _description;
     [SerializeField] private int _towerId;
@@ -22,7 +22,6 @@ public class TowerSkillData : ScriptableObject
     [SerializeField] private List<SkillEffectEntry> _effects = new List<SkillEffectEntry>();
 
     public int Id => _id;
-    public string CodeName => _codeName;
     public string DisplayName => _displayName;
     public string Description => _description;
     public int TowerId => _towerId;

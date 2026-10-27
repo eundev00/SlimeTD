@@ -86,7 +86,7 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 |---|---|---|
 | `Grades.csv` | `gradeId` | `name`, `baseAttack`, `attackGrowthRate`, `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel` |
 | `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(비우면 등급 기본), `unlockGemPrice` |
-| `Skills.csv`, `SkillEffects.csv` | `skillId` | 아래 [타워 스킬](#타워-스킬) 참고 |
+| `Skills.csv` | `skillId` | 아래 [타워 스킬](#타워-스킬) 참고 |
 
 - 실행: 메뉴 `SlimeTD > Data > Import Tower Sheets`. `TowerData`를 ID로 찾아(없으면 `TowerData_<코드명>` 이름, 그래도 없으면 새로 생성) 숫자 필드를 덮어쓰고 `TowerCatalog`를 시트 기준으로 채운다
 - 프리팹, 투사체 프리팹 같은 에셋 참조는 임포터가 건드리지 않으므로 인스펙터에서 한 번 연결한다
@@ -94,13 +94,13 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 
 ## 타워 스킬
 
-스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`, `SkillEffects.csv`)가 원천이다. 임포트하면 스킬 에셋(`TowerSkillData`)과 `SkillCatalog`가 만들어진다. `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 데이터 구조와 임포트까지 구현돼 있고, 전투에서 스킬을 실행하는 부분(발동 판정, 효과 적용)은 아직 없다. 스킬 내용은 미확정이라 시트의 `9xxx` 번호 스킬은 구조 검증용 테스트 스킬이다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
+스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`) 한 파일이 원천이다. 임포트하면 `SkillCatalog` 하나가 스킬 데이터를 직접 가진다 (스킬별 에셋 파일은 없다). `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 궁수와 일병 스킬이 들어 있고, 전투에서 실행되는 것은 상시 스탯 효과(`Attack`, `AttackSpeed`, `CritChance`, `CritBonus`), 공격 시 확률 `MultiShot`, 공격 시 확률 `DamageMultiplier`다. 그 밖의 트리거와 효과는 아직 없다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
 
-**정의(SO)와 런타임을 나눈다.** SO는 읽기 전용이고, 타워가 만들어질 때(`BaseTower.Initialize`) `TowerData`와 `SkillCatalog.GetSkills(towerId)`를 합쳐 타워별 런타임 객체가 쿨타임, N번째 공격 카운터, 수치 합산을 들고 관리한다 (런타임 객체는 아직 없다).
+**정의와 런타임을 나눈다.** `SkillCatalog`의 데이터는 읽기 전용이고, 타워가 만들어질 때(`BaseTower.Initialize`) 레벨에 맞는 활성 스킬을 구해 `TowerStats`(상시 스탯 합산)와 `TowerSkillController`(공격 시 확률 판정)에 넘긴다.
 
 ```
 SkillCatalog (SO, 1개. Assets/Datas/SkillCatalog.asset)
-└─ skills            : TowerSkillData[]           // 임포터가 채움
+└─ skills            : TowerSkillData[]           // 임포터가 채움. 직렬화 클래스(SO 아님)
    런타임 인덱스: towerId -> 스킬 목록 (해금 레벨 순, 같으면 ID 순)
    GetSkills(towerId) — 없으면 빈 목록. 해금 여부와 상관없이 그 타워의 전체 스킬 (UI 슬롯용)
    GetActiveSkills(towerId, level, buffer) — 레벨에 해금됐고, 해금된 업그레이드 스킬에 대체되지 않은 스킬만
@@ -108,8 +108,8 @@ SkillCatalog (SO, 1개. Assets/Datas/SkillCatalog.asset)
      SkillSlot: Root(계열 대표), Current(적용 중인 단계, 잠겼으면 없음), Next(다음에 해금될 단계, 없으면 끝)
      IsLocked = Current 없음 → 자물쇠 / HasNextUpgrade = Current와 Next 둘 다 있음 → 화살표
 
-TowerSkillData (SO, 스킬당 1개. Assets/Datas/Skills/<타워 코드명>/Skill_<코드명>.asset)
-├─ id, codeName, displayName, description
+TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
+├─ id, displayName, description
 ├─ towerId           : int                        // 귀속된 타워
 ├─ unlockLevel       : int = 1                    // 타워 레벨이 이 값 이상이면 활성
 ├─ upgradeOfId       : int                        // 0이면 일반 스킬. 값이 있으면 그 스킬을 대체하는 업그레이드
@@ -122,12 +122,13 @@ TowerSkillData (SO, 스킬당 1개. Assets/Datas/Skills/<타워 코드명>/Skill
 
 | 시트 | 키 | 열 |
 |---|---|---|
-| `Skills.csv` | `skillId` | `codeName`, `name`, `description`, `towerId`, `unlockLevel`(기본 1), `upgradeOf`(대체할 스킬 ID, 비우면 없음), `trigger`, `nth`, `chance`(%, 비우면 없음), `cooldown`(초, 비우면 없음) |
-| `SkillEffects.csv` | `skillId` (스킬 하나에 효과 여러 줄) | `effectType`, `value`, `valueType`, `duration`(초, 비우면 상시) |
+| `Skills.csv` | `skillId` | 식별 `name`, `description` / 대상 `towerId`, `unlockLevel`(기본 1), `upgradeOf`(대체할 스킬 ID, 비우면 없음) / 발동 `trigger`, `nth`, `chance`(%, 비우면 없음), `cooldown`(초, 비우면 없음) / 효과 `effectType`, `value`(`%`를 붙이면 퍼센트), `duration`(초, 비우면 상시) |
 
-- 실행: 메뉴 `SlimeTD > Data > Import Skill Sheets`. 스킬을 ID로 찾아(없으면 새로 생성) 값을 덮어쓰고, 시트에 있는 스킬로 `SkillCatalog`를 채운다. 여러 번 실행해도 결과가 같다. `towerId`가 `Towers.csv`에 없는 행은 건너뛴다
-- `effectType`: `CritChance` / `CritBonus` / `AttackSpeed` / `Attack` / `MultiShot` / `Pierce` / `Slow` / `JellyGain`
-- `valueType`: `Fixed`(고정, 더하기) / `Percent`(퍼센트). 효과마다 쓸 수 있는 단위가 정해져 있다 (`SkillEffectRules`)
+- 스킬 하나에 효과는 한 개다. 효과가 둘인 스킬이 필요해지면 효과 열을 한 세트 더 추가한다
+- 실행: 메뉴 `SlimeTD > Data > Import Skill Sheets`. 시트 전체로 `SkillCatalog`의 스킬 목록을 새로 채운다. 여러 번 실행해도 결과가 같다. `towerId`가 `Towers.csv`에 없는 행은 건너뛴다
+- 스킬 ID는 `타워ID×100+순번`이다 (궁수 10101~, 일병 10301~). 한 번 정한 ID는 바꾸지 않고, 추가는 그 타워의 다음 빈 번호를 쓴다
+- `effectType`: `CritChance` / `CritBonus` / `AttackSpeed` / `Attack` / `MultiShot` / `Pierce` / `Slow` / `JellyGain` / `DamageMultiplier`
+- `value`: `%`가 붙으면 `Percent`, 없으면 `Fixed`로 읽는다. 효과마다 쓸 수 있는 단위가 정해져 있다 (`SkillEffectRules`). `MultiShot`의 값은 추가로 쏘는 발수(2연발이면 1)이고, `DamageMultiplier`는 공격력의 총 배율(300%는 3배, 치명타 보너스와 달리 "더하기"가 아니다)이다
 
 | 효과 | 고정 | 퍼센트 |
 |---|---|---|
@@ -136,6 +137,7 @@ TowerSkillData (SO, 스킬당 1개. Assets/Datas/Skills/<타워 코드명>/Skill
 | `CritChance`, `CritBonus` | +N%p | 없음 |
 | `Slow` (이감) | 속도 −N | 슬라임 기본 속도의 N% |
 | `MultiShot`, `Pierce`, `JellyGain` | +N (발 수, 관통 수, 젤리) | 없음 |
+| `DamageMultiplier` | 없음 | 공격력의 N% (스킬 발동 시 치명타 판정 없이 이 배율로만 계산) |
 
 - 업그레이드: 같은 스킬을 강화하는 단계(예: 2연발 확률 10% → 20%)는 새 행을 만들고 `upgradeOf`에 이전 단계의 스킬 ID를 넣는다. 같은 계열인지는 이 연결로 안다 (대표 = `upgradeOf`가 없는 스킬, 따라가면 계열 전체). 업그레이드가 해금되면 이전 단계는 비활성이 되고 가장 높게 해금된 단계 하나만 활성이다. 대체 대상은 같은 타워의 더 낮은 해금 레벨 스킬이어야 하고, 아니면 임포트 때 경고한다
 - 지원하지 않는 단위 조합이나 해석할 수 없는 값이 있는 행은 로그를 남기고 건너뛴다

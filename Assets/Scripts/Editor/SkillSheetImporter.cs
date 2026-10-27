@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -9,24 +10,17 @@ public static class SkillSheetImporter
     private const string LogTag = "SkillSheetImporter";
     private const string SheetFolder = "Assets/Datas/Sheets";
     private const string SkillsFile = "Skills.csv";
-    private const string EffectsFile = "SkillEffects.csv";
-    private const string SkillFolder = "Assets/Datas/Skills";
     private const string CatalogPath = "Assets/Datas/SkillCatalog.asset";
-    private const string TowerDataPrefix = "TowerData_";
 
     [MenuItem("SlimeTD/Data/Import Skill Sheets")]
     public static void Import()
     {
-        if (!SheetReader.TryReadTable($"{SheetFolder}/{SkillsFile}", LogTag, out var skillRows)
-            || !SheetReader.TryReadTable($"{SheetFolder}/{EffectsFile}", LogTag, out var effectRows))
+        if (!SheetReader.TryReadTable($"{SheetFolder}/{SkillsFile}", LogTag, out var skillRows))
             return;
 
-        var towers = CollectTowers();
-        var effects = ParseEffects(effectRows);
-        var assets = CollectSkillAssets();
+        var towerIds = CollectTowerIds();
         var usedIds = new HashSet<int>();
-        var imported = new List<TowerSkillData>();
-        int created = 0;
+        var imported = new List<SkillRow>();
 
         foreach (var row in skillRows)
         {
@@ -42,49 +36,19 @@ public static class SkillSheetImporter
                 continue;
             }
 
-            string codeName = SheetReader.Get(row, "codeName");
-            if (string.IsNullOrEmpty(codeName))
+            if (!SheetReader.TryGetInt(row, "towerId", out int towerId) || !towerIds.Contains(towerId))
             {
-                Debug.Log($"[{LogTag}] 코드명이 없는 스킬을 건너뜁니다: {id}");
-                continue;
-            }
-
-            if (!SheetReader.TryGetInt(row, "towerId", out int towerId) || !towers.TryGetValue(towerId, out string towerCode))
-            {
-                Debug.Log($"[{LogTag}] 스킬 {id}({codeName})의 타워를 찾을 수 없습니다. towerId: {SheetReader.Get(row, "towerId")}");
+                Debug.Log($"[{LogTag}] 스킬 {id}의 타워를 찾을 수 없습니다. towerId: {SheetReader.Get(row, "towerId")}");
                 continue;
             }
 
             if (!TryParseEnum(row, "trigger", out SkillTrigger trigger, id))
                 continue;
 
-            if (!assets.TryGetValue(id, out var skill))
-            {
-                skill = CreateAsset(towerCode, codeName);
-                if (skill == null)
-                    continue;
+            if (!TryParseEffect(row, id, out var effect))
+                continue;
 
-                created++;
-            }
-
-            effects.TryGetValue(id, out var skillEffects);
-            if (skillEffects == null || skillEffects.Count == 0)
-                Debug.Log($"[{LogTag}] 효과가 없는 스킬입니다: {id}({codeName})", skill);
-
-            Apply(skill, id, towerId, trigger, row, skillEffects ?? new List<EffectRow>());
-            imported.Add(skill);
-        }
-
-        foreach (int effectSkillId in effects.Keys)
-        {
-            if (!usedIds.Contains(effectSkillId))
-                Debug.Log($"[{LogTag}] 스킬 시트에 없는 스킬의 효과 행입니다: {effectSkillId}");
-        }
-
-        foreach (var pair in assets)
-        {
-            if (!usedIds.Contains(pair.Key))
-                Debug.Log($"[{LogTag}] 시트에 없는 스킬 에셋입니다: {AssetDatabase.GetAssetPath(pair.Value)}");
+            imported.Add(new SkillRow(id, towerId, trigger, row, effect));
         }
 
         ValidateUpgrades(imported);
@@ -92,67 +56,70 @@ public static class SkillSheetImporter
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log($"[{LogTag}] 임포트 완료. 스킬 {usedIds.Count}개, 신규 {created}개");
+        Debug.Log($"[{LogTag}] 임포트 완료. 스킬 {imported.Count}개");
     }
 
-    private static void Apply(TowerSkillData skill, int id, int towerId, SkillTrigger trigger, Dictionary<string, string> row, List<EffectRow> effects)
+    // 수치 칸에 %가 붙으면 퍼센트, 없으면 고정값이다.
+    private static bool TryParseEffect(Dictionary<string, string> row, int skillId, out EffectRow effect)
     {
-        var so = new SerializedObject(skill);
+        effect = default;
 
-        so.FindProperty("_id").intValue = id;
-        so.FindProperty("_codeName").stringValue = SheetReader.Get(row, "codeName");
-        so.FindProperty("_displayName").stringValue = SheetReader.Get(row, "name");
-        so.FindProperty("_description").stringValue = SheetReader.Get(row, "description");
-        so.FindProperty("_towerId").intValue = towerId;
-        so.FindProperty("_unlockLevel").intValue = SheetReader.TryGetInt(row, "unlockLevel", out int level) ? Mathf.Max(1, level) : 1;
-        so.FindProperty("_upgradeOfId").intValue = SheetReader.TryGetInt(row, "upgradeOf", out int upgradeOf) ? upgradeOf : 0;
-        so.FindProperty("_trigger").enumValueIndex = (int)trigger;
-        so.FindProperty("_nth").intValue = SheetReader.TryGetInt(row, "nth", out int nth) ? nth : 0;
-        so.FindProperty("_chance").floatValue = SheetReader.TryGetFloat(row, "chance", out float chance) ? Mathf.Clamp(chance, 0f, 100f) : 0f;
-        so.FindProperty("_cooldown").floatValue = SheetReader.TryGetFloat(row, "cooldown", out float cooldown) ? Mathf.Max(0f, cooldown) : 0f;
-
-        if (trigger == SkillTrigger.EveryNthAttack && so.FindProperty("_nth").intValue < 2)
-            Debug.Log($"[{LogTag}] N번째 공격 스킬인데 nth가 2 미만입니다: {id}", skill);
-
-        var list = so.FindProperty("_effects");
-        list.arraySize = effects.Count;
-
-        for (int i = 0; i < effects.Count; i++)
+        if (string.IsNullOrEmpty(SheetReader.Get(row, "effectType")))
         {
-            var element = list.GetArrayElementAtIndex(i);
-            element.FindPropertyRelative("_type").enumValueIndex = (int)effects[i].Type;
-            element.FindPropertyRelative("_value").floatValue = effects[i].Value;
-            element.FindPropertyRelative("_valueType").enumValueIndex = (int)effects[i].ValueType;
-            element.FindPropertyRelative("_duration").floatValue = effects[i].Duration;
+            Debug.Log($"[{LogTag}] 효과가 없는 스킬을 건너뜁니다: {skillId}");
+            return false;
         }
 
-        so.ApplyModifiedPropertiesWithoutUndo();
-        EditorUtility.SetDirty(skill);
+        if (!TryParseEnum(row, "effectType", out SkillEffectType type, skillId))
+            return false;
+
+        string text = SheetReader.Get(row, "value").Trim();
+        var valueType = text.EndsWith("%") ? SkillValueType.Percent : SkillValueType.Fixed;
+        string number = valueType == SkillValueType.Percent ? text.Substring(0, text.Length - 1) : text;
+
+        if (!float.TryParse(number, NumberStyles.Float, CultureInfo.InvariantCulture, out float value))
+        {
+            Debug.Log($"[{LogTag}] 효과 수치(value)를 읽지 못해 건너뜁니다. 스킬: {skillId}, 값: '{text}'");
+            return false;
+        }
+
+        if (!SkillEffectRules.IsValueTypeAllowed(type, valueType))
+        {
+            Debug.Log($"[{LogTag}] {type}은(는) {valueType} 단위를 지원하지 않아 건너뜁니다. 스킬: {skillId}, 값: '{text}'");
+            return false;
+        }
+
+        float duration = SheetReader.TryGetFloat(row, "duration", out float parsed) ? Mathf.Max(0f, parsed) : 0f;
+        effect = new EffectRow(type, value, valueType, duration);
+        return true;
     }
 
     // 대체 대상은 같은 타워의 더 낮은 해금 레벨 스킬이어야 한다. 아니면 대체가 의도대로 동작하지 않는다.
-    private static void ValidateUpgrades(List<TowerSkillData> skills)
+    private static void ValidateUpgrades(List<SkillRow> skills)
     {
         var byId = skills.ToDictionary(s => s.Id);
 
-        foreach (var skill in skills.Where(s => s.IsUpgrade))
+        foreach (var skill in skills)
         {
-            if (!byId.TryGetValue(skill.UpgradeOfId, out var target))
+            if (skill.UpgradeOf == 0)
+                continue;
+
+            if (!byId.TryGetValue(skill.UpgradeOf, out var target))
             {
-                Debug.Log($"[{LogTag}] upgradeOf 대상 스킬이 시트에 없습니다: {skill.Id} -> {skill.UpgradeOfId}", skill);
+                Debug.Log($"[{LogTag}] upgradeOf 대상 스킬이 시트에 없습니다: {skill.Id} -> {skill.UpgradeOf}");
                 continue;
             }
 
             if (target.TowerId != skill.TowerId)
-                Debug.Log($"[{LogTag}] 다른 타워의 스킬을 대체할 수 없습니다: {skill.Id} -> {skill.UpgradeOfId}", skill);
+                Debug.Log($"[{LogTag}] 다른 타워의 스킬을 대체할 수 없습니다: {skill.Id} -> {skill.UpgradeOf}");
 
             if (target.UnlockLevel >= skill.UnlockLevel)
-                Debug.Log($"[{LogTag}] 대체 스킬의 해금 레벨이 대상보다 높아야 합니다: {skill.Id}(Lv.{skill.UnlockLevel}) -> {target.Id}(Lv.{target.UnlockLevel})", skill);
+                Debug.Log($"[{LogTag}] 대체 스킬의 해금 레벨이 대상보다 높아야 합니다: {skill.Id}(Lv.{skill.UnlockLevel}) -> {target.Id}(Lv.{target.UnlockLevel})");
         }
     }
 
-    // 카탈로그는 시트에 있는 스킬만 담는다. 타워 에셋은 스킬을 알지 못한다.
-    private static void UpdateCatalog(List<TowerSkillData> skills)
+    // 카탈로그가 스킬 데이터를 직접 갖는다. 타워 에셋은 스킬을 알지 못한다.
+    private static void UpdateCatalog(List<SkillRow> skills)
     {
         var catalog = AssetDatabase.LoadAssetAtPath<SkillCatalog>(CatalogPath);
         if (catalog == null)
@@ -173,52 +140,38 @@ public static class SkillSheetImporter
         array.arraySize = ordered.Count;
 
         for (int i = 0; i < ordered.Count; i++)
-            array.GetArrayElementAtIndex(i).objectReferenceValue = ordered[i];
+            Write(array.GetArrayElementAtIndex(i), ordered[i]);
 
         so.ApplyModifiedPropertiesWithoutUndo();
         EditorUtility.SetDirty(catalog);
     }
 
-    private static Dictionary<int, List<EffectRow>> ParseEffects(List<Dictionary<string, string>> rows)
+    private static void Write(SerializedProperty element, SkillRow skill)
     {
-        var result = new Dictionary<int, List<EffectRow>>();
+        var row = skill.Row;
 
-        foreach (var row in rows)
-        {
-            if (!SheetReader.TryGetInt(row, "skillId", out int skillId))
-            {
-                Debug.Log($"[{LogTag}] 효과 행의 skillId가 숫자가 아니라 건너뜁니다.");
-                continue;
-            }
+        element.FindPropertyRelative("_id").intValue = skill.Id;
+        element.FindPropertyRelative("_displayName").stringValue = SheetReader.Get(row, "name");
+        element.FindPropertyRelative("_description").stringValue = SheetReader.Get(row, "description");
+        element.FindPropertyRelative("_towerId").intValue = skill.TowerId;
+        element.FindPropertyRelative("_unlockLevel").intValue = skill.UnlockLevel;
+        element.FindPropertyRelative("_upgradeOfId").intValue = skill.UpgradeOf;
+        element.FindPropertyRelative("_trigger").enumValueIndex = (int)skill.Trigger;
+        element.FindPropertyRelative("_nth").intValue = SheetReader.TryGetInt(row, "nth", out int nth) ? nth : 0;
+        element.FindPropertyRelative("_chance").floatValue = SheetReader.TryGetFloat(row, "chance", out float chance) ? Mathf.Clamp(chance, 0f, 100f) : 0f;
+        element.FindPropertyRelative("_cooldown").floatValue = SheetReader.TryGetFloat(row, "cooldown", out float cooldown) ? Mathf.Max(0f, cooldown) : 0f;
 
-            if (!TryParseEnum(row, "effectType", out SkillEffectType type, skillId)
-                || !TryParseEnum(row, "valueType", out SkillValueType valueType, skillId))
-                continue;
+        if (skill.Trigger == SkillTrigger.EveryNthAttack && element.FindPropertyRelative("_nth").intValue < 2)
+            Debug.Log($"[{LogTag}] N번째 공격 스킬인데 nth가 2 미만입니다: {skill.Id}");
 
-            if (!SkillEffectRules.IsValueTypeAllowed(type, valueType))
-            {
-                Debug.Log($"[{LogTag}] {type}은(는) {valueType} 단위를 지원하지 않아 건너뜁니다. 스킬: {skillId}");
-                continue;
-            }
+        var effects = element.FindPropertyRelative("_effects");
+        effects.arraySize = 1;
 
-            if (!SheetReader.TryGetFloat(row, "value", out float value))
-            {
-                Debug.Log($"[{LogTag}] 효과 수치(value)를 읽지 못해 건너뜁니다. 스킬: {skillId}, 효과: {type}");
-                continue;
-            }
-
-            float duration = SheetReader.TryGetFloat(row, "duration", out float parsed) ? Mathf.Max(0f, parsed) : 0f;
-
-            if (!result.TryGetValue(skillId, out var list))
-            {
-                list = new List<EffectRow>();
-                result.Add(skillId, list);
-            }
-
-            list.Add(new EffectRow(type, value, valueType, duration));
-        }
-
-        return result;
+        var effect = effects.GetArrayElementAtIndex(0);
+        effect.FindPropertyRelative("_type").enumValueIndex = (int)skill.Effect.Type;
+        effect.FindPropertyRelative("_value").floatValue = skill.Effect.Value;
+        effect.FindPropertyRelative("_valueType").enumValueIndex = (int)skill.Effect.ValueType;
+        effect.FindPropertyRelative("_duration").floatValue = skill.Effect.Duration;
     }
 
     private static bool TryParseEnum<T>(Dictionary<string, string> row, string key, out T value, int skillId) where T : struct
@@ -231,52 +184,39 @@ public static class SkillSheetImporter
         return false;
     }
 
-    // 타워 ID -> 코드명. 스킬 에셋 폴더 이름과 시트의 towerId 검증에 쓴다.
-    private static Dictionary<int, string> CollectTowers()
+    private static HashSet<int> CollectTowerIds()
     {
-        var result = new Dictionary<int, string>();
+        var result = new HashSet<int>();
 
         foreach (string guid in AssetDatabase.FindAssets("t:TowerData"))
         {
             var data = AssetDatabase.LoadAssetAtPath<TowerData>(AssetDatabase.GUIDToAssetPath(guid));
-            if (data == null)
-                continue;
-
-            result[data.Id] = data.name.StartsWith(TowerDataPrefix) ? data.name.Substring(TowerDataPrefix.Length) : data.name;
+            if (data != null)
+                result.Add(data.Id);
         }
 
         return result;
     }
 
-    private static Dictionary<int, TowerSkillData> CollectSkillAssets()
+    private readonly struct SkillRow
     {
-        var result = new Dictionary<int, TowerSkillData>();
+        public readonly int Id;
+        public readonly int TowerId;
+        public readonly SkillTrigger Trigger;
+        public readonly Dictionary<string, string> Row;
+        public readonly EffectRow Effect;
 
-        foreach (string guid in AssetDatabase.FindAssets("t:TowerSkillData"))
+        public int UnlockLevel => SheetReader.TryGetInt(Row, "unlockLevel", out int level) ? Mathf.Max(1, level) : 1;
+        public int UpgradeOf => SheetReader.TryGetInt(Row, "upgradeOf", out int upgradeOf) ? upgradeOf : 0;
+
+        public SkillRow(int id, int towerId, SkillTrigger trigger, Dictionary<string, string> row, EffectRow effect)
         {
-            var skill = AssetDatabase.LoadAssetAtPath<TowerSkillData>(AssetDatabase.GUIDToAssetPath(guid));
-            if (skill != null)
-                result[skill.Id] = skill;
+            Id = id;
+            TowerId = towerId;
+            Trigger = trigger;
+            Row = row;
+            Effect = effect;
         }
-
-        return result;
-    }
-
-    private static TowerSkillData CreateAsset(string towerCode, string codeName)
-    {
-        if (!AssetDatabase.IsValidFolder(SkillFolder))
-            AssetDatabase.CreateFolder("Assets/Datas", "Skills");
-
-        string folder = $"{SkillFolder}/{towerCode}";
-        if (!AssetDatabase.IsValidFolder(folder))
-            AssetDatabase.CreateFolder(SkillFolder, towerCode);
-
-        string path = $"{folder}/Skill_{codeName}.asset";
-        var skill = ScriptableObject.CreateInstance<TowerSkillData>();
-        AssetDatabase.CreateAsset(skill, path);
-
-        Debug.Log($"[{LogTag}] 새 스킬 에셋을 만들었습니다: {path}", skill);
-        return skill;
     }
 
     private readonly struct EffectRow
