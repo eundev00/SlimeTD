@@ -11,6 +11,8 @@ GameConfig (SO, 1개)
 ├─ summonBaseCost    : int = 50                 // 에셋 값 10. 소환 비용 = 기본 + 증가 × 소환 횟수
 ├─ summonCostIncrease: int = 10                 // 에셋 값 2
 ├─ summonGradeId     : int = 1                  // 소환 등급 (일반)
+├─ slowMinSpeedRatio : float = 0.25             // 감속 하한. 기본 속도의 25% 밑으로 내려가지 않는다
+├─ bossSlowScale     : float = 0.5              // 보스에게 걸리는 감속 비율 (절반)
 ├─ initialLobbyGold  : int = 10000               // 새 계정 시작 골드 (개발용 임시)
 ├─ initialGem        : int = 10000               // 새 계정 시작 보석 (개발용 임시)
 └─ initialCards      : int = 10000               // 새 계정 시작 헌터 카드 (개발용 임시)
@@ -148,7 +150,7 @@ TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
 - 공격력(레벨) = `baseAttack × (1 + attackGrowthRate / 100 × (레벨 - 1))`. 공격속도는 레벨로 오르지 않는다. 기본 100%이고 스킬이 가산한다
 - 데미지는 발사 시점(근접은 타격 프레임)에 `DamageInfo`(데미지, 치명타 여부)로 확정되어 슬라임에게 전달된다. 효과 목록은 이후 단계에서 `DamageInfo`에 추가한다. 공격 시 확률로 젤리를 얻는 스킬(운빨존많겜 산적 방식)은 타워가 공격할 때 바로 지급한다
 - **타워 레벨**은 로비에서 올리는 영구 성장이며 최대 15다. 타워 종류별로 저장하며 합성과 무관하다. 인게임에서는 오르지 않고, 게임 시작 시 정해진 값을 타워 생성 시점에 스냅샷으로 받는다 (`ITowerLevelService`, 전역 스코프)
-- 버프/디버프 중첩은 [버프/디버프 중첩 규칙](슬라임TD_버프디버프중첩규칙.md)을 따른다. 감속은 타워 단위(`SpawnId`)로 구분해 다른 타워끼리 곱연산으로 쌓고, 같은 타워는 지속 시간만 갱신한다. 감속 정보는 타격 정보(`DamageInfo.SourceSpawnId`, `SlowPercent`, `SlowDuration`)에 실려 슬라임의 `SlimeSlow`가 관리한다. 광역과 관통으로 맞은 대상에도 같이 걸린다
+- 버프/디버프 중첩은 [타워 스킬 설계 5장](슬라임TD_타워스킬설계.md#5-버프--디버프)을 따른다. 감속은 타워 단위(`SpawnId`)로 구분해 다른 타워끼리 곱연산으로 쌓고, 같은 타워는 지속 시간만 갱신한다. 감속 정보는 타격 정보(`DamageInfo.SourceSpawnId`, `SlowPercent`, `SlowDuration`)에 실려 슬라임의 `SlimeSlow`가 관리한다. 광역과 관통으로 맞은 대상에도 같이 걸린다
 - **타워 강화**(전투 중 성장)는 런타임 상태로만 존재하고 전투가 끝나면 초기화된다. 후순위
 
 ## 플레이어 데이터 (메타)

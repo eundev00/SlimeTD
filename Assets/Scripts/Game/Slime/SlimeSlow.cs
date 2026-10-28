@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 감속 중첩 규칙은 Doc/슬라임TD_버프디버프중첩규칙.md를 따른다.
+// 감속 중첩 규칙은 Doc/슬라임TD_타워스킬설계.md 5장을 따른다.
 public class SlimeSlow
 {
     private struct Entry

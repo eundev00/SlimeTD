@@ -11,8 +11,6 @@
 - 슬라임 렌더링: [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md)
 - 로비 UI: [Doc/슬라임TD_로비UI.md](Doc/슬라임TD_로비UI.md)
 - 팝업 시스템: [Doc/슬라임TD_팝업시스템.md](Doc/슬라임TD_팝업시스템.md)
-- 버프/디버프 중첩 규칙: [Doc/슬라임TD_버프디버프중첩규칙.md](Doc/슬라임TD_버프디버프중첩규칙.md)
-
 **화면**: 모바일 **세로(Portrait) 고정**. UI/카메라/맵 관련 작업은 항상 세로 비율을 기준으로 한다. 자세한 내용은 아래 [5. 세로 화면(Portrait) 기준](#5-세로-화면portrait-기준) 참고.
 
 ---
@@ -122,7 +120,9 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 - **밸런스 수치**: 체력/데미지/젤리/라이프 차감량은 ScriptableObject로 분리해 코드에 하드코딩하지 않는다
 - **타워 데이터 파이프라인**: 타워 숫자는 Assets/Datas/Sheets/의 CSV(Grades.csv, Towers.csv)가 원천이다. CSV는 영문 열 이름 한 줄만 두고, 열 설명과 가능한 값은 [Assets/Datas/Sheets/README.md](Assets/Datas/Sheets/README.md)에 있다. 메뉴 SlimeTD > Data > Import Tower Sheets가 TowerData 에셋과 TowerCatalog를 채우며, 에셋의 숫자 필드를 인스펙터에서 직접 고치지 않는다. 프리팹/투사체/썸네일 연결은 인스펙터에서 한다. 타워 스킬은 Skills.csv 한 파일이 원천이고 메뉴 SlimeTD > Data > Import Skill Sheets가 SkillCatalog 에셋 하나에 스킬 데이터를 직접 채운다 (스킬별 에셋 파일은 없다. 스킬은 타워 한 개에 귀속되고 TowerData는 스킬을 모른다. 타워 생성 시 SkillCatalog.GetSkills(towerId)로 찾는다). 상세는 [Doc/슬라임TD_데이터구조설계.md](Doc/슬라임TD_데이터구조설계.md) 참고
 - **로비 웨이브 맵**: 전투 탭은 맵 선택 대신 세로 스크롤 웨이브 진행도 맵이다. 프리팹은 메뉴 `SlimeTD > Wave > Build Wave Map Forest`(`WaveMapBuilder`)가 만들며 실행마다 소품 배치가 바뀌고 `WaveForest.prefab`을 덮어쓴다. 상세는 [Doc/슬라임TD_로비UI.md](Doc/슬라임TD_로비UI.md) 참고
-- **데이터 ID 규칙**: 모든 데이터(타워, 스킬 등)의 ID는 종류와 상관없이 서로 겹치지 않아야 한다. 새 시트나 행을 추가할 때 기존 시트의 ID와 비교해 중복을 확인한다. 대역: 타워 101~(3자리), 스킬 타워ID×100+순번(5자리. 궁수 10101~, 일병 10301~). 한 번 정한 ID는 바꾸지 않고, 추가는 그 타워의 다음 빈 번호를 쓴다. 자릿수가 다르면 구조적으로 겹치지 않으니 새 종류의 데이터는 자릿수가 다른 대역을 잡는다
+- **데이터 ID 규칙**: 모든 데이터(타워, 스킬 등)의 ID는 종류와 상관없이 서로 겹치지 않아야 한다. 새 시트나 행을 추가할 때 기존 시트의 ID와 비교해 중복을 확인한다. 대역: 타워 101~(3자리), 스킬 타워ID×100+순번(5자리. 궁수 10101~, 일병 10301~). 한 번 정한 ID는 바꾸지 않고, 추가는 그 타워의 다음 빈 번호를 쓴다. 자릿수가 다르면 구조적으로 겹치지 않으니 새 종류의 데이터는 자릿수가 다른 대역을 잡는다. 게임 중 타워 인스턴스를 구분하는 번호는 데이터 ID가 아니라 `BaseTower.SpawnId`다 (생성마다 새로 발급, 저장하지 않음)
+- **스킬 아이콘**: `Assets/Art/UI/SkillIcon/SkillIcon_{스킬ID}.png` (128x128 투명 PNG). 새 아이콘은 Texture Type을 Sprite로 바꿔야 아틀라스에 들어간다 (Default면 에러 없이 빠진다). 폴더 전체를 `Assets/Art/Images/SkillIconAtlas.spriteatlasv2`가 묶고, 런타임은 `LoadAsync<SpriteAtlas>(AtlasKeys.SkillIconAtlas)` 후 `GetSprite(skill.IconName)`으로 쓴다. `Assets/Art/Images`는 Addressables 폴더로 등록되어 있고 Sprite Packer 모드는 SpriteAtlasV2다
+- **TMP 폰트 글자**: 화면에 보이는 한글(시트의 이름/설명 포함)을 바꾸면 메뉴 `SlimeTD > Data > Trim TMP Fonts To Used Characters`를 다시 실행해야 새 글자가 네모로 깨지지 않는다
 - **데이터 스크립트 위치**: ScriptableObject 정의는 Assets/Scripts/Data/에 둔다 (Game/ 아래에 두지 않는다)
 - **플레이어 데이터(메타)**: 골드/보석/헌터 카드/헌터 레벨/최고 웨이브는 IPlayerDataService(전역)가 들고 IPlayerDataStore로 저장한다. 최고 웨이브는 GameplayService가 `ReportWaveReached`로 기록하고 로비 웨이브 맵이 구독한다. 저장 위치는 구현체 교체로 서버 전환이 가능해야 한다. 로컬 저장을 지워 새 계정으로 시작하려면 메뉴 `SlimeTD > Data > Reset Player Data`를 쓴다. 타워 레벨은 로비에서 정하고 인게임에서는 오르지 않는다
 - **"손맛"이 이 프로젝트의 최우선 품질 기준**이다. 피격/처치 연출은 비용을 아끼지 않는다
