@@ -17,6 +17,10 @@ public class GameConfig : ScriptableObject
     [SerializeField] private int _summonCostIncrease = 10;
     [SerializeField] private int _summonGradeId = 1;
 
+    [Header("디버프")]
+    [SerializeField, Range(0f, 1f)] private float _slowMinSpeedRatio = 0.25f;
+    [SerializeField, Range(0f, 1f)] private float _bossSlowScale = 0.5f;
+
     [Header("디버그")]
     [SerializeField] private bool _ignoreJellyCost;
     [SerializeField] private bool _autoStartWave = true;
@@ -31,6 +35,8 @@ public class GameConfig : ScriptableObject
     public int SummonBaseCost => _summonBaseCost;
     public int SummonCostIncrease => _summonCostIncrease;
     public int SummonGradeId => _summonGradeId;
+    public float SlowMinSpeedRatio => _slowMinSpeedRatio;
+    public float BossSlowScale => _bossSlowScale;
     public bool IgnoreJellyCost => _ignoreJellyCost;
     public bool AutoStartWave => _autoStartWave;
     public TowerData TestTower => _testTower;

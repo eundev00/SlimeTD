@@ -9,6 +9,10 @@ public class TowerSkillController
     // 처음 맞은 대상 말고 추가로 관통하는 대상 수다 (1이면 총 2마리).
     public int PierceCount { get; }
 
+    // 한 타워의 감속은 한 줄로만 걸리므로 가장 강한 것 하나를 쓴다.
+    public float SlowPercent { get; }
+    public float SlowDuration { get; }
+
     public TowerSkillController(IReadOnlyList<TowerSkillData> activeSkills)
     {
         for (int i = 0; i < activeSkills.Count; i++)
@@ -27,14 +31,22 @@ public class TowerSkillController
             var effects = skill.Effects;
             for (int e = 0; e < effects.Count; e++)
             {
-                if (effects[e].Type == SkillEffectType.Pierce)
-                    PierceCount += Mathf.RoundToInt(effects[e].Value);
+                var effect = effects[e];
+
+                if (effect.Type == SkillEffectType.Pierce)
+                    PierceCount += Mathf.RoundToInt(effect.Value);
+
+                if (effect.Type == SkillEffectType.Slow && effect.Value > SlowPercent)
+                {
+                    SlowPercent = effect.Value;
+                    SlowDuration = effect.Duration;
+                }
             }
         }
     }
 
     // 공격 1회마다 한 번 굴린다. 화살이 여러 발이어도 발동 판정은 공격당 한 번이다.
-    // TODO: OnHit / OnKill / EveryNthAttack 발동과 Slow 효과
+    // TODO: OnHit / OnKill / EveryNthAttack 발동
     public AttackSkillRoll RollAttack()
     {
         int extraShots = 0;

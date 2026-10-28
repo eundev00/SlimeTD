@@ -94,7 +94,7 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
 
 ## 타워 스킬
 
-스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`) 한 파일이 원천이다. 임포트하면 `SkillCatalog` 하나가 스킬 데이터를 직접 가진다 (스킬별 에셋 파일은 없다). `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 궁수, 일병, 나무꾼, 석궁병, 레인저, 기사 스킬이 들어 있고, 전투에서 실행되는 것은 상시 스탯 효과(`Attack`, `AttackSpeed`, `CritChance`, `CritBonus`), 상시 관통(`Pierce`. 화살 한 발의 판정을 맞은 모든 대상이 공유한다)과 공격 시 발동 효과(`MultiShot`, `DamageMultiplier`, `Splash`, `JellyGain`)다.
+스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`) 한 파일이 원천이다. 임포트하면 `SkillCatalog` 하나가 스킬 데이터를 직접 가진다 (스킬별 에셋 파일은 없다). `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 궁수, 일병, 나무꾼, 착한 슬라임, 석궁병, 레인저, 기사 스킬이 들어 있고, 전투에서 실행되는 것은 상시 스탯 효과(`Attack`, `AttackSpeed`, `CritChance`, `CritBonus`), 상시 관통(`Pierce`. 화살 한 발의 판정을 맞은 모든 대상이 공유한다), 상시 감속(`Slow`. 맞은 적에게 건다)과 공격 시 발동 효과(`MultiShot`, `DamageMultiplier`, `Splash`, `JellyGain`)다.
 
 공격 1회마다 `OnAttack` 스킬의 확률과 쿨타임을 한 번만 판정해(`TowerSkillController.RollAttack`) 결과(`AttackSkillRoll`)를 공격 방식에 넘긴다. **데미지 스킬(`MultiShot`, `DamageMultiplier`, `Splash`)이 발동한 공격은 치명타 판정을 하지 않고**, 그 공격의 모든 화살이 같은 데미지를 가진다. 광역(`Splash`)은 맞은 대상 중심 반경 안의 다른 슬라임에게 같은 `DamageInfo`를 준다 (`SplashDamage`). 젤리는 데미지와 무관해 치명타 규칙에 영향이 없으며 `IGameplayService.AddJelly`로 바로 지급한다. 쿨타임은 발동했을 때부터 `Time.time` 기준으로 흐르고 공격속도와 무관하다. 그 밖의 트리거와 효과는 아직 없다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
 
@@ -138,7 +138,7 @@ TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
 | `Attack` (공격력) | +N | 레벨이 반영된 기본 공격력의 N% |
 | `AttackSpeed` | 없음 | +N% (예: +10% → 1.1배) |
 | `CritChance`, `CritBonus` | +N%p | 없음 |
-| `Slow` (이감) | 속도 −N | 슬라임 기본 속도의 N% |
+| `Slow` (이감) | 없음 | 슬라임 기본 속도의 N% 감소. `duration`(초)이 필요하다 |
 | `MultiShot`, `Pierce`, `JellyGain` | +N (발 수, 관통 수, 젤리) | 없음 |
 | `DamageMultiplier` | 없음 | 공격력의 N% (스킬 발동 시 치명타 판정 없이 이 배율로만 계산) |
 | `Splash` (광역) | 반경 N (같은 데미지) | 없음 |
@@ -148,7 +148,7 @@ TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
 - 공격력(레벨) = `baseAttack × (1 + attackGrowthRate / 100 × (레벨 - 1))`. 공격속도는 레벨로 오르지 않는다. 기본 100%이고 스킬이 가산한다
 - 데미지는 발사 시점(근접은 타격 프레임)에 `DamageInfo`(데미지, 치명타 여부)로 확정되어 슬라임에게 전달된다. 효과 목록은 이후 단계에서 `DamageInfo`에 추가한다. 공격 시 확률로 젤리를 얻는 스킬(운빨존많겜 산적 방식)은 타워가 공격할 때 바로 지급한다
 - **타워 레벨**은 로비에서 올리는 영구 성장이며 최대 15다. 타워 종류별로 저장하며 합성과 무관하다. 인게임에서는 오르지 않고, 게임 시작 시 정해진 값을 타워 생성 시점에 스냅샷으로 받는다 (`ITowerLevelService`, 전역 스코프)
-- 같은 종류 효과의 중첩은 수치를 합산하고, 지속 효과는 같은 종류를 새로 걸면 타이머를 갱신한다. 상시 합과 지속 합(수치 + 공유 타이머)은 따로 보관하고 최종 값 = 상시 합 + 지속 합에 캡을 적용한다. 효과 종류마다 하드캡을 둘 수 있다 (상한 수치 미정)
+- 버프/디버프 중첩은 [버프/디버프 중첩 규칙](슬라임TD_버프디버프중첩규칙.md)을 따른다. 감속은 타워 단위(`SpawnId`)로 구분해 다른 타워끼리 곱연산으로 쌓고, 같은 타워는 지속 시간만 갱신한다. 감속 정보는 타격 정보(`DamageInfo.SourceSpawnId`, `SlowPercent`, `SlowDuration`)에 실려 슬라임의 `SlimeSlow`가 관리한다. 광역과 관통으로 맞은 대상에도 같이 걸린다
 - **타워 강화**(전투 중 성장)는 런타임 상태로만 존재하고 전투가 끝나면 초기화된다. 후순위
 
 ## 플레이어 데이터 (메타)

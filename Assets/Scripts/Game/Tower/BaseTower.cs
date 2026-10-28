@@ -14,6 +14,8 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private const float TickInterval = 0.1f;
     private const float RotationLerpSpeed = 10f;
 
+    private static int _nextSpawnId;
+
     [NotNull][SerializeField] private TowerRangeIndicator _rangeIndicator;
     [NotNull][SerializeField] private TowerAnimator _animator;
     [NotNull][SerializeField] private TowerAnimationEventListener _animationEventListener;
@@ -55,6 +57,9 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
     public TowerStats Stats => _stats;
     public TowerData Data => _data;
+
+    // 데이터 ID(TowerData.Id)와 다르다. 소환과 합성으로 생길 때마다 새로 받는 게임 중 번호다.
+    public int SpawnId { get; private set; }
 
     Transform ITowerContext.Transform => transform;
     Vector3 ITowerContext.AimDirection => transform.forward;
@@ -114,6 +119,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
             return;
 
         _data = data;
+        SpawnId = ++_nextSpawnId;
 
         int level = _levelService.GetLevel(data.Id);
         _gameplayService.SkillCatalog?.GetActiveSkills(data.Id, level, _activeSkills);

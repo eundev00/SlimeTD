@@ -3,6 +3,7 @@ using UnityEngine;
 
 public interface ITowerContext
 {
+    int SpawnId { get; }
     Transform Transform { get; }
     Vector3 AimDirection { get; }
     TowerStats Stats { get; }

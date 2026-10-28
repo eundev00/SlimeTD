@@ -125,10 +125,15 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
     // 데미지 스킬이 발동한 공격은 치명타 없이 배율로만 계산하고, 아니면 치명타를 굴린다.
     protected DamageInfo ResolveDamage(in AttackSkillRoll roll)
     {
-        if (!roll.HasDamageProc)
-            return Context.Stats.RollHit();
+        var info = roll.HasDamageProc
+            ? Context.Stats.RollSkillHit(roll.DamageMultiplier > 0f ? roll.DamageMultiplier : 1f)
+            : Context.Stats.RollHit();
 
-        return Context.Stats.RollSkillHit(roll.DamageMultiplier > 0f ? roll.DamageMultiplier : 1f);
+        var skills = Context.Skills;
+        if (skills != null && skills.SlowPercent > 0f)
+            info = info.WithSlow(Context.SpawnId, skills.SlowPercent, skills.SlowDuration);
+
+        return info;
     }
 
     protected virtual void OnAttackStarted() { }

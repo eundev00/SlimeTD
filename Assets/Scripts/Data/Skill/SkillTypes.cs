@@ -35,10 +35,10 @@ public static class SkillEffectRules
         {
             case SkillEffectType.AttackSpeed:
             case SkillEffectType.DamageMultiplier:
+            case SkillEffectType.Slow:
                 return valueType == SkillValueType.Percent;
 
             case SkillEffectType.Attack:
-            case SkillEffectType.Slow:
                 return true;
 
             default:

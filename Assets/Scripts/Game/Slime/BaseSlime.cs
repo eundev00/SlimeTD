@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 using Services.PoolService;
+using Services.UpdateService;
 using System;
 using System.Threading;
 using UniRx;
@@ -8,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Splines;
 using VContainer;
 
-public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
+public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 {
     private static readonly int DepthBucketId = Shader.PropertyToID("_SlimeDepthBucket");
 
@@ -30,6 +31,11 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
     private CompositeDisposable _disposables;
     private bool _gameOver;
 
+    private IUpdateSubscriptionService _updateService;
+    private IGameplayService _gameplayService;
+    private readonly SlimeSlow _slow = new SlimeSlow();
+    private bool _slowRegistered;
+
     public SlimeStats Stats => _stats;
     public Vector3 Position => transform.position;
 
@@ -39,13 +45,17 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
         IPublisher<SlimeReachedEndEvent> reachedEndPublisher,
         IGameObjectPoolService poolService,
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
-        DamageTextSpawner damageTextSpawner)
+        DamageTextSpawner damageTextSpawner,
+        IUpdateSubscriptionService updateService,
+        IGameplayService gameplayService)
     {
         _killedPublisher = killedPublisher;
         _reachedEndPublisher = reachedEndPublisher;
         _poolService = poolService;
         _gameProgressSubscriber = gameProgressSubscriber;
         _damageTextSpawner = damageTextSpawner;
+        _updateService = updateService;
+        _gameplayService = gameplayService;
     }
 
 
@@ -99,6 +109,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
     {
         _stats?.Reset(0);
         _jellyReward = 0;
+        ClearSlow();
 
         _disposables?.Dispose();
         _disposables = null;
@@ -133,6 +144,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
         _data = data;
         _jellyReward = jellyReward;
         _stats.Reset(health);
+        ClearSlow();
 
         _splineAnimate.Container = splineContainer;
         _splineAnimate.MaxSpeed = data.BaseSpeed;
@@ -170,10 +182,75 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 
         if (_stats.IsDead)
         {
+            ClearSlow();
             _splineAnimate.Pause();
             _killedPublisher.Publish(new SlimeKilledEvent(_jellyReward));
             OnDiedAsync();
+            return;
         }
+
+        if (info.HasSlow)
+            ApplySlow(info);
+    }
+
+    public void ManagedUpdate()
+    {
+        if (_slow.Tick(Time.deltaTime, SlowMinSpeedRatio))
+            ApplySpeed();
+
+        if (!_slow.IsActive)
+            UnregisterSlowUpdate();
+    }
+
+    private float SlowMinSpeedRatio => _gameplayService?.Config != null ? _gameplayService.Config.SlowMinSpeedRatio : 0.25f;
+
+    private void ApplySlow(DamageInfo info)
+    {
+        if (_data == null)
+            return;
+
+        float percent = info.SlowPercent;
+        if (_data is BossSlimeData)
+            percent *= _gameplayService?.Config != null ? _gameplayService.Config.BossSlowScale : 0.5f;
+
+        _slow.Apply(info.SourceSpawnId, percent, info.SlowDuration, SlowMinSpeedRatio);
+        ApplySpeed();
+
+        if (!_slowRegistered)
+        {
+            _updateService.RegisterUpdatable(this);
+            _slowRegistered = true;
+        }
+    }
+
+    // SplineAnimate는 속도를 바꾸면 진행 시간을 다시 계산해서 위치가 튄다. 진행률을 보존해 둔다.
+    private void ApplySpeed()
+    {
+        if (_splineAnimate == null || _data == null)
+            return;
+
+        float progress = _splineAnimate.NormalizedTime;
+        _splineAnimate.MaxSpeed = _data.BaseSpeed * _slow.SpeedRatio;
+        _splineAnimate.NormalizedTime = progress;
+    }
+
+    private void ClearSlow()
+    {
+        bool wasSlowed = _slow.IsActive;
+        _slow.Clear();
+        UnregisterSlowUpdate();
+
+        if (wasSlowed)
+            ApplySpeed();
+    }
+
+    private void UnregisterSlowUpdate()
+    {
+        if (!_slowRegistered)
+            return;
+
+        _updateService.UnregisterUpdatable(this);
+        _slowRegistered = false;
     }
 
 
@@ -201,6 +278,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem
 
     protected virtual void OnDestroy()
     {
+        UnregisterSlowUpdate();
         _disposables?.Dispose();
         _disposables = null;
 
