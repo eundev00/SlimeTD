@@ -3,6 +3,7 @@ using MessagePipe;
 using TMPro;
 using UniRx;
 using UnityEngine;
+using UnityEngine.U2D;
 using UnityEngine.UI;
 using VContainer;
 
@@ -32,6 +33,9 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private TMP_Text _attackValueText;
     [NotNull][SerializeField] private TMP_Text _attackBonusText;
     [NotNull][SerializeField] private TMP_Text _speedValueText;
+
+    [Header("스킬")]
+    [NotNull][SerializeField] private SkillSlotGroup _skillSlots;
 
     [Header("버튼")]
     [NotNull][SerializeField] private Button _upgradeButton;
@@ -143,6 +147,11 @@ public class HunterDetailPopup : PopupBase
         _attackBonusText.gameObject.SetActive(hasBonus);
         _attackBonusText.text = hasBonus ? $"({attackBonus})" : string.Empty;
         _speedValueText.text = attackSpeed;
+    }
+
+    public void SetSkills(SkillCatalog catalog, SpriteAtlas atlas, int towerId, int level)
+    {
+        _skillSlots.Show(catalog, atlas, towerId, level);
     }
 
     public void ShowBuy(string costText, bool enabled)

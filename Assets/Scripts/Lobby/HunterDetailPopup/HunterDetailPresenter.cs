@@ -1,23 +1,32 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UniRx;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class HunterDetailPresenter : IPopupPresenter
 {
     private readonly HunterDetailPopup _popup;
     private readonly IPlayerDataService _playerDataService;
+    private readonly IResourceLoadService _resourceLoadService;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     private HunterState _hunter;
+    private SkillCatalog _skillCatalog;
+    private SpriteAtlas _skillAtlas;
+    private bool _disposed;
 
-    public HunterDetailPresenter(HunterDetailPopup popup, IPlayerDataService playerDataService)
+    public HunterDetailPresenter(HunterDetailPopup popup, IPlayerDataService playerDataService, IResourceLoadService resourceLoadService)
     {
         _popup = popup;
         _playerDataService = playerDataService;
+        _resourceLoadService = resourceLoadService;
     }
 
     public void Initialize()
     {
+        LoadSkillResourcesAsync().Forget();
+
         _popup.TowerId
             .Where(id => id > 0)
             .Subscribe(Bind)
@@ -32,8 +41,29 @@ public class HunterDetailPresenter : IPopupPresenter
         _popup.CloseClicked += HandleCloseClicked;
     }
 
+    // 전역 ResourceLoadService가 캐시하므로 팝업을 다시 열어도 다시 읽지 않는다.
+    private async UniTaskVoid LoadSkillResourcesAsync()
+    {
+        var catalog = await _resourceLoadService.LoadAsync<SkillCatalog>(DataKeys.SkillCatalog);
+        var atlas = await _resourceLoadService.LoadAsync<SpriteAtlas>(AtlasKeys.SkillIconAtlas);
+
+        if (_disposed)
+            return;
+
+        if (catalog == null)
+            Debug.Log($"[HunterDetailPresenter] {DataKeys.SkillCatalog} 로드에 실패했습니다.");
+
+        if (atlas == null)
+            Debug.Log($"[HunterDetailPresenter] {AtlasKeys.SkillIconAtlas} 로드에 실패했습니다.");
+
+        _skillCatalog = catalog;
+        _skillAtlas = atlas;
+        Render();
+    }
+
     public void Dispose()
     {
+        _disposed = true;
         _popup.UpgradeClicked -= HandleUpgradeClicked;
         _popup.BuyClicked -= HandleBuyClicked;
         _popup.CloseClicked -= HandleCloseClicked;
@@ -99,6 +129,9 @@ public class HunterDetailPresenter : IPopupPresenter
 
         RenderStats(level, canLevelUp);
         RenderAction(unlocked, maxLevel);
+
+        // 보유하지 않은 헌터는 레벨 0으로 넘겨 모든 스킬을 잠김으로 보여 준다.
+        _popup.SetSkills(_skillCatalog, _skillAtlas, _hunter.TowerId, unlocked ? level : 0);
     }
 
     private void RenderInfo()

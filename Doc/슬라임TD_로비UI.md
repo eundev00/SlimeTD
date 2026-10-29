@@ -24,8 +24,9 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 | `BattleView` / `BattlePresenter` | `Scripts/Lobby/BattleView` | 전투 탭. `WaveScrollSlot`과 시작 버튼(`StartClicked`, `SetStartInteractable`)을 노출하고, Presenter가 `TransitionAsync(Lobby, Game)`으로 게임 씬에 들어간다 |
 | `WaveScrollView` / `WaveScrollPresenter` | `Scripts/Lobby/WaveScroll` | 웨이브 진행도 맵 (아래) |
 | `HunterCardView` / `HunterCardPresenter` / `HunterCard` / `SortButton` | `Scripts/Lobby/HunterView` | 헌터 탭. 카드는 레벨순/등급순 4단계 정렬 |
-| `HunterDetailPopup` / `HunterDetailPresenter` | `Scripts/Lobby/HunterDetailPopup` | 헌터 상세 팝업. 레벨업/해금/MAX 버튼 |
+| `HunterDetailPopup` / `HunterDetailPresenter` | `Scripts/Lobby/HunterDetailPopup` | 헌터 상세 팝업. 레벨업/해금/MAX 버튼, 스킬 슬롯 |
 | `CurrencyView` / `CurrencyViewPresenter` | `Scripts/Common` | 재화 칩(골드/보석/카드). 값 구독과 클릭 이벤트 발행 |
+| `SkillSlotGroup` / `SkillSlotItem` | `Scripts/Common` | 스킬 슬롯 공통 UI. 헌터 상세 팝업과 인게임 타워 정보가 같이 쓴다 (아래) |
 
 - `CurrencyView`은 클릭하면 `CurrencyViewClickedEvent(CurrencyType)`를 MessagePipe로 발행한다. 상점이 생기면 이 이벤트를 받아 연다 (`// TODO` 상태)
 - 헌터 카드는 `hunter.Data.Enabled`인 헌터만 만든다. 레벨/해금/카드/골드가 바뀌면 카드를 갱신한다
@@ -33,6 +34,27 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 - 헌터 카드와 상세 팝업은 `TowerData`의 썸네일을 쓴다: 카드는 `ThumbnailSmall`(54px), 팝업은 `ThumbnailLarge`(128px). 잠긴 헌터는 어두운 실루엣으로 칠한다 (`_lockedThumbnailColor`)
 - 썸네일은 `Assets/Art/UI/Thumbnail/Thumb_{코드명}_Small|Large.png`이고, 새 타워는 `TowerData`의 썸네일 필드를 인스펙터에서 직접 연결한다 (시트 임포트는 이 필드를 건드리지 않는다)
 - `LobbyProfile`, `LobbyTab`, `Currency*`, `GradeBadge` 프리팹은 `PrefabKeys`에 등록돼 있다. `LobbyProfile`의 구성과 쓰임은 이 문서에 반영하지 못했다. 프리팹 경로를 옮기면 메뉴 `Tools > SlimeTD > Resource Keys > Create Prefab Keys`로 키를 다시 만든다
+
+## 스킬 슬롯 (공통)
+
+스킬 계열(업그레이드로 이어진 스킬들) 하나가 슬롯 하나다. 헌터 상세 팝업의 `SkillGroup`에 `SkillSlotGroup`이 붙어 있고, 공통 프리팹 `Assets/Prefabs/Common/SkillSlotItem.prefab` 3개를 담고 있다. 인게임 타워 정보 창(미구현)도 같은 두 부품을 붙여 쓴다.
+
+- Presenter는 `SkillSlotGroup.Show(catalog, atlas, towerId, level)`만 부른다. 계열 목록은 `SkillCatalog.GetSlots`가 만든다
+- 계열 수만큼 슬롯을 켜고 나머지는 끈다. 계열이 슬롯보다 많으면 로그를 남긴다. 슬롯이 더 필요하면 `SkillSlotItem` 프리팹을 하나 더 넣고 `SkillSlotGroup._slots` 배열에 연결한다 (가로 폭: 슬롯 160, 간격 30, 팝업 내용 900이라 5개는 넘친다)
+- 표시 규칙
+
+| 상태 | 아이콘 | 표시 |
+|---|---|---|
+| 잠김 | 계열 첫 스킬 | 반투명 검은 딤(`Dim`, 알파 0.45) + 자물쇠 |
+| 해금, 다음 단계 있음 | 현재 단계 | 화살표 |
+| 해금, 마지막 단계 | 현재 단계 | 없음 |
+
+- 슬롯에는 레벨 글자를 넣지 않는다. 해금 레벨은 툴팁에서 보여 준다
+
+- 보유하지 않은 헌터는 레벨 0으로 넘겨 모든 슬롯을 잠김으로 보여 준다
+- 아이콘은 `SkillIconAtlas`에서 `TowerSkillData.IconName`으로 꺼낸다. `GetSprite`는 부를 때마다 복제본을 만들어서 `SkillSlotGroup`이 이름별로 한 번만 받아 두고 파괴될 때 정리한다
+- `SkillCatalog`과 아틀라스는 Presenter가 `IResourceLoadService`로 읽는다. 전역 서비스가 캐시하므로 다시 열어도 다시 읽지 않는다
+- 툴팁(슬롯 클릭)은 아직 없다
 
 ## 웨이브 진행도 맵 (전투 탭)
 
@@ -72,4 +94,5 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 ## 미구현 / 후속
 
 - 상점 (`CurrencyViewClickedEvent` 수신)
+- 스킬 슬롯 툴팁 (이름, 설명, 해금 레벨)
 - 난이도 시스템 (웨이브 맵 위쪽 확장 지점)
