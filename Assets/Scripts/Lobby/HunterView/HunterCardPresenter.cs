@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UniRx;
+using UnityEngine;
+using UnityEngine.U2D;
 using VContainer.Unity;
 
 public class HunterCardPresenter : IStartable, IDisposable
@@ -48,27 +50,55 @@ public class HunterCardPresenter : IStartable, IDisposable
 
     private readonly IPlayerDataService _playerDataService;
     private readonly IPopupService _popupService;
+    private readonly IResourceLoadService _resourceLoadService;
     private readonly HunterCardView _view;
     private readonly List<Entry> _entries = new List<Entry>();
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+    private SpriteAtlasCache _thumbnails;
     private int _sortIndex;
 
-    public HunterCardPresenter(IPlayerDataService playerDataService, IPopupService popupService, HunterCardView view)
+    public HunterCardPresenter(
+        IPlayerDataService playerDataService,
+        IPopupService popupService,
+        IResourceLoadService resourceLoadService,
+        HunterCardView view)
     {
         _playerDataService = playerDataService;
         _popupService = popupService;
+        _resourceLoadService = resourceLoadService;
         _view = view;
     }
 
     public void Start()
     {
+        StartAsync().Forget();
+    }
+
+    private async UniTaskVoid StartAsync()
+    {
+        var cardObject = await _resourceLoadService.LoadAsync<GameObject>(PrefabKeys.HunterCard);
+        var thumbnailAtlas = await _resourceLoadService.LoadAsync<SpriteAtlas>(AtlasKeys.ThumbnailAtlas);
+        if (_disposables.IsDisposed)
+            return;
+
+        if (thumbnailAtlas == null)
+            Debug.Log($"[HunterCardPresenter] {AtlasKeys.ThumbnailAtlas} 로드에 실패했습니다.");
+
+        _thumbnails = new SpriteAtlasCache(thumbnailAtlas);
+
+        if (cardObject == null || !cardObject.TryGetComponent<HunterCard>(out var cardPrefab))
+        {
+            Debug.Log($"[HunterCardPresenter] {PrefabKeys.HunterCard} 로드에 실패했습니다.");
+            return;
+        }
+
         foreach (var hunter in _playerDataService.Hunters)
         {
             if (!hunter.Data.Enabled)
                 continue;
 
-            var entry = new Entry(hunter, _view.CreateCard());
+            var entry = new Entry(hunter, _view.CreateCard(cardPrefab));
             _entries.Add(entry);
 
             int towerId = hunter.TowerId;
@@ -139,7 +169,7 @@ public class HunterCardPresenter : IStartable, IDisposable
 
         entry.Card.Set(
             hunter.Data.TowerName,
-            hunter.Data.ThumbnailSmall,
+            _thumbnails.GetSprite(hunter.Data.ThumbnailName),
             hunter.Data.GradeId,
             hunter.Unlocked.Value,
             level,

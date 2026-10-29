@@ -27,6 +27,7 @@ public static class PrefabKeys
     public const string LobbyTab = "LobbyTab";
     public const string Lumberjack = "Lumberjack";
     public const string LumberjackAxe = "LumberjackAxe";
+    public const string Monolith = "Monolith";
     public const string PlaneBlock1 = "PlaneBlock1";
     public const string PlanePath1 = "PlanePath1";
     public const string PlanePlace1 = "PlanePlace1";
@@ -34,6 +35,7 @@ public static class PrefabKeys
     public const string Ranger = "Ranger";
     public const string RangerArrow = "RangerArrow";
     public const string RangerBow = "RangerBow";
+    public const string SkillSlotItem = "SkillSlotItem";
     public const string SlimeBoss_01 = "SlimeBoss_01";
     public const string SlimeBoss_02 = "SlimeBoss_02";
     public const string SlimeBoss_03 = "SlimeBoss_03";
@@ -76,6 +78,7 @@ public static class PrefabKeys
         { LobbyTab, "Assets/Prefabs/Lobby/LobbyMain/LobbyTab.prefab" },
         { Lumberjack, "Assets/Prefabs/Game/Characters/Lumberjack.prefab" },
         { LumberjackAxe, "Assets/Prefabs/Game/Characters/LumberjackAxe.prefab" },
+        { Monolith, "Assets/Prefabs/Game/Characters/Monolith.prefab" },
         { PlaneBlock1, "Assets/Prefabs/Game/Ground/PlaneBlock1.prefab" },
         { PlanePath1, "Assets/Prefabs/Game/Ground/PlanePath1.prefab" },
         { PlanePlace1, "Assets/Prefabs/Game/Ground/PlanePlace1.prefab" },
@@ -83,6 +86,7 @@ public static class PrefabKeys
         { Ranger, "Assets/Prefabs/Game/Characters/Ranger.prefab" },
         { RangerArrow, "Assets/Prefabs/Game/Characters/RangerArrow.prefab" },
         { RangerBow, "Assets/Prefabs/Game/Characters/RangerBow.prefab" },
+        { SkillSlotItem, "Assets/Prefabs/Common/SkillSlotItem.prefab" },
         { SlimeBoss_01, "Assets/Prefabs/Game/Slime/SlimeBoss_01.prefab" },
         { SlimeBoss_02, "Assets/Prefabs/Game/Slime/SlimeBoss_02.prefab" },
         { SlimeBoss_03, "Assets/Prefabs/Game/Slime/SlimeBoss_03.prefab" },

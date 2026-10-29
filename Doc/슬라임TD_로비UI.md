@@ -31,7 +31,7 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 - `CurrencyView`은 클릭하면 `CurrencyViewClickedEvent(CurrencyType)`를 MessagePipe로 발행한다. 상점이 생기면 이 이벤트를 받아 연다 (`// TODO` 상태)
 - 헌터 카드는 `hunter.Data.Enabled`인 헌터만 만든다. 레벨/해금/카드/골드가 바뀌면 카드를 갱신한다
 - 전투 시작: `BattleView`의 시작 버튼 → `BattlePresenter`가 버튼을 잠그고 `SceneNames.Game`으로 전환한다. 게임 → 로비 복귀는 `TopHudPresenter`와 `GameResultPresenter`가 한다. 게임1/테스트 씬으로 가는 DEV 버튼은 지금 연결되어 있지 않다
-- 헌터 카드와 상세 팝업은 `TowerData`의 썸네일을 쓴다: 카드는 `ThumbnailSmall`(54px), 팝업은 `ThumbnailLarge`(128px). 잠긴 헌터는 어두운 실루엣으로 칠한다 (`_lockedThumbnailColor`)
+- 헌터 카드와 상세 팝업은 `ThumbnailAtlas`의 `Thumb_{codeName}_Large` 스프라이트를 쓴다 (`TowerData.ThumbnailName`). 카드와 팝업이 같은 스프라이트를 쓴다. 잠긴 헌터는 어두운 실루엣으로 칠한다 (`_lockedThumbnailColor`)
 - 썸네일은 `Assets/Art/UI/Thumbnail/Thumb_{코드명}_Small|Large.png`이고, 새 타워는 `TowerData`의 썸네일 필드를 인스펙터에서 직접 연결한다 (시트 임포트는 이 필드를 건드리지 않는다)
 - `LobbyProfile`, `LobbyTab`, `Currency*`, `GradeBadge` 프리팹은 `PrefabKeys`에 등록돼 있다. `LobbyProfile`의 구성과 쓰임은 이 문서에 반영하지 못했다. 프리팹 경로를 옮기면 메뉴 `Tools > SlimeTD > Resource Keys > Create Prefab Keys`로 키를 다시 만든다
 

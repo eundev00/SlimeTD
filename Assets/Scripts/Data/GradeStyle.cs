@@ -7,9 +7,11 @@ public class GradeStyle : ScriptableObject
     [Serializable]
     public class GradeColors
     {
+        [SerializeField] private string _name;
         [SerializeField] private Color _fill = Color.white;
         [SerializeField] private Color _border = Color.white;
 
+        public string Name => _name;
         public Color Fill => _fill;
         public Color Border => _border;
     }

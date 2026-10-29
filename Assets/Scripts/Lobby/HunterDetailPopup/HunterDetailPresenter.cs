@@ -14,6 +14,7 @@ public class HunterDetailPresenter : IPopupPresenter
     private HunterState _hunter;
     private SkillCatalog _skillCatalog;
     private SpriteAtlas _skillAtlas;
+    private SpriteAtlasCache _thumbnails = new SpriteAtlasCache(null);
     private bool _disposed;
 
     public HunterDetailPresenter(HunterDetailPopup popup, IPlayerDataService playerDataService, IResourceLoadService resourceLoadService)
@@ -46,6 +47,7 @@ public class HunterDetailPresenter : IPopupPresenter
     {
         var catalog = await _resourceLoadService.LoadAsync<SkillCatalog>(DataKeys.SkillCatalog);
         var atlas = await _resourceLoadService.LoadAsync<SpriteAtlas>(AtlasKeys.SkillIconAtlas);
+        var thumbnailAtlas = await _resourceLoadService.LoadAsync<SpriteAtlas>(AtlasKeys.ThumbnailAtlas);
 
         if (_disposed)
             return;
@@ -56,6 +58,10 @@ public class HunterDetailPresenter : IPopupPresenter
         if (atlas == null)
             Debug.Log($"[HunterDetailPresenter] {AtlasKeys.SkillIconAtlas} 로드에 실패했습니다.");
 
+        if (thumbnailAtlas == null)
+            Debug.Log($"[HunterDetailPresenter] {AtlasKeys.ThumbnailAtlas} 로드에 실패했습니다.");
+
+        _thumbnails = new SpriteAtlasCache(thumbnailAtlas);
         _skillCatalog = catalog;
         _skillAtlas = atlas;
         Render();
@@ -121,7 +127,7 @@ public class HunterDetailPresenter : IPopupPresenter
         bool canLevelUp = unlocked && !maxLevel && _playerDataService.CanLevelUp(_hunter.TowerId);
 
         RenderInfo();
-        _popup.SetThumbnail(_hunter.Data.ThumbnailLarge, unlocked);
+        _popup.SetThumbnail(_thumbnails.GetSprite(_hunter.Data.ThumbnailName), unlocked);
         _popup.SetUnlocked(unlocked);
 
         if (unlocked)
@@ -137,7 +143,7 @@ public class HunterDetailPresenter : IPopupPresenter
     private void RenderInfo()
     {
         var data = _hunter.Data;
-        _popup.SetHunterInfo(data.TowerName, data.GradeId, data.GradeName);
+        _popup.SetHunterInfo(data.TowerName, data.GradeId);
     }
 
     private void RenderLevel(int level, bool maxLevel, bool canLevelUp)

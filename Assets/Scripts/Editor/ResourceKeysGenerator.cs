@@ -25,7 +25,7 @@ public static class ResourceKeysGenerator
     [MenuItem("Tools/SlimeTD/Resource Keys/Create Atlas Keys")]
     public static void CreateAtlasKeys()
     {
-        Generate("AtlasKeys", "AtlasPaths", "GetAtlasPath", "t:SpriteAtlas", new[] { "Assets/Art/Images" });
+        Generate("AtlasKeys", "AtlasPaths", "GetAtlasPath", "t:SpriteAtlas", new[] { "Assets/Art/Atlas" });
     }
 
     private static void Generate(string className, string dictionaryName, string methodName, string filter, string[] searchFolders)

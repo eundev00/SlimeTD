@@ -12,6 +12,7 @@ public static class TowerSheetImporter
     private const string TowersFile = "Towers.csv";
     private const string CharacterFolder = "Assets/Datas/Characters";
     private const string CatalogPath = "Assets/Datas/TowerCatalog.asset";
+    private const string GradeStylePath = "Assets/Datas/GradeStyle.asset";
     private const int GradeDivisor = 100;
 
     [MenuItem("SlimeTD/Data/Import Tower Sheets")]
@@ -78,6 +79,7 @@ public static class TowerSheetImporter
         }
 
         UpdateCatalog(imported);
+        UpdateGradeStyle(grades);
 
         foreach (var pair in assets)
         {
@@ -96,7 +98,7 @@ public static class TowerSheetImporter
 
         so.FindProperty("_id").intValue = id;
         so.FindProperty("_gradeId").intValue = gradeId;
-        so.FindProperty("_gradeName").stringValue = grade.Name;
+        so.FindProperty("_codeName").stringValue = Get(row, "codeName");
         so.FindProperty("_enabled").boolValue = !TryGetInt(row, "enabled", out int enabled) || enabled != 0;
         so.FindProperty("_towerName").stringValue = Get(row, "name");
         so.FindProperty("_baseAttack").floatValue = grade.BaseAttack;
@@ -118,6 +120,34 @@ public static class TowerSheetImporter
 
         so.ApplyModifiedPropertiesWithoutUndo();
         EditorUtility.SetDirty(data);
+    }
+
+    private static void UpdateGradeStyle(Dictionary<int, GradeInfo> grades)
+    {
+        var style = AssetDatabase.LoadAssetAtPath<GradeStyle>(GradeStylePath);
+        if (style == null)
+        {
+            Debug.Log($"[TowerSheetImporter] GradeStyle을 찾을 수 없습니다: {GradeStylePath}");
+            return;
+        }
+
+        var so = new SerializedObject(style);
+        var colors = so.FindProperty("_colors");
+
+        foreach (var pair in grades)
+        {
+            int index = pair.Key - 1;
+            if (index < 0 || index >= colors.arraySize)
+            {
+                Debug.Log($"[TowerSheetImporter] GradeStyle에 등급 {pair.Key} 칸이 없습니다.", style);
+                continue;
+            }
+
+            colors.GetArrayElementAtIndex(index).FindPropertyRelative("_name").stringValue = pair.Value.Name;
+        }
+
+        so.ApplyModifiedPropertiesWithoutUndo();
+        EditorUtility.SetDirty(style);
     }
 
     private static void UpdateCatalog(SortedDictionary<int, TowerData> towers)

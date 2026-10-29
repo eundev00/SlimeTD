@@ -3,10 +3,12 @@ using System.Collections.Generic;
 public static class AtlasKeys
 {
     public const string SkillIconAtlas = "SkillIconAtlas";
+    public const string ThumbnailAtlas = "ThumbnailAtlas";
 
     public static readonly Dictionary<string, string> AtlasPaths = new Dictionary<string, string>()
     {
-        { SkillIconAtlas, "Assets/Art/Images/SkillIconAtlas.spriteatlasv2" },
+        { SkillIconAtlas, "Assets/Art/Atlas/SkillIconAtlas.spriteatlasv2" },
+        { ThumbnailAtlas, "Assets/Art/Atlas/ThumbnailAtlas.spriteatlasv2" },
     };
 
     public static string GetAtlasPath(string key)

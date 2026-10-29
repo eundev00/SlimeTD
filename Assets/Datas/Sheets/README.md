@@ -20,7 +20,7 @@
 | 열 | 설명 |
 |---|---|
 | gradeId | 등급 ID |
-| name | 이름 |
+| name | 등급 이름. 헌터 상세 팝업의 등급 배지와 태그에 표시된다 |
 | baseAttack | 기준 공격력 |
 | attackGrowthRate | 레벨당 공격력 증가율(%) |
 | startUnlocked | 시작 해금 (1/0) |

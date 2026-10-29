@@ -7,17 +7,13 @@ public class TowerData : ScriptableObject
 
     [SerializeField] private int _id;
     [SerializeField] private int _gradeId;
-    [SerializeField] private string _gradeName;
     [SerializeField] private bool _enabled = true;
+    [SerializeField] private string _codeName;
     [SerializeField] private string _towerName;
     [SerializeField] private GameObject _prefab;
     [SerializeField] private float _attackRange = 5f;
     [SerializeField] private TowerAttackType _attackType = TowerAttackType.Projectile;
     [SerializeField] private GameObject _projectilePrefab;
-
-    [Header("썸네일")]
-    [SerializeField] private Sprite _thumbnailSmall;
-    [SerializeField] private Sprite _thumbnailLarge;
 
     [Header("기본 수치 (레벨 1)")]
     [SerializeField] private float _baseAttack = 1f;
@@ -33,15 +29,14 @@ public class TowerData : ScriptableObject
 
     public int Id => _id;
     public int GradeId => _gradeId;
-    public string GradeName => _gradeName;
     public bool Enabled => _enabled;
+    public string CodeName => _codeName;
     public string TowerName => _towerName;
     public GameObject Prefab => _prefab;
     public float AttackRange => _attackRange;
     public TowerAttackType AttackType => _attackType;
     public GameObject ProjectilePrefab => _projectilePrefab;
-    public Sprite ThumbnailSmall => _thumbnailSmall;
-    public Sprite ThumbnailLarge => _thumbnailLarge;
+    public string ThumbnailName => $"Thumb_{_codeName}_Large";
     public float BaseAttack => _baseAttack;
     public float AttackCooldown => _attackCooldown;
     public float CritChance => _critChance;

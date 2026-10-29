@@ -6,15 +6,14 @@ using UnityEngine;
 public class HunterCardView : MonoBehaviour
 {
     [NotNull][SerializeField] private RectTransform _grid;
-    [NotNull][SerializeField] private HunterCard _cardPrefab;
     [NotNull][SerializeField] private TMP_Text _cardsText;
     [NotNull][SerializeField] private SortButton _sortButton;
 
     public IObservable<Unit> SortClicked => _sortButton.Clicked;
 
-    public HunterCard CreateCard()
+    public HunterCard CreateCard(HunterCard prefab)
     {
-        return Instantiate(_cardPrefab, _grid);
+        return Instantiate(prefab, _grid);
     }
 
     public void SetCards(int cards)

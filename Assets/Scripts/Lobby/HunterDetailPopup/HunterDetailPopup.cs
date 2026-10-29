@@ -96,11 +96,11 @@ public class HunterDetailPopup : PopupBase
         _towerId.Value = 0;
     }
 
-    public void SetHunterInfo(string name, int gradeId, string gradeName)
+    public void SetHunterInfo(string name, int gradeId)
     {
         _nameText.text = name;
-        _gradeBadge.Show(gradeId, gradeName);
-        _gradeTagText.text = gradeName;
+        _gradeBadge.Show(gradeId);
+        _gradeTagText.text = _gradeBadge.Label;
     }
 
     public void SetThumbnail(Sprite thumbnail, bool unlocked)

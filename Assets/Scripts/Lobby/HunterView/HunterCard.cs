@@ -8,20 +8,15 @@ public class HunterCard : MonoBehaviour
     [NotNull][SerializeField] private GameObject _gradeFrame;
     [NotNull][SerializeField] private Image _frameBackground;
     [NotNull][SerializeField] private Image _frameBorder;
-    [NotNull][SerializeField] private Image _frameInnerBorder;
     [NotNull][SerializeField] private GameObject _lockedFrame;
     [NotNull][SerializeField] private Image _thumbnail;
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private TMP_Text _levelText;
     [NotNull][SerializeField] private TMP_Text _progressText;
     [NotNull][SerializeField] private RectTransform _progressFill;
-    [NotNull][SerializeField] private GameObject _lockedBar;
     [NotNull][SerializeField] private GameObject _upgradeBadge;
-    [SerializeField] private Button _button;
+    [NotNull][SerializeField] private Button _button;
 
-    [SerializeField] private Color _nameColor = new Color(0.35f, 0.24f, 0.17f);
-    [SerializeField] private Color _lockedNameColor = new Color(0.55f, 0.48f, 0.38f);
-    [SerializeField] private Color _lockedThumbnailColor = new Color(0.11f, 0.12f, 0.11f);
 
     public Button Button => _button;
 
@@ -37,18 +32,15 @@ public class HunterCard : MonoBehaviour
         bool canLevelUp)
     {
         _nameText.text = towerName;
-        _nameText.color = unlocked ? _nameColor : _lockedNameColor;
 
         _thumbnail.sprite = thumbnail;
         _thumbnail.enabled = thumbnail != null;
-        _thumbnail.color = unlocked ? Color.white : _lockedThumbnailColor;
 
         _gradeFrame.SetActive(unlocked);
         if (unlocked)
             ApplyGradeColors(gradeId);
 
         _lockedFrame.SetActive(!unlocked);
-        _lockedBar.SetActive(!unlocked);
         _levelText.gameObject.SetActive(unlocked);
         _upgradeBadge.SetActive(unlocked && canLevelUp);
 
@@ -58,18 +50,20 @@ public class HunterCard : MonoBehaviour
             return;
         }
 
-        _levelText.text = maxLevel ? $"Lv.{level} MAX" : $"Lv.{level}";
+        _levelText.text = $"Lv.{level}";
 
         if (maxLevel)
         {
             _progressFill.anchorMax = new Vector2(1f, 1f);
             _progressText.text = "MAX";
-            return;
+        }
+        else
+        {
+            float ratio = neededCards > 0 ? Mathf.Clamp01((float)ownedCards / neededCards) : 1f;
+            _progressFill.anchorMax = new Vector2(ratio, 1f);
+            _progressText.text = $"{ownedCards}/{neededCards}";
         }
 
-        float ratio = neededCards > 0 ? Mathf.Clamp01((float)ownedCards / neededCards) : 1f;
-        _progressFill.anchorMax = new Vector2(ratio, 1f);
-        _progressText.text = $"{ownedCards}/{neededCards}";
     }
 
     private void ApplyGradeColors(int gradeId)
@@ -82,6 +76,5 @@ public class HunterCard : MonoBehaviour
 
         _frameBackground.color = colors.Fill;
         _frameBorder.color = colors.Border;
-        _frameInnerBorder.color = colors.Border;
     }
 }

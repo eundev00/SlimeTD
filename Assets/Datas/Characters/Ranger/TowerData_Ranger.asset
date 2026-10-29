@@ -14,15 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _id: 202
   _gradeId: 2
-  _gradeName: "\uD76C\uADC0"
+  _codeName: Ranger
   _enabled: 1
   _towerName: "\uB808\uC778\uC800"
   _prefab: {fileID: 751951308249362410, guid: af5c50b3485934711aacfb69a8a13814, type: 3}
   _attackRange: 2
   _attackType: 1
   _projectilePrefab: {fileID: 2717176595723297759, guid: 6ce103a3c1f974b9586882c7ff946232, type: 3}
-  _thumbnailSmall: {fileID: 21300000, guid: 225d83d8ae567e2b23eec848601dc0c6, type: 3}
-  _thumbnailLarge: {fileID: 21300000, guid: 105cd6e3117b0f27739f7c36d5ab964f, type: 3}
   _baseAttack: 200
   _attackGrowthRate: 5
   _attackCooldown: 1

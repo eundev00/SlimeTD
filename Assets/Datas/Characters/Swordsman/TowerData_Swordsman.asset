@@ -14,15 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _id: 103
   _gradeId: 1
-  _gradeName: "\uC77C\uBC18"
+  _codeName: Swordsman
   _enabled: 1
   _towerName: "\uC77C\uBCD1"
   _prefab: {fileID: 2621857700972423482, guid: a19fd15b27fca45519391f504f46874f, type: 3}
   _attackRange: 1
   _attackType: 0
   _projectilePrefab: {fileID: 0}
-  _thumbnailSmall: {fileID: 21300000, guid: 556df742d5f5d422e2eeab10bc8d112f, type: 3}
-  _thumbnailLarge: {fileID: 21300000, guid: b6710aa44c8c7329f05e25a3eb3ca91c, type: 3}
   _baseAttack: 100
   _attackGrowthRate: 5
   _attackCooldown: 1

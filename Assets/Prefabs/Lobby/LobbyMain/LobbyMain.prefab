@@ -2053,7 +2053,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HunterCardView
   _grid: {fileID: 2508280749403362816}
-  _cardPrefab: {fileID: 7378824794423211343, guid: cb7bd74e0ec3231439ac3057b7d0100d, type: 3}
   _cardsText: {fileID: 7796084879463916254}
   _sortButton: {fileID: 8785910929294064247}
 --- !u!1 &8906424381118119755

@@ -22,9 +22,10 @@ MonoBehaviour:
     - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3be957ba82ca3d84287a3e3adbb137c7
-    m_Address: Assets/Art/Images
+    m_Address: Assets/Art/Atlas
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ef1cf775bca034460b413def0a4c2769
     m_Address: Assets/Datas
