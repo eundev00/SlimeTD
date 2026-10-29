@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class SkillSlotItem : MonoBehaviour
 {
     [NotNull][SerializeField] private Image _icon;
-    [NotNull][SerializeField] private GameObject _dim;
     [NotNull][SerializeField] private GameObject _lock;
     [NotNull][SerializeField] private GameObject _upgradeArrow;
 
@@ -15,7 +14,6 @@ public class SkillSlotItem : MonoBehaviour
         _icon.sprite = icon;
         _icon.enabled = icon != null;
 
-        _dim.SetActive(locked);
         _lock.SetActive(locked);
         _upgradeArrow.SetActive(hasNextUpgrade);
     }
