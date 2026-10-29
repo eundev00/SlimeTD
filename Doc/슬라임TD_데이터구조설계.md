@@ -62,7 +62,7 @@ TowerData (SO, 종류당 1개)
 ├─ towerName         : string
 ├─ prefab            : GameObject
 ├─ attackRange       : float = 5                // 탐지 범위 (발사체 도달거리와 별개)
-├─ attackType        : Melee / Projectile       // 근접 / 원거리(투사체)
+├─ attackType        : Melee / Projectile / Beam  // 근접 / 원거리(투사체) / 즉시 타격 빔. 인스펙터에서 지정
 ├─ projectilePrefab  : GameObject               // Projectile일 때. 풀 크기는 코드 상수
 ├─ baseAttack        : float                    // 등급 시트의 기준공격력 (임포터가 채움)
 ├─ attackGrowthRate  : float                    // 레벨당 공격력 증가율 % (임포터가 채움)
@@ -76,7 +76,8 @@ TowerData (SO, 종류당 1개)
 
 스킬은 TowerData가 가지지 않는다. SkillCatalog가 towerId로 찾아 준다 (아래 "타워 스킬")
 
-AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack
+AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / BeamAttack
+  BeamAttack: 타격 프레임에 대상에게 바로 데미지를 주고, ProjectileLauncher.FirePoint에서 대상까지 빔을 그린다 (빔 연출은 임시 LineRenderer)
 ```
 
 공격 애니메이션은 모든 타워가 Animator의 `Attack` 트리거 하나를 쓴다(`AttackBehaviourBase`의 상수). 타워 프리팹의 Animator Controller에 `Attack` Trigger 파라미터가 없으면 조용히 무시되고 애니메이션이 재생되지 않는다.

@@ -24,6 +24,7 @@ public static class DataKeys
     public const string TowerData_GoodSlime = "TowerData_GoodSlime";
     public const string TowerData_Knight = "TowerData_Knight";
     public const string TowerData_Lumberjack = "TowerData_Lumberjack";
+    public const string TowerData_Monolith = "TowerData_Monolith";
     public const string TowerData_Ranger = "TowerData_Ranger";
     public const string TowerData_Swordsman = "TowerData_Swordsman";
     public const string WaveEasyTable = "WaveEasyTable";
@@ -52,6 +53,7 @@ public static class DataKeys
         { TowerData_GoodSlime, "Assets/Datas/Characters/GoodSlime/TowerData_GoodSlime.asset" },
         { TowerData_Knight, "Assets/Datas/Characters/Knight/TowerData_Knight.asset" },
         { TowerData_Lumberjack, "Assets/Datas/Characters/Lumberjack/TowerData_Lumberjack.asset" },
+        { TowerData_Monolith, "Assets/Datas/Characters/Monolith/TowerData_Monolith.asset" },
         { TowerData_Ranger, "Assets/Datas/Characters/Ranger/TowerData_Ranger.asset" },
         { TowerData_Swordsman, "Assets/Datas/Characters/Swordsman/TowerData_Swordsman.asset" },
         { WaveEasyTable, "Assets/Datas/Waves/Easy/WaveEasyTable.asset" },
