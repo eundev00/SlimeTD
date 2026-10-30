@@ -5,8 +5,9 @@ using System.Collections.Generic;
 public class OutlineSmoothNormals : MonoBehaviour
 {
     private const int SmoothNormalUVChannel = 2;
+    private const string TangentNormalsKeyword = "_OUTLINE_TANGENT_NORMALS";
 
-    private static readonly Dictionary<Mesh, Mesh> _cache = new Dictionary<Mesh, Mesh>();
+    private static readonly Dictionary<(Mesh, bool), Mesh> _cache = new Dictionary<(Mesh, bool), Mesh>();
     private static readonly HashSet<Mesh> _bakedMeshes = new HashSet<Mesh>();
 
     private void Awake()
@@ -24,11 +25,13 @@ public class OutlineSmoothNormals : MonoBehaviour
         if (original == null || _bakedMeshes.Contains(original))
             return;
 
-        if (!_cache.TryGetValue(original, out Mesh baked))
+        bool tangentSpace = UsesTangentSpace(GetComponent<Renderer>());
+
+        if (!_cache.TryGetValue((original, tangentSpace), out Mesh baked))
         {
             baked = Instantiate(original);
-            BakeSmoothNormals(baked);
-            _cache[original] = baked;
+            BakeSmoothNormals(baked, tangentSpace);
+            _cache[(original, tangentSpace)] = baked;
             _bakedMeshes.Add(baked);
         }
 
@@ -38,10 +41,28 @@ public class OutlineSmoothNormals : MonoBehaviour
             skinnedMeshRenderer.sharedMesh = baked;
     }
 
-    private static void BakeSmoothNormals(Mesh mesh)
+    private static bool UsesTangentSpace(Renderer renderer)
     {
+        if (renderer == null)
+            return false;
+
+        foreach (var material in renderer.sharedMaterials)
+        {
+            if (material != null && material.IsKeywordEnabled(TangentNormalsKeyword))
+                return true;
+        }
+
+        return false;
+    }
+
+    private static void BakeSmoothNormals(Mesh mesh, bool tangentSpace)
+    {
+        if (tangentSpace && (mesh.tangents == null || mesh.tangents.Length == 0))
+            mesh.RecalculateTangents();
+
         var vertices = mesh.vertices;
         var normals = mesh.normals;
+        var tangents = tangentSpace ? mesh.tangents : null;
 
         var groups = new Dictionary<Vector3Int, List<int>>();
         for (int i = 0; i < vertices.Length; i++)
@@ -70,9 +91,18 @@ public class OutlineSmoothNormals : MonoBehaviour
 
             Vector3 avg = sum.normalized;
             foreach (int i in group)
-                smoothNormals[i] = avg;
+                smoothNormals[i] = tangentSpace ? ToTangentSpace(avg, normals[i], tangents[i]) : avg;
         }
 
         mesh.SetUVs(SmoothNormalUVChannel, smoothNormals);
+    }
+
+    // 셰이더(SlimeFlatKit Outline 패스)의 복원식과 같은 직교화를 써야 방향이 일치한다.
+    private static Vector3 ToTangentSpace(Vector3 smooth, Vector3 normal, Vector4 tangent)
+    {
+        Vector3 n = normal.normalized;
+        Vector3 t = ((Vector3)tangent - n * Vector3.Dot(n, tangent)).normalized;
+        Vector3 b = Vector3.Cross(n, t) * (tangent.w < 0f ? -1f : 1f);
+        return new Vector3(Vector3.Dot(smooth, t), Vector3.Dot(smooth, b), Vector3.Dot(smooth, n));
     }
 }

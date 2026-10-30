@@ -18,6 +18,7 @@ Material:
   - _DETAILMAPBLENDINGMODE_MULTIPLY
   - _GRADIENTSPACE_WORLD
   - _OUTLINESPACE_OBJECT
+  - _OUTLINE_TANGENT_NORMALS
   - _TEXTUREBLENDINGMODE_MULTIPLY
   m_InvalidKeywords:
   - _UNITYSHADOWMODE_NONE
@@ -154,7 +155,8 @@ Material:
     - _OutlineEnabled: 1
     - _OutlineScale: 1
     - _OutlineSpace: 1
-    - _OutlineWidth: 1
+    - _OutlineTangentNormals: 1
+    - _OutlineWidth: 3
     - _OverrideLightmapDir: 0
     - _Parallax: 0.02
     - _QueueOffset: 0
@@ -165,6 +167,8 @@ Material:
     - _SelfShadingSizeExtra: 0.6
     - _ShadowEdgeSize: 0.05
     - _ShadowEdgeSizeExtra: 0.05
+    - _SilhouetteOutlineComp: 6
+    - _SilhouetteStencilPass: 2
     - _SlimeDepthBucket: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0

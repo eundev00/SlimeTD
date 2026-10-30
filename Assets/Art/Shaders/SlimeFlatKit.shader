@@ -54,6 +54,10 @@ Shader "SlimeTD/SlimeFlatKit"
         _OutlineDepthOffset("[DR_OUTLINE_ON]Depth Offset", Range(0, 1)) = 0.0
         [KeywordEnum(Screen, Object)] _OutlineSpace("[DR_OUTLINE_ON]Space", Float) = 0.0
         _CameraDistanceImpact("[DR_OUTLINE_ON][_OUTLINESPACE_SCREEN]Camera Distance Impact", Range(0, 1)) = 0.0
+        // "Smooth Normals" 문구가 들어가면 FlatKit 에디터가 메시 베이크 UI로 취급하므로 이름에 쓰지 않는다.
+        [Toggle(_OUTLINE_TANGENT_NORMALS)] _OutlineTangentNormals("[DR_OUTLINE_ON]Tangent Space Normals (Skinned)", Float) = 0.0
+        [Enum(Off, 0, On, 2)] _SilhouetteStencilPass("[DR_OUTLINE_ON]Silhouette Write", Float) = 0.0
+        [Enum(Off, 8, On, 6)] _SilhouetteOutlineComp("[DR_OUTLINE_ON]Silhouette Only", Float) = 8.0
 
         [Space(10)]
         [Toggle(DR_VERTEX_COLORS_ON)] _VertexColorsEnabled("Enable Vertex Colors", Int) = 0
@@ -127,6 +131,16 @@ Shader "SlimeTD/SlimeFlatKit"
             Blend[_SrcBlend][_DstBlend]
             ZWrite[_ZWrite]
             Cull[_Cull]
+
+            // 비트 0만 쓴다. 상위 비트는 URP 디퍼드가 사용한다.
+            Stencil
+            {
+                Ref 1
+                ReadMask 1
+                WriteMask 1
+                Comp Always
+                Pass [_SilhouetteStencilPass]
+            }
 
             HLSLPROGRAM
             #pragma shader_feature_local_fragment __ _CELPRIMARYMODE_SINGLE _CELPRIMARYMODE_STEPS _CELPRIMARYMODE_CURVE
@@ -261,6 +275,15 @@ Shader "SlimeTD/SlimeFlatKit"
 
             Cull Front
 
+            // Silhouette Only가 켜지면 몸체가 그린 픽셀 위에는 외곽선을 그리지 않아 겹친 조각 안쪽 선이 사라진다.
+            Stencil
+            {
+                Ref 1
+                ReadMask 1
+                Comp [_SilhouetteOutlineComp]
+                Pass Keep
+            }
+
             HLSLPROGRAM
             #include "SlimeFlatKitInput.hlsl"
 
@@ -269,6 +292,7 @@ Shader "SlimeTD/SlimeFlatKit"
 
             #pragma multi_compile _ DR_OUTLINE_ON
             #pragma multi_compile _ DR_OUTLINE_SMOOTH_NORMALS
+            #pragma shader_feature_local _OUTLINE_TANGENT_NORMALS
             #pragma multi_compile __ _OUTLINESPACE_SCREEN _OUTLINESPACE_OBJECT
             #pragma multi_compile_fog
 
@@ -286,6 +310,9 @@ Shader "SlimeTD/SlimeFlatKit"
                 float3 normal : NORMAL;
             	#if defined(DR_OUTLINE_SMOOTH_NORMALS)
                 float4 uv2 : TEXCOORD2;
+                #if defined(_OUTLINE_TANGENT_NORMALS)
+                float4 tangent : TANGENT;
+                #endif
                 #endif
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
@@ -323,7 +350,15 @@ Shader "SlimeTD/SlimeFlatKit"
 	            #if defined(DR_OUTLINE_ON)
             		#if defined(DR_OUTLINE_SMOOTH_NORMALS)
             			float3 objectScale = abs(UNITY_MATRIX_M[0].xyz) + abs(UNITY_MATRIX_M[1].xyz) + abs(UNITY_MATRIX_M[2].xyz);
-            			v.normal = v.uv2.xyz / objectScale;
+            			float3 smoothNormal = v.uv2.xyz;
+            			#if defined(_OUTLINE_TANGENT_NORMALS)
+            				// 스킨드 메시는 uv3가 뼈를 따라 돌지 않으므로, 스키닝된 노멀/탄젠트 기준으로 복원한다 (OutlineSmoothNormals와 같은 직교화).
+            				float3 n = normalize(v.normal);
+            				float3 t = normalize(v.tangent.xyz - n * dot(n, v.tangent.xyz));
+            				float3 b = cross(n, t) * (v.tangent.w < 0.0 ? -1.0 : 1.0);
+            				smoothNormal = t * smoothNormal.x + b * smoothNormal.y + n * smoothNormal.z;
+            			#endif
+            			v.normal = smoothNormal / objectScale;
             		#endif
             	
             		#if defined(_OUTLINESPACE_OBJECT)
