@@ -36,7 +36,7 @@ public class TowerData : ScriptableObject
     public float AttackRange => _attackRange;
     public TowerAttackType AttackType => _attackType;
     public GameObject ProjectilePrefab => _projectilePrefab;
-    public string ThumbnailName => $"Thumb_{_codeName}_Large";
+    public string ThumbnailName => $"Thumb_{_codeName}";
     public float BaseAttack => _baseAttack;
     public float AttackCooldown => _attackCooldown;
     public float CritChance => _critChance;
