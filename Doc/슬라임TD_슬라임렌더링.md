@@ -137,25 +137,18 @@ SRP Batcher가 켜져 있으면(`m_UseSRPBatcher: 1`) 머티리얼 상수는 전
 
 ## 5. 아웃라인
 
-아웃라인 셰이더 3개 모두 **월드 공간에서 확장**한다.
+슬라임과 타워 모두 툰 셰이더 `SlimeTD/SlimeFlatKit`의 외곽선을 쓴다. 두 번째 머티리얼로 외곽선을 덧그리는 `Custom_Outline_Opaque`(`OutlineOpaque.shader`)는 쓰지 않는다.
 
-```hlsl
-float3 positionWS = TransformObjectToWorld(IN.positionOS);
-float3 normalWS = normalize(TransformObjectToWorldNormal(normalSource));
-positionWS += normalWS * _OutlineWidth * 0.01;
-```
-
-오브젝트 공간에서 밀면 `TransformObjectToHClip`이 스케일을 곱해 **아웃라인 두께가 프리팹 스케일에 비례한다.** 슬라임 1.25배, 무기류 0.8배, 캐릭터 내부 파츠 0.6배가 각각 다른 두께로 나왔다. 월드 공간 방식은 계층 어디서 스케일을 걸든 두께가 일정하다.
+- 외곽선은 셰이더의 `Outline` 패스(`LightMode=Outline`)로 그린다. 이 패스는 URP 렌더러의 `Flat Kit Per Object Outline` 기능(Render Objects)이 있어야 실행되므로 `Mobile_Renderer`와 `PC_Renderer` 둘 다에 넣어 두었다. 렌더러를 새로 만들면 이 기능을 빠뜨리지 않는다
+- 머티리얼에서 `Enable Outline`을 켜고 두께·색을 정한다. 머티리얼(서브메시)마다 따로 그려지므로 메시를 한 조각으로 합칠 필요가 없다
+- 타워 머티리얼은 `Smooth Normals`를 켠다. 하드 엣지가 많은 캐릭터 메시에서 외곽선이 갈라지지 않게 하는 옵션이고, UV 채널 2(uv3)의 노멀을 읽는다. FBX 메시에는 이 채널이 없어 `OutlineSmoothNormals` 컴포넌트가 `Awake`에서 구워 넣는다. 이 옵션을 켠 렌더러에는 이 컴포넌트가 꼭 있어야 하며, 없으면 외곽선이 보이지 않는다
+- 그래서 에디터에서 플레이하지 않은 상태(프리팹 편집 화면 등)에서는 타워 외곽선이 보이지 않는다
+- 슬라임은 둥근 메시라 `Smooth Normals`를 끄고 메시 노멀을 그대로 쓴다
 
 | 셰이더 | 용도 | 노멀 소스 |
 |---|---|---|
-| `SlimeBody.shader` (내장 패스) | 슬라임 | 메시 노멀 |
-| `OutlineOpaque.shader` | 캐릭터·무기 | 버텍스 컬러 스무스 노멀 |
-| `Outline.shader` | 구 슬라임용 (사용 안 함) | 메시 노멀 |
-
-캐릭터는 하드 엣지가 많아 `SmoothNormalsToVertexColor`로 베이크한 스무스 노멀을 쓴다. 슬라임은 둥근 메시라 일반 메시 노멀로도 뿔 부분에서 크게 티가 나지 않아 베이크를 쓰지 않는다.
-
-`_OutlineWidth` Range는 세 셰이더 모두 `0~10`으로 통일했다.
+| `SlimeFlatKit.shader` (`Outline` 패스) | 슬라임, 타워, 무기, 투사체 | 슬라임은 메시 노멀, 타워는 uv3 스무스 노멀 |
+| `OutlineOpaque.shader`, `Outline.shader` | 사용 안 함 | — |
 
 ---
 
@@ -198,7 +191,7 @@ positionWS += normalWS * _OutlineWidth * 0.01;
 - 스폰 첫 프레임에 색이 번쩍이지 않는지 (SRP Batcher CBUFFER 확인)
 - 마릿수를 늘렸을 때 드로우콜 (Frame Debugger)
 
-**검증은 Mobile 퀄리티 고정.** PC 퀄리티는 Deferred(`PC_Renderer.asset`의 `m_RenderingMode: 2`)라 `SRPDefaultUnlit` 패스가 실행되지 않아 아웃라인이 나오지 않는다.
+**검증은 Mobile 퀄리티 기준.** 실제 기기와 같은 포워드 렌더러다. PC 퀄리티(`PC_Renderer`, 디퍼드)에도 외곽선 기능은 있지만 화면이 조금 다르게 나올 수 있다.
 
 ---
 
@@ -206,7 +199,6 @@ positionWS += normalWS * _OutlineWidth * 0.01;
 
 - **오프셋은 슬라임 간에만 옳고 슬라임 vs 월드에는 틀리다.** 버킷이 큰 슬라임은 지형에 대해서도 뒤로 밀려 있다. spacing을 과하게 키우면 바닥에 묻힌다
 - **버킷 재사용 잔여 문제.** 스폰 순번 k와 k+N은 같은 버킷이다
-- **PC 퀄리티(Deferred) 미대응.** 아웃라인 패스가 실행되지 않는다
 - **SkinnedMeshRenderer라 GPU Instancing 불가.** MaterialPropertyBlock 사용으로 SRP Batcher 배칭에서도 이탈한다
 - **몸통·얼굴이 별도 머티리얼**이라 마리당 드로우콜이 최대 3개(몸통 컬러·아웃라인 + 얼굴)다. 텍스처 아틀라싱으로 통합하면 줄일 수 있으나 UV와 표정 교체 로직을 건드려야 한다
 

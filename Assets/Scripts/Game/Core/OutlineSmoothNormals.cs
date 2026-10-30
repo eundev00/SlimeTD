@@ -1,12 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class SmoothNormalsToVertexColor : MonoBehaviour
+// SlimeFlatKit 외곽선의 Smooth Normals 옵션은 UV 채널 2(uv3)에서 노멀을 읽는다. FBX 메시에는 이 채널이 없어서 런타임에 굽는다.
+public class OutlineSmoothNormals : MonoBehaviour
 {
-    static Dictionary<Mesh, Mesh> cache = new Dictionary<Mesh, Mesh>();
-    static HashSet<Mesh> bakedMeshes = new HashSet<Mesh>();
+    private const int SmoothNormalUVChannel = 2;
 
-    void Awake()
+    private static readonly Dictionary<Mesh, Mesh> _cache = new Dictionary<Mesh, Mesh>();
+    private static readonly HashSet<Mesh> _bakedMeshes = new HashSet<Mesh>();
+
+    private void Awake()
     {
         var meshFilter = GetComponent<MeshFilter>();
         var skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
@@ -14,37 +17,28 @@ public class SmoothNormalsToVertexColor : MonoBehaviour
         Mesh original = null;
 
         if (meshFilter != null)
-        {
             original = meshFilter.sharedMesh;
-        }
         else if (skinnedMeshRenderer != null)
-        {
             original = skinnedMeshRenderer.sharedMesh;
-        }
 
-        if (original == null) return;
+        if (original == null || _bakedMeshes.Contains(original))
+            return;
 
-        if (bakedMeshes.Contains(original)) return;
-
-        if (!cache.TryGetValue(original, out Mesh baked))
+        if (!_cache.TryGetValue(original, out Mesh baked))
         {
             baked = Instantiate(original);
             BakeSmoothNormals(baked);
-            cache[original] = baked;
-            bakedMeshes.Add(baked);
+            _cache[original] = baked;
+            _bakedMeshes.Add(baked);
         }
 
         if (meshFilter != null)
-        {
             meshFilter.sharedMesh = baked;
-        }
-        else if (skinnedMeshRenderer != null)
-        {
+        else
             skinnedMeshRenderer.sharedMesh = baked;
-        }
     }
 
-    void BakeSmoothNormals(Mesh mesh)
+    private static void BakeSmoothNormals(Mesh mesh)
     {
         var vertices = mesh.vertices;
         var normals = mesh.normals;
@@ -66,18 +60,19 @@ public class SmoothNormalsToVertexColor : MonoBehaviour
             list.Add(i);
         }
 
-        var colors = new Color[vertices.Length];
+        var smoothNormals = new Vector3[vertices.Length];
 
         foreach (var group in groups.Values)
         {
             Vector3 sum = Vector3.zero;
-            foreach (int i in group) sum += normals[i];
-            Vector3 avg = (sum / group.Count).normalized;
+            foreach (int i in group)
+                sum += normals[i];
 
-            Color encoded = new Color(avg.x * 0.5f + 0.5f, avg.y * 0.5f + 0.5f, avg.z * 0.5f + 0.5f, 1f);
-            foreach (int i in group) colors[i] = encoded;
+            Vector3 avg = sum.normalized;
+            foreach (int i in group)
+                smoothNormals[i] = avg;
         }
 
-        mesh.colors = colors;
+        mesh.SetUVs(SmoothNormalUVChannel, smoothNormals);
     }
 }
