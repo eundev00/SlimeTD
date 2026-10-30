@@ -42,7 +42,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7793623024758086804}
   - component: {fileID: 6784164824946780215}
-  - component: {fileID: 8200000000000000001}
   m_Layer: 8
   m_Name: Ranger_Quiver
   m_TagString: Untagged
@@ -148,18 +147,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.058226734, y: 0.98358864, z: -0.3918568}
     m_Extent: {x: 0.37985012, y: 0.37844962, z: 0.12249671}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 409850123204923564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &485801357063147619
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +189,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8605105364362704138}
   - component: {fileID: 6926392365999041008}
-  - component: {fileID: 8200000000000000002}
   m_Layer: 8
   m_Name: Ranger_Cape
   m_TagString: Untagged
@@ -308,18 +294,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000010699034, y: 0.6905526, z: -0.21479928}
     m_Extent: {x: 0.48537844, y: 0.57097244, z: 0.17129451}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 494898303258050755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &789722639517752116
 GameObject:
   m_ObjectHideFlags: 0
@@ -5835,7 +5809,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6077474245672081606}
   - component: {fileID: 6727295193436631686}
-  - component: {fileID: 8200000000000000003}
   m_Layer: 8
   m_Name: Ranger_Head
   m_TagString: Untagged
@@ -5941,18 +5914,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000069737434, y: 1.7328626, z: 0.023589969}
     m_Extent: {x: 0.54265654, y: 0.54006326, z: 0.5114362}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5788183849298418966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &5867791108692281729
 GameObject:
   m_ObjectHideFlags: 0
@@ -6061,7 +6022,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4559575222038713113}
   - component: {fileID: 6334528416773201899}
-  - component: {fileID: 8200000000000000004}
   m_Layer: 8
   m_Name: Ranger_ArmRight
   m_TagString: Untagged
@@ -6167,18 +6127,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.5251759, y: 1.1047444, z: 0.0022227913}
     m_Extent: {x: 0.44607955, y: 0.147722, z: 0.175315}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6814413259591199708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &7078819280158901497
 GameObject:
   m_ObjectHideFlags: 0
@@ -6253,7 +6201,6 @@ GameObject:
   m_Component:
   - component: {fileID: 59927323680477462}
   - component: {fileID: 8998122687482958770}
-  - component: {fileID: 8200000000000000005}
   m_Layer: 8
   m_Name: Ranger_LegLeft
   m_TagString: Untagged
@@ -6359,18 +6306,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.16843456, y: 0.17739712, z: 0.029556781}
     m_Extent: {x: 0.122564346, y: 0.35705745, z: 0.29018304}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7115853307921343369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &7179051962725282984
 GameObject:
   m_ObjectHideFlags: 0
@@ -6381,7 +6316,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2185286735521415941}
   - component: {fileID: 8029831576851475274}
-  - component: {fileID: 8200000000000000006}
   m_Layer: 8
   m_Name: Ranger_ArmLeft
   m_TagString: Untagged
@@ -6487,18 +6421,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.52517605, y: 1.1047442, z: 0.0022231042}
     m_Extent: {x: 0.4460798, y: 0.14772242, z: 0.17531514}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7179051962725282984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &7238340692329610970
 GameObject:
   m_ObjectHideFlags: 0
@@ -6509,7 +6431,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7684342646055918474}
   - component: {fileID: 597037785432932838}
-  - component: {fileID: 8200000000000000007}
   m_Layer: 8
   m_Name: Ranger_LegRight
   m_TagString: Untagged
@@ -6615,18 +6536,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.16843459, y: 0.17739722, z: 0.029556692}
     m_Extent: {x: 0.12256434, y: 0.35705736, z: 0.29018292}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7238340692329610970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &7260481724776539626
 GameObject:
   m_ObjectHideFlags: 0
@@ -6731,7 +6640,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2493928594578273371}
   - component: {fileID: 3703955728650554810}
-  - component: {fileID: 8200000000000000008}
   m_Layer: 8
   m_Name: Ranger_Body
   m_TagString: Untagged
@@ -6837,18 +6745,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.8196007, z: 0.0020449162}
     m_Extent: {x: 0.5084758, y: 0.4949361, z: 0.34888667}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8597984674745870209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &8812800086863104643
 GameObject:
   m_ObjectHideFlags: 0

@@ -74,7 +74,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5646454880528981582}
   - component: {fileID: 5512118187843830024}
-  - component: {fileID: 8200000000000000010}
   m_Layer: 8
   m_Name: Knight_LegLeft
   m_TagString: Untagged
@@ -180,18 +179,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.16867091, y: 0.17940882, z: 0.042441197}
     m_Extent: {x: 0.12301974, y: 0.35697892, z: 0.2899711}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1638485428374283322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &1850867768776570574
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,7 +356,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5775566290403594260}
   - component: {fileID: 5395561415471395369}
-  - component: {fileID: 8200000000000000011}
   m_Layer: 8
   m_Name: Knight_Body
   m_TagString: Untagged
@@ -475,18 +461,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000022873282, y: 0.8386132, z: -0.023827761}
     m_Extent: {x: 0.39487934, y: 0.4622137, z: 0.3893827}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2279170728326284934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &2445388861577033424
 GameObject:
   m_ObjectHideFlags: 0
@@ -5486,7 +5460,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1811872262735962464}
   - component: {fileID: 4983009517025641604}
-  - component: {fileID: 8200000000000000012}
   m_Layer: 8
   m_Name: Knight_ArmRight
   m_TagString: Untagged
@@ -5592,18 +5565,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.506705, y: 1.1235809, z: -0.0071141273}
     m_Extent: {x: 0.4645483, y: 0.14827669, z: 0.17780426}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3186833221128001777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &3248096537904835265
 GameObject:
   m_ObjectHideFlags: 0
@@ -5806,7 +5767,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3354567379031370522}
   - component: {fileID: 3332349349510219843}
-  - component: {fileID: 8200000000000000013}
   m_Layer: 8
   m_Name: Knight_LegRight
   m_TagString: Untagged
@@ -5912,18 +5872,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.16866435, y: 0.17940894, z: 0.0424411}
     m_Extent: {x: 0.12301971, y: 0.3569788, z: 0.289971}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4463970840666098954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &4546556572980567102
 GameObject:
   m_ObjectHideFlags: 0
@@ -6044,7 +5992,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3851330293275012703}
   - component: {fileID: 1391203527791600274}
-  - component: {fileID: 8200000000000000014}
   m_Layer: 8
   m_Name: Knight_Head
   m_TagString: Untagged
@@ -6150,18 +6097,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000140070915, y: 1.7500387, z: 0.024851978}
     m_Extent: {x: 0.54317343, y: 0.5341474, z: 0.50694174}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5221955329375855867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &5452643466323373544
 GameObject:
   m_ObjectHideFlags: 0
@@ -6301,7 +6236,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7982179596202837041}
   - component: {fileID: 1884323907756286113}
-  - component: {fileID: 8200000000000000015}
   m_Layer: 8
   m_Name: Knight_HelmetVisor
   m_TagString: Untagged
@@ -6407,18 +6341,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0001385212, y: 2.0976725, z: 0.3402679}
     m_Extent: {x: 0.6086559, y: 0.44543213, z: 0.42532516}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6520277578257865741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &6615728652245650421
 GameObject:
   m_ObjectHideFlags: 0
@@ -6429,7 +6351,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1927821384966942366}
   - component: {fileID: 5539470522835761949}
-  - component: {fileID: 8200000000000000016}
   m_Layer: 8
   m_Name: Knight_Cape
   m_TagString: Untagged
@@ -6535,18 +6456,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000010699034, y: 0.6650187, z: -0.21479943}
     m_Extent: {x: 0.48537844, y: 0.57097244, z: 0.17129451}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6615728652245650421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &7438966658207501612
 GameObject:
   m_ObjectHideFlags: 0
@@ -6687,7 +6596,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5762161101110722399}
   - component: {fileID: 189598281205858951}
-  - component: {fileID: 8200000000000000017}
   m_Layer: 8
   m_Name: Knight_ArmLeft
   m_TagString: Untagged
@@ -6793,18 +6701,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.50670516, y: 1.1235806, z: -0.0071138293}
     m_Extent: {x: 0.46454853, y: 0.14827713, z: 0.1778044}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7520175170328392320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &7578577701514716128
 GameObject:
   m_ObjectHideFlags: 0
@@ -11758,7 +11654,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6151804615703244031}
   - component: {fileID: 9167368557917837340}
-  - component: {fileID: 8200000000000000018}
   m_Layer: 8
   m_Name: Knight_Helmet
   m_TagString: Untagged
@@ -11864,18 +11759,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 1.7481396, z: 0.02775371}
     m_Extent: {x: 0.56949735, y: 0.64973235, z: 0.56993866}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8392665920309812406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &8570619604787603521
 GameObject:
   m_ObjectHideFlags: 0

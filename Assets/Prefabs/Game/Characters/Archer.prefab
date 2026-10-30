@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2676126966135340841}
   - component: {fileID: 1540944101713627501}
-  - component: {fileID: 8100000000000000000}
   m_Layer: 8
   m_Name: Rogue_ArmRight
   m_TagString: Untagged
@@ -116,18 +115,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.525778, y: 1.1047444, z: 0.0067039058}
     m_Extent: {x: 0.44656885, y: 0.147722, z: 0.17331299}
   m_DirtyAABB: 0
---- !u!114 &8100000000000000000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106403736754793434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &171865751372808785
 GameObject:
   m_ObjectHideFlags: 0
@@ -5356,7 +5343,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7059239795082472617}
   - component: {fileID: 4414249523683359230}
-  - component: {fileID: 8100000000000000001}
   m_Layer: 8
   m_Name: Rogue_Body
   m_TagString: Untagged
@@ -5462,18 +5448,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.046099633, y: 0.81165975, z: 0.018325657}
     m_Extent: {x: 0.44215342, y: 0.43645912, z: 0.3540119}
   m_DirtyAABB: 0
---- !u!114 &8100000000000000001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1375922161559389766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &1651356451433004234
 GameObject:
   m_ObjectHideFlags: 0
@@ -5706,7 +5680,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7718868373931798544}
   - component: {fileID: 6613872488604139763}
-  - component: {fileID: 8100000000000000002}
   m_Layer: 8
   m_Name: Rogue_LegLeft
   m_TagString: Untagged
@@ -5812,18 +5785,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.1684317, y: 0.17739712, z: 0.029556781}
     m_Extent: {x: 0.122564346, y: 0.35705745, z: 0.29018304}
   m_DirtyAABB: 0
---- !u!114 &8100000000000000002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4575690268100963684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &5039912722172469534
 GameObject:
   m_ObjectHideFlags: 0
@@ -5866,7 +5827,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4282603459345936995}
   - component: {fileID: 4668383850357635182}
-  - component: {fileID: 8100000000000000003}
   m_Layer: 8
   m_Name: Rogue_Cape
   m_TagString: Untagged
@@ -5972,18 +5932,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000008076429, y: 0.66500115, z: -0.21479928}
     m_Extent: {x: 0.48537844, y: 0.57097244, z: 0.17129451}
   m_DirtyAABB: 0
---- !u!114 &8100000000000000003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5478256766533051055}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &5600203400280179238
 GameObject:
   m_ObjectHideFlags: 0
@@ -5994,7 +5942,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9102497680052858607}
   - component: {fileID: 7326880107452334481}
-  - component: {fileID: 8100000000000000004}
   m_Layer: 8
   m_Name: Rogue_LegRight
   m_TagString: Untagged
@@ -6100,18 +6047,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.16843745, y: 0.17739722, z: 0.029556692}
     m_Extent: {x: 0.12256434, y: 0.35705736, z: 0.29018292}
   m_DirtyAABB: 0
---- !u!114 &8100000000000000004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5600203400280179238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &5666353969713582593
 GameObject:
   m_ObjectHideFlags: 0
@@ -6122,7 +6057,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1555176726977869618}
   - component: {fileID: 5147809450320907629}
-  - component: {fileID: 8100000000000000005}
   m_Layer: 8
   m_Name: Rogue_Head
   m_TagString: Untagged
@@ -6228,18 +6162,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.011551559, y: 1.6151962, z: -0.0087355375}
     m_Extent: {x: 0.57069606, y: 0.5631318, z: 0.57193017}
   m_DirtyAABB: 0
---- !u!114 &8100000000000000005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5666353969713582593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &5722474833904945500
 GameObject:
   m_ObjectHideFlags: 0
@@ -6553,7 +6475,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5789939812050619029}
   - component: {fileID: 9030366626582737908}
-  - component: {fileID: 8100000000000000006}
   m_Layer: 8
   m_Name: Rogue_ArmLeft
   m_TagString: Untagged
@@ -6659,18 +6580,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.52578145, y: 1.1047441, z: 0.0067043155}
     m_Extent: {x: 0.4465691, y: 0.14772245, z: 0.17331307}
   m_DirtyAABB: 0
---- !u!114 &8100000000000000006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7652786035425681881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &7824434229636061198
 GameObject:
   m_ObjectHideFlags: 0

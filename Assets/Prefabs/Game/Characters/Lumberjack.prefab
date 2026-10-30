@@ -362,7 +362,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8853010978975043821}
   - component: {fileID: 3480315622824654386}
-  - component: {fileID: 8200000000000000021}
   m_Layer: 8
   m_Name: Barbarian_ArmLeft
   m_TagString: Untagged
@@ -468,18 +467,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.5253018, y: 1.1059917, z: 0.0064746514}
     m_Extent: {x: 0.44595623, y: 0.13686049, z: 0.16368312}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3457598594315768204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &3563958071284705386
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,7 +644,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2248202211850708028}
   - component: {fileID: 7219063799657955075}
-  - component: {fileID: 8200000000000000022}
   m_Layer: 8
   m_Name: Barbarian_Body
   m_TagString: Untagged
@@ -763,18 +749,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.004317969, y: 0.88516825, z: -0.0024988055}
     m_Extent: {x: 0.44633907, y: 0.50876015, z: 0.3676982}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351607779444156247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &4591734787357565589
 GameObject:
   m_ObjectHideFlags: 0
@@ -785,7 +759,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6684318118830094387}
   - component: {fileID: 2257907564249635920}
-  - component: {fileID: 8200000000000000023}
   m_Layer: 8
   m_Name: Barbarian_LegRight
   m_TagString: Untagged
@@ -891,18 +864,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.1684703, y: 0.18030179, z: 0.022521108}
     m_Extent: {x: 0.1227116, y: 0.35396755, z: 0.2756416}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4591734787357565589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &4818904108845672406
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,7 +874,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7485121327265754836}
   - component: {fileID: 8903928299980576615}
-  - component: {fileID: 8200000000000000024}
   m_Layer: 8
   m_Name: Barbarian_ArmRight
   m_TagString: Untagged
@@ -1019,18 +979,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.52530164, y: 1.1059922, z: 0.006474279}
     m_Extent: {x: 0.44595605, y: 0.13686025, z: 0.16368306}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4818904108845672406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &4857099686517095470
 GameObject:
   m_ObjectHideFlags: 0
@@ -1137,7 +1085,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7785607577832512944}
   - component: {fileID: 3679695982025249519}
-  - component: {fileID: 8200000000000000025}
   m_Layer: 8
   m_Name: Barbarian_LegLeft
   m_TagString: Untagged
@@ -1243,18 +1190,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.16847026, y: 0.18030165, z: 0.022521138}
     m_Extent: {x: 0.12271163, y: 0.3539676, z: 0.2756417}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5484593382124978266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &6215816594859570143
 GameObject:
   m_ObjectHideFlags: 0
@@ -6241,7 +6176,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2060635477671488663}
   - component: {fileID: 6407018130556767426}
-  - component: {fileID: 8200000000000000026}
   m_Layer: 8
   m_Name: Barbarian_Head
   m_TagString: Untagged
@@ -6347,18 +6281,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000069737434, y: 1.6604104, z: 0.032500565}
     m_Extent: {x: 0.54265654, y: 0.5259068, z: 0.49250054}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6843343266723882615}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &6859660869778656167
 GameObject:
   m_ObjectHideFlags: 0
@@ -6400,7 +6322,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3077029491713108061}
   - component: {fileID: 7319073297175660449}
-  - component: {fileID: 8200000000000000027}
   m_Layer: 8
   m_Name: Barbarian_BearHat
   m_TagString: Untagged
@@ -6506,18 +6427,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 1.9036306, z: 0.10664499}
     m_Extent: {x: 0.55453295, y: 0.49414408, z: 0.6319498}
   m_DirtyAABB: 0
---- !u!114 &8200000000000000027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7429971466462389967}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &7496621314294141528
 GameObject:
   m_ObjectHideFlags: 0

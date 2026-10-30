@@ -5210,27 +5210,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e41abc59d6062994b8f91b0fcc819934, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2641596924897422903}
-    - targetCorrespondingSourceObject: {fileID: 6315820822562928014, guid: e41abc59d6062994b8f91b0fcc819934, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8052520150840391491}
   m_SourcePrefab: {fileID: 100100000, guid: e41abc59d6062994b8f91b0fcc819934, type: 3}
---- !u!1 &877319690448042661 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6315820822562928014, guid: e41abc59d6062994b8f91b0fcc819934, type: 3}
-  m_PrefabInstance: {fileID: 6596243000055861035}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8052520150840391491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877319690448042661}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
 --- !u!1 &6290396038619574906 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e41abc59d6062994b8f91b0fcc819934, type: 3}

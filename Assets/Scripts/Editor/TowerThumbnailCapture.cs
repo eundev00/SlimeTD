@@ -6,8 +6,7 @@ using UnityEditor;
 using UnityEngine;
 
 // 타워 프리팹을 정면에서 투명 배경으로 찍어 썸네일 PNG로 저장한다.
-// 배치 실행: Unity.exe -batchmode -quit -executeMethod TowerThumbnailCapture.RunFromArgs -capturePrefab <경로> -captureOut <PNG 경로> [-captureKeepOutline]
-// 아웃라인은 기본으로 끈다. 유지하려면 -captureKeepOutline을 붙인다.
+// 배치 실행: Unity.exe -batchmode -quit -executeMethod TowerThumbnailCapture.RunFromArgs -capturePrefab <경로> -captureOut <PNG 경로>
 // 포즈는 기본이 Idle 상태의 첫 프레임이다. -capturePose <상태 이름> -captureTime <0~1 정규화 시간>으로 바꾼다.
 public static class TowerThumbnailCapture
 {
@@ -89,10 +88,6 @@ public static class TowerThumbnailCapture
                     t.gameObject.SetActive(false);
             }
 
-            var outlineMaterials = new List<Material>();
-            if (!HasArg("-captureKeepOutline"))
-                RemoveOutline(instance, outlineMaterials);
-
             SampleIdlePose(instance);
             RollWeapons(instance);
             var bounds = CalculateBounds(instance);
@@ -139,8 +134,6 @@ public static class TowerThumbnailCapture
 
             File.WriteAllBytes(fullPath, texture.EncodeToPNG());
             UnityEngine.Object.DestroyImmediate(texture);
-            foreach (var material in outlineMaterials)
-                UnityEngine.Object.DestroyImmediate(material);
 
             Debug.Log($"[TowerThumbnailCapture] 저장 완료: {fullPath}");
         }
@@ -148,34 +141,6 @@ public static class TowerThumbnailCapture
         {
             UnityEngine.Object.DestroyImmediate(root);
             UnityEngine.Object.DestroyImmediate(rt);
-        }
-    }
-
-    // 에셋 머티리얼은 건드리지 않고 인스턴스에 붙은 복사본의 아웃라인만 끈다.
-    private static void RemoveOutline(GameObject instance, List<Material> created)
-    {
-        foreach (var renderer in instance.GetComponentsInChildren<Renderer>(true))
-        {
-            var materials = renderer.sharedMaterials;
-            for (int i = 0; i < materials.Length; i++)
-            {
-                var source = materials[i];
-                if (source == null)
-                    continue;
-
-                var copy = new Material(source);
-                if (copy.HasProperty("_OutlineWidth"))
-                    copy.SetFloat("_OutlineWidth", 0f);
-
-                if (copy.HasProperty("_OutlineEnabled"))
-                    copy.SetFloat("_OutlineEnabled", 0f);
-
-                copy.DisableKeyword("DR_OUTLINE_ON");
-                created.Add(copy);
-                materials[i] = copy;
-            }
-
-            renderer.sharedMaterials = materials;
         }
     }
 

@@ -89,12 +89,6 @@ half3 _LightmapDirection;
 half _DetailMapImpact;
 half4 _DetailMapColor;
 
-half4 _OutlineColor;
-half _OutlineWidth;
-half _OutlineScale;
-half _OutlineDepthOffset;
-half _CameraDistanceImpact;
-
 float _SlimeDepthBucket;
 
 #ifndef FLATKIT_TERRAIN

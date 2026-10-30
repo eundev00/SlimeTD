@@ -1,6 +1,6 @@
 # 슬라임 렌더링
 
-슬라임 몸통·얼굴·아웃라인의 셰이더 구성과, 슬라임끼리 겹칠 때 서로 파고들어 보이는 문제를 **Depth Bias**로 해결한 구조를 정리한다.
+슬라임 몸통·얼굴의 셰이더 구성과, 슬라임끼리 겹칠 때 서로 파고들어 보이는 문제를 **Depth Bias**로 해결한 구조를 정리한다.
 
 ---
 
@@ -37,24 +37,15 @@ Opaque로 그리는 한 구조적으로 발생한다. 이전에 Transparent + So
 
 ## 2. 셰이더 구성
 
-슬라임은 툰 셰이딩을 쓰지 않는다. URP Unlit 수준의 경량 자체 셰이더 2개를 쓴다.
+슬라임 몸통과 타워는 툰 셰이더 `SlimeTD/SlimeFlatKit`(FlatKit Stylized Surface에 `_SlimeDepthBucket`을 넣은 사본)을 쓴다. 외곽선은 쓰지 않는다 (5장).
 
 | 파일 | 용도 | Surface | ZWrite | Queue |
 |---|---|---|---|---|
-| `Assets/Art/Shaders/SlimeBody.shader` | 몸통 + 아웃라인 | Opaque | On | Geometry(2000) |
+| `Assets/Art/Shaders/SlimeFlatKit.shader` | 슬라임 몸통, 타워 (툰) | Opaque | On | Geometry(2000) |
 | `Assets/Art/Shaders/SlimeFace.shader` | 얼굴 | AlphaClip | On | AlphaTest(2450) |
 | `Assets/Art/Shaders/SlimeDepthBucket.hlsl` | 오프셋 계산 (공용) | — | — | — |
 
-**URP 내장 Unlit을 직접 쓰지 않는 이유**는 패키지 파일이라 `_SlimeDepthBucket` 프로퍼티를 추가할 수 없기 때문이다. 기능은 URP Unlit과 동등하다.
-
-### SlimeBody.shader — 패스 순서가 중요하다
-
-```
-Pass 1  Outline   LightMode=SRPDefaultUnlit,  Cull Front, ZWrite On
-Pass 2  Unlit     LightMode=UniversalForward, Cull [_Cull], ZWrite On
-```
-
-아웃라인을 **먼저** 그려야 본체가 안쪽을 덮어 테두리만 남는다. 순서를 바꾸면 아웃라인이 보이지 않는다.
+FlatKit 원본을 직접 쓰지 않는 이유는 `_SlimeDepthBucket` 프로퍼티를 넣어야 하기 때문이다. `SlimeBody.shader`는 예전 경량 셰이더로, 지금은 어떤 머티리얼도 쓰지 않는다.
 
 ### 얼굴은 Alpha Clipping이어야 한다
 
@@ -135,22 +126,14 @@ SRP Batcher가 켜져 있으면(`m_UseSRPBatcher: 1`) 머티리얼 상수는 전
 
 ---
 
-## 5. 아웃라인
+## 5. 아웃라인 (사용 안 함)
 
-슬라임과 타워 모두 툰 셰이더 `SlimeTD/SlimeFlatKit`의 외곽선을 쓴다. 예전에 두 번째 머티리얼로 외곽선을 덧그리던 `Custom_Outline_Opaque`와 그 셰이더(`OutlineOpaque.shader`, `Outline.shader`)는 삭제했다.
+슬라임과 타워 모두 외곽선 없이 툰 셰이딩만 쓴다. `SlimeFlatKit`에서 `Outline` 패스와 외곽선 프로퍼티를 지웠고, 렌더러의 `Flat Kit Per Object Outline` 기능과 스무스 노멀을 굽던 `OutlineSmoothNormals`도 지웠다.
 
-- 외곽선은 셰이더의 `Outline` 패스(`LightMode=Outline`)로 그린다. 이 패스는 URP 렌더러의 `Flat Kit Per Object Outline` 기능(Render Objects)이 있어야 실행되므로 `Mobile_Renderer`와 `PC_Renderer` 둘 다에 넣어 두었다. 렌더러를 새로 만들면 이 기능을 빠뜨리지 않는다
-- 머티리얼에서 `Enable Outline`을 켜고 두께·색을 정한다. 머티리얼(서브메시)마다 따로 그려지므로 메시를 한 조각으로 합칠 필요가 없다
-- 타워 머티리얼은 `Smooth Normals`를 켠다. 하드 엣지가 많은 캐릭터 메시에서 외곽선이 갈라지지 않게 하는 옵션이고, UV 채널 2(uv3)의 노멀을 읽는다. FBX 메시에는 이 채널이 없어 `OutlineSmoothNormals` 컴포넌트가 `Awake`에서 구워 넣는다. 이 옵션을 켠 렌더러에는 이 컴포넌트가 꼭 있어야 하며, 없으면 외곽선이 보이지 않는다
-- 그래서 에디터에서 플레이하지 않은 상태(프리팹 편집 화면 등)에서는 타워 외곽선이 보이지 않는다
-- 슬라임은 둥근 메시라 `Smooth Normals`를 끄고 메시 노멀을 그대로 쓴다
-- 여러 조각으로 된 캐릭터(KayKit 등)는 조각마다 외곽선이 생겨 몸 안쪽에 검은 선이 비친다. 머티리얼 옵션 `Silhouette Write` + `Silhouette Only`를 켜면 몸체가 스텐실 비트 0을 쓰고 외곽선은 그 위에 그리지 않아 바깥 테두리만 남는다 (대신 활이 몸 앞을 지나는 식의 안쪽 경계선도 사라진다)
-- 스킨드 메시는 uv3에 구운 노멀이 뼈를 따라 돌지 않는다. `Tangent Space Normals (Skinned)`를 켜면 `OutlineSmoothNormals`가 탄젠트 공간으로 굽고 셰이더가 스키닝된 노멀/탄젠트로 복원한다
-- 현재 아처(`RogueGray`)만 두께 3 + 위 세 옵션을 쓴다. 나머지 타워는 확인 후 같은 설정으로 옮긴다
+외곽선을 다시 넣는다면 아래 시행착오를 참고한다.
 
-| 셰이더 | 용도 | 노멀 소스 |
-|---|---|---|
-| `SlimeFlatKit.shader` (`Outline` 패스) | 슬라임, 타워, 무기, 투사체 | 슬라임은 메시 노멀, 타워는 uv3 스무스 노멀 |
+- **메시 외곽선(인버티드 헐)**: 메시를 노멀 방향으로 부풀린 뒷면을 그린다. 슬라임처럼 매끈한 한 덩어리는 잘 나오지만, KayKit처럼 여러 조각이 겹친 각진 캐릭터는 몸 안쪽에 조각마다 선이 생기고 모서리에서 갈라진다. 스무스 노멀은 FBX에 없어 런타임에 구워야 하고, 스킨드 메시는 그 노멀이 뼈를 따라 돌지 않는다
+- **화면 외곽선(`Flat Kit Outline` 렌더러 기능)**: 깊이 차이로 화면 전체에 선을 긋는다. 모델 구조와 상관없이 깔끔하지만 맵·소품에도 선이 생기고, 깊이 텍스처와 전체 화면 후처리 비용이 든다. FlatKit 데모 씬을 열면 `AutoLoadPipelineAsset`이 데모 URP 에셋(이 기능 포함)으로 바꿔 놓아 화면 전체에 외곽선이 생기니, 비교할 때 주의한다
 
 ---
 
@@ -168,10 +151,9 @@ SRP Batcher가 켜져 있으면(`m_UseSRPBatcher: 1`) 머티리얼 상수는 전
 
 | 항목 | 몸통 | 얼굴 |
 |---|---|---|
-| 셰이더 | `SlimeTD/SlimeBody` | `SlimeTD/SlimeFace` |
+| 셰이더 | `SlimeTD/SlimeFlatKit` | `SlimeTD/SlimeFace` |
 | Queue | 셰이더 상속(Geometry) | 2450 |
 | ZWrite | 1 | 1 |
-| `_OutlineWidth` | 4 | — |
 | `_Cutoff` | — | 0.5 |
 
 ### 튜닝 지침
@@ -193,7 +175,7 @@ SRP Batcher가 켜져 있으면(`m_UseSRPBatcher: 1`) 머티리얼 상수는 전
 - 스폰 첫 프레임에 색이 번쩍이지 않는지 (SRP Batcher CBUFFER 확인)
 - 마릿수를 늘렸을 때 드로우콜 (Frame Debugger)
 
-**검증은 Mobile 퀄리티 기준.** 실제 기기와 같은 포워드 렌더러다. PC 퀄리티(`PC_Renderer`, 디퍼드)에도 외곽선 기능은 있지만 화면이 조금 다르게 나올 수 있다.
+**검증은 Mobile 퀄리티 기준.** 실제 기기와 같은 포워드 렌더러다. PC 퀄리티(`PC_Renderer`)는 디퍼드라 화면이 조금 다르게 나올 수 있다.
 
 ---
 
@@ -202,7 +184,7 @@ SRP Batcher가 켜져 있으면(`m_UseSRPBatcher: 1`) 머티리얼 상수는 전
 - **오프셋은 슬라임 간에만 옳고 슬라임 vs 월드에는 틀리다.** 버킷이 큰 슬라임은 지형에 대해서도 뒤로 밀려 있다. spacing을 과하게 키우면 바닥에 묻힌다
 - **버킷 재사용 잔여 문제.** 스폰 순번 k와 k+N은 같은 버킷이다
 - **SkinnedMeshRenderer라 GPU Instancing 불가.** MaterialPropertyBlock 사용으로 SRP Batcher 배칭에서도 이탈한다
-- **몸통·얼굴이 별도 머티리얼**이라 마리당 드로우콜이 최대 3개(몸통 컬러·아웃라인 + 얼굴)다. 텍스처 아틀라싱으로 통합하면 줄일 수 있으나 UV와 표정 교체 로직을 건드려야 한다
+- **몸통·얼굴이 별도 머티리얼**이라 마리당 드로우콜이 2개(몸통 + 얼굴)다. 텍스처 아틀라싱으로 통합하면 줄일 수 있으나 UV와 표정 교체 로직을 건드려야 한다
 
 ### 남아있는 UTS3 파일
 

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6356179323374486834}
   - component: {fileID: 8041868720175598231}
   - component: {fileID: 5223757442591276637}
-  - component: {fileID: 8200000000000000020}
   m_Layer: 8
   m_Name: KnightSword
   m_TagString: Untagged
@@ -91,15 +90,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8200000000000000020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6016386647319060360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8199bd7ce724bae91183a1d4dafa41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmoothNormalsToVertexColor
