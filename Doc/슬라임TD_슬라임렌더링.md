@@ -137,7 +137,7 @@ SRP Batcher가 켜져 있으면(`m_UseSRPBatcher: 1`) 머티리얼 상수는 전
 
 ## 5. 아웃라인
 
-슬라임과 타워 모두 툰 셰이더 `SlimeTD/SlimeFlatKit`의 외곽선을 쓴다. 두 번째 머티리얼로 외곽선을 덧그리는 `Custom_Outline_Opaque`(`OutlineOpaque.shader`)는 쓰지 않는다.
+슬라임과 타워 모두 툰 셰이더 `SlimeTD/SlimeFlatKit`의 외곽선을 쓴다. 예전에 두 번째 머티리얼로 외곽선을 덧그리던 `Custom_Outline_Opaque`와 그 셰이더(`OutlineOpaque.shader`, `Outline.shader`)는 삭제했다.
 
 - 외곽선은 셰이더의 `Outline` 패스(`LightMode=Outline`)로 그린다. 이 패스는 URP 렌더러의 `Flat Kit Per Object Outline` 기능(Render Objects)이 있어야 실행되므로 `Mobile_Renderer`와 `PC_Renderer` 둘 다에 넣어 두었다. 렌더러를 새로 만들면 이 기능을 빠뜨리지 않는다
 - 머티리얼에서 `Enable Outline`을 켜고 두께·색을 정한다. 머티리얼(서브메시)마다 따로 그려지므로 메시를 한 조각으로 합칠 필요가 없다
@@ -148,7 +148,6 @@ SRP Batcher가 켜져 있으면(`m_UseSRPBatcher: 1`) 머티리얼 상수는 전
 | 셰이더 | 용도 | 노멀 소스 |
 |---|---|---|
 | `SlimeFlatKit.shader` (`Outline` 패스) | 슬라임, 타워, 무기, 투사체 | 슬라임은 메시 노멀, 타워는 uv3 스무스 노멀 |
-| `OutlineOpaque.shader`, `Outline.shader` | 사용 안 함 | — |
 
 ---
 
