@@ -1,10 +1,15 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.U2D;
 
 // 헌터 상세 팝업과 인게임 타워 정보가 같은 규칙으로 스킬 슬롯을 그리도록 표시 규칙을 여기에 모은다.
 public class SkillSlotGroup : MonoBehaviour
 {
+    // 설명의 수치(숫자 + 붙은 단위)만 강조한다. 단위를 새로 쓰면 여기에 추가한다.
+    private static readonly Regex ValuePattern = new Regex(@"\d+(?:\.\d+)?(?:%p|%|발|초|마리)?");
+    private const string ValueFormat = "<b><color=#D2691E>$0</color></b>";
+
     [SerializeField] private SkillSlotItem[] _slots;
 
     private readonly List<SkillSlot> _buffer = new List<SkillSlot>();
@@ -82,10 +87,15 @@ public class SkillSlotGroup : MonoBehaviour
         {
             var stage = _chain[index + 1 + i];
             string header = i == 0 ? $"다음 단계 · Lv.{stage.UnlockLevel}에서 해금" : $"Lv.{stage.UnlockLevel}에서 해금";
-            upcoming[i] = new SkillTooltipStage(header, stage.DisplayName, stage.Description);
+            upcoming[i] = new SkillTooltipStage(header, stage.DisplayName, HighlightValues(stage.Description));
         }
 
-        return new SkillTooltipContent(unlock, shown.DisplayName, shown.Description, upcoming);
+        return new SkillTooltipContent(unlock, shown.DisplayName, HighlightValues(shown.Description), upcoming);
+    }
+
+    private static string HighlightValues(string description)
+    {
+        return string.IsNullOrEmpty(description) ? description : ValuePattern.Replace(description, ValueFormat);
     }
 
     private void SetAtlas(SpriteAtlas atlas)
