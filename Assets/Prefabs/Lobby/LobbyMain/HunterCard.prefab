@@ -683,8 +683,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC774\uB984"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 52275934babb549fea8d1f0fbaa1582e, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 1f68e260a1fb433db452318b6233d5f4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0e2fc2ffe8b664d118b56342e1d170a4, type: 2}
+  m_sharedMaterial: {fileID: -5299783662446701556, guid: 0e2fc2ffe8b664d118b56342e1d170a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -714,7 +714,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
