@@ -684,14 +684,14 @@ MonoBehaviour:
   m_text: "\uC774\uB984"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 52275934babb549fea8d1f0fbaa1582e, type: 2}
-  m_sharedMaterial: {fileID: -7533054716134825638, guid: 52275934babb549fea8d1f0fbaa1582e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 1f68e260a1fb433db452318b6233d5f4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290690750
-  m_fontColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
+    rgba: 4279312710
+  m_fontColor: {r: 0.27450982, g: 0.12941177, b: 0.06666667, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
