@@ -29,7 +29,7 @@ MonoBehaviour:
       _valueType: 1
       _duration: 0
   - _id: 10102
-    _displayName: "\uC30D\uBC1C \uC0AC\uACA9"
+    _displayName: "\uC30D\uBC1C \uC0AC\uACA9 I"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uD654\uC0B4\uC744
       2\uBC1C \uC3DC\uB2E4"
     _towerId: 101
@@ -122,7 +122,7 @@ MonoBehaviour:
       _valueType: 1
       _duration: 0
   - _id: 10402
-    _displayName: "\uBC8C\uBAA9 \uC218\uC775"
+    _displayName: "\uBC8C\uBAA9 \uC218\uC775 I"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uC824\uB9AC\uB97C
       5 \uC5BB\uB294\uB2E4"
     _towerId: 104
@@ -169,7 +169,7 @@ MonoBehaviour:
       _valueType: 1
       _duration: 0
   - _id: 10502
-    _displayName: "\uB048\uC801 \uC2AC\uB77C\uC784"
+    _displayName: "\uB048\uC801 \uC2AC\uB77C\uC784 I"
     _description: "\uB9DE\uC740 \uC801\uC758 \uC774\uB3D9\uC18D\uB3C4\uAC00 1\uCD08
       \uB3D9\uC548 3% \uAC10\uC18C\uD55C\uB2E4"
     _towerId: 105
