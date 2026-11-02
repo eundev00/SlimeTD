@@ -11,6 +11,7 @@
 - 슬라임 렌더링: [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md)
 - 로비 UI: [Doc/슬라임TD_로비UI.md](Doc/슬라임TD_로비UI.md)
 - 팝업 시스템: [Doc/슬라임TD_팝업시스템.md](Doc/슬라임TD_팝업시스템.md)
+- WebGL 확인용 빌드: [Doc/슬라임TD_WebGL빌드.md](Doc/슬라임TD_WebGL빌드.md) (WebGL 설정은 커밋하지 않고 빌드 스크립트가 넣는다. Android/iOS 설정을 건드리지 않는다)
 **화면**: 모바일 **세로(Portrait) 고정**. UI/카메라/맵 관련 작업은 항상 세로 비율을 기준으로 한다. 자세한 내용은 아래 [5. 세로 화면(Portrait) 기준](#5-세로-화면portrait-기준) 참고.
 
 ---

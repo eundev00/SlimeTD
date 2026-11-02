@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>{{{ PRODUCT_NAME }}}</title>
+    <style>
+      html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; touch-action: none; -webkit-user-select: none; user-select: none; }
+      div#stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+      /* 세로 9:16 기준. 데스크톱에서는 가운데 세로 화면으로, 휴대폰 세로에서는 화면을 꽉 채운다. */
+      canvas#unity-canvas { display: block; height: 100%; width: calc(100vh * 9 / 16); max-width: 100%; background: {{{ BACKGROUND_COLOR }}}; }
+      @media (max-aspect-ratio: 9/16) { canvas#unity-canvas { width: 100%; } }
+      div#loading { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 60%; max-width: 320px; color: #fff; font: 14px sans-serif; text-align: center; }
+      div#bar { margin-top: 10px; height: 8px; border-radius: 4px; background: #333; overflow: hidden; }
+      div#fill { height: 100%; width: 0; background: #7fd36b; }
+      div#rotate { display: none; position: fixed; inset: 0; background: #000; color: #fff; font: 16px sans-serif; align-items: center; justify-content: center; text-align: center; z-index: 10; }
+      @media (orientation: landscape) and (max-height: 500px) { div#rotate { display: flex; } }
+    </style>
+  </head>
+  <body>
+    <div id="stage"><canvas id="unity-canvas" tabindex="-1"></canvas></div>
+    <div id="loading"><div id="label">불러오는 중 0%</div><div id="bar"><div id="fill"></div></div></div>
+    <div id="rotate">세로 화면으로 돌려 주세요</div>
+    <script src="Build/{{{ LOADER_FILENAME }}}"></script>
+    <script>
+      var config = {
+        arguments: [],
+        dataUrl: "Build/{{{ DATA_FILENAME }}}",
+        frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+#if USE_THREADS
+        workerUrl: "Build/{{{ WORKER_FILENAME }}}",
+#endif
+#if USE_WASM
+        codeUrl: "Build/{{{ CODE_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+        symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+#endif
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+        productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+        productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+        // 고해상도 휴대폰(DPR 3)은 렌더 비용이 커서 2배로 제한한다.
+        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+      };
+
+      createUnityInstance(document.querySelector("#unity-canvas"), config, function (progress) {
+        var p = Math.round(progress * 100);
+        document.getElementById("label").textContent = "불러오는 중 " + p + "%";
+        document.getElementById("fill").style.width = p + "%";
+      }).then(function () {
+        document.getElementById("loading").style.display = "none";
+      }).catch(function (message) {
+        document.getElementById("label").textContent = "실행 실패: " + message;
+      });
+    </script>
+  </body>
+</html>

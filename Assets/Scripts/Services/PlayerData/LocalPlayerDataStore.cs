@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -9,6 +10,12 @@ public class LocalPlayerDataStore : IPlayerDataStore
 
     public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+    // WebGL은 스레드가 없어 비동기 파일 API를 쓰지 않는다. 쓴 뒤에는 IndexedDB로 직접 내보내야 새로고침 후에도 남는다.
+    [DllImport("__Internal")]
+    private static extern void SlimeTD_SyncPersistentData();
+#endif
+
     public async UniTask<PlayerData> LoadAsync()
     {
         string path = FilePath;
@@ -17,7 +24,12 @@ public class LocalPlayerDataStore : IPlayerDataStore
 
         try
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            string json = File.ReadAllText(path);
+            await UniTask.CompletedTask;
+#else
             string json = await File.ReadAllTextAsync(path);
+#endif
             return JsonUtility.FromJson<PlayerData>(json);
         }
         catch (Exception e)
@@ -32,7 +44,13 @@ public class LocalPlayerDataStore : IPlayerDataStore
         try
         {
             string json = JsonUtility.ToJson(data);
+#if UNITY_WEBGL && !UNITY_EDITOR
+            File.WriteAllText(FilePath, json);
+            SlimeTD_SyncPersistentData();
+            await UniTask.CompletedTask;
+#else
             await File.WriteAllTextAsync(FilePath, json);
+#endif
         }
         catch (Exception e)
         {
