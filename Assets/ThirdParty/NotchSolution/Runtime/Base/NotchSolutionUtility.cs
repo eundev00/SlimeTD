@@ -61,12 +61,13 @@ namespace E7.NotchSolution
             get
             {
 #if UNITY_WEBGL && !UNITY_EDITOR
-                // SlimeTD: WebGL의 Screen.safeArea는 캔버스 크기와 맞지 않아 상단이 비어 보인다. 노치는 웹 템플릿이 CSS safe-area로 피한다.
+                // SlimeTD: WebGL은 Screen.currentResolution(기기 화면)이 캔버스보다 커서 상대 영역 계산이 상단 여백을 만든다. 노치는 웹 템플릿이 CSS safe-area로 피한다.
                 var absolutePaddings = new Rect(0, 0, Screen.width, Screen.height);
+                cachedScreenSafeAreaRelative = new Rect(0, 0, 1, 1);
 #else
                 var absolutePaddings = Screen.safeArea;
-#endif
                 cachedScreenSafeAreaRelative = ToScreenRelativeRect(absolutePaddings);
+#endif
                 cachedScreenSafeArea = absolutePaddings;
                 safeAreaRelativeCached = true;
                 return cachedScreenSafeAreaRelative;
