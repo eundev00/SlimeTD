@@ -72,6 +72,15 @@ public class SkillCatalog : ScriptableObject
     }
 
     // 대체 대상이 목록에 없는 스킬도 대표로 본다. 그래야 잘못된 데이터가 슬롯을 숨기지 않는다.
+    public void GetChain(TowerSkillData root, List<TowerSkillData> buffer)
+    {
+        buffer.Clear();
+        if (root == null)
+            return;
+
+        BuildChain(GetSkills(root.TowerId), root, buffer);
+    }
+
     private static bool IsRoot(IReadOnlyList<TowerSkillData> all, TowerSkillData skill)
     {
         if (!skill.IsUpgrade)

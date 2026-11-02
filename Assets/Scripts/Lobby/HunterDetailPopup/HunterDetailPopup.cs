@@ -58,6 +58,7 @@ public class HunterDetailPopup : PopupBase
     // 같은 헌터를 다시 열어도 값이 같아 알림이 생략되지 않도록 강제로 알린다.
     public void SetTowerId(int towerId)
     {
+        _skillSlots.CloseTooltips();
         _towerId.SetValueAndForceNotify(towerId);
     }
 
@@ -91,6 +92,7 @@ public class HunterDetailPopup : PopupBase
 
     protected override void OnClose()
     {
+        _skillSlots.CloseTooltips();
         _towerId.Value = 0;
     }
 

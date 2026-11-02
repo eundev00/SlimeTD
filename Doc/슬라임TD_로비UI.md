@@ -55,7 +55,21 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 - 보유하지 않은 헌터는 레벨 0으로 넘겨 모든 슬롯을 잠김으로 보여 준다
 - 아이콘은 `SkillIconAtlas`에서 `TowerSkillData.IconName`으로 꺼낸다. `GetSprite`는 부를 때마다 복제본을 만들어서 `SkillSlotGroup`이 이름별로 한 번만 받아 두고 파괴될 때 정리한다
 - `SkillCatalog`과 아틀라스는 Presenter가 `IResourceLoadService`로 읽는다. 전역 서비스가 캐시하므로 다시 열어도 다시 읽지 않는다
-- 툴팁(슬롯 클릭)은 아직 없다
+### 스킬 툴팁
+
+슬롯마다 자기 위에 뜨는 툴팁(`SkillTooltip`)을 하나씩 갖는다. `SkillSlotItem.prefab`의 자식이며 처음엔 꺼져 있다. 모양은 LayerLab `BubbleFrame_02`를 풀어서(unpack) 쓴다 (크림 배경 `#F7E9C9`, 아래 꼬리, 글자는 왼쪽 정렬).
+
+| 상태 | 내용 |
+|---|---|
+| 해금, 다음 단계 있음 | 현재 단계 이름·설명 + 실선 아래 `다음 단계 · Lv.N에서 해금`, 다음 이름·설명 |
+| 해금, 마지막 단계 | 현재 단계 이름·설명만 |
+| 잠김 | 맨 위 `Lv.N에서 해금`(강조색), 첫 단계 이름·설명, 다음 단계가 있으면 그것도 |
+
+- 이름 줄 오른쪽에 `n/m단계`를 둔다 (계열이 2단계 이상일 때만). 계열 목록은 `SkillCatalog.GetChain`으로 얻는다
+- 슬롯을 누르면 그 슬롯 툴팁만 열리고 다른 슬롯 툴팁은 닫힌다. 같은 슬롯을 다시 누르면 닫힌다
+- 바깥을 누르면 닫히되 그 터치를 막지 않는다 (닫기 버튼이면 팝업도 닫힌다). `SkillTooltip`이 열려 있는 동안만 Input System의 `<Pointer>/press`를 듣는다. 자기 슬롯 영역은 슬롯 버튼이 처리하므로 무시한다
+- 툴팁의 그래픽은 터치를 받지 않는다(raycastTarget 끔). 툴팁을 눌러도 닫히지 않고 아래 UI도 눌리지 않는다
+- 팝업이 닫히거나 다른 헌터로 바뀌면 `SkillSlotGroup.CloseTooltips()`로 닫는다
 
 ## 웨이브 진행도 맵 (전투 탭)
 
@@ -95,5 +109,4 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 ## 미구현 / 후속
 
 - 상점 (`CurrencyViewClickedEvent` 수신)
-- 스킬 슬롯 툴팁 (이름, 설명, 해금 레벨)
 - 난이도 시스템 (웨이브 맵 위쪽 확장 지점)

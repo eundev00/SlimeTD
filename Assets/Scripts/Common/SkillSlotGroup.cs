@@ -8,8 +8,18 @@ public class SkillSlotGroup : MonoBehaviour
     [SerializeField] private SkillSlotItem[] _slots;
 
     private readonly List<SkillSlot> _buffer = new List<SkillSlot>();
+    private readonly List<TowerSkillData> _chain = new List<TowerSkillData>();
     private readonly Dictionary<string, Sprite> _sprites = new Dictionary<string, Sprite>();
     private SpriteAtlas _atlas;
+
+    private void Awake()
+    {
+        foreach (var slot in _slots)
+        {
+            if (slot != null)
+                slot.Clicked += HandleSlotClicked;
+        }
+    }
 
     // 레벨 0을 넘기면 모든 슬롯이 잠김으로 보인다 (보유하지 않은 헌터).
     public void Show(SkillCatalog catalog, SpriteAtlas atlas, int towerId, int level)
@@ -19,7 +29,7 @@ public class SkillSlotGroup : MonoBehaviour
             catalog.GetSlots(towerId, level, _buffer);
 
         if (_buffer.Count > _slots.Length)
-            Debug.Log($"[SkillSlotGroup] 스킬 계열이 {_buffer.Count}개인데 슬롯은 {_slots.Length}개입니다. 슬롯을 추가하세요. 타워: {towerId}", this);
+            Debug.Log($"[SkillSlotGroup] 스킬 계열이 {_buffer.Count}개인데 슬롯은 {_slots.Length}개입니다. 슬롯을 추가하세요. 타워 {towerId}", this);
 
         SetAtlas(atlas);
 
@@ -34,8 +44,52 @@ public class SkillSlotGroup : MonoBehaviour
             var slot = _buffer[i];
             var shown = slot.Current ?? slot.Root;
 
-            _slots[i].Show(GetSprite(shown.IconName), slot.IsLocked, slot.HasNextUpgrade);
+            _slots[i].Show(GetSprite(shown.IconName), slot.IsLocked, slot.HasNextUpgrade, BuildTooltip(catalog, slot));
         }
+    }
+
+    public void CloseTooltips()
+    {
+        foreach (var slot in _slots)
+        {
+            if (slot != null)
+                slot.CloseTooltip();
+        }
+    }
+
+    private void HandleSlotClicked(SkillSlotItem clicked)
+    {
+        foreach (var slot in _slots)
+        {
+            if (slot != null && slot != clicked)
+                slot.CloseTooltip();
+        }
+
+        clicked.ToggleTooltip();
+    }
+
+    // 다음 단계가 있으면 현재와 다음을, 없으면 현재만 보여 준다. 잠긴 계열의 "현재"는 첫 단계다.
+    private SkillTooltipContent BuildTooltip(SkillCatalog catalog, SkillSlot slot)
+    {
+        var shown = slot.Current ?? slot.Root;
+        catalog.GetChain(slot.Root, _chain);
+
+        int index = Mathf.Max(0, _chain.IndexOf(shown));
+        string stage = _chain.Count > 1 ? $"{index + 1}/{_chain.Count}단계" : null;
+        string unlock = slot.IsLocked ? $"Lv.{shown.UnlockLevel}에서 해금" : null;
+
+        var next = slot.IsLocked
+            ? (index + 1 < _chain.Count ? _chain[index + 1] : null)
+            : slot.Next;
+
+        return new SkillTooltipContent(
+            unlock,
+            shown.DisplayName,
+            stage,
+            shown.Description,
+            next != null ? $"다음 단계 · Lv.{next.UnlockLevel}에서 해금" : null,
+            next?.DisplayName,
+            next?.Description);
     }
 
     private void SetAtlas(SpriteAtlas atlas)
@@ -77,6 +131,12 @@ public class SkillSlotGroup : MonoBehaviour
 
     private void OnDestroy()
     {
+        foreach (var slot in _slots)
+        {
+            if (slot != null)
+                slot.Clicked -= HandleSlotClicked;
+        }
+
         ClearSprites();
     }
 }
