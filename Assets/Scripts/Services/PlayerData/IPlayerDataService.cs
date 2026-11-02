@@ -7,7 +7,6 @@ public interface IPlayerDataService
     bool IsInitialized { get; }
     IReadOnlyReactiveProperty<int> Gold { get; }
     IReadOnlyReactiveProperty<int> Gem { get; }
-    IReadOnlyReactiveProperty<int> Cards { get; }
     IReadOnlyReactiveProperty<int> BestWave { get; }
     IReadOnlyList<HunterState> Hunters { get; }
 
@@ -21,7 +20,7 @@ public interface IPlayerDataService
 
     void AddGold(int amount);
     void AddGem(int amount);
-    void AddCards(int amount);
+    void AddHunterCards(int towerId, int amount);
     void ReportWaveReached(int wave);
     bool TryGetLevelUpCost(int towerId, out int cards, out int gold);
     bool CanLevelUp(int towerId);

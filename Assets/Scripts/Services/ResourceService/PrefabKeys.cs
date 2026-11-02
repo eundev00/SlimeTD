@@ -9,7 +9,6 @@ public static class PrefabKeys
     public const string Crossbow = "Crossbow";
     public const string CrossbowBolt = "CrossbowBolt";
     public const string CrossbowBow = "CrossbowBow";
-    public const string CurrencyCards = "CurrencyCards";
     public const string CurrencyGem = "CurrencyGem";
     public const string CurrencyGold = "CurrencyGold";
     public const string DamageText = "DamageText";
@@ -60,7 +59,6 @@ public static class PrefabKeys
         { Crossbow, "Assets/Prefabs/Game/Characters/Crossbow.prefab" },
         { CrossbowBolt, "Assets/Prefabs/Game/Characters/CrossbowBolt.prefab" },
         { CrossbowBow, "Assets/Prefabs/Game/Characters/CrossbowBow.prefab" },
-        { CurrencyCards, "Assets/Prefabs/Common/CurrencyCards.prefab" },
         { CurrencyGem, "Assets/Prefabs/Common/CurrencyGem.prefab" },
         { CurrencyGold, "Assets/Prefabs/Common/CurrencyGold.prefab" },
         { DamageText, "Assets/Prefabs/Game/UI/DamageText.prefab" },

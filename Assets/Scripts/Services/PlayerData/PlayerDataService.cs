@@ -12,7 +12,6 @@ public class PlayerDataService : IPlayerDataService, IDisposable
 
     private readonly ReactiveProperty<int> _gold = new ReactiveProperty<int>();
     private readonly ReactiveProperty<int> _gem = new ReactiveProperty<int>();
-    private readonly ReactiveProperty<int> _cards = new ReactiveProperty<int>();
     private readonly ReactiveProperty<int> _bestWave = new ReactiveProperty<int>();
     private readonly List<HunterState> _hunters = new List<HunterState>();
     private readonly Dictionary<int, HunterState> _huntersById = new Dictionary<int, HunterState>();
@@ -20,7 +19,6 @@ public class PlayerDataService : IPlayerDataService, IDisposable
     public bool IsInitialized { get; private set; }
     public IReadOnlyReactiveProperty<int> Gold => _gold;
     public IReadOnlyReactiveProperty<int> Gem => _gem;
-    public IReadOnlyReactiveProperty<int> Cards => _cards;
     public IReadOnlyReactiveProperty<int> BestWave => _bestWave;
     public IReadOnlyList<HunterState> Hunters => _hunters;
 
@@ -46,10 +44,14 @@ public class PlayerDataService : IPlayerDataService, IDisposable
             return;
         }
 
+        var config = await _resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
+        if (config == null)
+            Debug.Log($"[PlayerDataService] {DataKeys.GameConfig} 로드에 실패해 시작 재화를 0으로 둡니다.");
+
         var data = await _store.LoadAsync();
         bool isNew = data == null;
         if (isNew)
-            data = await CreateNewPlayerDataAsync();
+            data = CreateNewPlayerData(config);
 
         var recordsById = new Dictionary<int, HunterRecord>();
         foreach (var record in data.Hunters)
@@ -71,6 +73,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
                     TowerId = tower.Id,
                     Level = TowerLevelService.MinLevel,
                     Unlocked = tower.StartUnlocked,
+                    Cards = config != null ? config.InitialHunterCards : 0,
                 };
 
                 data.Hunters.Add(record);
@@ -86,7 +89,6 @@ public class PlayerDataService : IPlayerDataService, IDisposable
 
         _gold.Value = data.Gold;
         _gem.Value = data.Gem;
-        _cards.Value = data.Cards;
         _bestWave.Value = data.BestWave;
         IsInitialized = true;
 
@@ -94,21 +96,15 @@ public class PlayerDataService : IPlayerDataService, IDisposable
             SaveAsync().Forget();
     }
 
-    // 저장 데이터가 없는 새 계정은 GameConfig의 시작 재화로 시작한다.
-    private async UniTask<PlayerData> CreateNewPlayerDataAsync()
+    // 저장 데이터가 없는 새 계정은 GameConfig의 시작 재화로 시작한다. 헌터 카드는 헌터 기록을 만들 때 넣는다.
+    private static PlayerData CreateNewPlayerData(GameConfig config)
     {
         var data = new PlayerData();
-
-        var config = await _resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
         if (config == null)
-        {
-            Debug.Log($"[PlayerDataService] {DataKeys.GameConfig} 로드에 실패해 시작 재화를 0으로 둡니다.");
             return data;
-        }
 
         data.Gold = config.InitialLobbyGold;
         data.Gem = config.InitialGem;
-        data.Cards = config.InitialCards;
         return data;
     }
 
@@ -171,13 +167,13 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         SaveAsync().Forget();
     }
 
-    // 헌터 카드는 하나의 공용 재화다. 어느 헌터를 올릴지는 유저가 고른다.
-    public void AddCards(int amount)
+    // 헌터 카드는 헌터마다 따로 쌓인다. 잠긴 헌터도 받을 수 있다 (이벤트 지급 등).
+    public void AddHunterCards(int towerId, int amount)
     {
-        if (amount == 0)
+        if (amount == 0 || !_huntersById.TryGetValue(towerId, out var hunter))
             return;
 
-        _cards.Value = Mathf.Max(0, _cards.Value + amount);
+        hunter.Cards.Value = Mathf.Max(0, hunter.Cards.Value + amount);
         SaveAsync().Forget();
     }
 
@@ -215,7 +211,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
             return false;
 
         var hunter = _huntersById[towerId];
-        return hunter.Unlocked.Value && _cards.Value >= cards && _gold.Value >= gold;
+        return hunter.Unlocked.Value && hunter.Cards.Value >= cards && _gold.Value >= gold;
     }
 
     public bool TryLevelUp(int towerId)
@@ -226,7 +222,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         TryGetLevelUpCost(towerId, out int cards, out int gold);
 
         var hunter = _huntersById[towerId];
-        _cards.Value -= cards;
+        hunter.Cards.Value -= cards;
         _gold.Value -= gold;
         hunter.Level.Value += 1;
 
@@ -244,7 +240,6 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         _huntersById.Clear();
         _gold.Dispose();
         _gem.Dispose();
-        _cards.Dispose();
         _bestWave.Dispose();
     }
 
@@ -254,7 +249,6 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         {
             Gold = _gold.Value,
             Gem = _gem.Value,
-            Cards = _cards.Value,
             BestWave = _bestWave.Value,
         };
 
@@ -266,6 +260,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
                 TowerId = hunter.TowerId,
                 Level = hunter.Level.Value,
                 Unlocked = hunter.Unlocked.Value,
+                Cards = hunter.Cards.Value,
             });
         }
 

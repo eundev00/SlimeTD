@@ -35,7 +35,6 @@ public class HunterDetailPresenter : IPopupPresenter
 
         _playerDataService.Gold.Subscribe(_ => Render()).AddTo(_disposables);
         _playerDataService.Gem.Subscribe(_ => Render()).AddTo(_disposables);
-        _playerDataService.Cards.Subscribe(_ => Render()).AddTo(_disposables);
 
         _popup.UpgradeClicked += HandleUpgradeClicked;
         _popup.BuyClicked += HandleBuyClicked;
@@ -91,6 +90,7 @@ public class HunterDetailPresenter : IPopupPresenter
         _hunterDisposables = new CompositeDisposable();
         hunter.Level.Subscribe(_ => Render()).AddTo(_hunterDisposables);
         hunter.Unlocked.Subscribe(_ => Render()).AddTo(_hunterDisposables);
+        hunter.Cards.Subscribe(_ => Render()).AddTo(_hunterDisposables);
     }
 
     private CompositeDisposable _hunterDisposables;
@@ -157,7 +157,7 @@ public class HunterDetailPresenter : IPopupPresenter
         }
 
         _playerDataService.TryGetLevelUpCost(_hunter.TowerId, out int neededCards, out _);
-        _popup.SetCardProgress(_playerDataService.Cards.Value, neededCards);
+        _popup.SetCardProgress(_hunter.Cards.Value, neededCards);
     }
 
     private void RenderStats(int level, bool canLevelUp)

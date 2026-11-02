@@ -6,7 +6,6 @@ public class PlayerData
 {
     public int Gold;
     public int Gem;
-    public int Cards;
     public int BestWave;
     public List<HunterRecord> Hunters = new List<HunterRecord>();
 }
@@ -17,4 +16,5 @@ public class HunterRecord
     public int TowerId;
     public int Level = 1;
     public bool Unlocked;
+    public int Cards;
 }

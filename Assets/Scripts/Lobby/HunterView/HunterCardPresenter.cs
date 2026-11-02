@@ -117,15 +117,11 @@ public class HunterCardPresenter : IStartable, IDisposable
                     ApplySort();
                 })
                 .AddTo(_disposables);
-        }
 
-        _playerDataService.Cards
-            .Subscribe(cards =>
-            {
-                _view.SetCards(cards);
-                RefreshAll();
-            })
-            .AddTo(_disposables);
+            hunter.Cards
+                .Subscribe(_ => Refresh(entry))
+                .AddTo(_disposables);
+        }
 
         _playerDataService.Gold
             .Subscribe(_ => RefreshAll())
@@ -174,7 +170,7 @@ public class HunterCardPresenter : IStartable, IDisposable
             hunter.Unlocked.Value,
             level,
             maxLevel,
-            _playerDataService.Cards.Value,
+            hunter.Cards.Value,
             neededCards,
             _playerDataService.CanLevelUp(hunter.TowerId));
     }

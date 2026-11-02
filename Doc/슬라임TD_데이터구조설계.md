@@ -15,7 +15,7 @@ GameConfig (SO, 1개)
 ├─ bossSlowScale     : float = 0.5              // 보스에게 걸리는 감속 비율 (절반)
 ├─ initialLobbyGold  : int = 10000               // 새 계정 시작 골드 (개발용 임시)
 ├─ initialGem        : int = 10000               // 새 계정 시작 보석 (개발용 임시)
-└─ initialCards      : int = 10000               // 새 계정 시작 헌터 카드 (개발용 임시)
+└─ initialHunterCards : int = 100               // 헌터 기록을 새로 만들 때 헌터마다 주는 카드 (개발용 임시)
 ```
 
 ## 맵 / 그리드
@@ -162,18 +162,19 @@ IPlayerDataStore                                // 저장 위치를 숨기는 �
 └─ LocalPlayerDataStore (persistentDataPath/player.json) — 서버 전환 시 구현체만 교체
 
 PlayerData (저장 대상)
-├─ gold, gem, cards : int                      // 헌터 카드는 공용 재화 하나
+├─ gold, gem        : int
 ├─ bestWave         : int                      // 도달한 최고 웨이브. 저장 파일에 없으면 0
-└─ hunters          : HunterRecord[] { towerId, level, unlocked }
+└─ hunters          : HunterRecord[] { towerId, level, unlocked, cards }   // 헌터 카드는 헌터별
 
 IPlayerDataService (Project 스코프)
-├─ Gold, Gem, Cards, BestWave : ReactiveProperty<int>
-├─ Hunters          : HunterState[] { Level, Unlocked : ReactiveProperty }
-└─ AddGold / AddCards / UnlockHunter / TryLevelUp / IsUnlocked / IsAvailable / ReportWaveReached
+├─ Gold, Gem, BestWave : ReactiveProperty<int>
+├─ Hunters          : HunterState[] { Level, Unlocked, Cards : ReactiveProperty }
+└─ AddGold / AddHunterCards(towerId, n) / UnlockHunter / TryLevelUp / IsUnlocked / IsAvailable / ReportWaveReached
 ```
 
 - `ReportWaveReached(n)`은 기존 값보다 클 때만 갱신·저장한다. 초기화 전(게임 씬만 단독 실행)에는 저장하지 않는다. 호출 시점과 값 규칙은 [로비 UI](슬라임TD_로비UI.md#최고-웨이브-기록-규칙) 참고
 
+- 레벨업은 그 헌터의 `Cards`와 골드를 함께 차감한다. 잠긴 헌터도 `AddHunterCards`로 카드를 받을 수 있지만 레벨업은 해금 후에만 된다
 - 레벨업 비용은 `TowerData.levelUpCost`(등급 시트 값을 임포터가 채움)에서 읽는다. `Grades.csv`의 `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
 - 로드와 레벨업 때 `ITowerLevelService`에 레벨을 반영하며, 게임 씬은 이 값을 그대로 읽는다
 - 해금: 시작 해금은 `Grades.csv`의 `startUnlocked`(등급 기본)와 `Towers.csv`의 `startUnlocked`(타워별 예외)로 정한다. 잠긴 헌터는 `unlockGemPrice`만큼 보석을 써서 `TryPurchaseHunter`로 해금한다

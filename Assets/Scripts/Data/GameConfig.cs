@@ -10,7 +10,8 @@ public class GameConfig : ScriptableObject
     [Header("새 계정 시작 재화 (로비)")]
     [SerializeField] private int _initialLobbyGold = 10000;
     [SerializeField] private int _initialGem = 10000;
-    [SerializeField] private int _initialCards = 10000;
+    [Tooltip("헌터마다 지급하는 시작 카드 수 (임시)")]
+    [SerializeField] private int _initialHunterCards = 100;
 
     [Header("타워 소환")]
     [SerializeField] private int _summonBaseCost = 50;
@@ -31,7 +32,7 @@ public class GameConfig : ScriptableObject
     public int StartingJelly => _startingJelly;
     public int InitialLobbyGold => _initialLobbyGold;
     public int InitialGem => _initialGem;
-    public int InitialCards => _initialCards;
+    public int InitialHunterCards => _initialHunterCards;
     public int SummonBaseCost => _summonBaseCost;
     public int SummonCostIncrease => _summonCostIncrease;
     public int SummonGradeId => _summonGradeId;

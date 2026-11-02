@@ -24,7 +24,7 @@
 | baseAttack | 기준 공격력 |
 | attackGrowthRate | 레벨당 공격력 증가율(%) |
 | startUnlocked | 시작 해금 (1/0) |
-| cardBase, cardPerLevel | 레벨업 카드 기본값, 레벨당 증가 |
+| cardBase, cardPerLevel | 레벨업에 필요한 그 헌터의 카드 수. 기본값, 레벨당 증가 |
 | goldBase, goldPerLevel | 레벨업 골드 기본값, 레벨당 증가 |
 
 ## Towers.csv
