@@ -10,6 +10,8 @@
     <style>
       html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; touch-action: none; -webkit-user-select: none; user-select: none; }
       div#stage { position: fixed; left: 0; top: 0; width: 100%; height: 100%; }
+      /* 홈 화면 앱(전체 화면)에서 노치·홈 인디케이터 영역을 피하기 위한 측정용 요소. 일반 Safari 탭에서는 0이다. */
+      div#safe { position: fixed; visibility: hidden; pointer-events: none; top: env(safe-area-inset-top, 0px); bottom: env(safe-area-inset-bottom, 0px); left: env(safe-area-inset-left, 0px); right: env(safe-area-inset-right, 0px); }
       /* 크기는 fitCanvas()가 실제 보이는 영역 기준으로 정한다. iOS Safari의 100vh는 툴바에 가린 영역까지 포함해 쓰지 않는다. */
       canvas#unity-canvas { position: absolute; left: 0; top: 0; display: block; background: {{{ BACKGROUND_COLOR }}}; }
       div#loading { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 60%; max-width: 320px; color: #fff; font: 14px sans-serif; text-align: center; }
@@ -20,6 +22,7 @@
     </style>
   </head>
   <body>
+    <div id="safe"></div>
     <div id="stage"><canvas id="unity-canvas" tabindex="-1"></canvas></div>
     <div id="loading"><div id="label">불러오는 중 0%</div><div id="bar"><div id="fill"></div></div></div>
     <div id="rotate">세로 화면으로 돌려 주세요</div>
@@ -28,17 +31,24 @@
       // 세로 9:16 기준. 화면이 9:16보다 길면(휴대폰) 꽉 채우고, 넓으면(데스크톱) 가운데 세로 영역만 쓴다.
       function fitCanvas() {
         var vv = window.visualViewport;
-        var w = vv ? vv.width : window.innerWidth;
-        var h = vv ? vv.height : window.innerHeight;
+        var vw = vv ? vv.width : window.innerWidth;
+        var vh = vv ? vv.height : window.innerHeight;
         var stage = document.getElementById("stage");
-        stage.style.width = w + "px";
-        stage.style.height = h + "px";
+        stage.style.width = vw + "px";
+        stage.style.height = vh + "px";
+
+        // 게임 안에서는 Safe Area를 쓰지 않으므로(WebGL) 노치 여백은 여기서 뺀다.
+        var safe = document.getElementById("safe").getBoundingClientRect();
+        var top = Math.max(0, safe.top), left = Math.max(0, safe.left);
+        var w = Math.max(1, Math.min(vw, safe.right) - left);
+        var h = Math.max(1, Math.min(vh, safe.bottom) - top);
 
         var cw = w / h > 9 / 16 ? Math.round(h * 9 / 16) : w;
         var canvas = document.getElementById("unity-canvas");
         canvas.style.width = cw + "px";
         canvas.style.height = h + "px";
-        canvas.style.left = Math.round((w - cw) / 2) + "px";
+        canvas.style.left = Math.round(left + (w - cw) / 2) + "px";
+        canvas.style.top = Math.round(top) + "px";
       }
       fitCanvas();
       window.addEventListener("resize", fitCanvas);

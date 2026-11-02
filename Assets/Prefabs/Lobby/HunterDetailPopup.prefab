@@ -1712,7 +1712,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.9
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5804,7 +5804,7 @@ MonoBehaviour:
   _gradeTagText: {fileID: 8527911328958239822}
   _levelRow: {fileID: 5670258301716011074}
   _levelText: {fileID: 8165106208898321063}
-  _progressFill: {fileID: 8209216789281345791}
+  _progressSlider: {fileID: 7052872334263074304}
   _progressText: {fileID: 3686894710323839201}
   _arrowBadge: {fileID: 335850591672306493}
   _lockedRow: {fileID: 6037578004646709081}

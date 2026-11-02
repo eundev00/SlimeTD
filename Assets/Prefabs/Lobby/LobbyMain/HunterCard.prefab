@@ -1142,7 +1142,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.9
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1450,7 +1450,7 @@ MonoBehaviour:
   _nameText: {fileID: 6182106411762335947}
   _levelText: {fileID: 1423467659252963326}
   _progressText: {fileID: 4637561105341645761}
-  _progressFill: {fileID: 188422593216877535}
+  _progressSlider: {fileID: 1337921415847755040}
   _upgradeBadge: {fileID: 4208595557089698186}
   _button: {fileID: 5305773748521953812}
 --- !u!1 &7734927565756411587

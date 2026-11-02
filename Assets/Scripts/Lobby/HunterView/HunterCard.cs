@@ -13,7 +13,7 @@ public class HunterCard : MonoBehaviour
     [NotNull][SerializeField] private TMP_Text _nameText;
     [NotNull][SerializeField] private TMP_Text _levelText;
     [NotNull][SerializeField] private TMP_Text _progressText;
-    [NotNull][SerializeField] private RectTransform _progressFill;
+    [NotNull][SerializeField] private Slider _progressSlider;
     [NotNull][SerializeField] private GameObject _upgradeBadge;
     [NotNull][SerializeField] private Button _button;
 
@@ -46,6 +46,7 @@ public class HunterCard : MonoBehaviour
 
         if (!unlocked)
         {
+            _progressSlider.value = 0f;
             _progressText.text = string.Empty;
             return;
         }
@@ -54,13 +55,13 @@ public class HunterCard : MonoBehaviour
 
         if (maxLevel)
         {
-            _progressFill.anchorMax = new Vector2(1f, 1f);
+            _progressSlider.value = 1f;
             _progressText.text = "MAX";
         }
         else
         {
             float ratio = neededCards > 0 ? Mathf.Clamp01((float)ownedCards / neededCards) : 1f;
-            _progressFill.anchorMax = new Vector2(ratio, 1f);
+            _progressSlider.value = ratio;
             _progressText.text = $"{ownedCards}/{neededCards}";
         }
 

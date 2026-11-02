@@ -58,4 +58,6 @@
 - iOS Safari는 PC 없이 콘솔을 볼 수 없다. 개발 빌드의 `LOG` 버튼으로 확인한다
 - 새 빌드가 안 보이면 URL의 `?v=` 값을 바꾸거나 새로고침한다. 홈 화면에 추가하면 주소창 없이 볼 수 있다
 - 브라우저에서는 화면 회전을 막을 수 없어서, 가로로 돌리면 안내 문구만 띄운다
+- 캔버스 크기는 템플릿의 `fitCanvas()`가 `visualViewport`로 정한다. iOS Safari의 `100vh`는 툴바에 가린 영역까지 포함해 쓰지 않는다
+- **Safe Area**: WebGL의 `Screen.safeArea`는 캔버스와 맞지 않아 상단이 비어 보였다. 그래서 WebGL 빌드에서는 NotchSolution이 화면 전체를 안전 영역으로 쓰고(`NotchSolutionUtility.ScreenSafeAreaRelative`의 `#if UNITY_WEBGL` 분기), 노치는 템플릿이 CSS `env(safe-area-inset-*)`만큼 캔버스를 안쪽으로 줄여 피한다 (홈 화면 앱일 때만 값이 생긴다)
 - 웹의 저장 데이터는 브라우저(IndexedDB)에 있다. 사이트 데이터를 지우면 새 계정으로 시작한다
