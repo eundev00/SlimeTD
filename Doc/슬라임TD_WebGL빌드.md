@@ -13,7 +13,7 @@
 | WebGL Player 설정 | 커밋하지 않는다. `WebGLBuilder`가 빌드 직전에 코드로 넣고, 빌드 폴더는 매번 `reset --hard`로 되돌린다 |
 | 스트리핑, IL2CPP 코드 생성 | `NamedBuildTarget.WebGL` 값만 바꾼다 |
 | 저장 코드 | `#if UNITY_WEBGL && !UNITY_EDITOR` 안에서만 동기 파일 IO + IndexedDB 동기화 |
-| 로그 창 | `WebGLLogOverlay`는 `UNITY_WEBGL && DEVELOPMENT_BUILD`에서만 컴파일된다 |
+| 로그 창 | `WebGLLogOverlay`는 `UNITY_WEBGL`이면서 `DEVELOPMENT_BUILD` 또는 `SLIMETD_WEB_DEBUG`일 때만 컴파일된다. 이 심볼은 `WebGLBuilder`가 WebGL 빌드 때만 넣는다 |
 | jslib | `Assets/Plugins/WebGL/`에 두어 WebGL 빌드에만 포함된다 |
 | Addressables | 빌드 결과가 `[BuildTarget]` 폴더별로 따로 생긴다 |
 
@@ -24,14 +24,14 @@
 | `Tools/WebGL/BuildAndDeploy.ps1` | 빌드 폴더 동기화 → Unity 배치 빌드 → 배포 레포 복사·푸시 → URL 출력 |
 | `Assets/Scripts/Editor/WebGLBuilder.cs` | 배치 빌드 진입점 (`-executeMethod WebGLBuilder.Build`). WebGL 설정 적용, Addressables 빌드, 플레이어 빌드, 실패 시 exit 1 |
 | `Assets/WebGLTemplates/SlimeTDPortrait/` | 세로 9:16 템플릿. 데스크톱은 가운데 세로 화면, 휴대폰 세로는 꽉 채움, 가로로 돌리면 안내 문구. DPR은 2로 제한 |
-| `Assets/Scripts/Common/WebGLLogOverlay.cs` | 개발 빌드의 화면 로그 창 (오른쪽 위 `LOG` 버튼, 에러 수 표시) |
+| `Assets/Scripts/Common/WebGLLogOverlay.cs` | 확인용 빌드의 화면 로그 창 (오른쪽 위 `LOG` 버튼, 에러 수 표시) |
 | `Assets/Plugins/WebGL/SlimeTDPersistentData.jslib` | 저장 후 `FS.syncfs`로 IndexedDB에 기록 |
 
 ## 빌드 시 적용하는 WebGL 설정 (`WebGLBuilder.ApplyWebGLSettings`)
 
 - 압축 Gzip + Decompression Fallback. GitHub Pages가 `Content-Encoding` 헤더를 주지 않기 때문이다
 - 템플릿 `PROJECT:SlimeTDPortrait`, 데이터 캐싱 켬
-- 예외: 개발 빌드는 스택트레이스 포함, `-webglRelease`면 명시적 예외만
+- 예외는 스택트레이스 포함. 스크립트 심볼 `SLIMETD_WEB_DEBUG`를 WebGL에만 추가해 로그 창을 켠다
 - Managed Stripping Minimal. VContainer가 리플렉션으로 생성자와 `[Inject]`를 찾기 때문이다
 - IL2CPP 코드 생성 OptimizeSize, Wasm 코드 최적화 BuildTimes (빌드 시간 단축). 후자는 WebGL 모듈 API라 리플렉션으로 설정한다 (모듈 없는 PC에서도 컴파일되게)
 - 퀄리티는 프로젝트 설정 그대로 WebGL 기본값 Mobile
@@ -46,8 +46,9 @@
 → 출력된 URL(?v=해시)을 폰에서 연다
 ```
 
-- 첫 빌드는 Library를 WebGL용으로 새로 임포트해서 오래 걸린다. 이후에는 바뀐 부분만 다시 처리한다
-- `-SkipDeploy`: 빌드만, `-Release`: 개발 빌드 끄기 (성능 확인용)
+- 첫 빌드는 Library를 WebGL용으로 새로 임포트해서 오래 걸린다 (실측 22분). 이후에는 바뀐 부분만 다시 처리한다
+- `-SkipDeploy`: 빌드만, `-Dev`: 개발 빌드 (용량이 커서 배포는 막힐 수 있다)
+- 기본은 **일반(Release) 빌드**다. 개발 빌드는 Gzip 압축이 빠져 wasm이 114MB가 되어 GitHub에 올라가지 않았다
 - 배포 레포는 `C:\Projects\SlimeTD_Web` 로컬 클론을 쓴다. 푸시는 PC에 저장된 GitHub 토큰으로 한다
 
 ## 주의

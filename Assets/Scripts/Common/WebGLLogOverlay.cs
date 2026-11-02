@@ -1,9 +1,9 @@
-#if UNITY_WEBGL && DEVELOPMENT_BUILD
+#if UNITY_WEBGL && (DEVELOPMENT_BUILD || SLIMETD_WEB_DEBUG)
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-// iOS Safari는 PC 없이 콘솔을 볼 수 없어서, WebGL 개발 빌드에서만 화면에 로그 창을 띄운다.
+// iOS Safari는 PC 없이 콘솔을 볼 수 없어서, WebGL 확인용 빌드에서만 화면에 로그 창을 띄운다 (SLIMETD_WEB_DEBUG는 WebGLBuilder가 빌드 때만 넣는다).
 public class WebGLLogOverlay : MonoBehaviour
 {
     private const int MaxLines = 200;

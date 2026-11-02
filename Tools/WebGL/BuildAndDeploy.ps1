@@ -1,5 +1,5 @@
 ﻿# SlimeTD 확인용 WebGL 빌드 + GitHub Pages 배포
-# 사용: powershell -ExecutionPolicy Bypass -File Tools\WebGL\BuildAndDeploy.ps1 [-SkipDeploy] [-Release]
+# 사용: powershell -ExecutionPolicy Bypass -File Tools\WebGL\BuildAndDeploy.ps1 [-SkipDeploy] [-Dev]
 # 작업 폴더에 커밋된 main만 빌드한다 (빌드 폴더는 작업 폴더를 origin으로 둔 별도 클론).
 param(
     [string]$WorkRepo = "C:\Projects\SlimeTD",
@@ -11,7 +11,7 @@ param(
     [string]$Git = "C:\Users\eunv0\AppData\Local\GitHubDesktop\app-3.6.6\resources\app\git\cmd\git.exe",
     [string]$CredentialTarget = "GitHub - https://api.github.com/eundev00",
     [switch]$SkipDeploy,
-    [switch]$Release
+    [switch]$Dev
 )
 
 # 네이티브 명령의 stderr를 에러로 취급하지 않도록 Continue로 두고 종료 코드로 판정한다.
@@ -70,7 +70,7 @@ $outDir = Join-Path $BuildRepo "Builds\WebGL"
 $log = Join-Path $BuildRepo "Logs\webgl_build.log"
 New-Item -ItemType Directory -Force (Split-Path $log) | Out-Null
 $unityArgs = @("-batchmode", "-quit", "-projectPath", $BuildRepo, "-executeMethod", "WebGLBuilder.Build", "-webglOut", $outDir, "-logFile", $log)
-if ($Release) { $unityArgs += "-webglRelease" }
+if ($Dev) { $unityArgs += "-webglDev" }
 
 # git URL 패키지(UniTask, UniRx, VContainer)를 받으려면 Unity가 PATH에서 git을 찾아야 한다. 이 PC의 git은 GitHub Desktop 내장이라 PATH에 없다.
 $env:PATH = "$(Split-Path $Git);$env:PATH"

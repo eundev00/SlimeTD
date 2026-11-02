@@ -8,16 +8,18 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 // 확인용 WebGL 빌드. 배치 실행:
-// Unity.exe -batchmode -quit -projectPath <빌드 폴더> -executeMethod WebGLBuilder.Build -webglOut <출력 폴더> [-webglRelease] -logFile <로그>
+// Unity.exe -batchmode -quit -projectPath <빌드 폴더> -executeMethod WebGLBuilder.Build -webglOut <출력 폴더> [-webglDev] -logFile <로그>
 // WebGL 전용 설정은 빌드 직전에 코드로 넣는다. 빌드 전용 클론에서만 실행하고, 그 폴더의 ProjectSettings 변경은 커밋하지 않는다 (Android/iOS 설정과 분리).
 public static class WebGLBuilder
 {
     public const string TemplateName = "PROJECT:SlimeTDPortrait";
+    public const string DebugDefine = "SLIMETD_WEB_DEBUG";
 
     public static void Build()
     {
         string outDir = GetArg("-webglOut") ?? Path.Combine("Builds", "WebGL");
-        bool development = !HasArg("-webglRelease");
+        // 개발 빌드는 압축이 빠져 wasm이 100MB를 넘는다 (GitHub 업로드 불가). 기본은 일반 빌드 + 로그 창 심볼로 확인한다.
+        bool development = HasArg("-webglDev");
         var started = DateTime.Now;
 
         try
@@ -29,7 +31,7 @@ public static class WebGLBuilder
                 return;
             }
 
-            ApplyWebGLSettings(development);
+            ApplyWebGLSettings();
 
             AddressableAssetSettings.BuildPlayerContent(out var addressablesResult);
             if (!string.IsNullOrEmpty(addressablesResult.Error))
@@ -64,7 +66,7 @@ public static class WebGLBuilder
         }
     }
 
-    private static void ApplyWebGLSettings(bool development)
+    private static void ApplyWebGLSettings()
     {
         var target = NamedBuildTarget.WebGL;
 
@@ -73,9 +75,11 @@ public static class WebGLBuilder
         PlayerSettings.WebGL.decompressionFallback = true;
         PlayerSettings.WebGL.template = TemplateName;
         PlayerSettings.WebGL.dataCaching = true;
-        PlayerSettings.WebGL.exceptionSupport = development
-            ? WebGLExceptionSupport.FullWithStacktrace
-            : WebGLExceptionSupport.ExplicitlyThrownExceptionsOnly;
+        PlayerSettings.WebGL.exceptionSupport = WebGLExceptionSupport.FullWithStacktrace;
+
+        PlayerSettings.GetScriptingDefineSymbols(target, out var defines);
+        if (!defines.Contains(DebugDefine))
+            PlayerSettings.SetScriptingDefineSymbols(target, defines.Append(DebugDefine).ToArray());
 
         // VContainer는 리플렉션으로 생성자와 [Inject] 메서드를 찾으므로 스트리핑을 최소로 둔다.
         PlayerSettings.SetManagedStrippingLevel(target, ManagedStrippingLevel.Minimal);
