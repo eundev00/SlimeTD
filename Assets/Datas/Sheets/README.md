@@ -23,7 +23,6 @@
 | name | 등급 이름. 헌터 상세 팝업의 등급 배지와 태그에 표시된다 |
 | baseAttack | 기준 공격력 |
 | attackGrowthRate | 레벨당 공격력 증가율(%) |
-| startUnlocked | 시작 해금 (1/0) |
 | cardBase, cardPerLevel | 레벨업에 필요한 그 헌터의 카드 수. 기본값, 레벨당 증가 |
 | goldBase, goldPerLevel | 레벨업 골드 기본값, 레벨당 증가 |
 
@@ -40,7 +39,7 @@
 | attackCooldown | 공격 쿨다운(초) |
 | critChance | 치명타 확률(%) |
 | critBonus | 치명타 보너스(%) |
-| startUnlocked | 시작 해금. 비우면 등급 기본값 |
+| startUnlocked | 시작 해금 (1/0). 타워마다 지정한다. 비우면 잠금 |
 | unlockGemPrice | 해금 보석 가격 (0 = 구매 불가) |
 
 ## Skills.csv

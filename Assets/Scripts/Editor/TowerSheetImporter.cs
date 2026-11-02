@@ -103,10 +103,10 @@ public static class TowerSheetImporter
         so.FindProperty("_towerName").stringValue = Get(row, "name");
         so.FindProperty("_baseAttack").floatValue = grade.BaseAttack;
         so.FindProperty("_attackGrowthRate").floatValue = grade.AttackGrowthRate;
-        // 타워 시트의 startUnlocked가 있으면 등급 기본값보다 우선한다.
-        so.FindProperty("_startUnlocked").boolValue = TryGetInt(row, "startUnlocked", out int unlockOverride)
-            ? unlockOverride != 0
-            : grade.StartUnlocked;
+        bool hasUnlock = TryGetInt(row, "startUnlocked", out int startUnlocked);
+        if (!hasUnlock)
+            Debug.Log($"[TowerSheetImporter] startUnlocked가 비어 있어 잠금으로 둡니다: {id}");
+        so.FindProperty("_startUnlocked").boolValue = hasUnlock && startUnlocked != 0;
         so.FindProperty("_unlockGemPrice").intValue = TryGetInt(row, "unlockGemPrice", out int gemPrice) ? gemPrice : 0;
         so.FindProperty("_levelUpCost._cardBase").intValue = grade.CardBase;
         so.FindProperty("_levelUpCost._cardPerLevel").intValue = grade.CardPerLevel;
@@ -260,13 +260,12 @@ public static class TowerSheetImporter
                 continue;
             }
 
-            TryGetInt(row, "startUnlocked", out int startUnlocked);
             TryGetInt(row, "cardBase", out int cardBase);
             TryGetInt(row, "cardPerLevel", out int cardPerLevel);
             TryGetInt(row, "goldBase", out int goldBase);
             TryGetInt(row, "goldPerLevel", out int goldPerLevel);
 
-            result[gradeId] = new GradeInfo(Get(row, "name"), baseAttack, growthRate, startUnlocked != 0, cardBase, cardPerLevel, goldBase, goldPerLevel);
+            result[gradeId] = new GradeInfo(Get(row, "name"), baseAttack, growthRate, cardBase, cardPerLevel, goldBase, goldPerLevel);
         }
 
         return result;
@@ -334,18 +333,16 @@ public static class TowerSheetImporter
         public readonly string Name;
         public readonly float BaseAttack;
         public readonly float AttackGrowthRate;
-        public readonly bool StartUnlocked;
         public readonly int CardBase;
         public readonly int CardPerLevel;
         public readonly int GoldBase;
         public readonly int GoldPerLevel;
 
-        public GradeInfo(string name, float baseAttack, float attackGrowthRate, bool startUnlocked, int cardBase, int cardPerLevel, int goldBase, int goldPerLevel)
+        public GradeInfo(string name, float baseAttack, float attackGrowthRate, int cardBase, int cardPerLevel, int goldBase, int goldPerLevel)
         {
             Name = name;
             BaseAttack = baseAttack;
             AttackGrowthRate = attackGrowthRate;
-            StartUnlocked = startUnlocked;
             CardBase = cardBase;
             CardPerLevel = cardPerLevel;
             GoldBase = goldBase;

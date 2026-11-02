@@ -69,7 +69,7 @@ TowerData (SO, 종류당 1개)
 ├─ attackCooldown    : float                    // 시트
 ├─ critChance        : float = 10               // %. 시트
 ├─ critBonus         : float = 100              // %. 시트
-├─ startUnlocked     : bool                     // 시작 해금 (등급 기본, 타워 시트로 예외 지정)
+├─ startUnlocked     : bool                     // 시작 해금 (Towers.csv에서 타워마다 지정)
 ├─ unlockGemPrice    : int                      // 잠긴 헌터의 보석 구매 가격. 0이면 구매 불가
 ├─ levelUpCost       : LevelUpCostRule          // 등급 시트의 카드/골드 기본값과 레벨당 증가
 └─ thumbnailSmall/Large : Sprite                // 카드(54px) / 상세 팝업(128px). 인스펙터에서 연결
@@ -87,8 +87,8 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
 
 | 시트 | 키 | 열 |
 |---|---|---|
-| `Grades.csv` | `gradeId` | `name`, `baseAttack`, `attackGrowthRate`, `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel` |
-| `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(비우면 등급 기본), `unlockGemPrice` |
+| `Grades.csv` | `gradeId` | `name`, `baseAttack`, `attackGrowthRate`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel` |
+| `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(1/0, 비우면 잠금), `unlockGemPrice` |
 | `Skills.csv` | `skillId` | 아래 [타워 스킬](#타워-스킬) 참고 |
 
 - 실행: 메뉴 `SlimeTD > Data > Import Tower Sheets`. `TowerData`를 ID로 찾아(없으면 `TowerData_<코드명>` 이름, 그래도 없으면 새로 생성) 숫자 필드를 덮어쓰고 `TowerCatalog`를 시트 기준으로 채운다
@@ -175,9 +175,9 @@ IPlayerDataService (Project 스코프)
 - `ReportWaveReached(n)`은 기존 값보다 클 때만 갱신·저장한다. 초기화 전(게임 씬만 단독 실행)에는 저장하지 않는다. 호출 시점과 값 규칙은 [로비 UI](슬라임TD_로비UI.md#최고-웨이브-기록-규칙) 참고
 
 - 레벨업은 그 헌터의 `Cards`와 골드를 함께 차감한다. 잠긴 헌터도 `AddHunterCards`로 카드를 받을 수 있지만 레벨업은 해금 후에만 된다
-- 레벨업 비용은 `TowerData.levelUpCost`(등급 시트 값을 임포터가 채움)에서 읽는다. `Grades.csv`의 `startUnlocked`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
+- 레벨업 비용은 `TowerData.levelUpCost`(등급 시트 값을 임포터가 채움)에서 읽는다. `Grades.csv`의 `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
 - 로드와 레벨업 때 `ITowerLevelService`에 레벨을 반영하며, 게임 씬은 이 값을 그대로 읽는다
-- 해금: 시작 해금은 `Grades.csv`의 `startUnlocked`(등급 기본)와 `Towers.csv`의 `startUnlocked`(타워별 예외)로 정한다. 잠긴 헌터는 `unlockGemPrice`만큼 보석을 써서 `TryPurchaseHunter`로 해금한다
+- 해금: 시작 해금은 `Towers.csv`의 `startUnlocked`로 타워마다 정한다 (등급 기본값은 없다). 잠긴 헌터는 `unlockGemPrice`만큼 보석을 써서 `TryPurchaseHunter`로 해금한다
 - 소환/합성 후보는 `IsAvailable`로 해금된 헌터만 거른다. 로비를 거치지 않은 에디터 테스트에서는 제한이 없다
 
 ## 런타임 상태
