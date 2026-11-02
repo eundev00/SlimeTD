@@ -1,24 +1,34 @@
+using System;
+using System.Collections.Generic;
+
+public readonly struct SkillTooltipStage
+{
+    public readonly string Header;
+    public readonly string Name;
+    public readonly string Description;
+
+    public SkillTooltipStage(string header, string name, string description)
+    {
+        Header = header;
+        Name = name;
+        Description = description;
+    }
+}
+
 public readonly struct SkillTooltipContent
 {
+    private static readonly SkillTooltipStage[] NoStages = Array.Empty<SkillTooltipStage>();
+
     public readonly string UnlockText;
     public readonly string Name;
-    public readonly string Stage;
     public readonly string Description;
-    public readonly string NextHeader;
-    public readonly string NextName;
-    public readonly string NextDescription;
+    public readonly IReadOnlyList<SkillTooltipStage> Upcoming;
 
-    public SkillTooltipContent(string unlockText, string name, string stage, string description,
-        string nextHeader, string nextName, string nextDescription)
+    public SkillTooltipContent(string unlockText, string name, string description, IReadOnlyList<SkillTooltipStage> upcoming)
     {
         UnlockText = unlockText;
         Name = name;
-        Stage = stage;
         Description = description;
-        NextHeader = nextHeader;
-        NextName = nextName;
-        NextDescription = nextDescription;
+        Upcoming = upcoming ?? NoStages;
     }
-
-    public bool HasNext => !string.IsNullOrEmpty(NextName);
 }

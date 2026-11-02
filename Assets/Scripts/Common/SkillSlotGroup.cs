@@ -68,28 +68,24 @@ public class SkillSlotGroup : MonoBehaviour
         clicked.ToggleTooltip();
     }
 
-    // 다음 단계가 있으면 현재와 다음을, 없으면 현재만 보여 준다. 잠긴 계열의 "현재"는 첫 단계다.
+    // 현재 단계 뒤에 남은 단계를 모두 보여 준다. 잠긴 계열의 "현재"는 첫 단계다.
     private SkillTooltipContent BuildTooltip(SkillCatalog catalog, SkillSlot slot)
     {
         var shown = slot.Current ?? slot.Root;
         catalog.GetChain(slot.Root, _chain);
 
         int index = Mathf.Max(0, _chain.IndexOf(shown));
-        string stage = _chain.Count > 1 ? $"{index + 1}/{_chain.Count}단계" : null;
         string unlock = slot.IsLocked ? $"Lv.{shown.UnlockLevel}에서 해금" : null;
 
-        var next = slot.IsLocked
-            ? (index + 1 < _chain.Count ? _chain[index + 1] : null)
-            : slot.Next;
+        var upcoming = new SkillTooltipStage[Mathf.Max(0, _chain.Count - index - 1)];
+        for (int i = 0; i < upcoming.Length; i++)
+        {
+            var stage = _chain[index + 1 + i];
+            string header = i == 0 ? $"다음 단계 · Lv.{stage.UnlockLevel}에서 해금" : $"Lv.{stage.UnlockLevel}에서 해금";
+            upcoming[i] = new SkillTooltipStage(header, stage.DisplayName, stage.Description);
+        }
 
-        return new SkillTooltipContent(
-            unlock,
-            shown.DisplayName,
-            stage,
-            shown.Description,
-            next != null ? $"다음 단계 · Lv.{next.UnlockLevel}에서 해금" : null,
-            next?.DisplayName,
-            next?.Description);
+        return new SkillTooltipContent(unlock, shown.DisplayName, shown.Description, upcoming);
     }
 
     private void SetAtlas(SpriteAtlas atlas)

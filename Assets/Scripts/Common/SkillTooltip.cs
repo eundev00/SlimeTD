@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,16 +7,15 @@ public class SkillTooltip : MonoBehaviour
 {
     [NotNull][SerializeField] private TMP_Text _unlockText;
     [NotNull][SerializeField] private TMP_Text _nameText;
-    [NotNull][SerializeField] private TMP_Text _stageText;
     [NotNull][SerializeField] private TMP_Text _descriptionText;
-    [NotNull][SerializeField] private GameObject _divider;
-    [NotNull][SerializeField] private TMP_Text _nextHeaderText;
-    [NotNull][SerializeField] private TMP_Text _nextNameText;
-    [NotNull][SerializeField] private TMP_Text _nextDescriptionText;
+
+    // 남은 단계 수만큼 복제해서 쓴다 (3단계 계열은 2칸).
+    [NotNull][SerializeField] private SkillTooltipStageView _stageTemplate;
 
     // 이 영역(자기 슬롯) 안을 누른 경우는 슬롯 버튼이 열고 닫기를 처리하므로 바깥 터치로 보지 않는다.
     [SerializeField] private RectTransform _ignoreArea;
 
+    private readonly List<SkillTooltipStageView> _stageViews = new List<SkillTooltipStageView>();
     private InputAction _pressAction;
 
     public bool IsOpen => gameObject.activeSelf;
@@ -24,13 +24,22 @@ public class SkillTooltip : MonoBehaviour
     {
         SetLine(_unlockText, content.UnlockText);
         _nameText.text = content.Name;
-        SetLine(_stageText, content.Stage);
         _descriptionText.text = content.Description;
 
-        _divider.SetActive(content.HasNext);
-        SetLine(_nextHeaderText, content.HasNext ? content.NextHeader : null);
-        SetLine(_nextNameText, content.HasNext ? content.NextName : null);
-        SetLine(_nextDescriptionText, content.HasNext ? content.NextDescription : null);
+        if (_stageViews.Count == 0)
+            _stageViews.Add(_stageTemplate);
+
+        var upcoming = content.Upcoming;
+        while (_stageViews.Count < upcoming.Count)
+            _stageViews.Add(Instantiate(_stageTemplate, _stageTemplate.transform.parent));
+
+        for (int i = 0; i < _stageViews.Count; i++)
+        {
+            if (i < upcoming.Count)
+                _stageViews[i].Show(upcoming[i]);
+            else
+                _stageViews[i].Hide();
+        }
     }
 
     public void Open()

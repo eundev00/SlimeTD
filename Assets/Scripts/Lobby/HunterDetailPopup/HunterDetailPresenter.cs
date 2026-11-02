@@ -133,7 +133,7 @@ public class HunterDetailPresenter : IPopupPresenter
         if (unlocked)
             RenderLevel(level, maxLevel, canLevelUp);
 
-        RenderStats(level, canLevelUp);
+        RenderStats(level, maxLevel);
         RenderAction(unlocked, maxLevel);
 
         // 보유하지 않은 헌터는 레벨 0으로 넘겨 모든 스킬을 잠김으로 보여 준다.
@@ -160,12 +160,13 @@ public class HunterDetailPresenter : IPopupPresenter
         _popup.SetCardProgress(_hunter.Cards.Value, neededCards);
     }
 
-    private void RenderStats(int level, bool canLevelUp)
+    // 레벨업 조건(카드/골드)이 안 돼도 다음 레벨 공격력 증가량은 보여 준다.
+    private void RenderStats(int level, bool maxLevel)
     {
         var data = _hunter.Data;
 
         string attackBonus = string.Empty;
-        if (canLevelUp)
+        if (!maxLevel)
         {
             int delta = Mathf.RoundToInt(data.GetAttack(level + 1)) - Mathf.RoundToInt(data.GetAttack(level));
             attackBonus = delta > 0 ? $"+{delta}" : string.Empty;
