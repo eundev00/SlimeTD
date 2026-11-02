@@ -72,6 +72,9 @@ New-Item -ItemType Directory -Force (Split-Path $log) | Out-Null
 $unityArgs = @("-batchmode", "-quit", "-projectPath", $BuildRepo, "-executeMethod", "WebGLBuilder.Build", "-webglOut", $outDir, "-logFile", $log)
 if ($Release) { $unityArgs += "-webglRelease" }
 
+# git URL 패키지(UniTask, UniRx, VContainer)를 받으려면 Unity가 PATH에서 git을 찾아야 한다. 이 PC의 git은 GitHub Desktop 내장이라 PATH에 없다.
+$env:PATH = "$(Split-Path $Git);$env:PATH"
+
 Step "Unity 빌드 시작 (로그: $log)"
 $started = Get-Date
 $proc = Start-Process -FilePath $UnityExe -ArgumentList $unityArgs -PassThru
