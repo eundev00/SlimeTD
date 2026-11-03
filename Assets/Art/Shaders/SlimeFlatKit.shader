@@ -97,7 +97,7 @@ Shader "SlimeTD/SlimeFlatKit"
         [Toggle(SLIME_CUBE_EDGE_ON)] _CubeEdgeEnabled("Cube Edge Lines", Int) = 0
         _CubeEdgeColor("Cube Edge Tint", Color) = (0.6, 0.55, 0.5, 1)
         _CubeEdgeWidth("Cube Edge Width", Range(0, 0.2)) = 0.04
-        _CubeEdgeHalfSize("Cube Half Size", Float) = 0.54
+        _CubeEdgeHalfSize("Cube Half Size", Float) = 0.5
 
 		/* start CurvedWorld */
 		//[CurvedWorldBendSettings] _CurvedWorldBendSettings("0|1|1", Vector) = (0, 0, 0, 0)
@@ -243,17 +243,19 @@ Shader "SlimeTD/SlimeFlatKit"
                 return output;
             }
 
-            // 큐브 블록 면의 가장자리에 같은 굵기의 선을 칠한다. 오브젝트 공간 기준이라 블록 크기(_CubeEdgeHalfSize)가 맞아야 한다
+            // 큐브 칸 경계(오브젝트 공간에서 중심으로부터 _CubeEdgeHalfSize)의 양쪽에 같은 굵기의 선을 칠한다
+            // 메시가 칸보다 커서 이웃과 겹쳐도(잔디 덮개) 겹친 양쪽이 같은 자리에 선을 그려 칸마다 테두리가 보인다
             // 선 색은 표면 색에 _CubeEdgeColor를 곱해서 블록마다 같은 계열의 진한 색이 된다
             half3 SlimeApplyCubeEdge(half3 color, float3 positionWS, float3 normalWS)
             {
                 float3 p = TransformWorldToObject(positionWS);
                 float3 n = abs(TransformWorldToObjectDir(normalWS));
                 float2 q = (n.x > n.y && n.x > n.z) ? p.yz : (n.y > n.z ? p.xz : p.xy);
-                float edge = max(abs(q.x), abs(q.y));
-                float threshold = _CubeEdgeHalfSize - _CubeEdgeWidth;
-                float aa = fwidth(edge);
-                float lineMask = smoothstep(threshold - aa, threshold, edge);
+                float2 d = abs(abs(q) - _CubeEdgeHalfSize);
+                float dist = min(d.x, d.y);
+                // 경계에서 가장 진하고 _CubeEdgeWidth까지 부드럽게 사라져 모서리 그늘처럼 보인다
+                float aa = fwidth(dist);
+                float lineMask = 1.0 - smoothstep(0.0, _CubeEdgeWidth + aa, dist);
                 return lerp(color, color * _CubeEdgeColor.rgb, lineMask * _CubeEdgeColor.a);
             }
 

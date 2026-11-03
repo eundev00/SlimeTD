@@ -117,8 +117,8 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _CubeEdgeEnabled: 1
-    - _CubeEdgeHalfSize: 0.53
-    - _CubeEdgeWidth: 0.02
+    - _CubeEdgeHalfSize: 0.5
+    - _CubeEdgeWidth: 0.07
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -188,7 +188,7 @@ Material:
     - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
-    - _CubeEdgeColor: {r: 0.62, g: 0.58, b: 0.52, a: 1}
+    - _CubeEdgeColor: {r: 0.85, g: 0.816, b: 0.782, a: 1}
     - _DetailMapColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FlatRimColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
