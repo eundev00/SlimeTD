@@ -94,6 +94,11 @@ Shader "SlimeTD/SlimeFlatKit"
 
         _SlimeDepthBucket("Slime Depth Bucket", Float) = 0
 
+        [Toggle(SLIME_CUBE_EDGE_ON)] _CubeEdgeEnabled("Cube Edge Lines", Int) = 0
+        _CubeEdgeColor("Cube Edge Tint", Color) = (0.6, 0.55, 0.5, 1)
+        _CubeEdgeWidth("Cube Edge Width", Range(0, 0.2)) = 0.04
+        _CubeEdgeHalfSize("Cube Half Size", Float) = 0.54
+
 		/* start CurvedWorld */
 		//[CurvedWorldBendSettings] _CurvedWorldBendSettings("0|1|1", Vector) = (0, 0, 0, 0)
 		/* end CurvedWorld */
@@ -131,6 +136,7 @@ Shader "SlimeTD/SlimeFlatKit"
             #pragma shader_feature_local_fragment _TEXTUREBLENDINGMODE_MULTIPLY _TEXTUREBLENDINGMODE_ADD
             #pragma shader_feature_local_fragment _UNITYSHADOW_OCCLUSION
             #pragma shader_feature_local_fragment _BASEMAP_PREMULTIPLY
+            #pragma shader_feature_local_fragment SLIME_CUBE_EDGE_ON
 
             // -------------------------------------
             // Material Keywords
@@ -213,7 +219,7 @@ Shader "SlimeTD/SlimeFlatKit"
             SAMPLER(sampler_DetailMap);
 
             #pragma vertex SlimeStylizedPassVertex
-            #pragma fragment StylizedPassFragment
+            #pragma fragment SlimeStylizedPassFragment
             #if UNITY_VERSION >= 202230
             #define BUMP_SCALE_NOT_SUPPORTED 1
             #endif
@@ -235,6 +241,29 @@ Shader "SlimeTD/SlimeFlatKit"
                 Varyings output = StylizedPassVertex(input);
                 output.positionCS.z += SlimeDepthBucketOffset();
                 return output;
+            }
+
+            // 큐브 블록 면의 가장자리에 같은 굵기의 선을 칠한다. 오브젝트 공간 기준이라 블록 크기(_CubeEdgeHalfSize)가 맞아야 한다
+            // 선 색은 표면 색에 _CubeEdgeColor를 곱해서 블록마다 같은 계열의 진한 색이 된다
+            half3 SlimeApplyCubeEdge(half3 color, float3 positionWS, float3 normalWS)
+            {
+                float3 p = TransformWorldToObject(positionWS);
+                float3 n = abs(TransformWorldToObjectDir(normalWS));
+                float2 q = (n.x > n.y && n.x > n.z) ? p.yz : (n.y > n.z ? p.xz : p.xy);
+                float edge = max(abs(q.x), abs(q.y));
+                float threshold = _CubeEdgeHalfSize - _CubeEdgeWidth;
+                float aa = fwidth(edge);
+                float lineMask = smoothstep(threshold - aa, threshold, edge);
+                return lerp(color, color * _CubeEdgeColor.rgb, lineMask * _CubeEdgeColor.a);
+            }
+
+            half4 SlimeStylizedPassFragment(Varyings input) : SV_Target
+            {
+                half4 color = StylizedPassFragment(input);
+            #if defined(SLIME_CUBE_EDGE_ON)
+                color.rgb = SlimeApplyCubeEdge(color.rgb, input.positionWS, input.normalWS.xyz);
+            #endif
+                return color;
             }
 
 			/* start CurvedWorld */

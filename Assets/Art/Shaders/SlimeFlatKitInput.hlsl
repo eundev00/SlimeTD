@@ -91,6 +91,10 @@ half4 _DetailMapColor;
 
 float _SlimeDepthBucket;
 
+half4 _CubeEdgeColor;
+half _CubeEdgeWidth;
+half _CubeEdgeHalfSize;
+
 #ifndef FLATKIT_TERRAIN
 CBUFFER_END
 #endif
