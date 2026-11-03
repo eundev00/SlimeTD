@@ -222,6 +222,11 @@ Shader "SlimeTD/SlimeFlatKit"
             #define _NORMALMAP
 
             #include "SlimeFlatKitInput.hlsl"
+
+            // Override Light Direction을 켜면 명암 빛을 보는 쪽 약간 위에서 오게 한다. 얼굴이 어느 방향을 보든 화면에 보이는 면이 밝다
+            // FlatKit 조명 함수의 inputData를 그대로 쓰므로 LitForwardPass_DR 포함 전에 정의해야 한다
+            #define _LightmapDirection normalize(inputData.viewDirectionWS + half3(0, 0.4, 0))
+
             #include "Assets/ThirdParty/FlatKit/Shaders/StylizedSurface/LibraryUrp/LitForwardPass_DR.hlsl"
             #include "Assets/ThirdParty/FlatKit/Shaders/StylizedSurface/LibraryUrp/Lighting_DR.hlsl"
 
