@@ -16,17 +16,27 @@ public class BattlePresenter : IStartable, IDisposable
     public void Start()
     {
         _view.StartClicked += HandleStartClicked;
+        _view.DevTestClicked += HandleDevTestClicked;
     }
 
     public void Dispose()
     {
-        if (_view != null)
-            _view.StartClicked -= HandleStartClicked;
+        if (_view == null)
+            return;
+
+        _view.StartClicked -= HandleStartClicked;
+        _view.DevTestClicked -= HandleDevTestClicked;
     }
 
     private void HandleStartClicked()
     {
         _view.SetStartInteractable(false);
         _sceneLoader.TransitionAsync(SceneNames.Lobby, SceneNames.Game).Forget();
+    }
+
+    private void HandleDevTestClicked()
+    {
+        _view.SetStartInteractable(false);
+        _sceneLoader.TransitionAsync(SceneNames.Lobby, SceneNames.Game3).Forget();
     }
 }
