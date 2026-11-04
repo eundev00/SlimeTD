@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 3472950762919123463}
   - component: {fileID: 1080887646492493291}
   m_Layer: 0
-  m_Name: Cobble02
+  m_Name: StoneFlat01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

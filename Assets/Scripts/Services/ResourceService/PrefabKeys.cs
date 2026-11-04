@@ -27,10 +27,9 @@ public static class PrefabKeys
     public const string Lumberjack = "Lumberjack";
     public const string LumberjackAxe = "LumberjackAxe";
     public const string Monolith = "Monolith";
-    public const string PlaneBlock1 = "PlaneBlock1";
-    public const string PlanePath1 = "PlanePath1";
-    public const string PlanePlace1 = "PlanePlace1";
-    public const string PlanePlace2 = "PlanePlace2";
+    public const string GroundDirtPath = "GroundDirtPath";
+    public const string GroundGrassLight = "GroundGrassLight";
+    public const string GroundGrassDark = "GroundGrassDark";
     public const string Ranger = "Ranger";
     public const string RangerArrow = "RangerArrow";
     public const string RangerBow = "RangerBow";
@@ -77,10 +76,9 @@ public static class PrefabKeys
         { Lumberjack, "Assets/Prefabs/Game/Characters/Lumberjack.prefab" },
         { LumberjackAxe, "Assets/Prefabs/Game/Characters/LumberjackAxe.prefab" },
         { Monolith, "Assets/Prefabs/Game/Characters/Monolith.prefab" },
-        { PlaneBlock1, "Assets/Prefabs/Game/Ground/PlaneBlock1.prefab" },
-        { PlanePath1, "Assets/Prefabs/Game/Ground/PlanePath1.prefab" },
-        { PlanePlace1, "Assets/Prefabs/Game/Ground/PlanePlace1.prefab" },
-        { PlanePlace2, "Assets/Prefabs/Game/Ground/PlanePlace2.prefab" },
+        { GroundDirtPath, "Assets/Prefabs/Game/Ground/GroundDirtPath.prefab" },
+        { GroundGrassLight, "Assets/Prefabs/Game/Ground/GroundGrassLight.prefab" },
+        { GroundGrassDark, "Assets/Prefabs/Game/Ground/GroundGrassDark.prefab" },
         { Ranger, "Assets/Prefabs/Game/Characters/Ranger.prefab" },
         { RangerArrow, "Assets/Prefabs/Game/Characters/RangerArrow.prefab" },
         { RangerBow, "Assets/Prefabs/Game/Characters/RangerBow.prefab" },

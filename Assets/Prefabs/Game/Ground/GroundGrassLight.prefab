@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2583902667430096998}
   m_Layer: 0
-  m_Name: PlanePlace1
+  m_Name: GroundGrassLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

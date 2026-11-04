@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2353702}
   - component: {fileID: 6510848}
   m_Layer: 0
-  m_Name: OBJ_MIDRock_01
+  m_Name: StoneWall01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
