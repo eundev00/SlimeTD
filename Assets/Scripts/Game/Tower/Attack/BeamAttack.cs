@@ -38,7 +38,7 @@ public class BeamAttack : AttackBehaviourBase
         target.Slime.TakeDamage(info);
 
         if (roll.SplashRadius > 0f && target.Transform != null)
-            SplashDamage.Apply(target.Transform.position, roll.SplashRadius, info, target.Transform.GetComponentInParent<BaseSlime>());
+            SplashDamage.Apply(target.Transform.position, roll.SplashRadius, info, target.Slime);
 
         ShowBeamAsync(hitPoint).Forget();
     }

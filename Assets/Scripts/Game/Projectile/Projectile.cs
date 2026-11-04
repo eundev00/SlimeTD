@@ -16,7 +16,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     private bool _isActive;
 
     private readonly RaycastHit[] _hitBuffer = new RaycastHit[8];
-    private readonly List<BaseSlime> _hitSlimes = new List<BaseSlime>(4);
+    private readonly List<ISlime> _hitSlimes = new List<ISlime>(4);
     private int _remainingPierce;
     private float _splashRadius;
     private int _slimeLayer;
@@ -103,7 +103,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
             _hitBuffer[nearest].distance = -1f;
 
             // 관통하는 동안 같은 슬라임을 다음 프레임에 또 맞히지 않게 이미 맞힌 대상을 기억한다.
-            var slime = hit.collider.GetComponentInParent<BaseSlime>();
+            var slime = hit.collider.GetComponentInParent<ISlime>();
             if (slime != null && !slime.Stats.IsDead && !_hitSlimes.Contains(slime))
             {
                 _hitSlimes.Add(slime);
@@ -133,13 +133,13 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     }
 
 
-    protected virtual void OnHit(BaseSlime slime)
+    protected virtual void OnHit(ISlime slime)
     {
         slime.TakeDamage(Info);
 
         if (_splashRadius > 0f)
         {
-            SplashDamage.Apply(slime.transform.position, _splashRadius, Info, slime);
+            SplashDamage.Apply(slime.Position, _splashRadius, Info, slime);
             _splashRadius = 0f;
         }
 

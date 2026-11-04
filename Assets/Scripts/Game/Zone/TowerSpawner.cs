@@ -177,45 +177,7 @@ public class TowerSpawner : MonoBehaviour
 
     private GameObject CreateTower(TowerData towerData, Vector3 position)
     {
-        // 비활성 부모 밑에 생성해야 Awake가 안 돈다. 프리팹 자체를 SetActive(false)하면 에셋이 오염된다.
-        var holder = GetHolder();
-        var instance = Instantiate(towerData.Prefab, holder);
-
-        foreach (var component in instance.GetComponentsInChildren<MonoBehaviour>(true))
-        {
-            _resolver.Inject(component);
-        }
-
-        instance.transform.SetParent(_spawnRoot, false);
-        instance.transform.position = position;
-
-        // 카메라를 바라보도록 회전 (Y축만 회전)
-        var mainCamera = Camera.main;
-        if (mainCamera != null)
-        {
-            var directionToCamera = mainCamera.transform.position - position;
-            directionToCamera.y = 0; // 수평 방향만 계산
-            if (directionToCamera.sqrMagnitude > 0.001f)
-            {
-                instance.transform.rotation = Quaternion.LookRotation(directionToCamera);
-            }
-            else
-            {
-                instance.transform.rotation = Quaternion.identity;
-            }
-        }
-        else
-        {
-            instance.transform.rotation = Quaternion.identity;
-        }
-
-        var tower = instance.GetComponent<BaseTower>();
-        if (tower != null)
-        {
-            tower.Initialize(towerData);
-        }
-
-        return instance;
+        return TowerFactory.Create(_resolver, towerData, GetHolder(), _spawnRoot, position);
     }
 
     private Transform GetHolder()

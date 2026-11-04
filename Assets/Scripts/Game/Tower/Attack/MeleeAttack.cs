@@ -33,8 +33,7 @@ public class MeleeAttack : AttackBehaviourBase
 
         if (roll.SplashRadius > 0f && target.Transform != null)
         {
-            var center = target.Transform.GetComponentInParent<BaseSlime>();
-            SplashDamage.Apply(target.Transform.position, roll.SplashRadius, info, center);
+            SplashDamage.Apply(target.Transform.position, roll.SplashRadius, info, target.Slime);
         }
     }
 }

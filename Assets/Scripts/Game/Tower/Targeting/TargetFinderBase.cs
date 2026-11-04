@@ -31,9 +31,7 @@ public abstract class TargetFinderBase : ITargetFinder
             if (!collider.gameObject.activeInHierarchy)
                 continue;
 
-            ISlime slime = collider.GetComponentInParent<BaseSlime>();
-            if (slime == null)
-                slime = collider.GetComponentInParent<DummySlime>();
+            var slime = collider.GetComponentInParent<ISlime>();
 
             if (slime == null)
                 continue;
