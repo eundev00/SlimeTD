@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace EpicToonFX
@@ -58,12 +59,12 @@ namespace EpicToonFX
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+            if (ETFXInput.KeyDown(Key.RightArrow) || ETFXInput.KeyDown(Key.D))
             {
                 NextEffect();
             }
 
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            if (ETFXInput.KeyDown(Key.A) || ETFXInput.KeyDown(Key.LeftArrow))
             {
                 PreviousEffect();
             }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -63,11 +64,11 @@ namespace EpicToonFX
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+            if (ETFXInput.KeyDown(Key.RightArrow) || ETFXInput.KeyDown(Key.D))
             {
                 nextEffect();
             }
-            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            else if (ETFXInput.KeyDown(Key.A) || ETFXInput.KeyDown(Key.LeftArrow))
             {
                 previousEffect();
             }
@@ -84,7 +85,7 @@ namespace EpicToonFX
 
             if (isFullAuto)
             {
-                if (canShoot && Input.GetKey(KeyCode.Mouse0))
+                if (canShoot && ETFXInput.LeftHeld)
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
@@ -94,7 +95,7 @@ namespace EpicToonFX
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                if (ETFXInput.LeftDown)
                 {
                     if (!EventSystem.current.IsPointerOverGameObject())
                     {
@@ -109,7 +110,7 @@ namespace EpicToonFX
 				speed = speedSlider.value;
 			}
 
-            Debug.DrawRay(Camera.main.ScreenPointToRay(Input.mousePosition).origin, Camera.main.ScreenPointToRay(Input.mousePosition).direction * 100, Color.yellow);
+            Debug.DrawRay(Camera.main.ScreenPointToRay(ETFXInput.MousePosition).origin, Camera.main.ScreenPointToRay(ETFXInput.MousePosition).direction * 100, Color.yellow);
         }
 
         private IEnumerator Shoot()
@@ -122,7 +123,7 @@ namespace EpicToonFX
 		
 		private void ShootProjectile()
 		{
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			Ray ray = Camera.main.ScreenPointToRay(ETFXInput.MousePosition);
 			Vector3 direction;
 			if (Physics.Raycast(ray, out RaycastHit hit, 100f))
 			{
@@ -142,7 +143,7 @@ namespace EpicToonFX
 
         private void UpdateGunPositionAndRotation()
 		{
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			Ray ray = Camera.main.ScreenPointToRay(ETFXInput.MousePosition);
 			RaycastHit hit;
 
 			Vector3 targetPoint;

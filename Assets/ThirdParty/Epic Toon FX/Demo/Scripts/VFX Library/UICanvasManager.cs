@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using EpicToonFX;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -27,16 +29,16 @@ public class UICanvasManager : MonoBehaviour {
 		// Mouse Click - Check if mouse over button to prevent spawning particle effects while hovering or using UI buttons.
 		if (!MouseOverButton) {
 			// Left Button Click
-			if (Input.GetMouseButtonUp (0)) {
+			if (ETFXInput.LeftUp) {
 				// Spawn Currently Selected Particle System
 				SpawnCurrentParticleEffect();
 			}
 		}
 
-		if (Input.GetKeyUp (KeyCode.A)) {
+		if (ETFXInput.KeyUp(Key.A)) {
 			SelectPreviousPE ();
 		}
-		if (Input.GetKeyUp (KeyCode.D)) {
+		if (ETFXInput.KeyUp(Key.D)) {
 			SelectNextPE ();
 		}
 	}
@@ -73,7 +75,7 @@ public class UICanvasManager : MonoBehaviour {
 	private RaycastHit rayHit;
 	private void SpawnCurrentParticleEffect() {
 		// Spawn Particle Effect
-		Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray mouseRay = Camera.main.ScreenPointToRay(ETFXInput.MousePosition);
 		if (Physics.Raycast (mouseRay, out rayHit)) {
 			ParticleEffectsLibrary.GlobalAccess.SpawnParticleEffect (rayHit.point);
 		}
