@@ -7,25 +7,33 @@ public readonly struct DamageInfo
     public readonly int SourceSpawnId;
     public readonly float SlowPercent;
     public readonly float SlowDuration;
+    public readonly float StunDuration;
 
     public DamageInfo(int damage, bool isCritical)
-        : this(damage, isCritical, 0, 0f, 0f)
+        : this(damage, isCritical, 0, 0f, 0f, 0f)
     {
     }
 
-    private DamageInfo(int damage, bool isCritical, int sourceSpawnId, float slowPercent, float slowDuration)
+    private DamageInfo(int damage, bool isCritical, int sourceSpawnId, float slowPercent, float slowDuration, float stunDuration)
     {
         Damage = damage;
         IsCritical = isCritical;
         SourceSpawnId = sourceSpawnId;
         SlowPercent = slowPercent;
         SlowDuration = slowDuration;
+        StunDuration = stunDuration;
     }
 
     public bool HasSlow => SlowPercent > 0f && SlowDuration > 0f;
+    public bool HasStun => StunDuration > 0f;
 
     public DamageInfo WithSlow(int sourceSpawnId, float slowPercent, float slowDuration)
     {
-        return new DamageInfo(Damage, IsCritical, sourceSpawnId, slowPercent, slowDuration);
+        return new DamageInfo(Damage, IsCritical, sourceSpawnId, slowPercent, slowDuration, StunDuration);
+    }
+
+    public DamageInfo WithStun(float stunDuration)
+    {
+        return new DamageInfo(Damage, IsCritical, SourceSpawnId, SlowPercent, SlowDuration, stunDuration);
     }
 }

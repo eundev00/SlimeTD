@@ -34,7 +34,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
     private IUpdateSubscriptionService _updateService;
     private IGameplayService _gameplayService;
     private readonly SlimeSlow _slow = new SlimeSlow();
-    private bool _slowRegistered;
+    private float _stunRemaining;
+    private bool _updateRegistered;
 
     public SlimeStats Stats => _stats;
     public Vector3 Position => transform.position;
@@ -110,6 +111,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
         _stats?.Reset(0);
         _jellyReward = 0;
         ClearSlow();
+        ClearStun();
 
         _disposables?.Dispose();
         _disposables = null;
@@ -145,6 +147,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
         _jellyReward = jellyReward;
         _stats.Reset(health);
         ClearSlow();
+        ClearStun();
 
         _splineAnimate.Container = splineContainer;
         _splineAnimate.MaxSpeed = data.BaseSpeed;
@@ -183,6 +186,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
         if (_stats.IsDead)
         {
             ClearSlow();
+            ClearStun();
             _splineAnimate.Pause();
             _killedPublisher.Publish(new SlimeKilledEvent(_jellyReward));
             OnDiedAsync();
@@ -191,6 +195,9 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 
         if (info.HasSlow)
             ApplySlow(info);
+
+        if (info.HasStun)
+            ApplyStun(info.StunDuration);
     }
 
     public void ManagedUpdate()
@@ -198,8 +205,37 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
         if (_slow.Tick(Time.deltaTime, SlowMinSpeedRatio))
             ApplySpeed();
 
+        if (_stunRemaining > 0f)
+        {
+            _stunRemaining -= Time.deltaTime;
+            if (_stunRemaining <= 0f)
+            {
+                _stunRemaining = 0f;
+                if (!_gameOver && _splineAnimate != null)
+                    _splineAnimate.Play();
+            }
+        }
+
+        if (!_slow.IsActive && _stunRemaining <= 0f)
+            UnregisterUpdate();
+    }
+
+    // 기절은 새로 걸리면 남은 시간과 비교해 긴 쪽으로 갱신한다.
+    private void ApplyStun(float duration)
+    {
+        if (_splineAnimate == null)
+            return;
+
+        _stunRemaining = Mathf.Max(_stunRemaining, duration);
+        _splineAnimate.Pause();
+        RegisterUpdate();
+    }
+
+    private void ClearStun()
+    {
+        _stunRemaining = 0f;
         if (!_slow.IsActive)
-            UnregisterSlowUpdate();
+            UnregisterUpdate();
     }
 
     private float SlowMinSpeedRatio => _gameplayService?.Config != null ? _gameplayService.Config.SlowMinSpeedRatio : 0.25f;
@@ -215,12 +251,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 
         _slow.Apply(info.SourceSpawnId, percent, info.SlowDuration, SlowMinSpeedRatio);
         ApplySpeed();
-
-        if (!_slowRegistered)
-        {
-            _updateService.RegisterUpdatable(this);
-            _slowRegistered = true;
-        }
+        RegisterUpdate();
     }
 
     // SplineAnimate는 속도를 바꾸면 진행 시간을 다시 계산해서 위치가 튄다. 진행률을 보존해 둔다.
@@ -238,19 +269,29 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
     {
         bool wasSlowed = _slow.IsActive;
         _slow.Clear();
-        UnregisterSlowUpdate();
+        if (_stunRemaining <= 0f)
+            UnregisterUpdate();
 
         if (wasSlowed)
             ApplySpeed();
     }
 
-    private void UnregisterSlowUpdate()
+    private void RegisterUpdate()
     {
-        if (!_slowRegistered)
+        if (_updateRegistered)
+            return;
+
+        _updateService.RegisterUpdatable(this);
+        _updateRegistered = true;
+    }
+
+    private void UnregisterUpdate()
+    {
+        if (!_updateRegistered)
             return;
 
         _updateService.UnregisterUpdatable(this);
-        _slowRegistered = false;
+        _updateRegistered = false;
     }
 
 
@@ -278,7 +319,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 
     protected virtual void OnDestroy()
     {
-        UnregisterSlowUpdate();
+        UnregisterUpdate();
         _disposables?.Dispose();
         _disposables = null;
 

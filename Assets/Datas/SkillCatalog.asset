@@ -337,3 +337,66 @@ MonoBehaviour:
       _value: 1
       _valueType: 0
       _duration: 0
+  - _id: 30101
+    _displayName: "\uCD9C\uB825 \uAC15\uD654"
+    _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
+    _towerId: 301
+    _unlockLevel: 3
+    _upgradeOfId: 0
+    _trigger: 0
+    _nth: 0
+    _chance: 0
+    _cooldown: 0
+    _effects:
+    - _type: 3
+      _value: 5
+      _valueType: 1
+      _duration: 0
+  - _id: 30102
+    _displayName: "\uAE30\uC808 I"
+    _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uC801\uC744
+      1\uCD08 \uB3D9\uC548 \uAE30\uC808\uC2DC\uD0A8\uB2E4"
+    _towerId: 301
+    _unlockLevel: 6
+    _upgradeOfId: 0
+    _trigger: 1
+    _nth: 0
+    _chance: 10
+    _cooldown: 0
+    _effects:
+    - _type: 10
+      _value: 1
+      _valueType: 0
+      _duration: 1
+  - _id: 30103
+    _displayName: "\uAD11\uC5ED \uBC29\uCD9C"
+    _description: "5\uCD08\uB9C8\uB2E4 \uACF5\uACA9\uD560 \uB54C \uB9DE\uC740 \uC801
+      \uC8FC\uBCC0 \uBC18\uACBD 1.5\uC758 \uC801\uB3C4 \uD568\uAED8 \uACF5\uACA9\uD55C\uB2E4"
+    _towerId: 301
+    _unlockLevel: 10
+    _upgradeOfId: 0
+    _trigger: 1
+    _nth: 0
+    _chance: 0
+    _cooldown: 5
+    _effects:
+    - _type: 9
+      _value: 1.5
+      _valueType: 0
+      _duration: 0
+  - _id: 30104
+    _displayName: "\uAE30\uC808 II"
+    _description: "\uACF5\uACA9\uD560 \uB54C 15% \uD655\uB960\uB85C \uC801\uC744
+      1\uCD08 \uB3D9\uC548 \uAE30\uC808\uC2DC\uD0A8\uB2E4"
+    _towerId: 301
+    _unlockLevel: 15
+    _upgradeOfId: 30102
+    _trigger: 1
+    _nth: 0
+    _chance: 15
+    _cooldown: 0
+    _effects:
+    - _type: 10
+      _value: 1
+      _valueType: 0
+      _duration: 1

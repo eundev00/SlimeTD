@@ -53,6 +53,7 @@ public class TowerSkillController
         float multiplier = 0f;
         float splashRadius = 0f;
         int jelly = 0;
+        float stun = 0f;
 
         for (int i = 0; i < _onAttackSkills.Count; i++)
         {
@@ -78,11 +79,14 @@ public class TowerSkillController
                     case SkillEffectType.JellyGain:
                         jelly += Mathf.RoundToInt(effect.Value);
                         break;
+                    case SkillEffectType.Stun:
+                        stun = Mathf.Max(stun, effect.Duration);
+                        break;
                 }
             }
         }
 
-        return new AttackSkillRoll(extraShots, multiplier, splashRadius, jelly);
+        return new AttackSkillRoll(extraShots, multiplier, splashRadius, jelly, stun);
     }
 
     // 쿨타임은 공격속도와 독립이다. 발동했을 때만 시작한다.

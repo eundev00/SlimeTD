@@ -133,6 +133,9 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         if (skills != null && skills.SlowPercent > 0f)
             info = info.WithSlow(Context.SpawnId, skills.SlowPercent, skills.SlowDuration);
 
+        if (roll.StunDuration > 0f)
+            info = info.WithStun(roll.StunDuration);
+
         return info;
     }
 

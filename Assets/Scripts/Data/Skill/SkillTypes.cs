@@ -19,6 +19,7 @@ public enum SkillEffectType
     JellyGain,
     DamageMultiplier,
     Splash,
+    Stun,
 }
 
 public enum SkillValueType
