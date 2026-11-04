@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace MasterStylizedProjectile
 {
@@ -45,11 +46,15 @@ namespace MasterStylizedProjectile
         // Update is called once per frame
         void Update()
         {
-            if(Input.GetMouseButtonDown(0))
+            var mouse = Mouse.current;
+            if (mouse == null)
+                return;
+
+            if(mouse.leftButton.wasPressedThisFrame)
             {
                 Shoot();
             }
-            if(Input.GetMouseButton(0))
+            if(mouse.leftButton.isPressed)
             {
                 if (Time.time - LastShootTime > ShootInterval)
                 {
@@ -158,7 +163,7 @@ namespace MasterStylizedProjectile
 
         public Vector3 GetMouseTargetPos()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero);
 
             RaycastHit hit = new RaycastHit();
             if (Physics.Raycast(ray,out hit,100))
