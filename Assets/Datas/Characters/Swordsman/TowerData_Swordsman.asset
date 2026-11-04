@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _id: 103
   _gradeId: 1
-  _codeName: Swordsman
   _enabled: 1
+  _codeName: Swordsman
   _towerName: "\uC77C\uBCD1"
   _prefab: {fileID: 2621857700972423482, guid: a19fd15b27fca45519391f504f46874f, type: 3}
   _attackRange: 1
@@ -28,8 +28,7 @@ MonoBehaviour:
   _critBonus: 100
   _startUnlocked: 1
   _unlockGemPrice: 0
+  _inGacha: 1
   _levelUpCost:
-    _cardBase: 10
-    _cardPerLevel: 2
-    _goldBase: 100
-    _goldPerLevel: 20
+    _cards: 05000000080000000d000000140000001e0000002d0000003f000000580000007d000000af000000e10000002c01000077010000f4010000
+    _gold: 64000000780000008c000000a0000000b4000000c8000000dc000000f000000004010000180100002c010000400100005401000068010000

@@ -1,5 +1,5 @@
-﻿gradeId,name,baseAttack,attackGrowthRate,cardBase,cardPerLevel,goldBase,goldPerLevel
-1,일반,100,5,10,2,100,20
-2,희귀,200,5,20,4,200,40
-3,영웅,1000,5,40,8,400,80
-4,전설,3000,5,80,16,800,160
+﻿gradeId,name,baseAttack,attackGrowthRate,gachaWeight
+1,일반,100,5,70
+2,희귀,200,5,22
+3,영웅,1000,5,7
+4,전설,3000,5,1

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _id: 204
   _gradeId: 2
-  _codeName: Crossbow
   _enabled: 1
+  _codeName: Crossbow
   _towerName: "\uC11D\uAD81\uBCD1"
   _prefab: {fileID: 2869148599219049116, guid: 3f1680e1422f74eeb9ccdda638bd521c, type: 3}
   _attackRange: 2
@@ -28,8 +28,7 @@ MonoBehaviour:
   _critBonus: 100
   _startUnlocked: 1
   _unlockGemPrice: 0
+  _inGacha: 1
   _levelUpCost:
-    _cardBase: 20
-    _cardPerLevel: 4
-    _goldBase: 200
-    _goldPerLevel: 40
+    _cards: 0300000004000000070000000b0000001100000019000000230000003100000046000000620000007e000000a8000000d200000018010000
+    _gold: c8000000f000000018010000400100006801000090010000b8010000e001000008020000300200005802000080020000a8020000d0020000

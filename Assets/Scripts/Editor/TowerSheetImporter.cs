@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -10,6 +10,7 @@ public static class TowerSheetImporter
     private const string SheetFolder = "Assets/Datas/Sheets";
     private const string GradesFile = "Grades.csv";
     private const string TowersFile = "Towers.csv";
+    private const string LevelUpCostsFile = "LevelUpCosts.csv";
     private const string CharacterFolder = "Assets/Datas/Characters";
     private const string CatalogPath = "Assets/Datas/TowerCatalog.asset";
     private const string GradeStylePath = "Assets/Datas/GradeStyle.asset";
@@ -18,10 +19,12 @@ public static class TowerSheetImporter
     [MenuItem("SlimeTD/Data/Import Tower Sheets")]
     public static void Import()
     {
-        if (!TryReadTable(GradesFile, out var gradeRows) || !TryReadTable(TowersFile, out var towerRows))
+        if (!TryReadTable(GradesFile, out var gradeRows)
+            || !TryReadTable(TowersFile, out var towerRows)
+            || !TryReadTable(LevelUpCostsFile, out var costRows))
             return;
 
-        var grades = ParseGrades(gradeRows);
+        var grades = ParseGrades(gradeRows, costRows);
         var assets = CollectTowerAssets();
         var usedIds = new HashSet<int>();
         var imported = new SortedDictionary<int, TowerData>();
@@ -108,10 +111,10 @@ public static class TowerSheetImporter
             Debug.Log($"[TowerSheetImporter] startUnlocked가 비어 있어 잠금으로 둡니다: {id}");
         so.FindProperty("_startUnlocked").boolValue = hasUnlock && startUnlocked != 0;
         so.FindProperty("_unlockGemPrice").intValue = TryGetInt(row, "unlockGemPrice", out int gemPrice) ? gemPrice : 0;
-        so.FindProperty("_levelUpCost._cardBase").intValue = grade.CardBase;
-        so.FindProperty("_levelUpCost._cardPerLevel").intValue = grade.CardPerLevel;
-        so.FindProperty("_levelUpCost._goldBase").intValue = grade.GoldBase;
-        so.FindProperty("_levelUpCost._goldPerLevel").intValue = grade.GoldPerLevel;
+        so.FindProperty("_inGacha").boolValue = !TryGetInt(row, "inGacha", out int inGacha) || inGacha != 0;
+
+        SetIntArray(so.FindProperty("_levelUpCost._cards"), grade.Cards);
+        SetIntArray(so.FindProperty("_levelUpCost._gold"), grade.Gold);
 
         SetFloat(so, "_attackRange", row, "attackRange");
         SetFloat(so, "_attackCooldown", row, "attackCooldown");
@@ -170,6 +173,13 @@ public static class TowerSheetImporter
 
         so.ApplyModifiedPropertiesWithoutUndo();
         EditorUtility.SetDirty(catalog);
+    }
+
+    private static void SetIntArray(SerializedProperty array, int[] values)
+    {
+        array.arraySize = values.Length;
+        for (int i = 0; i < values.Length; i++)
+            array.GetArrayElementAtIndex(i).intValue = values[i];
     }
 
     private static void SetFloat(SerializedObject so, string property, Dictionary<string, string> row, string key)
@@ -246,7 +256,7 @@ public static class TowerSheetImporter
         return so.FindProperty("_id").intValue;
     }
 
-    private static Dictionary<int, GradeInfo> ParseGrades(List<Dictionary<string, string>> rows)
+    private static Dictionary<int, GradeInfo> ParseGrades(List<Dictionary<string, string>> rows, List<Dictionary<string, string>> costRows)
     {
         var result = new Dictionary<int, GradeInfo>();
 
@@ -260,15 +270,51 @@ public static class TowerSheetImporter
                 continue;
             }
 
-            TryGetInt(row, "cardBase", out int cardBase);
-            TryGetInt(row, "cardPerLevel", out int cardPerLevel);
-            TryGetInt(row, "goldBase", out int goldBase);
-            TryGetInt(row, "goldPerLevel", out int goldPerLevel);
+            ParseLevelUpCosts(costRows, gradeId, out int[] cards, out int[] gold);
 
-            result[gradeId] = new GradeInfo(Get(row, "name"), baseAttack, growthRate, cardBase, cardPerLevel, goldBase, goldPerLevel);
+            result[gradeId] = new GradeInfo(Get(row, "name"), baseAttack, growthRate, cards, gold);
         }
 
         return result;
+    }
+
+    // level은 올리기 전 레벨이다. 등급마다 1부터 (최대 레벨 - 1)까지 빠짐없이 있어야 한다.
+    private static void ParseLevelUpCosts(List<Dictionary<string, string>> rows, int gradeId, out int[] cards, out int[] gold)
+    {
+        int count = TowerLevelService.MaxLevel - TowerLevelService.MinLevel;
+        cards = new int[count];
+        gold = new int[count];
+        var filled = new bool[count];
+
+        foreach (var row in rows)
+        {
+            if (!TryGetInt(row, "gradeId", out int rowGradeId) || rowGradeId != gradeId)
+                continue;
+
+            if (!TryGetInt(row, "level", out int level))
+                continue;
+
+            int index = level - TowerLevelService.MinLevel;
+            if (index < 0 || index >= count)
+            {
+                Debug.Log($"[TowerSheetImporter] {LevelUpCostsFile}의 레벨 범위를 벗어난 행입니다. 등급 {gradeId}, 레벨 {level}");
+                continue;
+            }
+
+            if (filled[index])
+                Debug.Log($"[TowerSheetImporter] {LevelUpCostsFile}에 중복된 행이 있어 아래 행을 씁니다. 등급 {gradeId}, 레벨 {level}");
+
+            if (!TryGetInt(row, "cards", out cards[index]) || !TryGetInt(row, "gold", out gold[index]))
+                Debug.Log($"[TowerSheetImporter] {LevelUpCostsFile}의 cards 또는 gold를 읽지 못했습니다. 등급 {gradeId}, 레벨 {level}");
+
+            filled[index] = true;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            if (!filled[i])
+                Debug.Log($"[TowerSheetImporter] {LevelUpCostsFile}에 등급 {gradeId}, 레벨 {i + TowerLevelService.MinLevel} 행이 없습니다.");
+        }
     }
 
     // 1줄은 영문 키다. 열 설명은 시트 폴더의 README.md에 있다.
@@ -333,20 +379,16 @@ public static class TowerSheetImporter
         public readonly string Name;
         public readonly float BaseAttack;
         public readonly float AttackGrowthRate;
-        public readonly int CardBase;
-        public readonly int CardPerLevel;
-        public readonly int GoldBase;
-        public readonly int GoldPerLevel;
+        public readonly int[] Cards;
+        public readonly int[] Gold;
 
-        public GradeInfo(string name, float baseAttack, float attackGrowthRate, int cardBase, int cardPerLevel, int goldBase, int goldPerLevel)
+        public GradeInfo(string name, float baseAttack, float attackGrowthRate, int[] cards, int[] gold)
         {
             Name = name;
             BaseAttack = baseAttack;
             AttackGrowthRate = attackGrowthRate;
-            CardBase = cardBase;
-            CardPerLevel = cardPerLevel;
-            GoldBase = goldBase;
-            GoldPerLevel = goldPerLevel;
+            Cards = cards;
+            Gold = gold;
         }
     }
 }

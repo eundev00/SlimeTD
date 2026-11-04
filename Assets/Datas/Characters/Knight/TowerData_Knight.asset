@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   _id: 203
   _gradeId: 2
-  _codeName: Knight
   _enabled: 1
+  _codeName: Knight
   _towerName: "\uAE30\uC0AC"
   _prefab: {fileID: 2107671493890513731, guid: e34aa2de0595740edb531d9413d9e106, type: 3}
   _attackRange: 1
@@ -28,8 +28,7 @@ MonoBehaviour:
   _critBonus: 100
   _startUnlocked: 1
   _unlockGemPrice: 0
+  _inGacha: 1
   _levelUpCost:
-    _cardBase: 20
-    _cardPerLevel: 4
-    _goldBase: 200
-    _goldPerLevel: 40
+    _cards: 0300000004000000070000000b0000001100000019000000230000003100000046000000620000007e000000a8000000d200000018010000
+    _gold: c8000000f000000018010000400100006801000090010000b8010000e001000008020000300200005802000080020000a8020000d0020000

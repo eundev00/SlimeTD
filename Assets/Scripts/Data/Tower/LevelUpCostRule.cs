@@ -4,19 +4,25 @@ using UnityEngine;
 [Serializable]
 public struct LevelUpCostRule
 {
-    [SerializeField] private int _cardBase;
-    [SerializeField] private int _cardPerLevel;
-    [SerializeField] private int _goldBase;
-    [SerializeField] private int _goldPerLevel;
+    [SerializeField] private int[] _cards;
+    [SerializeField] private int[] _gold;
 
-    // level은 올리기 전의 현재 레벨이다. 레벨 1 -> 2가 기본값이고 레벨마다 증가분이 붙는다.
+    // level은 올리기 전의 현재 레벨이다. [0]이 레벨 1 -> 2 비용이다.
     public int GetCards(int level)
     {
-        return _cardBase + _cardPerLevel * Mathf.Max(0, level - 1);
+        return Get(_cards, level);
     }
 
     public int GetGold(int level)
     {
-        return _goldBase + _goldPerLevel * Mathf.Max(0, level - 1);
+        return Get(_gold, level);
+    }
+
+    private static int Get(int[] table, int level)
+    {
+        if (table == null || table.Length == 0)
+            return 0;
+
+        return table[Mathf.Clamp(level - 1, 0, table.Length - 1)];
     }
 }

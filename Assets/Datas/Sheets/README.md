@@ -2,8 +2,9 @@
 
 시트는 UTF-8 CSV이고 **1줄이 영문 열 이름**이다. 숫자는 시트에서만 고치며, 고친 뒤 메뉴로 임포트한다. 이 폴더의 숫자를 인스펙터에서 직접 고치면 다음 임포트 때 덮어써진다.
 
-- 타워/등급: `SlimeTD > Data > Import Tower Sheets`
+- 타워/등급/레벨업 비용: `SlimeTD > Data > Import Tower Sheets`
 - 스킬: `SlimeTD > Data > Import Skill Sheets`
+- 뽑기: `SlimeTD > Data > Import Gacha Sheets` (Grades.csv의 `gachaWeight`도 여기서 읽는다)
 
 ## ID 규칙
 
@@ -14,6 +15,7 @@
 | 등급 | 1~4 |
 | 타워 | 101~ (3자리) |
 | 스킬 | 타워ID×100+순번 (궁수 10101~, 일병 10301~). 추가는 그 타워의 다음 빈 번호 |
+| 뽑기 팩 | 1001~ (4자리) |
 
 ## Grades.csv
 
@@ -23,8 +25,18 @@
 | name | 등급 이름. 헌터 상세 팝업의 등급 배지와 태그에 표시된다 |
 | baseAttack | 기준 공격력 |
 | attackGrowthRate | 레벨당 공격력 증가율(%) |
-| cardBase, cardPerLevel | 레벨업에 필요한 그 헌터의 카드 수. 기본값, 레벨당 증가 |
-| goldBase, goldPerLevel | 레벨업 골드 기본값, 레벨당 증가 |
+| gachaWeight | 뽑기 등급 가중치. 보유 헌터가 없는 등급은 빼고 남은 가중치끼리 비율을 다시 계산한다 |
+
+## LevelUpCosts.csv
+
+등급별 레벨업 비용. 한 행이 "그 등급의 한 레벨" 비용이다.
+
+| 열 | 설명 |
+|---|---|
+| gradeId | 등급 ID |
+| level | 올리기 전 레벨. 등급마다 1부터 14까지 빠짐없이 있어야 한다 (1이면 1 -> 2) |
+| cards | 필요한 그 헌터의 카드 수 |
+| gold | 필요 골드 |
 
 ## Towers.csv
 
@@ -41,6 +53,27 @@
 | critBonus | 치명타 보너스(%) |
 | startUnlocked | 시작 해금 (1/0). 타워마다 지정한다. 비우면 잠금 |
 | unlockGemPrice | 해금 보석 가격 (0 = 구매 불가) |
+| inGacha | 뽑기 대상 (1/0). 비우면 1. 잠긴 헌터는 잠긴 카드로만 나오고, 해금되면 등급 풀에 들어간다 |
+
+## GachaPacks.csv
+
+| 열 | 설명 |
+|---|---|
+| packId | 팩 ID (1001~) |
+| cardCount | 카드 장수 |
+| price | 골드 가격 |
+| guaranteeGradeId | 이 등급 이상 1장 보장 (0 = 보장 없음). 팩 안에 없으면 마지막 장을 이 등급 이상에서 다시 뽑는다 |
+
+## GachaSettings.csv
+
+`key,value` 두 열이다.
+
+| key | 설명 |
+|---|---|
+| lockedCardChance | 잠긴 카드 확률(%). 잠긴 헌터가 없으면 판정하지 않는다 |
+| pityCount | 이 장수 동안 천장 등급이 안 나오면 다음 장은 천장 등급 |
+| pityGradeId | 천장 등급 ID |
+| maxLevelRefundGold | 최대 레벨 헌터의 카드가 나오면 대신 주는 골드 |
 
 ## Skills.csv
 

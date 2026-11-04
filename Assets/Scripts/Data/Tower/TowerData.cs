@@ -25,6 +25,7 @@ public class TowerData : ScriptableObject
     [Header("메타")]
     [SerializeField] private bool _startUnlocked;
     [SerializeField] private int _unlockGemPrice;
+    [SerializeField] private bool _inGacha = true;
     [SerializeField] private LevelUpCostRule _levelUpCost;
 
     public int Id => _id;
@@ -44,6 +45,7 @@ public class TowerData : ScriptableObject
     public float AttackSpeedPercent => BaseAttackSpeedPercent;
     public bool StartUnlocked => _startUnlocked;
     public int UnlockGemPrice => _unlockGemPrice;
+    public bool InGacha => _inGacha;
     public LevelUpCostRule LevelUpCost => _levelUpCost;
 
     public float GetAttack(int level)
