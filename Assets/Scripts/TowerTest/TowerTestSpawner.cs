@@ -18,6 +18,7 @@ public class TowerTestSpawner : MonoBehaviour
     private readonly List<TowerData> _towers = new List<TowerData>();
     private readonly List<TowerSkillData> _skillBuffer = new List<TowerSkillData>();
     private GameObject[] _spawned;
+    private TowerData[] _spawnedData;
     private Transform _holder;
     private int _towerIndex;
     private int _level = TowerLevelService.MinLevel;
@@ -42,6 +43,7 @@ public class TowerTestSpawner : MonoBehaviour
         }
 
         _spawned = new GameObject[_spawnPoints.Length];
+        _spawnedData = new TowerData[_spawnPoints.Length];
     }
 
     public void Initialize(TowerCatalog catalog)
@@ -72,16 +74,38 @@ public class TowerTestSpawner : MonoBehaviour
         if (_towers.Count == 0 || _spawned == null || _resolver == null)
             return;
 
-        var data = _towers[_towerIndex];
         int index = _nextPoint;
         _nextPoint = (_nextPoint + 1) % _spawnPoints.Length;
+        SpawnAt(index, _towers[_towerIndex]);
+    }
 
+    // 타워는 Initialize 시점의 레벨로 스탯과 스킬을 정하므로, 레벨을 바꾸면 같은 자리에 다시 만든다.
+    private void SetLevel(int level)
+    {
+        level = Mathf.Clamp(level, TowerLevelService.MinLevel, TowerLevelService.MaxLevel);
+        if (level == _level)
+            return;
+
+        _level = level;
+
+        if (_spawned == null)
+            return;
+
+        for (int i = 0; i < _spawned.Length; i++)
+        {
+            if (_spawned[i] != null && _spawnedData[i] != null)
+                SpawnAt(i, _spawnedData[i]);
+        }
+    }
+
+    private void SpawnAt(int index, TowerData data)
+    {
         if (_spawned[index] != null)
             Destroy(_spawned[index]);
 
-        // 타워는 Initialize 시점의 레벨로 스킬을 켠다.
         _levelService.SetLevel(data.Id, _level);
         _spawned[index] = TowerFactory.Create(_resolver, data, GetHolder(), _spawnRoot, _spawnPoints[index].position);
+        _spawnedData[index] = data;
     }
 
     private void Clear()
@@ -95,6 +119,7 @@ public class TowerTestSpawner : MonoBehaviour
                 Destroy(_spawned[i]);
 
             _spawned[i] = null;
+            _spawnedData[i] = null;
         }
 
         _nextPoint = 0;
@@ -140,10 +165,10 @@ public class TowerTestSpawner : MonoBehaviour
         y += 110f;
 
         if (GUI.Button(new Rect(20f, y, 120f, 90f), "-", _buttonStyle))
-            _level = Mathf.Max(TowerLevelService.MinLevel, _level - 1);
+            SetLevel(_level - 1);
         GUI.Label(new Rect(150f, y, 420f, 90f), $"Lv.{_level}", _labelStyle);
         if (GUI.Button(new Rect(580f, y, 120f, 90f), "+", _buttonStyle))
-            _level = Mathf.Min(TowerLevelService.MaxLevel, _level + 1);
+            SetLevel(_level + 1);
 
         if (GUI.Button(new Rect(740f, y, 320f, 90f), "전체 삭제", _buttonStyle))
             Clear();
