@@ -24,6 +24,7 @@ public class TowerSkillData
     [Header("연출")]
     [SerializeField] private string _vfxKey;
     [SerializeField] private VfxAnchor _vfxAnchor;
+    [SerializeField] private string _animTrigger;
 
     public int Id => _id;
     public string DisplayName => _displayName;
@@ -41,4 +42,5 @@ public class TowerSkillData
     public string VfxKey => _vfxKey;
     public VfxAnchor VfxAnchor => _vfxAnchor;
     public bool HasVfx => !string.IsNullOrEmpty(_vfxKey);
+    public string AnimTrigger => _animTrigger;
 }

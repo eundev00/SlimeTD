@@ -95,6 +95,9 @@
 | duration | 지속 시간(초). 비우면 상시 |
 | vfxKey | 스킬이 발동할 때 재생할 연출 프리팹 이름 (PrefabKeys). 비우면 연출 없음 |
 | vfxAnchor | 연출을 붙일 타워 앵커: `Root`(발밑) / `Center` / `Head` / `Front`. 비우면 Root. 타워 프리팹의 `TowerVfxAnchors`에 지정하지 않은 앵커는 Root로 대신한다 |
+| animTrigger | 스킬이 발동한 공격에 쓸 애니메이터 트리거 (예: `AttackJump`). 비우면 기본 `Attack`. 타워 애니메이터에 그 트리거와 State가 있어야 하고, 클립에 `OnAttackHit`/`OnAttackEnd`(연출을 휘두르는 순간에 띄우려면 `OnAttackCast`도) 이벤트가 있어야 한다 |
+
+스킬 발동과 치명타는 공격 시작 시점에 판정한다. 연출은 클립의 `OnAttackCast`(없으면 `OnAttackHit`)에서, 데미지는 `OnAttackHit`에서 들어간다.
 
 스킬 아이콘은 시트에 적지 않는다. `Assets/Art/UI/SkillIcon/SkillIcon_{스킬ID}.png`(128x128)를 두고 스킬 아이콘 아틀라스로 묶어 로드한다. 스프라이트 이름은 파일 이름이고 코드에서는 `TowerSkillData.IconName`으로 얻는다.
 

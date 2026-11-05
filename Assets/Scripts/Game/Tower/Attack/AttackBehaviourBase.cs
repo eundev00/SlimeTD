@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
@@ -13,7 +14,8 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
     private TargetInfo _pendingTarget;
     private bool _hasPendingTarget;
     private AttackSkillRoll _pendingRoll;
-    private bool _rolled;
+    private DamageInfo _pendingDamage;
+    private bool _vfxPending;
     private UniTaskCompletionSource _endSource;
 
     protected ITowerContext Context { get; private set; }
@@ -37,13 +39,17 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
     {
         var animator = Context.Animator;
         var stats = Context.Stats;
-        string attackState = AttackTrigger;
 
         _pendingTarget = target;
         _hasPendingTarget = true;
-        _pendingRoll = default;
-        _rolled = false;
         _endSource = new UniTaskCompletionSource();
+
+        // 스킬과 치명타는 공격 시작에 정한다. 스킬마다 공격 모션이 달라서 트리거를 보내기 전에 결과를 알아야 한다.
+        var skills = Context.Skills;
+        _pendingRoll = skills != null ? skills.RollAttack() : default;
+        _pendingDamage = ResolveDamage(_pendingRoll);
+        _vfxPending = skills != null && skills.LastProcs.Count > 0;
+        string attackTrigger = SelectTrigger(skills, animator);
 
         IsAiming = true;
 
@@ -51,7 +57,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         {
             OnAttackStarted();
 
-            animator.SetTrigger(attackState);
+            animator.SetTrigger(attackTrigger);
 
             // 클립의 OnAttackEnd 이벤트가 완료시킨다. 이벤트가 없으면 타임아웃까지 대기한다.
             TimeoutEndSourceAsync(_endSource, token).Forget();
@@ -63,13 +69,14 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         }
         finally
         {
-            animator.ResetTrigger(attackState);
+            animator.ResetTrigger(attackTrigger);
 
             IsAiming = false;
             _hasPendingTarget = false;
             _pendingTarget = default;
             _pendingRoll = default;
-            _rolled = false;
+            _pendingDamage = default;
+            _vfxPending = false;
             _endSource = null;
 
             OnAttackFinished();
@@ -79,10 +86,32 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         }
     }
 
+    // 발동한 스킬 중 전용 모션이 있는 첫 스킬의 트리거를 쓴다. 애니메이터에 없으면 기본 공격으로 대신한다.
+    private string SelectTrigger(TowerSkillController skills, TowerAnimator animator)
+    {
+        if (skills == null)
+            return AttackTrigger;
+
+        IReadOnlyList<TowerSkillData> procs = skills.LastProcs;
+        for (int i = 0; i < procs.Count; i++)
+        {
+            string trigger = procs[i].AnimTrigger;
+            if (string.IsNullOrEmpty(trigger))
+                continue;
+
+            if (animator.HasParameter(trigger))
+                return trigger;
+
+            Debug.Log($"[{GetType().Name}] 애니메이터에 트리거 {trigger}가 없어 기본 공격으로 대신합니다. 스킬: {procs[i].Id}", animator);
+        }
+
+        return AttackTrigger;
+    }
+
     public void OnAnimationCast()
     {
         if (_hasPendingTarget)
-            EnsureRolled();
+            PlayPendingVfx();
 
         OnCastFrame();
     }
@@ -97,35 +126,27 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         var target = _pendingTarget;
         _hasPendingTarget = false;
 
+        // Cast 이벤트가 없는 클립은 타격 때 연출을 띄운다.
+        PlayPendingVfx();
         OnHitFrame();
 
         if (!target.IsValid)
             return;
 
-        var roll = EnsureRolled();
-        Apply(target, roll);
+        var roll = _pendingRoll;
+        Apply(target, roll, _pendingDamage);
 
         if (roll.Jelly > 0)
             Context.AddJelly(roll.Jelly);
     }
 
-    // 클립에 Cast 이벤트가 있으면 그때, 없으면 타격 때 굴린다. 휘두르는 순간에 스킬 연출을 띄우려면 Cast에서 결과를 알아야 한다.
-    private AttackSkillRoll EnsureRolled()
+    private void PlayPendingVfx()
     {
-        if (_rolled)
-            return _pendingRoll;
+        if (!_vfxPending)
+            return;
 
-        _rolled = true;
-
-        var skills = Context.Skills;
-        if (skills == null)
-            return _pendingRoll;
-
-        _pendingRoll = skills.RollAttack();
-        if (skills.LastProcs.Count > 0)
-            Context.PlaySkillVfx(skills.LastProcs);
-
-        return _pendingRoll;
+        _vfxPending = false;
+        Context.PlaySkillVfx(Context.Skills.LastProcs);
     }
 
     public void OnAnimationEnd()
@@ -148,10 +169,10 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
             Debug.Log($"[{GetType().Name}] 공격 종료 이벤트가 오지 않았습니다. 클립에 OnAttackEnd가 있는지 확인하세요.");
     }
 
-    protected abstract void Apply(in TargetInfo target, in AttackSkillRoll roll);
+    protected abstract void Apply(in TargetInfo target, in AttackSkillRoll roll, in DamageInfo info);
 
     // 데미지 스킬이 발동한 공격은 치명타 없이 배율로만 계산하고, 아니면 치명타를 굴린다.
-    protected DamageInfo ResolveDamage(in AttackSkillRoll roll)
+    private DamageInfo ResolveDamage(in AttackSkillRoll roll)
     {
         var info = roll.HasDamageProc
             ? Context.Stats.RollSkillHit(roll.DamageMultiplier > 0f ? roll.DamageMultiplier : 1f)

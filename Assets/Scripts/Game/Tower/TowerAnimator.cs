@@ -6,6 +6,7 @@ public class TowerAnimator : MonoBehaviour
     private static readonly int AttackSpeedParameter = Animator.StringToHash("AttackSpeed");
 
     private readonly Dictionary<string, int> _stateHashes = new Dictionary<string, int>();
+    private HashSet<string> _parameterNames;
 
     private Animator _animator;
 
@@ -44,6 +45,21 @@ public class TowerAnimator : MonoBehaviour
         }
 
         _animator.SetTrigger(hash);
+    }
+
+    public bool HasParameter(string name)
+    {
+        if (_animator == null || string.IsNullOrEmpty(name))
+            return false;
+
+        if (_parameterNames == null)
+        {
+            _parameterNames = new HashSet<string>();
+            foreach (var parameter in _animator.parameters)
+                _parameterNames.Add(parameter.name);
+        }
+
+        return _parameterNames.Contains(name);
     }
 
     public void SetAttackSpeed(float multiplier)

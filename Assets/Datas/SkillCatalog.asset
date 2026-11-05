@@ -30,6 +30,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10102
     _displayName: "\uC30D\uBC1C \uC0AC\uACA9 I"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uD654\uC0B4\uC744
@@ -48,6 +49,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10103
     _displayName: "\uC30D\uBC1C \uC0AC\uACA9 II"
     _description: "\uACF5\uACA9\uD560 \uB54C 20% \uD655\uB960\uB85C \uD654\uC0B4\uC744
@@ -66,6 +68,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10301
     _displayName: "\uC7AC\uBE60\uB978 \uCE7C\uB180\uB9BC"
     _description: "\uACF5\uACA9\uC18D\uB3C4\uAC00 5% \uC99D\uAC00\uD55C\uB2E4"
@@ -83,6 +86,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10302
     _displayName: "\uAE09\uC18C \uB178\uB9AC\uAE30"
     _description: "\uCE58\uBA85\uD0C0 \uD655\uB960\uC774 5%p \uC99D\uAC00\uD55C\uB2E4"
@@ -100,6 +104,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10303
     _displayName: "\uBD84\uC1C4 \uC77C\uACA9"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uACF5\uACA9\uB825\uC758
@@ -118,6 +123,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: VfxSwordSlash
     _vfxAnchor: 3
+    _animTrigger: AttackJump
   - _id: 10401
     _displayName: "\uB2E8\uB2E8\uD55C \uB3C4\uB07C\uB0A0"
     _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
@@ -135,6 +141,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10402
     _displayName: "\uBC8C\uBAA9 \uC218\uC775 I"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uC824\uB9AC\uB97C
@@ -153,6 +160,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10403
     _displayName: "\uBC8C\uBAA9 \uC218\uC775 II"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uC824\uB9AC\uB97C
@@ -171,6 +179,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10501
     _displayName: "\uC2E0\uB098\uB294 \uB358\uC9C0\uAE30"
     _description: "\uACF5\uACA9\uC18D\uB3C4\uAC00 3% \uC99D\uAC00\uD55C\uB2E4"
@@ -188,6 +197,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10502
     _displayName: "\uB048\uC801 \uC2AC\uB77C\uC784 I"
     _description: "\uB9DE\uC740 \uC801\uC758 \uC774\uB3D9\uC18D\uB3C4\uAC00 1\uCD08
@@ -206,6 +216,7 @@ MonoBehaviour:
       _duration: 1
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 10503
     _displayName: "\uB048\uC801 \uC2AC\uB77C\uC784 II"
     _description: "\uB9DE\uC740 \uC801\uC758 \uC774\uB3D9\uC18D\uB3C4\uAC00 1\uCD08
@@ -224,6 +235,7 @@ MonoBehaviour:
       _duration: 1
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 20201
     _displayName: "\uC219\uB828\uB41C \uD65C\uC19C\uC528"
     _description: "\uACF5\uACA9\uB825\uC774 10% \uC99D\uAC00\uD55C\uB2E4"
@@ -241,6 +253,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 20202
     _displayName: "\uC18D\uC0AC"
     _description: "\uACF5\uACA9\uC18D\uB3C4\uAC00 10% \uC99D\uAC00\uD55C\uB2E4"
@@ -258,6 +271,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 20203
     _displayName: "\uD3ED\uBC1C \uD654\uC0B4"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uB9DE\uC740
@@ -276,6 +290,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 20301
     _displayName: "\uB2E8\uB828 I"
     _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
@@ -293,6 +308,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 20302
     _displayName: "\uB2E8\uB828 II"
     _description: "\uACF5\uACA9\uB825\uC774 10% \uC99D\uAC00\uD55C\uB2E4"
@@ -310,6 +326,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 20303
     _displayName: "\uB2E8\uB828 III"
     _description: "\uACF5\uACA9\uB825\uC774 20% \uC99D\uAC00\uD55C\uB2E4"
@@ -327,6 +344,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 20401
     _displayName: "\uAC15\uD654 \uBCFC\uD2B8"
     _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
@@ -344,6 +362,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 20402
     _displayName: "\uC57D\uC810 \uC870\uC900"
     _description: "\uCE58\uBA85\uD0C0 \uD655\uB960\uC774 10%p \uC99D\uAC00\uD55C\uB2E4"
@@ -361,6 +380,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 20403
     _displayName: "\uAD00\uD1B5 \uBCFC\uD2B8"
     _description: "\uD654\uC0B4\uC774 \uC801\uC744 \uAD00\uD1B5\uD574 \uCD5C\uB300
@@ -379,6 +399,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 30101
     _displayName: "\uCD9C\uB825 \uAC15\uD654"
     _description: "\uACF5\uACA9\uB825\uC774 5% \uC99D\uAC00\uD55C\uB2E4"
@@ -396,6 +417,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 30102
     _displayName: "\uAE30\uC808 I"
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uC801\uC744
@@ -414,6 +436,7 @@ MonoBehaviour:
       _duration: 1
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 30103
     _displayName: "\uAD11\uC5ED \uBC29\uCD9C"
     _description: "5\uCD08\uB9C8\uB2E4 \uACF5\uACA9\uD560 \uB54C \uB9DE\uC740 \uC801
@@ -432,6 +455,7 @@ MonoBehaviour:
       _duration: 0
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 
   - _id: 30104
     _displayName: "\uAE30\uC808 II"
     _description: "\uACF5\uACA9\uD560 \uB54C 15% \uD655\uB960\uB85C \uC801\uC744
@@ -450,3 +474,4 @@ MonoBehaviour:
       _duration: 1
     _vfxKey: 
     _vfxAnchor: 0
+    _animTrigger: 

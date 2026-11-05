@@ -53,11 +53,9 @@ public class ProjectileAttack : AttackBehaviourBase
             _launcher.SetHeldProjectileActive(false);
     }
 
-    protected override void Apply(in TargetInfo target, in AttackSkillRoll roll)
+    // 한 공격의 화살은 같은 데미지를 공유한다. 스킬이 발동했으면 치명타가 없으므로 값이 같아진다.
+    protected override void Apply(in TargetInfo target, in AttackSkillRoll roll, in DamageInfo info)
     {
-        // 한 공격의 화살은 같은 데미지를 공유한다. 스킬이 발동했으면 치명타가 없으므로 값이 같아진다.
-        var info = ResolveDamage(roll);
-
         if (roll.ExtraShots <= 0)
         {
             Fire(target, info, roll.SplashRadius);

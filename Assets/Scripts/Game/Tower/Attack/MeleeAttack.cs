@@ -1,8 +1,7 @@
 public class MeleeAttack : AttackBehaviourBase
 {
-    protected override void Apply(in TargetInfo target, in AttackSkillRoll roll)
+    protected override void Apply(in TargetInfo target, in AttackSkillRoll roll, in DamageInfo info)
     {
-        var info = ResolveDamage(roll);
         target.Slime.TakeDamage(info);
 
         if (roll.SplashRadius > 0f && target.Transform != null)

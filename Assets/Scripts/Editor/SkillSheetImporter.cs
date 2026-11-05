@@ -195,6 +195,7 @@ public static class SkillSheetImporter
 
         element.FindPropertyRelative("_vfxKey").stringValue = key;
         element.FindPropertyRelative("_vfxAnchor").enumValueIndex = (int)anchor;
+        element.FindPropertyRelative("_animTrigger").stringValue = SheetReader.Get(row, "animTrigger");
     }
 
     private static bool TryParseEnum<T>(Dictionary<string, string> row, string key, out T value, int skillId) where T : struct

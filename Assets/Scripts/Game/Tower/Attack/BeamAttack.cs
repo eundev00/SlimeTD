@@ -30,10 +30,9 @@ public class BeamAttack : AttackBehaviourBase
         CreateBeam();
     }
 
-    protected override void Apply(in TargetInfo target, in AttackSkillRoll roll)
+    protected override void Apply(in TargetInfo target, in AttackSkillRoll roll, in DamageInfo info)
     {
         Vector3 hitPoint = GetHitPoint(target);
-        var info = ResolveDamage(roll);
 
         target.Slime.TakeDamage(info);
 
