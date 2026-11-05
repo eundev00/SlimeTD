@@ -1,18 +1,12 @@
-using Cysharp.Threading.Tasks;
-using System;
-using System.Threading;
 using UnityEngine;
 
 public class ProjectileAttack : AttackBehaviourBase
 {
-    private const float ExtraShotInterval = 0.15f;
-
     // 풀은 투사체 프리팹 단위로 하나만 만들어져서 타워별로 다른 값을 둘 수 없다.
     private const int PoolCapacity = 10;
     private const int PoolMaxSize = 20;
 
     private readonly GameObject _projectilePrefab;
-    private readonly CancellationTokenSource _disposeCancellation = new CancellationTokenSource();
     private ProjectileLauncher _launcher;
 
     public ProjectileAttack(GameObject projectilePrefab)
@@ -64,42 +58,52 @@ public class ProjectileAttack : AttackBehaviourBase
         // 한 공격의 화살은 같은 데미지를 공유한다. 스킬이 발동했으면 치명타가 없으므로 값이 같아진다.
         var info = ResolveDamage(roll);
 
-        Fire(target, info, roll.SplashRadius);
-
-        if (roll.ExtraShots > 0)
-            FireExtraAsync(target, roll.ExtraShots, info, roll.SplashRadius).Forget();
-    }
-
-    private async UniTaskVoid FireExtraAsync(TargetInfo target, int count, DamageInfo info, float splashRadius)
-    {
-        for (int i = 0; i < count; i++)
+        if (roll.ExtraShots <= 0)
         {
-            try
-            {
-                await UniTask.Delay(TimeSpan.FromSeconds(ExtraShotInterval), cancellationToken: _disposeCancellation.Token);
-            }
-            catch (OperationCanceledException)
-            {
-                return;
-            }
-
-            if (!target.IsValid)
-                return;
-
-            Fire(target, info, splashRadius);
+            Fire(target, info, roll.SplashRadius);
+            return;
         }
+
+        FireSpread(target, roll.ExtraShots + 1, info, roll.SplashRadius);
     }
 
     private void Fire(in TargetInfo target, DamageInfo info, float splashRadius)
     {
-        if (_launcher == null || _projectilePrefab == null)
+        if (_launcher == null)
+            return;
+
+        Vector3 firePosition = _launcher.FirePoint.position;
+        Launch(firePosition, GetFireDirection(target, firePosition), info, splashRadius);
+    }
+
+    // 여러 발은 발사 지점 좌우로 벌려 동시에 쏘고, 각자 대상 중심을 향하게 해서 모두 맞게 한다.
+    private void FireSpread(in TargetInfo target, int count, DamageInfo info, float splashRadius)
+    {
+        if (_launcher == null)
+            return;
+
+        Vector3 center = _launcher.FirePoint.position;
+        Vector3 aim = Context.AimDirection;
+        Vector3 side = Vector3.Cross(Vector3.up, new Vector3(aim.x, 0f, aim.z)).normalized;
+        float spacing = _launcher.MultiShotSpacing;
+
+        for (int i = 0; i < count; i++)
+        {
+            float offset = (i - (count - 1) * 0.5f) * spacing;
+            Vector3 firePosition = center + side * offset;
+            Launch(firePosition, GetDirectionToTarget(target, firePosition, aim), info, splashRadius);
+        }
+    }
+
+    private void Launch(Vector3 firePosition, Vector3 direction, DamageInfo info, float splashRadius)
+    {
+        if (_projectilePrefab == null)
             return;
 
         var projectileObject = Context.Pool.Get(_projectilePrefab);
         if (projectileObject == null)
             return;
 
-        Vector3 firePosition = _launcher.FirePoint.position;
         projectileObject.transform.position = firePosition;
 
         var projectile = projectileObject.GetComponent<Projectile>();
@@ -109,14 +113,7 @@ public class ProjectileAttack : AttackBehaviourBase
             return;
         }
 
-        projectile.Initialize(GetFireDirection(target, firePosition), info, Context.Skills?.PierceCount ?? 0, splashRadius);
-    }
-
-    public override void Dispose()
-    {
-        _disposeCancellation.Cancel();
-        _disposeCancellation.Dispose();
-        base.Dispose();
+        projectile.Initialize(direction, info, Context.Skills?.PierceCount ?? 0, splashRadius);
     }
 
     private Vector3 GetFireDirection(in TargetInfo target, Vector3 firePosition)
@@ -127,13 +124,25 @@ public class ProjectileAttack : AttackBehaviourBase
         if (target.Transform == null || horizontal.sqrMagnitude <= Mathf.Epsilon)
             return aim;
 
-        Vector3 targetCenter = target.Transform.TryGetComponent<Collider>(out var collider)
-            ? collider.bounds.center
-            : target.Transform.position;
-
-        Vector3 toTarget = targetCenter - firePosition;
+        Vector3 toTarget = GetTargetCenter(target) - firePosition;
         Vector3 toTargetHorizontal = new Vector3(toTarget.x, 0f, toTarget.z);
 
         return horizontal.normalized * toTargetHorizontal.magnitude + Vector3.up * toTarget.y;
+    }
+
+    private static Vector3 GetDirectionToTarget(in TargetInfo target, Vector3 firePosition, Vector3 fallback)
+    {
+        if (target.Transform == null)
+            return fallback;
+
+        Vector3 toTarget = GetTargetCenter(target) - firePosition;
+        return toTarget.sqrMagnitude > Mathf.Epsilon ? toTarget : fallback;
+    }
+
+    private static Vector3 GetTargetCenter(in TargetInfo target)
+    {
+        return target.Transform.TryGetComponent<Collider>(out var collider)
+            ? collider.bounds.center
+            : target.Transform.position;
     }
 }
