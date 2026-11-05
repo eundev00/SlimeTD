@@ -33,7 +33,9 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private ITowerLevelService _levelService;
     private IGameplayService _gameplayService;
+    private IResourceLoadService _resourceLoadService;
     private TowerSkillController _skills;
+    private readonly TowerSkillVfx _skillVfx = new TowerSkillVfx();
     private readonly List<TowerSkillData> _activeSkills = new List<TowerSkillData>();
 
     private CompositeDisposable _disposables;
@@ -67,6 +69,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     TowerAnimator ITowerContext.Animator => _animator;
     TowerSkillController ITowerContext.Skills => _skills;
     void ITowerContext.AddJelly(int amount) => _gameplayService.AddJelly(amount);
+    void ITowerContext.PlaySkillVfx(IReadOnlyList<TowerSkillData> skills) => _skillVfx.Play(skills);
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
     public IReadOnlyReactiveProperty<bool> IsDragging => _isDragging;
@@ -77,13 +80,15 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         IGameObjectPoolService poolService,
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
         ITowerLevelService levelService,
-        IGameplayService gameplayService)
+        IGameplayService gameplayService,
+        IResourceLoadService resourceLoadService)
     {
         _updateService = updateService;
         _poolService = poolService;
         _gameProgressSubscriber = gameProgressSubscriber;
         _levelService = levelService;
         _gameplayService = gameplayService;
+        _resourceLoadService = resourceLoadService;
     }
 
 
@@ -126,6 +131,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
         _stats.Initialize(data, level, _activeSkills);
         _skills = new TowerSkillController(_activeSkills);
+        _skillVfx.LoadAsync(_activeSkills, _resourceLoadService, GetComponent<TowerVfxAnchors>(), transform, this.GetCancellationTokenOnDestroy()).Forget();
 
         _animator.PlaySpawn();
     }

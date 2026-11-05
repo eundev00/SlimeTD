@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Services.PoolService;
 using UnityEngine;
 
@@ -12,4 +13,5 @@ public interface ITowerContext
     TowerSkillController Skills { get; }
 
     void AddJelly(int amount);
+    void PlaySkillVfx(IReadOnlyList<TowerSkillData> skills);
 }

@@ -172,6 +172,29 @@ public static class SkillSheetImporter
         effect.FindPropertyRelative("_value").floatValue = skill.Effect.Value;
         effect.FindPropertyRelative("_valueType").enumValueIndex = (int)skill.Effect.ValueType;
         effect.FindPropertyRelative("_duration").floatValue = skill.Effect.Duration;
+
+        WriteVfx(element, skill);
+    }
+
+    // 연출은 비워 둘 수 있다. 키는 PrefabKeys에 있는 프리팹 이름이다.
+    private static void WriteVfx(SerializedProperty element, SkillRow skill)
+    {
+        var row = skill.Row;
+        string key = SheetReader.Get(row, "vfxKey");
+        string anchorText = SheetReader.Get(row, "vfxAnchor");
+
+        if (!string.IsNullOrEmpty(key) && string.IsNullOrEmpty(PrefabKeys.GetPrefabPath(key)))
+            Debug.Log($"[{LogTag}] vfxKey에 해당하는 프리팹이 없습니다. Prefab Keys를 다시 만들었는지 확인하세요. 스킬: {skill.Id}, 키: {key}");
+
+        var anchor = VfxAnchor.Root;
+        if (!string.IsNullOrEmpty(anchorText) && !Enum.TryParse(anchorText, true, out anchor))
+        {
+            Debug.Log($"[{LogTag}] vfxAnchor 값을 해석하지 못해 Root로 둡니다. 스킬: {skill.Id}, 값: '{anchorText}', 가능한 값: {string.Join("/", Enum.GetNames(typeof(VfxAnchor)))}");
+            anchor = VfxAnchor.Root;
+        }
+
+        element.FindPropertyRelative("_vfxKey").stringValue = key;
+        element.FindPropertyRelative("_vfxAnchor").enumValueIndex = (int)anchor;
     }
 
     private static bool TryParseEnum<T>(Dictionary<string, string> row, string key, out T value, int skillId) where T : struct

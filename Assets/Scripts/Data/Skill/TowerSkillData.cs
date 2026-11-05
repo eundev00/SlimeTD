@@ -21,6 +21,10 @@ public class TowerSkillData
     [Header("효과")]
     [SerializeField] private List<SkillEffectEntry> _effects = new List<SkillEffectEntry>();
 
+    [Header("연출")]
+    [SerializeField] private string _vfxKey;
+    [SerializeField] private VfxAnchor _vfxAnchor;
+
     public int Id => _id;
     public string DisplayName => _displayName;
     public string Description => _description;
@@ -34,4 +38,7 @@ public class TowerSkillData
     public float Chance => _chance;
     public float Cooldown => _cooldown;
     public IReadOnlyList<SkillEffectEntry> Effects => _effects;
+    public string VfxKey => _vfxKey;
+    public VfxAnchor VfxAnchor => _vfxAnchor;
+    public bool HasVfx => !string.IsNullOrEmpty(_vfxKey);
 }

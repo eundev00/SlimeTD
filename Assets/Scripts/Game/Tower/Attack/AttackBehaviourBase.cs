@@ -12,6 +12,8 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 
     private TargetInfo _pendingTarget;
     private bool _hasPendingTarget;
+    private AttackSkillRoll _pendingRoll;
+    private bool _rolled;
     private UniTaskCompletionSource _endSource;
 
     protected ITowerContext Context { get; private set; }
@@ -39,6 +41,8 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 
         _pendingTarget = target;
         _hasPendingTarget = true;
+        _pendingRoll = default;
+        _rolled = false;
         _endSource = new UniTaskCompletionSource();
 
         IsAiming = true;
@@ -64,6 +68,8 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
             IsAiming = false;
             _hasPendingTarget = false;
             _pendingTarget = default;
+            _pendingRoll = default;
+            _rolled = false;
             _endSource = null;
 
             OnAttackFinished();
@@ -75,6 +81,9 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 
     public void OnAnimationCast()
     {
+        if (_hasPendingTarget)
+            EnsureRolled();
+
         OnCastFrame();
     }
 
@@ -93,11 +102,30 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         if (!target.IsValid)
             return;
 
-        var roll = Context.Skills != null ? Context.Skills.RollAttack() : default;
+        var roll = EnsureRolled();
         Apply(target, roll);
 
         if (roll.Jelly > 0)
             Context.AddJelly(roll.Jelly);
+    }
+
+    // 클립에 Cast 이벤트가 있으면 그때, 없으면 타격 때 굴린다. 휘두르는 순간에 스킬 연출을 띄우려면 Cast에서 결과를 알아야 한다.
+    private AttackSkillRoll EnsureRolled()
+    {
+        if (_rolled)
+            return _pendingRoll;
+
+        _rolled = true;
+
+        var skills = Context.Skills;
+        if (skills == null)
+            return _pendingRoll;
+
+        _pendingRoll = skills.RollAttack();
+        if (skills.LastProcs.Count > 0)
+            Context.PlaySkillVfx(skills.LastProcs);
+
+        return _pendingRoll;
     }
 
     public void OnAnimationEnd()

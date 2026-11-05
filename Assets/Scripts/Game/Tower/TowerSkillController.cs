@@ -5,6 +5,10 @@ public class TowerSkillController
 {
     private readonly List<TowerSkillData> _onAttackSkills = new List<TowerSkillData>();
     private readonly List<float> _nextReadyTimes = new List<float>();
+    private readonly List<TowerSkillData> _lastProcs = new List<TowerSkillData>();
+
+    // 마지막 RollAttack에서 발동한 스킬. 다음 RollAttack 때 덮어쓴다.
+    public IReadOnlyList<TowerSkillData> LastProcs => _lastProcs;
 
     // 처음 맞은 대상 말고 추가로 관통하는 대상 수다 (1이면 총 2마리).
     public int PierceCount { get; }
@@ -54,11 +58,14 @@ public class TowerSkillController
         float splashRadius = 0f;
         int jelly = 0;
         float stun = 0f;
+        _lastProcs.Clear();
 
         for (int i = 0; i < _onAttackSkills.Count; i++)
         {
             if (!TryProc(i))
                 continue;
+
+            _lastProcs.Add(_onAttackSkills[i]);
 
             var effects = _onAttackSkills[i].Effects;
             for (int e = 0; e < effects.Count; e++)
