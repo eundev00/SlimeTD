@@ -2,9 +2,9 @@
 10101,묵직한 화살,공격력이 3% 증가한다,101,5,,Always,,,,Attack,3%,,,,
 10102,쌍발 사격 I,공격할 때 10% 확률로 화살을 2발 쏜다,101,10,,OnAttack,,10,,MultiShot,1,,,,
 10103,쌍발 사격 II,공격할 때 20% 확률로 화살을 2발 쏜다,101,15,10102,OnAttack,,20,,MultiShot,1,,,,
-10301,재빠른 칼놀림,공격속도가 5% 증가한다,103,5,,Always,,,,AttackSpeed,5%,,,,
+10301,재빠른 칼놀림,공격속도가 5% 증가한다,103,5,,Always,,,,AttackSpeed,5%,,VfxSwordSlash,Front,
 10302,급소 노리기,치명타 확률이 5%p 증가한다,103,10,,Always,,,,CritChance,5,,,,
-10303,분쇄 일격,공격할 때 10% 확률로 공격력의 300% 피해를 준다,103,15,,OnAttack,,10,,DamageMultiplier,300%,,VfxSwordSlash,Front,AttackJump
+10303,분쇄 일격,공격할 때 10% 확률로 공격력의 300% 피해를 준다,103,15,,OnAttack,,10,,DamageMultiplier,300%,,VfxSwordSlashCrush,Front,AttackJump
 10401,단단한 도끼날,공격력이 5% 증가한다,104,5,,Always,,,,Attack,5%,,,,
 10402,벌목 수익 I,공격할 때 10% 확률로 젤리를 5 얻는다,104,10,,OnAttack,,10,,JellyGain,5,,,,
 10403,벌목 수익 II,공격할 때 10% 확률로 젤리를 10 얻는다,104,15,10402,OnAttack,,10,,JellyGain,10,,,,

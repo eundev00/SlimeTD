@@ -48,7 +48,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         var skills = Context.Skills;
         _pendingRoll = skills != null ? skills.RollAttack() : default;
         _pendingDamage = ResolveDamage(_pendingRoll);
-        _vfxPending = skills != null && skills.LastProcs.Count > 0;
+        _vfxPending = skills != null && (skills.LastProcs.Count > 0 || skills.AttackVfxSkills.Count > 0);
         string attackTrigger = SelectTrigger(skills, animator);
 
         IsAiming = true;
@@ -146,7 +146,10 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
             return;
 
         _vfxPending = false;
-        Context.PlaySkillVfx(Context.Skills.LastProcs);
+
+        var skills = Context.Skills;
+        Context.PlaySkillVfx(skills.AttackVfxSkills);
+        Context.PlaySkillVfx(skills.LastProcs);
     }
 
     public void OnAnimationEnd()

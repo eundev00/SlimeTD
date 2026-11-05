@@ -7,8 +7,13 @@ public class TowerSkillController
     private readonly List<float> _nextReadyTimes = new List<float>();
     private readonly List<TowerSkillData> _lastProcs = new List<TowerSkillData>();
 
+    private readonly List<TowerSkillData> _attackVfxSkills = new List<TowerSkillData>();
+
     // 마지막 RollAttack에서 발동한 스킬. 다음 RollAttack 때 덮어쓴다.
     public IReadOnlyList<TowerSkillData> LastProcs => _lastProcs;
+
+    // 연출이 있는 상시 스킬. 발동 판정 없이 매 공격마다 연출을 띄운다.
+    public IReadOnlyList<TowerSkillData> AttackVfxSkills => _attackVfxSkills;
 
     // 처음 맞은 대상 말고 추가로 관통하는 대상 수다 (1이면 총 2마리).
     public int PierceCount { get; }
@@ -31,6 +36,9 @@ public class TowerSkillController
 
             if (skill.Trigger != SkillTrigger.Always)
                 continue;
+
+            if (skill.HasVfx)
+                _attackVfxSkills.Add(skill);
 
             var effects = skill.Effects;
             for (int e = 0; e < effects.Count; e++)

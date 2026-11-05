@@ -84,8 +84,8 @@ MonoBehaviour:
       _value: 5
       _valueType: 1
       _duration: 0
-    _vfxKey: 
-    _vfxAnchor: 0
+    _vfxKey: VfxSwordSlash
+    _vfxAnchor: 3
     _animTrigger: 
   - _id: 10302
     _displayName: "\uAE09\uC18C \uB178\uB9AC\uAE30"
@@ -121,7 +121,7 @@ MonoBehaviour:
       _value: 300
       _valueType: 1
       _duration: 0
-    _vfxKey: VfxSwordSlash
+    _vfxKey: VfxSwordSlashCrush
     _vfxAnchor: 3
     _animTrigger: AttackJump
   - _id: 10401
