@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Viewer : MonoBehaviour
@@ -60,26 +61,26 @@ public class Viewer : MonoBehaviour
 
 
 
-        if(Input.GetKeyDown(KeyCode.LeftArrow))
+        if((Keyboard.current?[Key.LeftArrow].wasPressedThisFrame ?? false))
         {
             Previous();
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if ((Keyboard.current?[Key.RightArrow].wasPressedThisFrame ?? false))
         {
             Next();
         }
-        if ((Input.GetKeyDown(KeyCode.Space) && !Particles[showNum].IsAlive()) || (Input.GetKeyDown(KeyCode.Space) && isPaused))
+        if (((Keyboard.current?[Key.Space].wasPressedThisFrame ?? false) && !Particles[showNum].IsAlive()) || ((Keyboard.current?[Key.Space].wasPressedThisFrame ?? false) && isPaused))
         {
             PlayFX();
         }
-        else if(Input.GetKeyDown(KeyCode.Space) && Particles[showNum].IsAlive() && !isPaused)
+        else if((Keyboard.current?[Key.Space].wasPressedThisFrame ?? false) && Particles[showNum].IsAlive() && !isPaused)
         {
             PauseFX();
         }
 
-        if(Input.GetMouseButtonDown(0))
+        if((Mouse.current?.leftButton.wasPressedThisFrame ?? false))
         {
-            Ray ray = _Cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            Ray ray = _Cam.GetComponent<Camera>().ScreenPointToRay((Vector3)(Mouse.current?.position.ReadValue() ?? Vector2.zero));
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
@@ -94,10 +95,10 @@ public class Viewer : MonoBehaviour
         
 
         //Camera Rotate
-        if (Input.GetMouseButton(1))
+        if ((Mouse.current?.rightButton.isPressed ?? false))
         {
-            float xRotateMove = Input.GetAxis("Mouse X") * Time.deltaTime * Rotspeed;
-            float yRotateMove = Input.GetAxis("Mouse Y") * Time.deltaTime * Rotspeed;
+            float xRotateMove = (Mouse.current?.delta.ReadValue().x * 0.1f ?? 0f) * Time.deltaTime * Rotspeed;
+            float yRotateMove = (Mouse.current?.delta.ReadValue().y * 0.1f ?? 0f) * Time.deltaTime * Rotspeed;
 
             Vector3 stagePosition = ShowPos.transform.position;
 

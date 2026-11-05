@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace Confetti2
@@ -49,7 +50,7 @@ public class Confetti2SceneSelect : MonoBehaviour
 	void Update ()
 	 {
  
-     if(Input.GetKeyDown(KeyCode.J))
+     if((Keyboard.current?[Key.J].wasPressedThisFrame ?? false))
 	 {
          GUIHide = !GUIHide;
      
@@ -62,7 +63,7 @@ public class Confetti2SceneSelect : MonoBehaviour
              GameObject.Find("CanvasSceneSelect").GetComponent<Canvas> ().enabled = true;
          }
      }
-	      if(Input.GetKeyDown(KeyCode.K))
+	      if((Keyboard.current?[Key.K].wasPressedThisFrame ?? false))
 	 {
          GUIHide2 = !GUIHide2;
      
@@ -75,7 +76,7 @@ public class Confetti2SceneSelect : MonoBehaviour
              GameObject.Find("Canvas").GetComponent<Canvas> ().enabled = true;
          }
      }
-		if(Input.GetKeyDown(KeyCode.L))
+		if((Keyboard.current?[Key.L].wasPressedThisFrame ?? false))
 	 {
          GUIHide3 = !GUIHide3;
      

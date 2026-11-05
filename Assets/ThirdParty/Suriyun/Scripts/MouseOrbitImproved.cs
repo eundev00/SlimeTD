@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
 
 [AddComponentMenu("Camera-Control/Mouse Orbit with zoom")]
@@ -41,14 +42,14 @@ public class MouseOrbitImproved : MonoBehaviour
     {
         if (target)
         {
-            x += Input.GetAxis("Mouse X") * xSpeed * distance * 0.02f;
-            y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+            x += (Mouse.current?.delta.ReadValue().x * 0.1f ?? 0f) * xSpeed * distance * 0.02f;
+            y -= (Mouse.current?.delta.ReadValue().y * 0.1f ?? 0f) * ySpeed * 0.02f;
 
             y = ClampAngle(y, yMinLimit, yMaxLimit);
 
             Quaternion rotation = Quaternion.Euler(y, x, 0);
 
-            distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
+            distance = Mathf.Clamp(distance - (Mouse.current?.scroll.ReadValue().y / 1200f ?? 0f) * 5, distanceMin, distanceMax);
 
             RaycastHit hit;
             if (Physics.Linecast(target.position, transform.position, out hit))

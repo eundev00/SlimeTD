@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Dustyroom {
 public class OrbitMotion : MonoBehaviour {
@@ -79,9 +80,9 @@ public class OrbitMotion : MonoBehaviour {
         //*
         bool isCameraMoving = false;
 #if ((UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR)
-        isCameraMoving = Input.GetTouch(0).deltaPosition.sqrMagnitude > 0f;
+        isCameraMoving = (Touchscreen.current?.primaryTouch.delta.ReadValue() ?? Vector2.zero).sqrMagnitude > 0f;
 #else
-        isCameraMoving = Mathf.Abs(Input.GetAxis("Mouse X")) + Mathf.Abs(Input.GetAxis("Mouse Y")) > 0f;
+        isCameraMoving = Mathf.Abs((Mouse.current?.delta.ReadValue().x * 0.1f ?? 0f)) + Mathf.Abs((Mouse.current?.delta.ReadValue().y * 0.1f ?? 0f)) > 0f;
 #endif
         if (isCameraMoving) {
             _lastMoveTime = Time.time;
@@ -90,13 +91,13 @@ public class OrbitMotion : MonoBehaviour {
         timeSinceLastMove = Time.time - _lastMoveTime;
         //*/
 
-        if (interactive && Input.GetMouseButton(0)) {
+        if (interactive && (Mouse.current?.leftButton.isPressed ?? false)) {
 #if ((UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR)
-        _x += Input.GetTouch(0).deltaPosition.x * xSpeed * 40f * 0.02f;
-        _y -= Input.GetTouch(0).deltaPosition.y * ySpeed * 40f * 0.02f;
+        _x += (Touchscreen.current?.primaryTouch.delta.ReadValue() ?? Vector2.zero).x * xSpeed * 40f * 0.02f;
+        _y -= (Touchscreen.current?.primaryTouch.delta.ReadValue() ?? Vector2.zero).y * ySpeed * 40f * 0.02f;
 #else
-        _x += Input.GetAxis("Mouse X") * xSpeed * 40f * 0.02f;
-        _y -= Input.GetAxis("Mouse Y") * ySpeed * 40f * 0.02f;
+        _x += (Mouse.current?.delta.ReadValue().x * 0.1f ?? 0f) * xSpeed * 40f * 0.02f;
+        _y -= (Mouse.current?.delta.ReadValue().y * 0.1f ?? 0f) * ySpeed * 40f * 0.02f;
 #endif
         }
         else if (autoMovement) {
@@ -114,7 +115,7 @@ public class OrbitMotion : MonoBehaviour {
 
         if (allowZoom) {
             distanceHorizontal = Mathf.Clamp(
-                distanceHorizontal - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
+                distanceHorizontal - (Mouse.current?.scroll.ReadValue().y / 1200f ?? 0f) * 5, distanceMin, distanceMax);
         }
 
         float rotationX = rotation.eulerAngles.x;
