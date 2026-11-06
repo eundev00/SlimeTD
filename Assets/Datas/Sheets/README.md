@@ -4,7 +4,7 @@
 
 - 타워/등급/레벨업 비용: `SlimeTD > Data > Import Tower Sheets`
 - 스킬: `SlimeTD > Data > Import Skill Sheets`
-- 뽑기: `SlimeTD > Data > Import Gacha Sheets` (Grades.csv의 `gachaWeight`도 여기서 읽는다)
+- 헌터 카드 뽑기: `SlimeTD > Data > Import Hunter Card Gacha Sheets` (Grades.csv의 `gachaWeight`도 여기서 읽는다)
 
 ## ID 규칙
 
@@ -55,7 +55,7 @@
 | unlockGemPrice | 해금 보석 가격 (0 = 구매 불가) |
 | inGacha | 뽑기 대상 (1/0). 비우면 1. 잠긴 헌터는 잠긴 카드로만 나오고, 해금되면 등급 풀에 들어간다 |
 
-## GachaPacks.csv
+## HunterCardGachaPacks.csv
 
 | 열 | 설명 |
 |---|---|
@@ -64,7 +64,7 @@
 | price | 골드 가격 |
 | guaranteeGradeId | 이 등급 이상 1장 보장 (0 = 보장 없음). 팩 안에 없으면 마지막 장을 이 등급 이상에서 다시 뽑는다 |
 
-## GachaSettings.csv
+## HunterCardGachaSettings.csv
 
 `key,value` 두 열이다.
 

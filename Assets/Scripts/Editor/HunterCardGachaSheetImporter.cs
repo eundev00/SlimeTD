@@ -2,16 +2,16 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public static class GachaSheetImporter
+public static class HunterCardGachaSheetImporter
 {
-    private const string LogTag = "GachaSheetImporter";
+    private const string LogTag = "HunterCardGachaSheetImporter";
     private const string SheetFolder = "Assets/Datas/Sheets";
-    private const string PacksFile = "GachaPacks.csv";
-    private const string SettingsFile = "GachaSettings.csv";
+    private const string PacksFile = "HunterCardGachaPacks.csv";
+    private const string SettingsFile = "HunterCardGachaSettings.csv";
     private const string GradesFile = "Grades.csv";
-    private const string ConfigPath = "Assets/Datas/GachaConfig.asset";
+    private const string ConfigPath = "Assets/Datas/HunterCardGachaConfig.asset";
 
-    [MenuItem("SlimeTD/Data/Import Gacha Sheets")]
+    [MenuItem("SlimeTD/Data/Import Hunter Card Gacha Sheets")]
     public static void Import()
     {
         if (!SheetReader.TryReadTable($"{SheetFolder}/{PacksFile}", LogTag, out var packRows)
@@ -19,12 +19,12 @@ public static class GachaSheetImporter
             || !SheetReader.TryReadTable($"{SheetFolder}/{GradesFile}", LogTag, out var gradeRows))
             return;
 
-        var config = AssetDatabase.LoadAssetAtPath<GachaConfig>(ConfigPath);
+        var config = AssetDatabase.LoadAssetAtPath<HunterCardGachaConfig>(ConfigPath);
         if (config == null)
         {
-            config = ScriptableObject.CreateInstance<GachaConfig>();
+            config = ScriptableObject.CreateInstance<HunterCardGachaConfig>();
             AssetDatabase.CreateAsset(config, ConfigPath);
-            Debug.Log($"[{LogTag}] GachaConfig를 만들었습니다: {ConfigPath}", config);
+            Debug.Log($"[{LogTag}] HunterCardGachaConfig를 만들었습니다: {ConfigPath}", config);
         }
 
         var so = new SerializedObject(config);

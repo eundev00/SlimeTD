@@ -2,24 +2,24 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GachaConfig", menuName = "SlimeTD/Gacha Config", order = 66)]
-public class GachaConfig : ScriptableObject
+[CreateAssetMenu(fileName = "HunterCardGachaConfig", menuName = "SlimeTD/Hunter Card Gacha Config", order = 66)]
+public class HunterCardGachaConfig : ScriptableObject
 {
-    [SerializeField] private GachaPackData[] _packs;
-    [SerializeField] private GachaGradeWeight[] _gradeWeights;
+    [SerializeField] private HunterCardGachaPack[] _packs;
+    [SerializeField] private HunterCardGachaGradeWeight[] _gradeWeights;
     [SerializeField] private float _lockedCardChance;
     [SerializeField] private int _pityCount;
     [SerializeField] private int _pityGradeId;
     [SerializeField] private int _maxLevelRefundGold;
 
-    public IReadOnlyList<GachaPackData> Packs => _packs ?? Array.Empty<GachaPackData>();
-    public IReadOnlyList<GachaGradeWeight> GradeWeights => _gradeWeights ?? Array.Empty<GachaGradeWeight>();
+    public IReadOnlyList<HunterCardGachaPack> Packs => _packs ?? Array.Empty<HunterCardGachaPack>();
+    public IReadOnlyList<HunterCardGachaGradeWeight> GradeWeights => _gradeWeights ?? Array.Empty<HunterCardGachaGradeWeight>();
     public float LockedCardChance => _lockedCardChance;
     public int PityCount => _pityCount;
     public int PityGradeId => _pityGradeId;
     public int MaxLevelRefundGold => _maxLevelRefundGold;
 
-    public bool TryGetPack(int packId, out GachaPackData pack)
+    public bool TryGetPack(int packId, out HunterCardGachaPack pack)
     {
         var packs = Packs;
         for (int i = 0; i < packs.Count; i++)
@@ -37,7 +37,7 @@ public class GachaConfig : ScriptableObject
 }
 
 [Serializable]
-public struct GachaPackData
+public struct HunterCardGachaPack
 {
     [SerializeField] private int _id;
     [SerializeField] private int _cardCount;
@@ -52,7 +52,7 @@ public struct GachaPackData
 }
 
 [Serializable]
-public struct GachaGradeWeight
+public struct HunterCardGachaGradeWeight
 {
     [SerializeField] private int _gradeId;
     [SerializeField] private float _weight;

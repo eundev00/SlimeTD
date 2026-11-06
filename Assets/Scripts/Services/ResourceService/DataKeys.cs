@@ -7,11 +7,11 @@ public static class DataKeys
     public const string Boss_03 = "Boss_03";
     public const string Boss_04 = "Boss_04";
     public const string Boss_05 = "Boss_05";
-    public const string GachaConfig = "GachaConfig";
     public const string GameConfig = "GameConfig";
     public const string GradeStyle = "GradeStyle";
     public const string GridMapData1 = "GridMapData1";
     public const string GridMapData2 = "GridMapData2";
+    public const string HunterCardGachaConfig = "HunterCardGachaConfig";
     public const string SkillCatalog = "SkillCatalog";
     public const string SlimeDepthBucketSettings = "SlimeDepthBucketSettings";
     public const string Slime_01 = "Slime_01";
@@ -37,11 +37,11 @@ public static class DataKeys
         { Boss_03, "Assets/Datas/Slimes/Boss_03.asset" },
         { Boss_04, "Assets/Datas/Slimes/Boss_04.asset" },
         { Boss_05, "Assets/Datas/Slimes/Boss_05.asset" },
-        { GachaConfig, "Assets/Datas/GachaConfig.asset" },
         { GameConfig, "Assets/Datas/GameConfig.asset" },
         { GradeStyle, "Assets/Datas/GradeStyle.asset" },
         { GridMapData1, "Assets/Datas/Grid/GridMapData1.asset" },
         { GridMapData2, "Assets/Datas/Grid/GridMapData2.asset" },
+        { HunterCardGachaConfig, "Assets/Datas/HunterCardGachaConfig.asset" },
         { SkillCatalog, "Assets/Datas/SkillCatalog.asset" },
         { SlimeDepthBucketSettings, "Assets/Datas/SlimeDepthBucketSettings.asset" },
         { Slime_01, "Assets/Datas/Slimes/Slime_01.asset" },

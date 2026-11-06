@@ -24,5 +24,8 @@ public class LobbyLifetimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<HunterCardView>();
         builder.RegisterEntryPoint<HunterCardPresenter>();
+
+        // 상점/카드 오픈 팝업 Presenter가 자식 스코프에서 읽으므로 Singleton이어야 같은 인스턴스를 받는다
+        builder.Register<HunterCardGachaService>(Lifetime.Singleton).As<IHunterCardGachaService>();
     }
 }

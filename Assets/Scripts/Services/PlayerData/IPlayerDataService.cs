@@ -9,6 +9,7 @@ public interface IPlayerDataService
     IReadOnlyReactiveProperty<int> Gem { get; }
     IReadOnlyReactiveProperty<int> BestWave { get; }
     IReadOnlyList<HunterState> Hunters { get; }
+    int HunterCardGachaPity { get; }
 
     UniTask InitializeAsync();
     bool TryGetHunter(int towerId, out HunterState hunter);
@@ -25,4 +26,5 @@ public interface IPlayerDataService
     bool TryGetLevelUpCost(int towerId, out int cards, out int gold);
     bool CanLevelUp(int towerId);
     bool TryLevelUp(int towerId);
+    bool TryApplyHunterCardGachaResult(HunterCardGachaResult result);
 }

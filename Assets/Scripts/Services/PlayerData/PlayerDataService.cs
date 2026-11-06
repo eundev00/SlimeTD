@@ -21,6 +21,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
     public IReadOnlyReactiveProperty<int> Gem => _gem;
     public IReadOnlyReactiveProperty<int> BestWave => _bestWave;
     public IReadOnlyList<HunterState> Hunters => _hunters;
+    public int HunterCardGachaPity { get; private set; }
 
     public PlayerDataService(
         IPlayerDataStore store,
@@ -90,6 +91,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         _gold.Value = data.Gold;
         _gem.Value = data.Gem;
         _bestWave.Value = data.BestWave;
+        HunterCardGachaPity = data.HunterCardGachaPity;
         IsInitialized = true;
 
         if (isNew || created)
@@ -231,6 +233,40 @@ public class PlayerDataService : IPlayerDataService, IDisposable
         return true;
     }
 
+    // 뽑기 한 번의 골드 차감, 카드 지급, 해금, 환급, 천장 카운터를 한꺼번에 반영하고 한 번만 저장한다.
+    public bool TryApplyHunterCardGachaResult(HunterCardGachaResult result)
+    {
+        if (!IsInitialized || result == null || _gold.Value < result.Price)
+            return false;
+
+        _gold.Value -= result.Price;
+
+        var cards = result.Cards;
+        for (int i = 0; i < cards.Count; i++)
+        {
+            var card = cards[i];
+            if (!_huntersById.TryGetValue(card.TowerId, out var hunter))
+                continue;
+
+            switch (card.Kind)
+            {
+                case HunterCardGachaCardKind.Unlock:
+                    hunter.Unlocked.Value = true;
+                    break;
+                case HunterCardGachaCardKind.Refund:
+                    _gold.Value += card.RefundGold;
+                    break;
+                default:
+                    hunter.Cards.Value += 1;
+                    break;
+            }
+        }
+
+        HunterCardGachaPity = result.PityAfter;
+        SaveAsync().Forget();
+        return true;
+    }
+
     public void Dispose()
     {
         for (int i = 0; i < _hunters.Count; i++)
@@ -250,6 +286,7 @@ public class PlayerDataService : IPlayerDataService, IDisposable
             Gold = _gold.Value,
             Gem = _gem.Value,
             BestWave = _bestWave.Value,
+            HunterCardGachaPity = HunterCardGachaPity,
         };
 
         for (int i = 0; i < _hunters.Count; i++)

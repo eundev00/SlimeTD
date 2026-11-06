@@ -7,6 +7,7 @@ public class PlayerData
     public int Gold;
     public int Gem;
     public int BestWave;
+    public int HunterCardGachaPity;
     public List<HunterRecord> Hunters = new List<HunterRecord>();
 }
 
