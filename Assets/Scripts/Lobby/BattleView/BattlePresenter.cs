@@ -17,6 +17,8 @@ public class BattlePresenter : IStartable, IDisposable
     {
         _view.StartClicked += HandleStartClicked;
         _view.DevTestClicked += HandleDevTestClicked;
+        _view.HunterCardGachaClicked += HandleHunterCardGachaClicked;
+        _view.SetHunterCardGachaNotice(false);
     }
 
     public void Dispose()
@@ -26,6 +28,13 @@ public class BattlePresenter : IStartable, IDisposable
 
         _view.StartClicked -= HandleStartClicked;
         _view.DevTestClicked -= HandleDevTestClicked;
+        _view.HunterCardGachaClicked -= HandleHunterCardGachaClicked;
+    }
+
+    // TODO: 헌터 카드 뽑기 팝업 열기
+    private void HandleHunterCardGachaClicked()
+    {
+        UnityEngine.Debug.Log("[BattlePresenter] 헌터 카드 뽑기 버튼");
     }
 
     private void HandleStartClicked()
