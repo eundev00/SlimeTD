@@ -28,6 +28,7 @@ public static class PrefabKeys
     public const string GroundGrassDark = "GroundGrassDark";
     public const string GroundGrassLight = "GroundGrassLight";
     public const string HunterCard = "HunterCard";
+    public const string HunterCardGachaPopup = "HunterCardGachaPopup";
     public const string HunterDetailPopup = "HunterDetailPopup";
     public const string Knight = "Knight";
     public const string KnightShield = "KnightShield";
@@ -116,6 +117,7 @@ public static class PrefabKeys
         { GroundGrassDark, "Assets/Prefabs/Game/Ground/GroundGrassDark.prefab" },
         { GroundGrassLight, "Assets/Prefabs/Game/Ground/GroundGrassLight.prefab" },
         { HunterCard, "Assets/Prefabs/Lobby/LobbyMain/HunterCard.prefab" },
+        { HunterCardGachaPopup, "Assets/Prefabs/Lobby/HunterCardGachaPopup.prefab" },
         { HunterDetailPopup, "Assets/Prefabs/Lobby/HunterDetailPopup.prefab" },
         { Knight, "Assets/Prefabs/Game/Characters/Knight.prefab" },
         { KnightShield, "Assets/Prefabs/Game/Characters/KnightShield.prefab" },

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Cysharp.Threading.Tasks;
 using VContainer.Unity;
 
@@ -6,11 +6,13 @@ public class BattlePresenter : IStartable, IDisposable
 {
     private readonly BattleView _view;
     private readonly ISceneLoader _sceneLoader;
+    private readonly IPopupService _popupService;
 
-    public BattlePresenter(BattleView view, ISceneLoader sceneLoader)
+    public BattlePresenter(BattleView view, ISceneLoader sceneLoader, IPopupService popupService)
     {
         _view = view;
         _sceneLoader = sceneLoader;
+        _popupService = popupService;
     }
 
     public void Start()
@@ -31,10 +33,9 @@ public class BattlePresenter : IStartable, IDisposable
         _view.HunterCardGachaClicked -= HandleHunterCardGachaClicked;
     }
 
-    // TODO: 헌터 카드 뽑기 팝업 열기
     private void HandleHunterCardGachaClicked()
     {
-        UnityEngine.Debug.Log("[BattlePresenter] 헌터 카드 뽑기 버튼");
+        _popupService.OpenAsync<HunterCardGachaPopup>(PrefabKeys.HunterCardGachaPopup).Forget();
     }
 
     private void HandleStartClicked()
