@@ -306,7 +306,7 @@ MonoBehaviour:
       _value: 5
       _valueType: 1
       _duration: 0
-    _vfxKey: VfxSwordSlashBlue
+    _vfxKey: VfxKnightSlash
     _vfxAnchor: 3
     _animTrigger: 
   - _id: 20302
@@ -324,7 +324,7 @@ MonoBehaviour:
       _value: 10
       _valueType: 1
       _duration: 0
-    _vfxKey: VfxSwordSlashBlue
+    _vfxKey: VfxKnightSlash
     _vfxAnchor: 3
     _animTrigger: 
   - _id: 20303
@@ -342,7 +342,7 @@ MonoBehaviour:
       _value: 20
       _valueType: 1
       _duration: 0
-    _vfxKey: VfxSwordSlashBlue
+    _vfxKey: VfxKnightSlash
     _vfxAnchor: 3
     _animTrigger: 
   - _id: 20401

@@ -9725,7 +9725,7 @@ GameObject:
   - component: {fileID: 198181474051136930}
   - component: {fileID: 199978471977448416}
   m_Layer: 0
-  m_Name: VfxSwordSlashBlue
+  m_Name: VfxKnightSlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
