@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEditor;
@@ -10,7 +10,7 @@ public static class WaveMapBuilder
 {
     private const string PrefabFolder = "Assets/Prefabs/Lobby/LobbyMain";
     private const string FontPath = "Assets/Fonts/Pretendard/Pretendard-SemiBold SDF.asset";
-    private const string ThemeFolder = "Assets/ThirdParty/Layer Lab/GUI Pro-MinimalGame";
+    private const string ThemeFolder = "Assets/Art/UI/Common";
 
     private const string Cream = "#FBF3E4";
     private const string CreamBorder = "#C9B48C";
@@ -106,7 +106,7 @@ public static class WaveMapBuilder
         var marker = NewRect("PlayerMarker", content);
         Place(marker, new Vector2(0.5f, 0f), new Vector2(0f, BaseOffset), new Vector2(360f, 330f), new Vector2(0.5f, 0f));
         var character = Block("ImgPlayer", marker, "#FFFFFF", new Vector2(0.5f, 0f), Vector2.zero, new Vector2(150f, 200f), new Vector2(0.5f, 0f));
-        SetThemeSprite(character, "Sample_Cha02_s", "Demo_Character");
+        SetThemeSprite(character, "Sample_Cha02_s", "Character");
         var tag = FrameBlock("ImgBestTag", marker, new Vector2(0.5f, 0f), new Vector2(0f, 220f), new Vector2(340f, 70f), new Vector2(0.5f, 0f));
         var bestText = Label("TxtBestWave", tag, "도전 시작!", 34, BrownDark, TextAlignmentOptions.Center, true);
 
@@ -114,7 +114,7 @@ public static class WaveMapBuilder
         Place(complete, new Vector2(0.5f, 0f), new Vector2(0f, waveTopY + 330f), new Vector2(620f, 420f), new Vector2(0.5f, 0.5f));
 
         var flag = Block("IconWaveCompleteFlag", complete, "#FFFFFF", new Vector2(0.5f, 1f), Vector2.zero, new Vector2(240f, 240f), new Vector2(0.5f, 1f));
-        SetThemeSprite(flag, "Item_Flag_01_Finish", "UniqueIcon/256");
+        SetThemeSprite(flag, "Item_Flag_01_Finish", "Icon");
         var banner = FrameBlock("FrameWaveComplete", complete, new Vector2(0.5f, 0f), Vector2.zero, new Vector2(560f, 120f), new Vector2(0.5f, 0f));
         Label("TxtWaveComplete", banner, "웨이브 완료", 56, BrownDark, TextAlignmentOptions.Center, true);
 
@@ -339,13 +339,13 @@ public static class WaveMapBuilder
     private static RectTransform FrameBlock(string name, Transform parent, Vector2 anchor, Vector2 position, Vector2 size, Vector2 pivot)
     {
         var rt = Block(name, parent, Cream, anchor, position, size, pivot);
-        SetThemeSprite(rt, "BasicFrame_Rectangle_01~04_White_Bg", "Sprite_Common", ParseColor(Cream));
+        SetThemeSprite(rt, "BasicFrame_Rectangle_Bg", "Frame", ParseColor(Cream));
 
         var border = NewRect("ImgBorder", rt);
         Stretch(border);
         var image = border.gameObject.AddComponent<Image>();
         image.raycastTarget = false;
-        SetThemeSprite(border, "BasicFrame_Rectangle_01~04_White_Border1", "Sprite_Common", ParseColor(CreamBorder));
+        SetThemeSprite(border, "BasicFrame_Rectangle_Border1", "Frame", ParseColor(CreamBorder));
         return rt;
     }
 
