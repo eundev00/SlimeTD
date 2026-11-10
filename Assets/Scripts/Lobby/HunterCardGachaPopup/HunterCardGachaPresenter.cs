@@ -1,4 +1,3 @@
-using System.Text;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
@@ -8,17 +7,19 @@ public class HunterCardGachaPresenter : IPopupPresenter
     private readonly HunterCardGachaPopup _popup;
     private readonly IHunterCardGachaService _gachaService;
     private readonly IPlayerDataService _playerDataService;
+    private readonly IPopupService _popupService;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     private HunterCardGachaConfig _config;
     private bool _drawing;
     private bool _disposed;
 
-    public HunterCardGachaPresenter(HunterCardGachaPopup popup, IHunterCardGachaService gachaService, IPlayerDataService playerDataService)
+    public HunterCardGachaPresenter(HunterCardGachaPopup popup, IHunterCardGachaService gachaService, IPlayerDataService playerDataService, IPopupService popupService)
     {
         _popup = popup;
         _gachaService = gachaService;
         _playerDataService = playerDataService;
+        _popupService = popupService;
     }
 
     public void Initialize()
@@ -100,20 +101,9 @@ public class HunterCardGachaPresenter : IPopupPresenter
             return;
         }
 
-        // TODO: 카드 오픈 연출 팝업 (4단계)
-        LogResult(result);
-    }
-
-    private void LogResult(HunterCardGachaResult result)
-    {
-        var builder = new StringBuilder($"[HunterCardGachaPresenter] 뽑기 결과 ({result.Cards.Count}장, 천장 {result.PityAfter})");
-        foreach (var card in result.Cards)
-        {
-            string name = _playerDataService.TryGetHunter(card.TowerId, out var hunter) ? hunter.Data.TowerName : card.TowerId.ToString();
-            builder.Append($"\n  {name} 등급 {card.GradeId} {card.Kind}{(card.RefundGold > 0 ? $" +{card.RefundGold}골드" : string.Empty)}");
-        }
-
-        Debug.Log(builder.ToString());
+        var revealPopup = await _popupService.OpenAsync<HunterCardRevealPopup>(PrefabKeys.HunterCardRevealPopup);
+        if (revealPopup != null)
+            revealPopup.SetResult(result);
     }
 
     private void HandleCloseClicked()
