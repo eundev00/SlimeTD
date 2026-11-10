@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 6304550979438566945}
   - component: {fileID: 6583080133682948031}
   - component: {fileID: 3333411503708553658}
+  - component: {fileID: 6596259901513375534}
   m_Layer: 8
   m_Name: Knight
   m_TagString: Untagged
@@ -246,6 +247,7 @@ Transform:
   m_Children:
   - {fileID: 6664335346177747793}
   - {fileID: 9150142654449927346}
+  - {fileID: 6808898434449528579}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &909486225385298241
@@ -314,6 +316,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7, y: 1, z: 0.7}
   m_Center: {x: 0, y: 0.6, z: 0}
+--- !u!114 &6596259901513375534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107671493890513731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d78fa89886681e14c9dfd4ff42c0d5a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerVfxAnchors
+  _center: {fileID: 0}
+  _head: {fileID: 0}
+  _front: {fileID: 6808898434449528579}
 --- !u!1 &2214345254669020934
 GameObject:
   m_ObjectHideFlags: 0
@@ -6097,6 +6114,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000140070915, y: 1.7500387, z: 0.024851978}
     m_Extent: {x: 0.54317343, y: 0.5341474, z: 0.50694174}
   m_DirtyAABB: 0
+--- !u!1 &5441943006015952316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6808898434449528579}
+  m_Layer: 0
+  m_Name: VfxFront
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6808898434449528579
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5441943006015952316}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 135888673708543291}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5452643466323373544
 GameObject:
   m_ObjectHideFlags: 0
