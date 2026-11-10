@@ -50,22 +50,22 @@ SlimeRenderGroup (enum)
 
 ```
 TowerCatalog (SO, 1개)
-└─ towers            : TowerData[]              // 전체 타워 목록. 임포터가 시트 기준으로 채움
+└─ towers            : TowerData[]              // 전체 타워 목록. 시트 기준으로 채움 (sheets-to-so 스킬)
    런타임 인덱스: ID -> TowerData, 등급 -> 뽑기 후보(활성 + 프리팹 있음)
    TryDraw(등급), TryDrawNextGrade(소스) — 소환과 합성 결과에 사용
 
 TowerData (SO, 종류당 1개)
 ├─ id                : int                      // 시트 ID. 등급 대역을 가짐
 ├─ gradeId           : int                      // 시트 등급. 등급의 유일한 원천
-├─ gradeName         : string                   // 등급 시트의 이름 (임포터가 채움)
+├─ gradeName         : string                   // 등급 시트의 이름
 ├─ enabled           : bool                     // false면 뽑기 후보에서 제외
 ├─ towerName         : string
 ├─ prefab            : GameObject
 ├─ attackRange       : float = 5                // 탐지 범위 (발사체 도달거리와 별개)
 ├─ attackType        : Melee / Projectile / Beam  // 근접 / 원거리(투사체) / 즉시 타격 빔. 인스펙터에서 지정
 ├─ projectilePrefab  : GameObject               // Projectile일 때. 풀 크기는 코드 상수
-├─ baseAttack        : float                    // 등급 시트의 기준공격력 (임포터가 채움)
-├─ attackGrowthRate  : float                    // 레벨당 공격력 증가율 % (임포터가 채움)
+├─ baseAttack        : float                    // 등급 시트의 기준공격력
+├─ attackGrowthRate  : float                    // 레벨당 공격력 증가율 %
 ├─ attackCooldown    : float                    // 시트
 ├─ critChance        : float = 10               // %. 시트
 ├─ critBonus         : float = 100              // %. 시트
@@ -83,7 +83,7 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
 공격 애니메이션은 모든 타워가 Animator의 `Attack` 트리거 하나를 쓴다(`AttackBehaviourBase`의 상수). 타워 프리팹의 Animator Controller에 `Attack` Trigger 파라미터가 없으면 조용히 무시되고 애니메이션이 재생되지 않는다.
 
 ## 시트 → SO 임포트
- 숫자의 원천은 CSV다. 1줄은 영문 키, 2줄은 한글 설명이며, 임포터는 1줄만 읽는다. 위치는 데이터 저장소 `C:\Projects\SlimeTD-Data\Sheets\`다 (클라이언트 프로젝트 안에 복사본을 두지 않는다).
+ 숫자의 원천은 CSV다. 1줄은 영문 키이고 열 설명은 데이터 저장소 `Sheets/README.md`에 있다. 위치는 데이터 저장소 `C:\Projects\SlimeTD-Data\Sheets\`다 (클라이언트 프로젝트 안에 복사본을 두지 않는다).
 
 | 시트 | 키 | 열 |
 |---|---|---|
@@ -91,8 +91,8 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
 | `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(1/0, 비우면 잠금), `unlockGemPrice` |
 | `Skills.csv` | `skillId` | 아래 [타워 스킬](#타워-스킬) 참고 |
 
-- 실행: `sheets-to-so` 스킬이 이 임포터를 함께 호출한다 (메뉴 `SlimeTD > Data > Import Tower Sheets`도 남아 있다). `TowerData`를 ID로 찾아(없으면 `TowerData_<코드명>` 이름, 그래도 없으면 새로 생성) 숫자 필드를 덮어쓰고 `TowerCatalog`를 시트 기준으로 채운다
-- 프리팹, 투사체 프리팹 같은 에셋 참조는 임포터가 건드리지 않으므로 인스펙터에서 한 번 연결한다
+- 실행: `sheets-to-so` 스킬로 반영한다. 변환 코드나 메뉴 없이 시트 값을 `TowerData_<코드명>` 에셋에 직접 쓰고 `TowerCatalog`를 시트 기준으로 맞춘다
+- 타워 프리팹은 `codeName`으로 로드하고, 투사체 모양은 타워 프리팹의 `ProjectileLauncher`가 가진다. 시트에는 넣지 않는다
 - 숫자는 시트에서만 고친다. 인스펙터에서 고쳐도 다음 임포트 때 덮어써진다
 
 ## 타워 스킬
@@ -105,7 +105,7 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
 
 ```
 SkillCatalog (SO, 1개. Assets/Datas/SkillCatalog.asset)
-└─ skills            : TowerSkillData[]           // 임포터가 채움. 직렬화 클래스(SO 아님)
+└─ skills            : TowerSkillData[]           // 시트 기준으로 채움. 직렬화 클래스(SO 아님)
    런타임 인덱스: towerId -> 스킬 목록 (해금 레벨 순, 같으면 ID 순)
    GetSkills(towerId) — 없으면 빈 목록. 해금 여부와 상관없이 그 타워의 전체 스킬 (UI 슬롯용)
    GetActiveSkills(towerId, level, buffer) — 레벨에 해금됐고, 해금된 업그레이드 스킬에 대체되지 않은 스킬만
@@ -131,7 +131,7 @@ TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
 | `Skills.csv` | `skillId` | 식별 `name`, `description` / 대상 `towerId`, `unlockLevel`(기본 1), `upgradeOf`(대체할 스킬 ID, 비우면 없음) / 발동 `trigger`, `nth`, `chance`(%, 비우면 없음), `cooldown`(초, 비우면 없음) / 효과 `effectType`, `value`(`%`를 붙이면 퍼센트), `duration`(초, 비우면 상시) |
 
 - 스킬 하나에 효과는 한 개다. 효과가 둘인 스킬이 필요해지면 효과 열을 한 세트 더 추가한다
-- 실행: 메뉴 `SlimeTD > Data > Import Skill Sheets`. 시트 전체로 `SkillCatalog`의 스킬 목록을 새로 채운다. 여러 번 실행해도 결과가 같다. `towerId`가 `Towers.csv`에 없는 행은 건너뛴다
+- 실행: `sheets-to-so` 스킬로 반영한다. 시트 전체로 `SkillCatalog`의 스킬 목록을 새로 채운다. `towerId`가 `Towers.csv`에 없는 행은 반영하지 않고 보고한다
 - 스킬 ID는 `타워ID×100+순번`이다 (궁수 10101~, 일병 10301~). 한 번 정한 ID는 바꾸지 않고, 추가는 그 타워의 다음 빈 번호를 쓴다
 - `effectType`: `CritChance` / `CritBonus` / `AttackSpeed` / `Attack` / `MultiShot` / `Pierce` / `Slow` / `JellyGain` / `DamageMultiplier` / `Splash`
 - `value`: `%`가 붙으면 `Percent`, 없으면 `Fixed`로 읽는다. 효과마다 쓸 수 있는 단위가 정해져 있다 (`SkillEffectRules`). `MultiShot`의 값은 추가로 쏘는 발수(2연발이면 1)이고, `DamageMultiplier`는 공격력의 총 배율(300%는 3배, 치명타 보너스와 달리 "더하기"가 아니다)이다
@@ -175,7 +175,7 @@ IPlayerDataService (Project 스코프)
 - `ReportWaveReached(n)`은 기존 값보다 클 때만 갱신·저장한다. 초기화 전(게임 씬만 단독 실행)에는 저장하지 않는다. 호출 시점과 값 규칙은 [로비 UI](슬라임TD_로비UI.md#최고-웨이브-기록-규칙) 참고
 
 - 레벨업은 그 헌터의 `Cards`와 골드를 함께 차감한다. 잠긴 헌터도 `AddHunterCards`로 카드를 받을 수 있지만 레벨업은 해금 후에만 된다
-- 레벨업 비용은 `TowerData.levelUpCost`(등급 시트 값을 임포터가 채움)에서 읽는다. `Grades.csv`의 `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
+- 레벨업 비용은 `TowerData.levelUpCost`(LevelUpCosts 시트 값)에서 읽는다. `Grades.csv`의 `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
 - 로드와 레벨업 때 `ITowerLevelService`에 레벨을 반영하며, 게임 씬은 이 값을 그대로 읽는다
 - 해금: 시작 해금은 `Towers.csv`의 `startUnlocked`로 타워마다 정한다 (등급 기본값은 없다). 잠긴 헌터는 `unlockGemPrice`만큼 보석을 써서 `TryPurchaseHunter`로 해금한다
 - 소환/합성 후보는 `IsAvailable`로 해금된 헌터만 거른다. 로비를 거치지 않은 에디터 테스트에서는 제한이 없다
