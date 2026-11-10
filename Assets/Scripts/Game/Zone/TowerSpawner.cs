@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using VContainer;
 
 public class TowerSpawner : MonoBehaviour
@@ -9,6 +9,7 @@ public class TowerSpawner : MonoBehaviour
     private IGameplayService _gameplayService;
     private IGroundHeightSampler _groundHeightSampler;
     private IPlayerDataService _playerDataService;
+    private ITowerPrefabProvider _prefabProvider;
     private TowerCells _towerCells;
 
     private Transform _spawnRoot;
@@ -19,12 +20,14 @@ public class TowerSpawner : MonoBehaviour
         IObjectResolver resolver,
         IGameplayService gameplayService,
         IGroundHeightSampler groundHeightSampler,
-        IPlayerDataService playerDataService)
+        IPlayerDataService playerDataService,
+        ITowerPrefabProvider prefabProvider)
     {
         _resolver = resolver;
         _gameplayService = gameplayService;
         _groundHeightSampler = groundHeightSampler;
         _playerDataService = playerDataService;
+        _prefabProvider = prefabProvider;
     }
 
     public void Initialize(TowerCells towerCells, Transform spawnRoot)
@@ -65,9 +68,9 @@ public class TowerSpawner : MonoBehaviour
             return false;
         }
 
-        if (towerData.Prefab == null)
+        if (!_prefabProvider.TryGet(towerData, out var prefab))
         {
-            Debug.Log("[TowerSpawner] 선택된 TowerData에 프리팹이 없습니다.", this);
+            Debug.Log($"[TowerSpawner] 타워 프리팹이 없습니다: {towerData.CodeName}", this);
             return false;
         }
 
@@ -81,7 +84,7 @@ public class TowerSpawner : MonoBehaviour
         var position = GridUtility.GridToWorld(cell.x, cell.y, gridMapData);
         position = _groundHeightSampler.SnapToGround(position);
 
-        var tower = CreateTower(towerData, position);
+        var tower = CreateTower(prefab, towerData, position);
 
         var handler = tower.GetComponent<ITowerInteractionHandler>();
         if (handler == null)
@@ -102,7 +105,7 @@ public class TowerSpawner : MonoBehaviour
         Vector2Int partnerCell,
         ITowerInteractionHandler partner)
     {
-        if (resultData == null || resultData.Prefab == null)
+        if (resultData == null || !_prefabProvider.TryGet(resultData, out var resultPrefab))
         {
             Debug.Log("[TowerSpawner] 합성 결과 타워에 프리팹이 없습니다.", this);
             return false;
@@ -133,7 +136,7 @@ public class TowerSpawner : MonoBehaviour
         var position = GridUtility.GridToWorld(resultCell.x, resultCell.y, gridMapData);
         position = _groundHeightSampler.SnapToGround(position);
 
-        var tower = CreateTower(resultData, position);
+        var tower = CreateTower(resultPrefab, resultData, position);
 
         var handler = tower.GetComponent<ITowerInteractionHandler>();
         if (handler == null)
@@ -175,9 +178,9 @@ public class TowerSpawner : MonoBehaviour
         return _playerDataService == null || _playerDataService.IsAvailable(towerData.Id);
     }
 
-    private GameObject CreateTower(TowerData towerData, Vector3 position)
+    private GameObject CreateTower(GameObject prefab, TowerData towerData, Vector3 position)
     {
-        return TowerFactory.Create(_resolver, towerData, GetHolder(), _spawnRoot, position);
+        return TowerFactory.Create(_resolver, prefab, towerData, GetHolder(), _spawnRoot, position);
     }
 
     private Transform GetHolder()

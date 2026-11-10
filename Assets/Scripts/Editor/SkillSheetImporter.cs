@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -8,14 +8,13 @@ using UnityEngine;
 public static class SkillSheetImporter
 {
     private const string LogTag = "SkillSheetImporter";
-    private const string SheetFolder = "Assets/Datas/Sheets";
     private const string SkillsFile = "Skills.csv";
     private const string CatalogPath = "Assets/Datas/SkillCatalog.asset";
 
     [MenuItem("SlimeTD/Data/Import Skill Sheets")]
     public static void Import()
     {
-        if (!SheetReader.TryReadTable($"{SheetFolder}/{SkillsFile}", LogTag, out var skillRows))
+        if (!SheetReader.TryReadTable(SheetReader.PathOf(SkillsFile), LogTag, out var skillRows))
             return;
 
         var towerIds = CollectTowerIds();

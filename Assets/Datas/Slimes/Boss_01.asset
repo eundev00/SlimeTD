@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c3e5a71b8d24f60a417e9c2d5b306f8, type: 3}
   m_Name: Boss_01
   m_EditorClassIdentifier: Assembly-CSharp::BossSlimeData
+  _slimeId: 100101
   _prefab: {fileID: 4941929678292297010, guid: 1df1e83b98aaa459b947b32a40d3621e, type: 3}
   _baseHealth: 5000
   _baseSpeed: 0.7
   _lifeCost: 10
   _renderGroup: 1
   _jellyReward: 100
-  _instantGameOver: 1
+  _instantGameOver: 0

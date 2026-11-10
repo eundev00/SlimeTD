@@ -1,27 +1,3 @@
-public enum SkillTrigger
-{
-    Always,
-    OnAttack,
-    OnHit,
-    OnKill,
-    EveryNthAttack,
-}
-
-public enum SkillEffectType
-{
-    CritChance,
-    CritBonus,
-    AttackSpeed,
-    Attack,
-    MultiShot,
-    Pierce,
-    Slow,
-    JellyGain,
-    DamageMultiplier,
-    Splash,
-    Stun,
-}
-
 public enum SkillValueType
 {
     Fixed,

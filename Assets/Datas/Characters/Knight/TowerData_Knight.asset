@@ -17,15 +17,16 @@ MonoBehaviour:
   _enabled: 1
   _codeName: Knight
   _towerName: "\uAE30\uC0AC"
-  _prefab: {fileID: 2107671493890513731, guid: e34aa2de0595740edb531d9413d9e106, type: 3}
-  _attackRange: 1
   _attackType: 0
-  _projectilePrefab: {fileID: 0}
+  _attackRange: 1
   _baseAttack: 200
   _attackGrowthRate: 5
   _attackCooldown: 1
   _critChance: 10
   _critBonus: 100
+  _projectileSpeed: 0
+  _projectileHitRadius: 0
+  _projectileLifetime: 0
   _startUnlocked: 1
   _unlockGemPrice: 0
   _inGacha: 1

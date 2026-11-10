@@ -1,0 +1,241 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cfaff4b83cf63746a1581dd24eed0dc, type: 3}
+  m_Name: Stage_SingleNormal
+  m_EditorClassIdentifier: Assembly-CSharp::StageData
+  _stageId: 11
+  _codeName: SingleNormal
+  _mode: 1
+  _difficulty: 1
+  _displayName: "\uC2F1\uAE00 \uBCF4\uD1B5"
+  _enabled: 1
+  _startingLife: 10
+  _startingJelly: 50
+  _spawnInterval: 0.8
+  _interWaveDelay: 2
+  _normalHpGrowth: 0.06
+  _waves:
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
+      _count: 10
+      _delay: 0
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f4, type: 2}
+      _count: 1
+      _delay: 0.5
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f2, type: 2}
+      _count: 11
+      _delay: 0
+    - _slime: {fileID: 11400000, guid: 85e16d32317594170b7de993ec0d0088, type: 2}
+      _count: 1
+      _delay: 0.5
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f3, type: 2}
+      _count: 12
+      _delay: 0
+    - _slime: {fileID: 11400000, guid: 468b86f21e7204bf7b6f17f3dd323b98, type: 2}
+      _count: 1
+      _delay: 1
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 5945ad67a0bfe47dbbd876b4229680d8, type: 2}
+      _count: 13
+      _delay: 0
+    - _slime: {fileID: 11400000, guid: aca79f126081d469ea2c06d141827200, type: 2}
+      _count: 1
+      _delay: 1
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+  - _groups:
+    - _slime: {fileID: 11400000, guid: 1ebc61b8767048a79a3da1ab66d9c463, type: 2}
+      _count: 14
+      _delay: 0
+    - _slime: {fileID: 11400000, guid: d2934cfdc592a418380060b838a3c11a, type: 2}
+      _count: 1
+      _delay: 1

@@ -17,15 +17,16 @@ MonoBehaviour:
   _enabled: 1
   _codeName: Lumberjack
   _towerName: "\uB098\uBB34\uAFBC"
-  _prefab: {fileID: 3563958071284705386, guid: 84211fadc6d344ed2916a4027a232a3d, type: 3}
-  _attackRange: 1
   _attackType: 0
-  _projectilePrefab: {fileID: 0}
+  _attackRange: 1
   _baseAttack: 100
   _attackGrowthRate: 5
   _attackCooldown: 1.5
   _critChance: 10
   _critBonus: 100
+  _projectileSpeed: 0
+  _projectileHitRadius: 0
+  _projectileLifetime: 0
   _startUnlocked: 1
   _unlockGemPrice: 0
   _inGacha: 1

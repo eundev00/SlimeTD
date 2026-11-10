@@ -17,15 +17,16 @@ MonoBehaviour:
   _enabled: 1
   _codeName: GoodSlime
   _towerName: "\uCC29\uD55C \uC2AC\uB77C\uC784"
-  _prefab: {fileID: 6952525254838639008, guid: c9b8b7c535ba3466facf4fd96e4274c7, type: 3}
-  _attackRange: 2
   _attackType: 1
-  _projectilePrefab: {fileID: 2717176595723297759, guid: bc2ca114e437e424387881b7f39da19b, type: 3}
+  _attackRange: 2
   _baseAttack: 100
   _attackGrowthRate: 5
   _attackCooldown: 1
   _critChance: 10
   _critBonus: 100
+  _projectileSpeed: 5
+  _projectileHitRadius: 0.15
+  _projectileLifetime: 3
   _startUnlocked: 1
   _unlockGemPrice: 0
   _inGacha: 1

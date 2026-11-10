@@ -19,6 +19,7 @@ public static class DataKeys
     public const string Slime_03 = "Slime_03";
     public const string Slime_04 = "Slime_04";
     public const string Slime_05 = "Slime_05";
+    public const string Stage_SingleNormal = "Stage_SingleNormal";
     public const string TowerCatalog = "TowerCatalog";
     public const string TowerData_Archer = "TowerData_Archer";
     public const string TowerData_Crossbow = "TowerData_Crossbow";
@@ -28,7 +29,6 @@ public static class DataKeys
     public const string TowerData_Monolith = "TowerData_Monolith";
     public const string TowerData_Ranger = "TowerData_Ranger";
     public const string TowerData_Swordsman = "TowerData_Swordsman";
-    public const string WaveEasyTable = "WaveEasyTable";
 
     public static readonly Dictionary<string, string> DataPaths = new Dictionary<string, string>()
     {
@@ -49,6 +49,7 @@ public static class DataKeys
         { Slime_03, "Assets/Datas/Slimes/Slime_03.asset" },
         { Slime_04, "Assets/Datas/Slimes/Slime_04.asset" },
         { Slime_05, "Assets/Datas/Slimes/Slime_05.asset" },
+        { Stage_SingleNormal, "Assets/Datas/Stages/Stage_SingleNormal.asset" },
         { TowerCatalog, "Assets/Datas/TowerCatalog.asset" },
         { TowerData_Archer, "Assets/Datas/Characters/Archer/TowerData_Archer.asset" },
         { TowerData_Crossbow, "Assets/Datas/Characters/Crossbow/TowerData_Crossbow.asset" },
@@ -58,7 +59,6 @@ public static class DataKeys
         { TowerData_Monolith, "Assets/Datas/Characters/Monolith/TowerData_Monolith.asset" },
         { TowerData_Ranger, "Assets/Datas/Characters/Ranger/TowerData_Ranger.asset" },
         { TowerData_Swordsman, "Assets/Datas/Characters/Swordsman/TowerData_Swordsman.asset" },
-        { WaveEasyTable, "Assets/Datas/Waves/Easy/WaveEasyTable.asset" },
     };
 
     public static string GetDataPath(string key)

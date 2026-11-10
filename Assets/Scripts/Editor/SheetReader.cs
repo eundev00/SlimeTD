@@ -6,6 +6,14 @@ using UnityEngine;
 
 public static class SheetReader
 {
+    // 시트 원본은 클라이언트 옆 데이터 저장소(SlimeTD-Data)에 있다. 프로젝트 안에는 복사본을 두지 않는다.
+    public static string SheetFolder => Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "SlimeTD-Data", "Sheets"));
+
+    public static string PathOf(string fileName)
+    {
+        return Path.Combine(SheetFolder, fileName);
+    }
+
     // 1줄은 영문 키다. 열 설명은 시트 폴더의 README.md에 있다.
     public static bool TryReadTable(string path, string logTag, out List<Dictionary<string, string>> rows)
     {

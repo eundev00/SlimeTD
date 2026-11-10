@@ -17,15 +17,16 @@ MonoBehaviour:
   _enabled: 1
   _codeName: Monolith
   _towerName: "\uBAA8\uB178\uB9AC\uC2A4"
-  _prefab: {fileID: 6952525254838639008, guid: 3ab7f3179dffa1c4fb4d12a5719bf6e9, type: 3}
+  _attackType: 1
   _attackRange: 2.5
-  _attackType: 2
-  _projectilePrefab: {fileID: 0}
   _baseAttack: 1000
   _attackGrowthRate: 5
   _attackCooldown: 1.2
   _critChance: 10
   _critBonus: 100
+  _projectileSpeed: 5
+  _projectileHitRadius: 0.15
+  _projectileLifetime: 3
   _startUnlocked: 0
   _unlockGemPrice: 100
   _inGacha: 1

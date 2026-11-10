@@ -43,6 +43,7 @@ public static class PrefabKeys
     public const string Lumberjack = "Lumberjack";
     public const string LumberjackAxe = "LumberjackAxe";
     public const string Monolith = "Monolith";
+    public const string MonolithBolt = "MonolithBolt";
     public const string Mushroom01 = "Mushroom01";
     public const string Mushroom02 = "Mushroom02";
     public const string Ranger = "Ranger";
@@ -134,6 +135,7 @@ public static class PrefabKeys
         { Lumberjack, "Assets/Prefabs/Game/Characters/Lumberjack.prefab" },
         { LumberjackAxe, "Assets/Prefabs/Game/Characters/LumberjackAxe.prefab" },
         { Monolith, "Assets/Prefabs/Game/Characters/Monolith.prefab" },
+        { MonolithBolt, "Assets/Prefabs/Game/Characters/MonolithBolt.prefab" },
         { Mushroom01, "Assets/Prefabs/Game/Env/Mushroom01.prefab" },
         { Mushroom02, "Assets/Prefabs/Game/Env/Mushroom02.prefab" },
         { Ranger, "Assets/Prefabs/Game/Characters/Ranger.prefab" },

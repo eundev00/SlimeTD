@@ -4,7 +4,8 @@ using UnityEngine;
 public class BossSlimeData : SlimeDataBase
 {
     [Tooltip("켜면 경로 끝 도달 시 즉시 게임오버, 끄면 _lifeCost만큼 차감")]
-    [SerializeField] private bool _instantGameOver = true;
+    [SerializeField] private bool _instantGameOver;
 
+    public override SlimeKind Kind => SlimeKind.Boss;
     public override bool InstantGameOver => _instantGameOver;
 }

@@ -640,7 +640,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _popupRoot: {fileID: 1101106652}
-  _waveTable: {fileID: 11400000, guid: 9f90d1109bb8041bf9e927397776caa3, type: 2}
+  _stage: {fileID: 11400000, guid: d5149f7fa4ccd154aa364d4e83096caf, type: 2}
 --- !u!4 &761882078
 Transform:
   m_ObjectHideFlags: 0

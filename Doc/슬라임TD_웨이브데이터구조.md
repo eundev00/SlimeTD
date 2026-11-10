@@ -2,111 +2,63 @@
 
 웨이브 데이터의 타입·필드·계산식을 정리한 문서다. 구간별 수치, 전체 웨이브 표, 젤리, 밸런싱 근거는 [웨이브 기획](슬라임TD_웨이브기획.md)을 참고한다.
 
+수치의 원본은 데이터 저장소(`C:\Projects\SlimeTD-Data`)의 `Sheets/Slimes.csv`, `Sheets/Stages.csv`, `Sheets/Waves/<codeName>.csv`다. 아래 SO는 서버 연결 전까지 쓰는 임시 데이터이고, `sheets-to-so` 스킬로 시트를 반영한다. 열 설명은 데이터 저장소 `Sheets/README.md`에 있다.
+
 ---
 
 ## 1. 타입 정의
 
 ```
 SlimeDataBase (abstract SO, CreateAssetMenu 없음)
- ├─ _prefab
+ ├─ _slimeId          (Slimes.slimeId)
+ ├─ _prefab           (인스펙터에서 연결)
  ├─ _baseHealth
  ├─ _baseSpeed
  ├─ _lifeCost
  ├─ _renderGroup
  └─ _jellyReward
 
-SlimeData : SlimeDataBase        (추가 필드 없음, 구간 슬롯 타입 구분용)
+SlimeData : SlimeDataBase        (kind = Normal)
 
-BossSlimeData : SlimeDataBase
+BossSlimeData : SlimeDataBase    (kind = Boss)
  └─ _instantGameOver
 
-WaveTableData (SO, 스테이지마다 하나)
- ├─ _spawnInterval
- ├─ _interWaveDelay
- ├─ _normalHpGrowth
- └─ _zones : List<WaveZone>
+StageData (SO, 스테이지마다 하나: Assets/Datas/Stages/Stage_<codeName>.asset)
+ ├─ _stageId, _codeName, _mode, _difficulty, _displayName, _enabled
+ ├─ _startingLife, _startingJelly
+ ├─ _spawnInterval, _interWaveDelay, _normalHpGrowth
+ └─ _waves : List<StageWave>          (1웨이브부터 순서대로)
 
-WaveZone ([Serializable])
- ├─ _slime : SlimeData
+StageWave ([Serializable])
+ └─ _groups : List<StageWaveGroup>    (웨이브 안에서 나오는 순서대로)
+
+StageWaveGroup ([Serializable])
+ ├─ _slime : SlimeDataBase
  ├─ _count
- ├─ _boss  : BossSlimeData
- └─ _bossExtraStartDelay
+ └─ _delay                            (이 무리가 나오기 전 추가 대기)
 ```
-
-`WaveZone`은 별도 SO가 아니라 인라인 `[Serializable]`이다.
 
 `SlimeData`는 concrete를 유지한다. abstract로 바꾸면 기존 일반 슬라임 에셋이 전부 깨진다.
 
 ---
 
-## 2. 구간 구조
+## 2. 웨이브 진행
 
-10웨이브가 한 구간이다. 구간마다 슬라임 종류가 바뀌고, 10의 배수 웨이브는 보스 단독이다. 한 웨이브에는 한 종류만 등장한다.
+- 웨이브 시작 전 `_interWaveDelay`만큼 기다린다
+- 무리를 순서대로 내보낸다. 무리 앞에 `_delay`, 무리 안 슬라임은 `_spawnInterval` 간격
+- 스폰이 끝나면 즉시 다음 웨이브로 넘어간다. 이전 웨이브 슬라임이 남아 있어도 무관하다. 최종 웨이브만 예외로, 슬라임이 전부 처리된 후 스테이지 클리어를 판정한다
+- 보스 웨이브는 따로 표시하지 않는다. 보스가 든 무리가 있는 웨이브가 보스 웨이브다. 지금 `SingleNormal`은 10의 배수 웨이브에 일반 슬라임이 먼저 나오고, 보스 무리의 `_delay`(0.5~1초) 뒤에 보스가 나온다
 
-| 구간 | 웨이브 | 슬라임 | 보스 |
-|---|---|---|---|
-| 1 | 1~9 | Slime_01 | 10 → Boss_01 |
-| 2 | 11~19 | Slime_02 | 20 → Boss_02 |
-| 3 | 21~29 | Slime_03 | 30 → Boss_03 |
-| 4 | 31~39 | Slime_04 | 40 → Boss_04 |
-| 5 | 41~49 | Slime_05 (임시, 01 프리팹 복사본) | 50 → Boss_05 |
-
-최종 웨이브 = `_zones` 개수 × 10 (`FinalWave`, 같은 값을 `MaxWave`로도 노출). 로비 웨이브 진행도 맵의 최대 웨이브도 이 값이다 ([로비 UI](슬라임TD_로비UI.md) 참고).
-
-스폰이 끝나면 즉시 다음 웨이브로 넘어간다. 이전 웨이브 슬라임이 남아 있어도 무관하다. 최종 웨이브만 예외로, 슬라임이 전부 처리된 후 스테이지 클리어를 판정한다.
+최종 웨이브 = `_waves` 개수 (`FinalWave`). 로비 웨이브 진행도 맵의 최대 웨이브도 이 값이다 ([로비 UI](슬라임TD_로비UI.md) 참고). 게임 씬은 지금 `Stage_SingleNormal`을 읽는다 (스테이지 선택은 아직 없다).
 
 ---
 
-## 3. 필드 설명
-
-### SlimeDataBase
-
-| 필드 | 설명 |
-|---|---|
-| _prefab | 슬라임 프리팹 |
-| _baseHealth | 일반: 웨이브 성장률 적용 전 기본값 / 보스: 이 값 그대로 사용 |
-| _baseSpeed | 이동 속도 |
-| _lifeCost | 탈출 시 차감 하트 |
-| _renderGroup | 렌더링 버킷 |
-| _jellyReward | 처치 젤리 |
-
-### BossSlimeData
-
-| 필드 | 설명 |
-|---|---|
-| _instantGameOver | 켜면 경로 끝 도달 시 즉시 게임오버, 끄면 `_lifeCost`만큼 차감 |
-
-### WaveTableData
-
-| 필드 | 설명 |
-|---|---|
-| _spawnInterval | 슬라임 간 스폰 간격. 전 웨이브 공통 |
-| _interWaveDelay | 웨이브 간 공통 대기 |
-| _normalHpGrowth | 웨이브당 HP 증가율(복리). 일반 슬라임에만 적용 |
-| _zones | 구간 목록 |
-
-### WaveZone
-
-| 필드 | 설명 |
-|---|---|
-| _slime | 구간 1~9번째 웨이브 슬라임 |
-| _count | 일반 웨이브 마릿수 |
-| _boss | 구간 10번째 웨이브 보스 |
-| _bossExtraStartDelay | 보스 웨이브 시작 전 추가 대기 |
-
----
-
-## 4. 계산식
+## 3. 계산식
 
 ```
-구간       = _zones[(N - 1) / 10]
-보스 웨이브 = N % 10 == 0
-
 일반 HP    = slime._baseHealth × (1 + _normalHpGrowth)^(N - 1)
 보스 HP    = boss._baseHealth
-마릿수      = zone._count (보스 웨이브는 1)
 처치 젤리   = _jellyReward
-시작 대기   = _interWaveDelay + (보스 웨이브면 zone._bossExtraStartDelay)
 ```
 
 `(N - 1)`을 지수로 쓰므로 1웨이브에서 배율이 1이 되어 `_baseHealth` 그대로 나온다. 구간이 바뀌면 슬라임의 `_baseHealth`가 바뀌면서 HP가 한 번 더 뛴다.
@@ -115,19 +67,14 @@ WaveZone ([Serializable])
 
 ---
 
-## 5. 패배 조건
+## 4. 패배 조건
 
-- **일반 슬라임**: 경로 끝 도달 시 `_lifeCost`만큼 하트 차감. 하트 0이면 게임오버
-- **보스**: 경로 끝 도달 시 즉시 게임오버. 난이도가 과하면 `_instantGameOver`를 끄고 `_lifeCost`를 크게 잡아 하트 대량 차감으로 전환
+- 경로 끝 도달 시 `_lifeCost`만큼 라이프 차감. 라이프 0이면 게임오버
+- `_instantGameOver`가 켜진 보스는 도달 즉시 게임오버. 지금은 모든 보스가 꺼져 있고 `_lifeCost` 10을 차감한다
+- 시작 라이프와 시작 젤리는 스테이지(`_startingLife`, `_startingJelly`) 값이다
 
 ---
 
-## 6. 수치
+## 5. 수치
 
 초기 수치, HP 표, 보스 HP, 젤리, 밸런싱 노브와 근거는 [웨이브 기획](슬라임TD_웨이브기획.md) 참고.
-
----
-
-## 7. 미결 항목
-
-- **_lifeCost 존치 여부** — 일반 슬라임 전부 1. 삭제 시 차감량을 GameConfig로 이동

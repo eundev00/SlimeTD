@@ -7,11 +7,13 @@ public class ProjectileAttack : AttackBehaviourBase
     private const int PoolMaxSize = 20;
 
     private readonly GameObject _projectilePrefab;
+    private readonly ProjectileStats _stats;
     private ProjectileLauncher _launcher;
 
-    public ProjectileAttack(GameObject projectilePrefab)
+    public ProjectileAttack(GameObject projectilePrefab, ProjectileStats stats)
     {
         _projectilePrefab = projectilePrefab;
+        _stats = stats;
     }
 
     public override void Initialize(ITowerContext context)
@@ -111,7 +113,7 @@ public class ProjectileAttack : AttackBehaviourBase
             return;
         }
 
-        projectile.Initialize(direction, info, Context.Skills?.PierceCount ?? 0, splashRadius);
+        projectile.Initialize(direction, _stats, info, Context.Skills?.PierceCount ?? 0, splashRadius);
     }
 
     private Vector3 GetFireDirection(in TargetInfo target, Vector3 firePosition)

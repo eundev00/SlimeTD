@@ -306,8 +306,8 @@ MonoBehaviour:
       _value: 5
       _valueType: 1
       _duration: 0
-    _vfxKey: 
-    _vfxAnchor: 0
+    _vfxKey: VfxSwordSlashBlue
+    _vfxAnchor: 3
     _animTrigger: 
   - _id: 20302
     _displayName: "\uB2E8\uB828 II"
@@ -324,8 +324,8 @@ MonoBehaviour:
       _value: 10
       _valueType: 1
       _duration: 0
-    _vfxKey: 
-    _vfxAnchor: 0
+    _vfxKey: VfxSwordSlashBlue
+    _vfxAnchor: 3
     _animTrigger: 
   - _id: 20303
     _displayName: "\uB2E8\uB828 III"
@@ -342,8 +342,8 @@ MonoBehaviour:
       _value: 20
       _valueType: 1
       _duration: 0
-    _vfxKey: 
-    _vfxAnchor: 0
+    _vfxKey: VfxSwordSlashBlue
+    _vfxAnchor: 3
     _animTrigger: 
   - _id: 20401
     _displayName: "\uAC15\uD654 \uBCFC\uD2B8"

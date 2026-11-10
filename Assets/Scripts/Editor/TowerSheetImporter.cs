@@ -7,10 +7,10 @@ using UnityEngine;
 
 public static class TowerSheetImporter
 {
-    private const string SheetFolder = "Assets/Datas/Sheets";
     private const string GradesFile = "Grades.csv";
     private const string TowersFile = "Towers.csv";
     private const string LevelUpCostsFile = "LevelUpCosts.csv";
+    private const string ProjectilesFile = "TowerProjectiles.csv";
     private const string CharacterFolder = "Assets/Datas/Characters";
     private const string CatalogPath = "Assets/Datas/TowerCatalog.asset";
     private const string GradeStylePath = "Assets/Datas/GradeStyle.asset";
@@ -21,10 +21,17 @@ public static class TowerSheetImporter
     {
         if (!TryReadTable(GradesFile, out var gradeRows)
             || !TryReadTable(TowersFile, out var towerRows)
-            || !TryReadTable(LevelUpCostsFile, out var costRows))
+            || !TryReadTable(LevelUpCostsFile, out var costRows)
+            || !TryReadTable(ProjectilesFile, out var projectileRows))
             return;
 
         var grades = ParseGrades(gradeRows, costRows);
+        var projectiles = new Dictionary<int, Dictionary<string, string>>();
+        foreach (var row in projectileRows)
+        {
+            if (TryGetInt(row, "towerId", out int towerId))
+                projectiles[towerId] = row;
+        }
         var assets = CollectTowerAssets();
         var usedIds = new HashSet<int>();
         var imported = new SortedDictionary<int, TowerData>();
@@ -76,7 +83,8 @@ public static class TowerSheetImporter
                 created++;
             }
 
-            Apply(data, id, gradeId, row, grade);
+            projectiles.TryGetValue(id, out var projectileRow);
+            Apply(data, id, gradeId, row, grade, projectileRow);
             imported[id] = data;
             updated++;
         }
@@ -95,9 +103,24 @@ public static class TowerSheetImporter
         Debug.Log($"[TowerSheetImporter] 임포트 완료. 갱신 {updated}개, 신규 {created}개");
     }
 
-    private static void Apply(TowerData data, int id, int gradeId, Dictionary<string, string> row, GradeInfo grade)
+    private static void Apply(TowerData data, int id, int gradeId, Dictionary<string, string> row, GradeInfo grade, Dictionary<string, string> projectileRow)
     {
         var so = new SerializedObject(data);
+
+        string attackText = Get(row, "attackType");
+        if (!Enum.TryParse(attackText, false, out TowerAttackType attackType) || !Enum.IsDefined(typeof(TowerAttackType), attackType))
+        {
+            Debug.Log($"[TowerSheetImporter] attackType을 읽지 못해 근접으로 둡니다: {id} '{attackText}'");
+            attackType = TowerAttackType.Melee;
+        }
+
+        so.FindProperty("_attackType").intValue = (int)attackType;
+        if (attackType == TowerAttackType.Projectile && projectileRow == null)
+            Debug.Log($"[TowerSheetImporter] 투사체 타워인데 {ProjectilesFile}에 행이 없습니다: {id}");
+
+        so.FindProperty("_projectileSpeed").floatValue = projectileRow != null && TryGetFloat(projectileRow, "speed", out float speed) ? speed : 0f;
+        so.FindProperty("_projectileHitRadius").floatValue = projectileRow != null && TryGetFloat(projectileRow, "hitRadius", out float hitRadius) ? hitRadius : 0f;
+        so.FindProperty("_projectileLifetime").floatValue = projectileRow != null && TryGetFloat(projectileRow, "lifetime", out float lifetime) ? lifetime : 0f;
 
         so.FindProperty("_id").intValue = id;
         so.FindProperty("_gradeId").intValue = gradeId;
@@ -322,7 +345,7 @@ public static class TowerSheetImporter
     {
         rows = new List<Dictionary<string, string>>();
 
-        string path = $"{SheetFolder}/{fileName}";
+        string path = SheetReader.PathOf(fileName);
         if (!File.Exists(path))
         {
             Debug.Log($"[TowerSheetImporter] 시트를 찾을 수 없습니다: {path}");

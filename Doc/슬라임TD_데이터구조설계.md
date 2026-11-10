@@ -83,7 +83,7 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
 공격 애니메이션은 모든 타워가 Animator의 `Attack` 트리거 하나를 쓴다(`AttackBehaviourBase`의 상수). 타워 프리팹의 Animator Controller에 `Attack` Trigger 파라미터가 없으면 조용히 무시되고 애니메이션이 재생되지 않는다.
 
 ## 시트 → SO 임포트
- 숫자의 원천은 CSV다. 1줄은 영문 키, 2줄은 한글 설명이며, 임포터는 1줄만 읽는다. 위치는 `Assets/Datas/Sheets/`다.
+ 숫자의 원천은 CSV다. 1줄은 영문 키, 2줄은 한글 설명이며, 임포터는 1줄만 읽는다. 위치는 데이터 저장소 `C:\Projects\SlimeTD-Data\Sheets\`다 (클라이언트 프로젝트 안에 복사본을 두지 않는다).
 
 | 시트 | 키 | 열 |
 |---|---|---|
@@ -91,7 +91,7 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
 | `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(1/0, 비우면 잠금), `unlockGemPrice` |
 | `Skills.csv` | `skillId` | 아래 [타워 스킬](#타워-스킬) 참고 |
 
-- 실행: 메뉴 `SlimeTD > Data > Import Tower Sheets`. `TowerData`를 ID로 찾아(없으면 `TowerData_<코드명>` 이름, 그래도 없으면 새로 생성) 숫자 필드를 덮어쓰고 `TowerCatalog`를 시트 기준으로 채운다
+- 실행: `sheets-to-so` 스킬이 이 임포터를 함께 호출한다 (메뉴 `SlimeTD > Data > Import Tower Sheets`도 남아 있다). `TowerData`를 ID로 찾아(없으면 `TowerData_<코드명>` 이름, 그래도 없으면 새로 생성) 숫자 필드를 덮어쓰고 `TowerCatalog`를 시트 기준으로 채운다
 - 프리팹, 투사체 프리팹 같은 에셋 참조는 임포터가 건드리지 않으므로 인스펙터에서 한 번 연결한다
 - 숫자는 시트에서만 고친다. 인스펙터에서 고쳐도 다음 임포트 때 덮어써진다
 

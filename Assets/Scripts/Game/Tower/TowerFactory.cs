@@ -3,10 +3,10 @@ using VContainer;
 
 public static class TowerFactory
 {
-    public static GameObject Create(IObjectResolver resolver, TowerData towerData, Transform inactiveHolder, Transform parent, Vector3 position)
+    public static GameObject Create(IObjectResolver resolver, GameObject prefab, TowerData towerData, Transform inactiveHolder, Transform parent, Vector3 position)
     {
         // 비활성 부모 밑에 생성해야 Awake가 안 돈다. 프리팹 자체를 SetActive(false)하면 에셋이 오염된다.
-        var instance = Object.Instantiate(towerData.Prefab, inactiveHolder);
+        var instance = Object.Instantiate(prefab, inactiveHolder);
 
         foreach (var component in instance.GetComponentsInChildren<MonoBehaviour>(true))
         {

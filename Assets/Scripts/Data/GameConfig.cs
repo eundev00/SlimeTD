@@ -1,12 +1,9 @@
 using UnityEngine;
 
+// TODO: 서버 연결 전까지 쓰는 임시 데이터. 수치는 SlimeTD-Data의 GameConstants.csv, NewAccount.csv가 원본이다
 [CreateAssetMenu(fileName = "GameConfig", menuName = "SlimeTD/Game Config", order = 0)]
 public class GameConfig : ScriptableObject
 {
-    [Header("플레이어")]
-    [SerializeField] private int _startingLife = 20;
-    [SerializeField] private int _startingJelly = 0;
-
     [Header("새 계정 시작 재화 (로비)")]
     [SerializeField] private int _initialLobbyGold = 10000;
     [SerializeField] private int _initialGem = 10000;
@@ -28,8 +25,6 @@ public class GameConfig : ScriptableObject
     [SerializeField] private TowerData _testTower;
     [SerializeField] private int _debugTowerLevel = 1;
 
-    public int StartingLife => _startingLife;
-    public int StartingJelly => _startingJelly;
     public int InitialLobbyGold => _initialLobbyGold;
     public int InitialGem => _initialGem;
     public int InitialHunterCards => _initialHunterCards;

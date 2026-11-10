@@ -17,15 +17,16 @@ MonoBehaviour:
   _enabled: 1
   _codeName: Ranger
   _towerName: "\uB808\uC778\uC800"
-  _prefab: {fileID: 751951308249362410, guid: af5c50b3485934711aacfb69a8a13814, type: 3}
-  _attackRange: 2
   _attackType: 1
-  _projectilePrefab: {fileID: 2717176595723297759, guid: 6ce103a3c1f974b9586882c7ff946232, type: 3}
+  _attackRange: 2
   _baseAttack: 200
   _attackGrowthRate: 5
   _attackCooldown: 1
   _critChance: 10
   _critBonus: 100
+  _projectileSpeed: 5
+  _projectileHitRadius: 0.15
+  _projectileLifetime: 3
   _startUnlocked: 1
   _unlockGemPrice: 0
   _inGacha: 1

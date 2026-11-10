@@ -6,9 +6,10 @@ using VContainer;
 
 public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
 {
-    [SerializeField] private float _speed = 15f;
-    [SerializeField] private float _lifetime = 3f;
-    [SerializeField] private float _hitRadius = 0.15f;
+    // 속도/판정/수명은 서버와 같은 값을 써야 해서 프리팹이 아니라 타워 데이터(TowerProjectiles 시트)에서 받는다
+    private float _speed;
+    private float _lifetime;
+    private float _hitRadius;
 
     private Vector3 _direction;
     protected DamageInfo Info;
@@ -38,8 +39,11 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _slimeLayer = LayerMask.GetMask(GameTags.SlimeLayer);
     }
 
-    public void Initialize(Vector3 direction, DamageInfo info, int pierceCount = 0, float splashRadius = 0f)
+    public void Initialize(Vector3 direction, ProjectileStats stats, DamageInfo info, int pierceCount = 0, float splashRadius = 0f)
     {
+        _speed = stats.Speed;
+        _hitRadius = stats.HitRadius;
+        _lifetime = stats.Lifetime;
         Info = info;
         _remainingPierce = pierceCount;
         _splashRadius = splashRadius;

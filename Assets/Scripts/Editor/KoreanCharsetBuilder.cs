@@ -11,7 +11,7 @@ public static class KoreanCharsetBuilder
     private const string OutputPath = "Doc/korean_charset.txt";
     private const string ThirdPartyFolder = "Assets/ThirdParty";
 
-    private static readonly string[] DataFolders = { "Assets/Datas/Sheets", "Assets/Datas/Characters" };
+    private static readonly string[] DataFolders = { "Assets/Datas" };
     private static readonly string[] CodeFolders = { "Assets/Scripts/Lobby", "Assets/Scripts/Game/Hud" };
 
     private static readonly Regex TextField = new Regex(@"m_text: (""(?:[^""\\\n]|\\.)*""|.*)", RegexOptions.Compiled);

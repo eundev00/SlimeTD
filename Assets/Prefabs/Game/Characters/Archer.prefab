@@ -337,7 +337,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileLauncher
   _firePoint: {fileID: 7658518761273737914}
+  _projectilePrefab: {fileID: 2717176595723297759, guid: 6ce103a3c1f974b9586882c7ff946232, type: 3}
   _heldProjectile: {fileID: 3851875231930780981}
+  _multiShotSpacing: 0.4
 --- !u!114 &613357904063341106
 MonoBehaviour:
   m_ObjectHideFlags: 0

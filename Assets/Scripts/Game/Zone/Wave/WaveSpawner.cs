@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -16,7 +16,7 @@ public class WaveSpawner : MonoBehaviour
     // 웨이브가 겹쳐 스폰되므로 동시 생존 수를 이 창(window) 크기로 근사한다.
     [SerializeField] private int _overlapWaveWindow = 3;
 
-    private WaveTableData _waveTable;
+    private StageData _stage;
     private Transform _spawnRoot;
     private IGameObjectPoolService _poolService;
     private IPublisher<GameProgressEvent> _gameProgressPublisher;
@@ -44,9 +44,9 @@ public class WaveSpawner : MonoBehaviour
         _gameplayService = gameplayService;
     }
 
-    public void Initialize(WaveTableData waveTable, Transform spawnRoot)
+    public void Initialize(StageData stage, Transform spawnRoot)
     {
-        _waveTable = waveTable;
+        _stage = stage;
         _spawnRoot = spawnRoot;
 
         if (_splineContainer == null)
@@ -55,13 +55,13 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
-        if (_waveTable == null || _waveTable.MaxWave <= 0)
+        if (_stage == null || _stage.FinalWave <= 0)
         {
-            Debug.Log("[WaveSpawner] _waveTable이 비어 있거나 MaxWave가 0 이하입니다.", this);
+            Debug.Log("[WaveSpawner] 스테이지 데이터가 없거나 웨이브가 비어 있습니다.", this);
             return;
         }
 
-        _gameplayService.SetMaxWave(_waveTable.MaxWave);
+        _gameplayService.SetMaxWave(_stage.FinalWave);
 
         _gameOver = false;
         _waveClearedReceived = false;
@@ -96,13 +96,13 @@ public class WaveSpawner : MonoBehaviour
 
     private void PreparePools()
     {
-        int finalWave = _waveTable.FinalWave;
+        int finalWave = _stage.FinalWave;
         var plans = new List<SpawnPlan>();
         var perWave = new List<Dictionary<GameObject, int>>(finalWave + 1) { null };
 
         for (int waveIndex = 1; waveIndex <= finalWave; waveIndex++)
         {
-            WaveResolver.Resolve(_waveTable, waveIndex, plans, false);
+            WaveResolver.Resolve(_stage, waveIndex, plans, false);
 
             var demand = new Dictionary<GameObject, int>();
             foreach (var plan in plans)
@@ -156,7 +156,7 @@ public class WaveSpawner : MonoBehaviour
 
         try
         {
-            for (int waveIndex = 1; waveIndex <= _waveTable.MaxWave; waveIndex++)
+            for (int waveIndex = 1; waveIndex <= _stage.FinalWave; waveIndex++)
             {
                 await RunWaveAsync(waveIndex, token);
             }
@@ -164,7 +164,7 @@ public class WaveSpawner : MonoBehaviour
             if (_gameOver)
                 return;
 
-            _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.StageCleared, _waveTable.MaxWave));
+            _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.StageCleared, _stage.FinalWave));
             Debug.Log("[WaveSpawner] 스테이지 클리어");
         }
         catch (OperationCanceledException)
@@ -176,7 +176,7 @@ public class WaveSpawner : MonoBehaviour
     private async UniTask RunWaveAsync(int waveIndex, CancellationToken token)
     {
         var plans = new List<SpawnPlan>();
-        WaveResolver.Resolve(_waveTable, waveIndex, plans, true);
+        WaveResolver.Resolve(_stage, waveIndex, plans, true);
 
         if (plans.Count == 0)
         {
@@ -184,11 +184,11 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
-        float startDelay = WaveResolver.StartDelayFor(_waveTable, waveIndex);
+        float startDelay = _stage.InterWaveDelay;
         if (startDelay > 0f)
             await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: token);
 
-        bool isLastWave = waveIndex == _waveTable.MaxWave;
+        bool isLastWave = waveIndex == _stage.FinalWave;
         int totalSlimeCount = plans.Count;
 
         _waveClearedReceived = false;
@@ -198,6 +198,9 @@ public class WaveSpawner : MonoBehaviour
 
         foreach (var plan in plans)
         {
+            if (plan.DelayBefore > 0f)
+                await UniTask.Delay(TimeSpan.FromSeconds(plan.DelayBefore), cancellationToken: token);
+
             SpawnOne(plan);
 
             if (plan.SpawnInterval > 0f)

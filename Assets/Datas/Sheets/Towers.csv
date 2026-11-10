@@ -1,9 +1,0 @@
-﻿towerId,codeName,name,gradeId,enabled,attackRange,attackCooldown,critChance,critBonus,startUnlocked,unlockGemPrice,inGacha
-101,Archer,궁수,1,1,2,1,10,100,1,0,1
-103,Swordsman,일병,1,1,1,1,10,100,1,0,1
-104,Lumberjack,나무꾼,1,1,1,1.5,10,100,1,0,1
-105,GoodSlime,착한 슬라임,1,1,2,1,10,100,1,0,1
-202,Ranger,레인저,2,1,2,1,10,100,1,0,1
-203,Knight,기사,2,1,1,1,10,100,1,0,1
-204,Crossbow,석궁병,2,1,2,1.5,10,100,1,0,1
-301,Monolith,모노리스,3,1,2.5,1.2,10,100,0,100,1

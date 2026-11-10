@@ -2,7 +2,8 @@ using UnityEngine;
 
 public static class AttackBehaviourFactory
 {
-    public static IAttackBehaviour Create(TowerData data)
+    // 공격 방식과 투사체 수치는 데이터가, 투사체 모양(프리팹)은 타워 프리팹의 ProjectileLauncher가 정한다
+    public static IAttackBehaviour Create(TowerData data, Transform towerRoot)
     {
         switch (data.AttackType)
         {
@@ -10,7 +11,8 @@ public static class AttackBehaviourFactory
                 return new MeleeAttack();
 
             case TowerAttackType.Projectile:
-                return new ProjectileAttack(data.ProjectilePrefab);
+                var launcher = towerRoot.GetComponent<ProjectileLauncher>();
+                return new ProjectileAttack(launcher != null ? launcher.ProjectilePrefab : null, data.Projectile);
 
             case TowerAttackType.Beam:
                 return new BeamAttack();

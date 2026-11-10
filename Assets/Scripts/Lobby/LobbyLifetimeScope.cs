@@ -1,18 +1,18 @@
-using UnityEngine;
+﻿using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 public class LobbyLifetimeScope : LifetimeScope
 {
     [SerializeField] private RectTransform _popupRoot;
-    [SerializeField] private WaveTableData _waveTable;
+    [SerializeField] private StageData _stage;
 
     protected override void Configure(IContainerBuilder builder)
     {
         // 이 등록이 없으면 [Inject]가 호출되지 않는다 (씬 전체 자동 주입은 없음)
         builder.RegisterComponentInHierarchy<LobbyHeader>();
 
-        builder.RegisterInstance(_waveTable);
+        builder.RegisterInstance(_stage);
         builder.RegisterComponentInHierarchy<BattleView>();
         builder.RegisterEntryPoint<BattlePresenter>();
 

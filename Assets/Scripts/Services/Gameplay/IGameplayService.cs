@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Cysharp.Threading.Tasks;
 
 public interface IGameplayService : IDisposable
@@ -7,7 +7,7 @@ public interface IGameplayService : IDisposable
     GameConfig Config { get; }
     TowerCatalog Catalog { get; }
     SkillCatalog SkillCatalog { get; }
-    WaveTableData WaveTable { get; }
+    StageData Stage { get; }
     SlimeDepthBucketSettings DepthBucketSettings { get; }
 
     UniTask InitializeAsync();

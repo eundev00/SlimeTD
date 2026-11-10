@@ -1,4 +1,4 @@
-using MessagePipe;
+﻿using MessagePipe;
 using Services.PoolService;
 using Services.UpdateService;
 using UnityEngine;
@@ -29,6 +29,7 @@ public class TowerTestLifetimeScope : LifetimeScope
 
         builder.Register<GameObjectPoolService>(Lifetime.Scoped).As<IGameObjectPoolService>();
         builder.Register<GameplayService>(Lifetime.Singleton).As<IGameplayService>();
+        builder.Register<TowerPrefabProvider>(Lifetime.Singleton).As<ITowerPrefabProvider>();
 
         builder.RegisterInstance(_popupRoot);
         builder.RegisterEntryPoint<PopupService>();

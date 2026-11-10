@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -85,7 +85,7 @@ public class TowerCatalog : ScriptableObject
 
             _byId.Add(tower.Id, tower);
 
-            if (!tower.Enabled || tower.Prefab == null)
+            if (!tower.Enabled)
                 continue;
 
             if (!_byGrade.TryGetValue(tower.GradeId, out var list))

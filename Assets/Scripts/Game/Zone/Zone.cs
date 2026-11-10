@@ -1,4 +1,4 @@
-using MessagePipe;
+﻿using MessagePipe;
 using UniRx;
 using UnityEngine;
 using VContainer;
@@ -38,7 +38,7 @@ public class Zone : MonoBehaviour
         _spawnRequestedSubscriber = spawnRequestedSubscriber;
     }
 
-    public void Initialize(WaveTableData waveTable)
+    public void Initialize(StageData stage)
     {
         if (_gridMapReference == null || _gridMapReference.GridMapData == null)
         {
@@ -63,7 +63,7 @@ public class Zone : MonoBehaviour
         if (_waveSpawner != null)
         {
             _resolver.Inject(_waveSpawner);
-            _waveSpawner.Initialize(waveTable, _spawnRoot);
+            _waveSpawner.Initialize(stage, _spawnRoot);
         }
 
         _disposables?.Dispose();

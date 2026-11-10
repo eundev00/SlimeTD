@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class SlimeDataBase : ScriptableObject
 {
+    [SerializeField] private int _slimeId;
     [SerializeField] private GameObject _prefab;
     [Tooltip("일반: 웨이브 성장률 적용 전 기본값 / 보스: 이 값 그대로 사용")]
     [SerializeField] private int _baseHealth = 3;
@@ -10,6 +11,7 @@ public abstract class SlimeDataBase : ScriptableObject
     [SerializeField] private SlimeRenderGroup _renderGroup = SlimeRenderGroup.Normal;
     [SerializeField] private int _jellyReward = 1;
 
+    public int SlimeId => _slimeId;
     public GameObject Prefab => _prefab;
     public int BaseHealth => _baseHealth;
     public float BaseSpeed => _baseSpeed;
@@ -17,5 +19,6 @@ public abstract class SlimeDataBase : ScriptableObject
     public SlimeRenderGroup RenderGroup => _renderGroup;
     public int JellyReward => _jellyReward;
 
+    public virtual SlimeKind Kind => SlimeKind.Normal;
     public virtual bool InstantGameOver => false;
 }

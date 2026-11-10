@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// TODO: 서버 연결 전까지 쓰는 임시 데이터. 타워 프리팹은 CodeName으로 찾고, 투사체 모양(프리팹)은 프리팹의 ProjectileLauncher가 가진다
 [CreateAssetMenu(fileName = "TowerData_00", menuName = "SlimeTD/Tower Data", order = 61)]
 public class TowerData : ScriptableObject
 {
@@ -10,10 +11,8 @@ public class TowerData : ScriptableObject
     [SerializeField] private bool _enabled = true;
     [SerializeField] private string _codeName;
     [SerializeField] private string _towerName;
-    [SerializeField] private GameObject _prefab;
+    [SerializeField] private TowerAttackType _attackType;
     [SerializeField] private float _attackRange = 5f;
-    [SerializeField] private TowerAttackType _attackType = TowerAttackType.Projectile;
-    [SerializeField] private GameObject _projectilePrefab;
 
     [Header("기본 수치 (레벨 1)")]
     [SerializeField] private float _baseAttack = 1f;
@@ -21,6 +20,11 @@ public class TowerData : ScriptableObject
     [SerializeField] private float _attackCooldown = 1f;
     [SerializeField] private float _critChance = 10f;
     [SerializeField] private float _critBonus = 100f;
+
+    [Header("투사체 (attackType = Projectile)")]
+    [SerializeField] private float _projectileSpeed;
+    [SerializeField] private float _projectileHitRadius;
+    [SerializeField] private float _projectileLifetime;
 
     [Header("메타")]
     [SerializeField] private bool _startUnlocked;
@@ -33,16 +37,15 @@ public class TowerData : ScriptableObject
     public bool Enabled => _enabled;
     public string CodeName => _codeName;
     public string TowerName => _towerName;
-    public GameObject Prefab => _prefab;
-    public float AttackRange => _attackRange;
     public TowerAttackType AttackType => _attackType;
-    public GameObject ProjectilePrefab => _projectilePrefab;
+    public float AttackRange => _attackRange;
     public string ThumbnailName => $"Thumb_{_codeName}";
     public float BaseAttack => _baseAttack;
     public float AttackCooldown => _attackCooldown;
     public float CritChance => _critChance;
     public float CritBonus => _critBonus;
     public float AttackSpeedPercent => BaseAttackSpeedPercent;
+    public ProjectileStats Projectile => new ProjectileStats(_projectileSpeed, _projectileHitRadius, _projectileLifetime);
     public bool StartUnlocked => _startUnlocked;
     public int UnlockGemPrice => _unlockGemPrice;
     public bool InGacha => _inGacha;

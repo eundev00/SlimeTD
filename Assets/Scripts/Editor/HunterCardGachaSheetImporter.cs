@@ -1,11 +1,10 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 public static class HunterCardGachaSheetImporter
 {
     private const string LogTag = "HunterCardGachaSheetImporter";
-    private const string SheetFolder = "Assets/Datas/Sheets";
     private const string PacksFile = "HunterCardGachaPacks.csv";
     private const string SettingsFile = "HunterCardGachaSettings.csv";
     private const string GradesFile = "Grades.csv";
@@ -14,9 +13,9 @@ public static class HunterCardGachaSheetImporter
     [MenuItem("SlimeTD/Data/Import Hunter Card Gacha Sheets")]
     public static void Import()
     {
-        if (!SheetReader.TryReadTable($"{SheetFolder}/{PacksFile}", LogTag, out var packRows)
-            || !SheetReader.TryReadTable($"{SheetFolder}/{SettingsFile}", LogTag, out var settingRows)
-            || !SheetReader.TryReadTable($"{SheetFolder}/{GradesFile}", LogTag, out var gradeRows))
+        if (!SheetReader.TryReadTable(SheetReader.PathOf(PacksFile), LogTag, out var packRows)
+            || !SheetReader.TryReadTable(SheetReader.PathOf(SettingsFile), LogTag, out var settingRows)
+            || !SheetReader.TryReadTable(SheetReader.PathOf(GradesFile), LogTag, out var gradeRows))
             return;
 
         var config = AssetDatabase.LoadAssetAtPath<HunterCardGachaConfig>(ConfigPath);

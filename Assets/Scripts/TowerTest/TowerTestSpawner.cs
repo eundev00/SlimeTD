@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using VContainer;
@@ -14,6 +14,7 @@ public class TowerTestSpawner : MonoBehaviour
     private IObjectResolver _resolver;
     private IGameplayService _gameplayService;
     private ITowerLevelService _levelService;
+    private ITowerPrefabProvider _prefabProvider;
 
     private readonly List<TowerData> _towers = new List<TowerData>();
     private readonly List<TowerSkillData> _skillBuffer = new List<TowerSkillData>();
@@ -27,11 +28,12 @@ public class TowerTestSpawner : MonoBehaviour
     private GUIStyle _buttonStyle;
 
     [Inject]
-    public void Construct(IObjectResolver resolver, IGameplayService gameplayService, ITowerLevelService levelService)
+    public void Construct(IObjectResolver resolver, IGameplayService gameplayService, ITowerLevelService levelService, ITowerPrefabProvider prefabProvider)
     {
         _resolver = resolver;
         _gameplayService = gameplayService;
         _levelService = levelService;
+        _prefabProvider = prefabProvider;
     }
 
     private void Start()
@@ -58,7 +60,7 @@ public class TowerTestSpawner : MonoBehaviour
 
         foreach (var tower in catalog.Towers)
         {
-            if (tower != null && tower.Prefab != null)
+            if (tower != null && _prefabProvider.TryGet(tower, out _))
                 _towers.Add(tower);
         }
     }
@@ -103,8 +105,11 @@ public class TowerTestSpawner : MonoBehaviour
         if (_spawned[index] != null)
             Destroy(_spawned[index]);
 
+        if (!_prefabProvider.TryGet(data, out var prefab))
+            return;
+
         _levelService.SetLevel(data.Id, _level);
-        _spawned[index] = TowerFactory.Create(_resolver, data, GetHolder(), _spawnRoot, _spawnPoints[index].position);
+        _spawned[index] = TowerFactory.Create(_resolver, prefab, data, GetHolder(), _spawnRoot, _spawnPoints[index].position);
         _spawnedData[index] = data;
     }
 

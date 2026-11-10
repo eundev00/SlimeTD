@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UniRx;
 using UnityEngine;
@@ -22,7 +22,7 @@ public class GameplayService : IGameplayService
     public GameConfig Config { get; private set; }
     public TowerCatalog Catalog { get; private set; }
     public SkillCatalog SkillCatalog { get; private set; }
-    public WaveTableData WaveTable { get; private set; }
+    public StageData Stage { get; private set; }
     public SlimeDepthBucketSettings DepthBucketSettings { get; private set; }
 
     private readonly IResourceLoadService _resourceLoadService;
@@ -70,14 +70,14 @@ public class GameplayService : IGameplayService
         if (SkillCatalog == null)
             Debug.Log($"[GameplayService] {DataKeys.SkillCatalog} 로드에 실패했습니다.");
 
-        WaveTable = await _resourceLoadService.LoadAsync<WaveTableData>(DataKeys.WaveEasyTable);
+        Stage = await _resourceLoadService.LoadAsync<StageData>(DataKeys.Stage_SingleNormal);
 
         DepthBucketSettings = await _resourceLoadService.LoadAsync<SlimeDepthBucketSettings>(DataKeys.SlimeDepthBucketSettings);
         if (DepthBucketSettings == null)
             Debug.Log($"[GameplayService] {DataKeys.SlimeDepthBucketSettings} 로드에 실패했습니다.");
 
-        _info.Life.SetValueAndForceNotify(Config.StartingLife);
-        _info.Jelly.SetValueAndForceNotify(Config.StartingJelly);
+        _info.Life.SetValueAndForceNotify(Stage != null ? Stage.StartingLife : 0);
+        _info.Jelly.SetValueAndForceNotify(Stage != null ? Stage.StartingJelly : 0);
         _summonCount = 0;
         _info.SummonCost.SetValueAndForceNotify(Config.SummonBaseCost);
     }
