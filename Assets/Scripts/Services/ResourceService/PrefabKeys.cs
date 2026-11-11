@@ -5,6 +5,11 @@ public static class PrefabKeys
     public const string Archer = "Archer";
     public const string ArcherArrow = "ArcherArrow";
     public const string ArcherBow = "ArcherBow";
+    public const string Boss_01 = "Boss_01";
+    public const string Boss_02 = "Boss_02";
+    public const string Boss_03 = "Boss_03";
+    public const string Boss_04 = "Boss_04";
+    public const string Boss_05 = "Boss_05";
     public const string BushRound = "BushRound";
     public const string BushTall = "BushTall";
     public const string CriticalDamageText = "CriticalDamageText";
@@ -53,16 +58,11 @@ public static class PrefabKeys
     public const string RockCliff02 = "RockCliff02";
     public const string RockSmall = "RockSmall";
     public const string SkillSlotItem = "SkillSlotItem";
-    public const string SlimeBoss_01 = "SlimeBoss_01";
-    public const string SlimeBoss_02 = "SlimeBoss_02";
-    public const string SlimeBoss_03 = "SlimeBoss_03";
-    public const string SlimeBoss_04 = "SlimeBoss_04";
-    public const string SlimeBoss_05 = "SlimeBoss_05";
-    public const string SlimeNormal_01 = "SlimeNormal_01";
-    public const string SlimeNormal_02 = "SlimeNormal_02";
-    public const string SlimeNormal_03 = "SlimeNormal_03";
-    public const string SlimeNormal_04 = "SlimeNormal_04";
-    public const string SlimeNormal_05 = "SlimeNormal_05";
+    public const string Slime_01 = "Slime_01";
+    public const string Slime_02 = "Slime_02";
+    public const string Slime_03 = "Slime_03";
+    public const string Slime_04 = "Slime_04";
+    public const string Slime_05 = "Slime_05";
     public const string SortButton = "SortButton";
     public const string StoneFlat01 = "StoneFlat01";
     public const string StoneFlat02 = "StoneFlat02";
@@ -97,6 +97,11 @@ public static class PrefabKeys
         { Archer, "Assets/Prefabs/Game/Characters/Archer.prefab" },
         { ArcherArrow, "Assets/Prefabs/Game/Characters/ArcherArrow.prefab" },
         { ArcherBow, "Assets/Prefabs/Game/Characters/ArcherBow.prefab" },
+        { Boss_01, "Assets/Prefabs/Game/Slime/Boss_01.prefab" },
+        { Boss_02, "Assets/Prefabs/Game/Slime/Boss_02.prefab" },
+        { Boss_03, "Assets/Prefabs/Game/Slime/Boss_03.prefab" },
+        { Boss_04, "Assets/Prefabs/Game/Slime/Boss_04.prefab" },
+        { Boss_05, "Assets/Prefabs/Game/Slime/Boss_05.prefab" },
         { BushRound, "Assets/Prefabs/Game/Env/BushRound.prefab" },
         { BushTall, "Assets/Prefabs/Game/Env/BushTall.prefab" },
         { CriticalDamageText, "Assets/Prefabs/Game/UI/CriticalDamageText.prefab" },
@@ -145,16 +150,11 @@ public static class PrefabKeys
         { RockCliff02, "Assets/Prefabs/Game/Env/RockCliff02.prefab" },
         { RockSmall, "Assets/Prefabs/Game/Env/RockSmall.prefab" },
         { SkillSlotItem, "Assets/Prefabs/Common/SkillSlotItem.prefab" },
-        { SlimeBoss_01, "Assets/Prefabs/Game/Slime/SlimeBoss_01.prefab" },
-        { SlimeBoss_02, "Assets/Prefabs/Game/Slime/SlimeBoss_02.prefab" },
-        { SlimeBoss_03, "Assets/Prefabs/Game/Slime/SlimeBoss_03.prefab" },
-        { SlimeBoss_04, "Assets/Prefabs/Game/Slime/SlimeBoss_04.prefab" },
-        { SlimeBoss_05, "Assets/Prefabs/Game/Slime/SlimeBoss_05.prefab" },
-        { SlimeNormal_01, "Assets/Prefabs/Game/Slime/SlimeNormal_01.prefab" },
-        { SlimeNormal_02, "Assets/Prefabs/Game/Slime/SlimeNormal_02.prefab" },
-        { SlimeNormal_03, "Assets/Prefabs/Game/Slime/SlimeNormal_03.prefab" },
-        { SlimeNormal_04, "Assets/Prefabs/Game/Slime/SlimeNormal_04.prefab" },
-        { SlimeNormal_05, "Assets/Prefabs/Game/Slime/SlimeNormal_05.prefab" },
+        { Slime_01, "Assets/Prefabs/Game/Slime/Slime_01.prefab" },
+        { Slime_02, "Assets/Prefabs/Game/Slime/Slime_02.prefab" },
+        { Slime_03, "Assets/Prefabs/Game/Slime/Slime_03.prefab" },
+        { Slime_04, "Assets/Prefabs/Game/Slime/Slime_04.prefab" },
+        { Slime_05, "Assets/Prefabs/Game/Slime/Slime_05.prefab" },
         { SortButton, "Assets/Prefabs/Lobby/LobbyMain/SortButton.prefab" },
         { StoneFlat01, "Assets/Prefabs/Game/Env/StoneFlat01.prefab" },
         { StoneFlat02, "Assets/Prefabs/Game/Env/StoneFlat02.prefab" },

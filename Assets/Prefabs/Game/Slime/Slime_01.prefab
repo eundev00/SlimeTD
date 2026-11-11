@@ -206,7 +206,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 485a5cacebee9482586640ba4b20b328, type: 2}
+  - {fileID: 2100000, guid: 4317fb2c32f3d422fa3d63c644147573, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 1006846176720098267}
   - component: {fileID: 9215837291409383890}
   m_Layer: 9
-  m_Name: SlimeNormal_05
+  m_Name: Slime_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

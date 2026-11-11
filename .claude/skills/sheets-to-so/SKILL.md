@@ -99,18 +99,19 @@ description: SlimeTD-Data 저장소의 기획 시트(CSV)를 클라이언트 Scr
 - `_gradeWeights`: 등급마다 `_gradeId`, `_weight` = gachaWeight
 - `_lockedCardChance`, `_pityCount`, `_pityGradeId`, `_maxLevelRefundGold`: Settings의 같은 key
 
-### Slimes.csv → `Assets/Datas/Slimes/<codeName>.asset`
+### Slimes.csv → `Assets/Datas/Slimes/SlimeData_<codeName>.asset`
 
 kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 
 | 필드 | 값 |
 |---|---|
 | `_slimeId` | slimeId |
+| `_codeName` | codeName |
 | `_baseHealth`, `_baseSpeed`, `_lifeCost`, `_jellyReward` | 같은 이름의 열 |
 | `_renderGroup` | `SlimeRenderGroup` 값 (Normal 0, Boss 1) |
 | `_instantGameOver` | 보스만. instantGameOver |
 
-`_prefab`은 인스펙터에서 연결하는 값이라 건드리지 않는다. 새 슬라임은 프리팹이 비어 있다고 사용자에게 알린다.
+- 슬라임 프리팹은 시트에 없다. `codeName`과 같은 이름의 프리팹(`Assets/Prefabs/Game/Slime/<codeName>.prefab`)을 `SlimePrefabProvider`가 로드한다. 프리팹이 없으면 사용자에게 알린다
 
 ### Stages.csv + Waves/<codeName>.csv → `Assets/Datas/Stages/Stage_<codeName>.asset`
 

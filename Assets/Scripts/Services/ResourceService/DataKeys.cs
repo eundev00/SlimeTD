@@ -2,23 +2,23 @@ using System.Collections.Generic;
 
 public static class DataKeys
 {
-    public const string Boss_01 = "Boss_01";
-    public const string Boss_02 = "Boss_02";
-    public const string Boss_03 = "Boss_03";
-    public const string Boss_04 = "Boss_04";
-    public const string Boss_05 = "Boss_05";
     public const string GameConfig = "GameConfig";
     public const string GradeStyle = "GradeStyle";
     public const string GridMapData1 = "GridMapData1";
     public const string GridMapData2 = "GridMapData2";
     public const string HunterCardGachaConfig = "HunterCardGachaConfig";
     public const string SkillCatalog = "SkillCatalog";
+    public const string SlimeData_Boss_01 = "SlimeData_Boss_01";
+    public const string SlimeData_Boss_02 = "SlimeData_Boss_02";
+    public const string SlimeData_Boss_03 = "SlimeData_Boss_03";
+    public const string SlimeData_Boss_04 = "SlimeData_Boss_04";
+    public const string SlimeData_Boss_05 = "SlimeData_Boss_05";
+    public const string SlimeData_Slime_01 = "SlimeData_Slime_01";
+    public const string SlimeData_Slime_02 = "SlimeData_Slime_02";
+    public const string SlimeData_Slime_03 = "SlimeData_Slime_03";
+    public const string SlimeData_Slime_04 = "SlimeData_Slime_04";
+    public const string SlimeData_Slime_05 = "SlimeData_Slime_05";
     public const string SlimeDepthBucketSettings = "SlimeDepthBucketSettings";
-    public const string Slime_01 = "Slime_01";
-    public const string Slime_02 = "Slime_02";
-    public const string Slime_03 = "Slime_03";
-    public const string Slime_04 = "Slime_04";
-    public const string Slime_05 = "Slime_05";
     public const string Stage_SingleNormal = "Stage_SingleNormal";
     public const string TowerCatalog = "TowerCatalog";
     public const string TowerData_Archer = "TowerData_Archer";
@@ -32,23 +32,23 @@ public static class DataKeys
 
     public static readonly Dictionary<string, string> DataPaths = new Dictionary<string, string>()
     {
-        { Boss_01, "Assets/Datas/Slimes/Boss_01.asset" },
-        { Boss_02, "Assets/Datas/Slimes/Boss_02.asset" },
-        { Boss_03, "Assets/Datas/Slimes/Boss_03.asset" },
-        { Boss_04, "Assets/Datas/Slimes/Boss_04.asset" },
-        { Boss_05, "Assets/Datas/Slimes/Boss_05.asset" },
         { GameConfig, "Assets/Datas/GameConfig.asset" },
         { GradeStyle, "Assets/Datas/GradeStyle.asset" },
         { GridMapData1, "Assets/Datas/Grid/GridMapData1.asset" },
         { GridMapData2, "Assets/Datas/Grid/GridMapData2.asset" },
         { HunterCardGachaConfig, "Assets/Datas/HunterCardGachaConfig.asset" },
         { SkillCatalog, "Assets/Datas/SkillCatalog.asset" },
+        { SlimeData_Boss_01, "Assets/Datas/Slimes/SlimeData_Boss_01.asset" },
+        { SlimeData_Boss_02, "Assets/Datas/Slimes/SlimeData_Boss_02.asset" },
+        { SlimeData_Boss_03, "Assets/Datas/Slimes/SlimeData_Boss_03.asset" },
+        { SlimeData_Boss_04, "Assets/Datas/Slimes/SlimeData_Boss_04.asset" },
+        { SlimeData_Boss_05, "Assets/Datas/Slimes/SlimeData_Boss_05.asset" },
+        { SlimeData_Slime_01, "Assets/Datas/Slimes/SlimeData_Slime_01.asset" },
+        { SlimeData_Slime_02, "Assets/Datas/Slimes/SlimeData_Slime_02.asset" },
+        { SlimeData_Slime_03, "Assets/Datas/Slimes/SlimeData_Slime_03.asset" },
+        { SlimeData_Slime_04, "Assets/Datas/Slimes/SlimeData_Slime_04.asset" },
+        { SlimeData_Slime_05, "Assets/Datas/Slimes/SlimeData_Slime_05.asset" },
         { SlimeDepthBucketSettings, "Assets/Datas/SlimeDepthBucketSettings.asset" },
-        { Slime_01, "Assets/Datas/Slimes/Slime_01.asset" },
-        { Slime_02, "Assets/Datas/Slimes/Slime_02.asset" },
-        { Slime_03, "Assets/Datas/Slimes/Slime_03.asset" },
-        { Slime_04, "Assets/Datas/Slimes/Slime_04.asset" },
-        { Slime_05, "Assets/Datas/Slimes/Slime_05.asset" },
         { Stage_SingleNormal, "Assets/Datas/Stages/Stage_SingleNormal.asset" },
         { TowerCatalog, "Assets/Datas/TowerCatalog.asset" },
         { TowerData_Archer, "Assets/Datas/Characters/Archer/TowerData_Archer.asset" },

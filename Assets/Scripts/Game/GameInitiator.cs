@@ -8,14 +8,16 @@ public class GameInitiator : IAsyncStartable, IDisposable
     private readonly IGameplayService _gameplayService;
     private readonly ITowerLevelService _towerLevelService;
     private readonly ITowerPrefabProvider _towerPrefabProvider;
+    private readonly ISlimePrefabProvider _slimePrefabProvider;
     private readonly Zone _zone;
     private readonly SlimeDepthBucketBinder _depthBucketBinder = new SlimeDepthBucketBinder();
 
-    public GameInitiator(IGameplayService gameplayService, ITowerLevelService towerLevelService, ITowerPrefabProvider towerPrefabProvider, Zone zone)
+    public GameInitiator(IGameplayService gameplayService, ITowerLevelService towerLevelService, ITowerPrefabProvider towerPrefabProvider, ISlimePrefabProvider slimePrefabProvider, Zone zone)
     {
         _gameplayService = gameplayService;
         _towerLevelService = towerLevelService;
         _towerPrefabProvider = towerPrefabProvider;
+        _slimePrefabProvider = slimePrefabProvider;
         _zone = zone;
     }
 
@@ -23,6 +25,7 @@ public class GameInitiator : IAsyncStartable, IDisposable
     {
         await _gameplayService.InitializeAsync();
         await _towerPrefabProvider.LoadAsync(_gameplayService.Catalog);
+        await _slimePrefabProvider.LoadAsync(_gameplayService.Stage);
 
         // 로비에서 레벨을 정하는 구조가 생기기 전까지 디버그 레벨을 기본값으로 쓴다.
         if (_gameplayService.Config != null)

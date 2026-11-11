@@ -23,10 +23,10 @@ public static class WaveResolver
         foreach (var group in wave.Groups)
         {
             var slime = group?.Slime;
-            if (slime == null || slime.Prefab == null)
+            if (slime == null)
             {
                 if (logIssues)
-                    Debug.Log($"[WaveResolver] 웨이브 {waveNumber} 무리의 슬라임 데이터 또는 프리팹이 없습니다.");
+                    Debug.Log($"[WaveResolver] 웨이브 {waveNumber} 무리의 슬라임 데이터가 없습니다.");
                 continue;
             }
 

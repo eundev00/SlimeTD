@@ -1,6 +1,6 @@
 ---
 name: data-prefab-sync
-description: 기획 데이터(SlimeTD-Data 시트)가 이름으로 참조하는 프리팹을 추가, 이름 변경, 삭제, 수정할 때 사용. 스킬 연출(vfxKey), 타워 프리팹(codeName) 등. 프리팹 수정 → 데이터 저장소 수정 → 클라 데이터 반영을 한 흐름으로 맞춘다. 단, 진행 전에 사용자에게 먼저 묻는다.
+description: 기획 데이터(SlimeTD-Data 시트)가 이름으로 참조하는 프리팹을 추가, 이름 변경, 삭제, 수정할 때 사용. 스킬 연출(vfxKey), 타워·슬라임 프리팹(codeName) 등. 프리팹 수정 → 데이터 저장소 수정 → 클라 데이터 반영을 한 흐름으로 맞춘다. 단, 진행 전에 사용자에게 먼저 묻는다.
 ---
 
 # 데이터가 참조하는 프리팹 추가/수정
@@ -24,6 +24,7 @@ description: 기획 데이터(SlimeTD-Data 시트)가 이름으로 참조하는 
 |---|---|---|
 | Skills.vfxKey | `Assets/Prefabs/Game/Vfx/<키>.prefab` | `SkillCatalog.asset`의 `_vfxKey` |
 | Towers.codeName | `Assets/Prefabs/Game/Characters/<codeName>.prefab` (`TowerPrefabProvider`가 이름으로 로드) | `TowerData_<codeName>.asset`의 `_codeName`, 에셋 파일·폴더 이름 |
+| Slimes.codeName | `Assets/Prefabs/Game/Slime/<codeName>.prefab` (`SlimePrefabProvider`가 이름으로 로드) | `SlimeData_<codeName>.asset`의 `_codeName`, 에셋 파일 이름 |
 
 새로 생기는 참조 열이 있으면 이 표에 추가한다. 투사체 프리팹(`ProjectileLauncher._projectilePrefab`), 슬라임 프리팹(`_prefab`)처럼 인스펙터로 연결하는 것은 시트가 참조하지 않으므로 이 스킬 대상이 아니다.
 

@@ -23,6 +23,7 @@ public class WaveSpawner : MonoBehaviour
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private IGameplayService _gameplayService;
     private ISpawnOrderCounter _spawnOrderCounter;
+    private ISlimePrefabProvider _slimePrefabProvider;
 
     private CompositeDisposable _disposables;
     private CancellationTokenSource _spawnCts;
@@ -35,13 +36,15 @@ public class WaveSpawner : MonoBehaviour
         IPublisher<GameProgressEvent> gameProgressPublisher,
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
         ISpawnOrderCounter spawnOrderCounter,
-        IGameplayService gameplayService)
+        IGameplayService gameplayService,
+        ISlimePrefabProvider slimePrefabProvider)
     {
         _poolService = poolService;
         _gameProgressPublisher = gameProgressPublisher;
         _gameProgressSubscriber = gameProgressSubscriber;
         _spawnOrderCounter = spawnOrderCounter;
         _gameplayService = gameplayService;
+        _slimePrefabProvider = slimePrefabProvider;
     }
 
     public void Initialize(StageData stage, Transform spawnRoot)
@@ -107,7 +110,9 @@ public class WaveSpawner : MonoBehaviour
             var demand = new Dictionary<GameObject, int>();
             foreach (var plan in plans)
             {
-                var prefab = plan.SlimeData.Prefab;
+                if (!_slimePrefabProvider.TryGet(plan.SlimeData, out var prefab))
+                    continue;
+
                 demand.TryGetValue(prefab, out int current);
                 demand[prefab] = current + 1;
             }
@@ -235,7 +240,13 @@ public class WaveSpawner : MonoBehaviour
     {
         var slimeData = plan.SlimeData;
 
-        var obj = _poolService.Get(slimeData.Prefab);
+        if (!_slimePrefabProvider.TryGet(slimeData, out var prefab))
+        {
+            Debug.Log($"[WaveSpawner] 슬라임 프리팹이 없습니다: {slimeData.CodeName}", this);
+            return;
+        }
+
+        var obj = _poolService.Get(prefab);
         if (obj == null)
             return;
 

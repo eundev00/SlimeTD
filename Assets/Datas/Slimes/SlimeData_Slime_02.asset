@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a1c4e9b2d3f4a5b8c6d7e8f9a0b1c2d, type: 3}
-  m_Name: Slime_04
+  m_Name: SlimeData_Slime_02
   m_EditorClassIdentifier: Assembly-CSharp::SlimeData
-  _slimeId: 100004
-  _prefab: {fileID: 4941929678292297010, guid: 1d6d62b13599449c9b56ea7fb3807f4b, type: 3}
-  _baseHealth: 160
+  _slimeId: 100002
+  _codeName: Slime_02
+  _baseHealth: 120
   _baseSpeed: 1
   _lifeCost: 1
   _renderGroup: 0
