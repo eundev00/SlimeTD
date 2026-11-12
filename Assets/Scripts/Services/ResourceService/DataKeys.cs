@@ -7,6 +7,7 @@ public static class DataKeys
     public const string GridMapData1 = "GridMapData1";
     public const string GridMapData2 = "GridMapData2";
     public const string HunterCardGachaConfig = "HunterCardGachaConfig";
+    public const string ServerConfig = "ServerConfig";
     public const string SkillCatalog = "SkillCatalog";
     public const string SlimeData_Boss_01 = "SlimeData_Boss_01";
     public const string SlimeData_Boss_02 = "SlimeData_Boss_02";
@@ -37,6 +38,7 @@ public static class DataKeys
         { GridMapData1, "Assets/Datas/Grid/GridMapData1.asset" },
         { GridMapData2, "Assets/Datas/Grid/GridMapData2.asset" },
         { HunterCardGachaConfig, "Assets/Datas/HunterCardGachaConfig.asset" },
+        { ServerConfig, "Assets/Datas/ServerConfig.asset" },
         { SkillCatalog, "Assets/Datas/SkillCatalog.asset" },
         { SlimeData_Boss_01, "Assets/Datas/Slimes/SlimeData_Boss_01.asset" },
         { SlimeData_Boss_02, "Assets/Datas/Slimes/SlimeData_Boss_02.asset" },

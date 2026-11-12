@@ -1,6 +1,6 @@
 ﻿# SlimeTD 확인용 WebGL 빌드 + GitHub Pages 배포
-# 사용: powershell -ExecutionPolicy Bypass -File Tools\WebGL\BuildAndDeploy.ps1 [-SkipDeploy] [-Dev]
-# 작업 폴더에 커밋된 main만 빌드한다 (빌드 폴더는 작업 폴더를 origin으로 둔 별도 클론).
+# 사용: powershell -ExecutionPolicy Bypass -File Tools\WebGL\BuildAndDeploy.ps1 [-SkipDeploy] [-Dev] [-Branch <브랜치>]
+# 작업 폴더에 커밋된 브랜치(기본 main)만 빌드한다 (빌드 폴더는 작업 폴더를 origin으로 둔 별도 클론).
 param(
     [string]$WorkRepo = "C:\Projects\SlimeTD",
     [string]$BuildRepo = "C:\Projects\SlimeTD_Build",
@@ -10,6 +10,7 @@ param(
     [string]$UnityExe = "C:\Program Files\Unity\Hub\Editor\6000.3.6f1\Editor\Unity.exe",
     [string]$Git = "C:\Users\eunv0\AppData\Local\GitHubDesktop\app-3.6.6\resources\app\git\cmd\git.exe",
     [string]$CredentialTarget = "GitHub - https://api.github.com/eundev00",
+    [string]$Branch = "main",
     [switch]$SkipDeploy,
     [switch]$Dev
 )
@@ -48,7 +49,7 @@ function Invoke-GitWithToken([string[]]$GitArgs) {
     if ($code -ne 0) { throw "git $($GitArgs -join ' ') 실패 (exit $code)" }
 }
 
-# 1. 빌드 폴더를 작업 폴더의 main과 맞춘다
+# 1. 빌드 폴더를 작업 폴더의 브랜치와 맞춘다
 if (-not (Test-Path $BuildRepo)) {
     Step "빌드 폴더 클론: $BuildRepo"
     & $Git clone $WorkRepo $BuildRepo
@@ -56,13 +57,13 @@ if (-not (Test-Path $BuildRepo)) {
 }
 Push-Location $BuildRepo
 try {
-    & $Git fetch origin main
+    & $Git fetch origin $Branch
     if ($LASTEXITCODE -ne 0) { throw "fetch 실패" }
     # 이전 빌드가 바꾼 ProjectSettings 등은 버린다. Library/Logs/Builds는 무시 대상이라 유지된다.
-    & $Git reset --hard origin/main | Out-Null
+    & $Git reset --hard FETCH_HEAD | Out-Null
     & $Git clean -fd -q
     $sha = (& $Git rev-parse --short HEAD).Trim()
-    Step "빌드 대상 커밋: $sha"
+    Step "빌드 대상 커밋: $Branch $sha"
 } finally { Pop-Location }
 
 # 2. Unity 배치 빌드
