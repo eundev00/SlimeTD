@@ -122,6 +122,7 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 | `_displayName` | name (한글 이스케이프) |
 | `_enabled` | enabled |
 | `_startingLife`, `_startingJelly`, `_spawnInterval`, `_interWaveDelay`, `_normalHpGrowth` | 같은 이름의 열 |
+| `_mapKey` | mapKey. 같은 이름의 맵 프리팹(`Assets/Prefabs/Game/Map/<mapKey>.prefab`)이 없으면 보고한다 |
 | `_waves` | 웨이브 1부터 순서대로 항목 하나씩. 각 항목의 `_groups`는 order 순서로 `_slime` = 그 slimeId 슬라임 에셋 참조, `_count`, `_delay`(비우면 0) |
 
 로비 웨이브 맵은 `LobbyScene`의 `LobbyLifetimeScope._stage`가 가리키는 스테이지를 읽는다 (지금 `Stage_SingleNormal`).

@@ -11,13 +11,12 @@ using VContainer;
 
 public class WaveSpawner : MonoBehaviour
 {
-    [NotNull][SerializeField] private SplineContainer _splineContainer;
-
     // 웨이브가 겹쳐 스폰되므로 동시 생존 수를 이 창(window) 크기로 근사한다.
     [SerializeField] private int _overlapWaveWindow = 3;
 
     private StageData _stage;
     private Transform _spawnRoot;
+    private SplineContainer _splineContainer;
     private IGameObjectPoolService _poolService;
     private IPublisher<GameProgressEvent> _gameProgressPublisher;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
@@ -47,14 +46,15 @@ public class WaveSpawner : MonoBehaviour
         _slimePrefabProvider = slimePrefabProvider;
     }
 
-    public void Initialize(StageData stage, Transform spawnRoot)
+    public void Initialize(StageData stage, Transform spawnRoot, SplineContainer path)
     {
         _stage = stage;
         _spawnRoot = spawnRoot;
+        _splineContainer = path;
 
         if (_splineContainer == null)
         {
-            Debug.Log("[WaveSpawner] _splineContainer가 연결되지 않았습니다.", this);
+            Debug.Log("[WaveSpawner] 슬라임 경로가 없습니다.", this);
             return;
         }
 

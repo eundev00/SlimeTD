@@ -23,6 +23,7 @@ MonoBehaviour:
   _spawnInterval: 0.8
   _interWaveDelay: 2
   _normalHpGrowth: 0.06
+  _mapKey: Map_Forest01
   _waves:
   - _groups:
     - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}
