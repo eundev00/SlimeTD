@@ -41,7 +41,7 @@ public class BattlePresenter : IStartable, IDisposable
     private void HandleStartClicked()
     {
         _view.SetStartInteractable(false);
-        _sceneLoader.TransitionAsync(SceneNames.Lobby, SceneNames.Game).Forget();
+        _sceneLoader.TransitionAsync(SceneNames.Lobby, SceneNames.SingleGame).Forget();
     }
 
     private void HandleDevTestClicked()
