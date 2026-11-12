@@ -21,6 +21,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     private int _remainingPierce;
     private float _splashRadius;
     private int _slimeLayer;
+    private ParticleSystem[] _particles;
 
     private IUpdateSubscriptionService _updateService;
     private IGameObjectPoolService _poolService;
@@ -37,6 +38,7 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     private void Awake()
     {
         _slimeLayer = LayerMask.GetMask(GameTags.SlimeLayer);
+        _particles = GetComponentsInChildren<ParticleSystem>(true);
     }
 
     public void Initialize(Vector3 direction, ProjectileStats stats, DamageInfo info, int pierceCount = 0, float splashRadius = 0f)
@@ -57,9 +59,20 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
             transform.rotation = Quaternion.LookRotation(_direction);
         }
 
+        RestartParticles();
         _updateService.RegisterUpdatable(this);
     }
 
+
+    // 풀에서 꺼낼 때 활성화되는 순간 이전 위치에서 재생이 시작돼, 발사 위치로 옮긴 뒤 궤적을 지우고 다시 튼다
+    private void RestartParticles()
+    {
+        for (int i = 0; i < _particles.Length; i++)
+        {
+            _particles[i].Clear(false);
+            _particles[i].Play(false);
+        }
+    }
 
     public void ManagedUpdate()
     {
