@@ -14,4 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ServerConfig
   _tcpHost: 127.0.0.1
   _tcpPort: 30000
-  _webSocketUrl: ws://127.0.0.1:30001/ws

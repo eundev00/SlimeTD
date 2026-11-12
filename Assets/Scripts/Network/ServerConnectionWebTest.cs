@@ -7,12 +7,12 @@ using Cysharp.Threading.Tasks;
 using Google.Protobuf;
 using SlimeTD.Protocol;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 // TODO: 서버 접속 2차 테스트용(WebGL WebSocket). 정식 네트워크 계층이 생기면 삭제한다
 public static class ServerConnectionWebTest
 {
     private const string DeviceIdKey = "SlimeTD.DeviceId";
+    private const string ServerParameter = "server";
 
     private delegate void OpenCallback(int socket);
     private delegate void MessageCallback(int socket, IntPtr data, int length);
@@ -40,11 +40,17 @@ public static class ServerConnectionWebTest
         int socket = 0;
         try
         {
-            var config = await Addressables.LoadAssetAsync<ServerConfig>(ResourceKeys.GetPath(DataKeys.ServerConfig));
-            Debug.Log($"[ServerConnectionTest] 접속: {config.WebSocketUrl}");
+            string url = GetQueryParameter(Application.absoluteURL, ServerParameter);
+            if (string.IsNullOrEmpty(url))
+            {
+                Debug.Log($"[ServerConnectionTest] 페이지 주소에 {ServerParameter} 파라미터가 없어 접속 테스트를 건너뜁니다.");
+                return;
+            }
+
+            Debug.Log($"[ServerConnectionTest] 접속: {url}");
 
             _open = new UniTaskCompletionSource();
-            socket = SlimeTD_WsConnect(config.WebSocketUrl, OnOpen, OnMessage, OnClose);
+            socket = SlimeTD_WsConnect(url, OnOpen, OnMessage, OnClose);
             await _open.Task;
 
             var login = await RequestAsync(socket, MsgId.LoginReq,
@@ -66,6 +72,26 @@ public static class ServerConnectionWebTest
             if (socket != 0)
                 SlimeTD_WsClose(socket);
         }
+    }
+
+    // 터널 주소가 바뀌어도 다시 빌드하지 않도록 서버 주소는 페이지 URL의 ?server=wss://…/ws로 받는다
+    private static string GetQueryParameter(string pageUrl, string name)
+    {
+        int start = pageUrl.IndexOf('?');
+        if (start < 0)
+            return null;
+
+        int end = pageUrl.IndexOf('#', start);
+        string query = end < 0 ? pageUrl.Substring(start + 1) : pageUrl.Substring(start + 1, end - start - 1);
+
+        foreach (string pair in query.Split('&'))
+        {
+            int separator = pair.IndexOf('=');
+            if (separator > 0 && pair.Substring(0, separator) == name)
+                return Uri.UnescapeDataString(pair.Substring(separator + 1));
+        }
+
+        return null;
     }
 
     // WebGL은 deviceUniqueIdentifier가 비거나 매번 달라질 수 있어 처음 만든 GUID를 저장해 쓴다
