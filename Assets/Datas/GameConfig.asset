@@ -22,5 +22,5 @@ MonoBehaviour:
   _bossSlowScale: 0.5
   _ignoreJellyCost: 0
   _autoStartWave: 1
-  _testTower: {fileID: 11400000, guid: 450481ff21ed489d9f830f61882607a3, type: 2}
+  _testTower: {fileID: 11400000, guid: 7c9bf12d1abd74c4a96351aee94a52ce, type: 2}
   _debugTowerLevel: 1

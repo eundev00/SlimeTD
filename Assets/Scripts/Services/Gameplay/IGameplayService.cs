@@ -10,7 +10,7 @@ public interface IGameplayService : IDisposable
     StageData Stage { get; }
     SlimeDepthBucketSettings DepthBucketSettings { get; }
 
-    UniTask InitializeAsync();
+    UniTask InitializeAsync(string stageKey = DataKeys.Stage_SingleNormal);
     void AddJelly(int amount);
     bool TrySpendJelly(int amount);
     bool TrySpendSummonCost();

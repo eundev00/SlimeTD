@@ -117,6 +117,12 @@ robocopy $outDir $DeployRepo /MIR /XD .git /XF .nojekyll /NFL /NDL /NJH /NJS /NP
 if ($LASTEXITCODE -ge 8) { throw "결과물 복사 실패 (robocopy $LASTEXITCODE)" }
 New-Item -ItemType File -Force (Join-Path $DeployRepo ".nojekyll") | Out-Null
 
+# 빌드 파일 이름이 매번 같아서, 주소에 커밋을 붙이지 않으면 브라우저가 Pages 캐시(10분)의 예전 게임 파일을 쓴다
+$indexPath = Join-Path $DeployRepo "index.html"
+$index = [IO.File]::ReadAllText($indexPath)
+$index = $index.Replace('Build/WebGL.loader.js"', "Build/WebGL.loader.js?v=$sha`"").Replace('.unityweb"', ".unityweb?v=$sha`"")
+[IO.File]::WriteAllText($indexPath, $index, (New-Object Text.UTF8Encoding $false))
+
 Push-Location $DeployRepo
 try {
     & $Git add -A

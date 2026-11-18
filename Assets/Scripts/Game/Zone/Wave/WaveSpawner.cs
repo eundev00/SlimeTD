@@ -6,18 +6,17 @@ using MessagePipe;
 using Services.PoolService;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Splines;
 using VContainer;
 
 public class WaveSpawner : MonoBehaviour
 {
-    [NotNull][SerializeField] private SplineContainer _splineContainer;
-
     // 웨이브가 겹쳐 스폰되므로 동시 생존 수를 이 창(window) 크기로 근사한다.
     [SerializeField] private int _overlapWaveWindow = 3;
+    [NotNull][SerializeField] private Transform _spawnRoot;
 
     private StageData _stage;
-    private Transform _spawnRoot;
+    private IReadOnlyList<MapPath> _paths;
+    private int _spawnCount;
     private IGameObjectPoolService _poolService;
     private IPublisher<GameProgressEvent> _gameProgressPublisher;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
@@ -47,14 +46,15 @@ public class WaveSpawner : MonoBehaviour
         _slimePrefabProvider = slimePrefabProvider;
     }
 
-    public void Initialize(StageData stage, Transform spawnRoot)
+    public void Initialize(StageData stage, IReadOnlyList<MapPath> paths)
     {
         _stage = stage;
-        _spawnRoot = spawnRoot;
+        _paths = paths;
+        _spawnCount = 0;
 
-        if (_splineContainer == null)
+        if (_paths == null || _paths.Count == 0)
         {
-            Debug.Log("[WaveSpawner] _splineContainer가 연결되지 않았습니다.", this);
+            Debug.Log("[WaveSpawner] 슬라임 경로가 없습니다.", this);
             return;
         }
 
@@ -246,12 +246,16 @@ public class WaveSpawner : MonoBehaviour
             return;
         }
 
+        // 입구가 여럿이면 무리 안에서 번갈아 내보내 입구마다 같은 수가 나온다
+        var path = _paths[_spawnCount % _paths.Count].Spline;
+        _spawnCount++;
+
         var obj = _poolService.Get(prefab);
         if (obj == null)
             return;
 
         obj.transform.SetParent(_spawnRoot, false);
-        obj.transform.position = _splineContainer.EvaluatePosition(0f);
+        obj.transform.position = path.EvaluatePosition(0f);
 
         var slime = obj.GetComponent<BaseSlime>();
         if (slime == null)
@@ -262,7 +266,7 @@ public class WaveSpawner : MonoBehaviour
 
         slime.SetDepthBucket(_spawnOrderCounter.NextBucket(slimeData.RenderGroup));
 
-        slime.Initialize(_splineContainer, slimeData, plan.Health, plan.JellyReward);
+        slime.Initialize(path, slimeData, plan.Health, plan.JellyReward);
     }
 
     private void OnGameOver()

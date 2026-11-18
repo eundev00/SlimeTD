@@ -5,7 +5,7 @@
 ## 구조
 
 ```
-GameScene1 / GameScene2 / GameSceneTest / LobbyScene
+SingleGameScene / MultiGameScene / LobbyScene
  └─ PopupRoot (프리팹, 씬마다 1개)        팝업이 붙는 Canvas + 딤
 GameLifetimeScope
  ├─ PopupService (EntryPoint, 구현 인터페이스 자동 등록)   열기/닫기/스택/딤/백키

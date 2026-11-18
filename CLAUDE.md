@@ -129,6 +129,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 - **데이터 스크립트 위치**: ScriptableObject 정의는 Assets/Scripts/Data/에 둔다 (Game/ 아래에 두지 않는다)
 - **플레이어 데이터(메타)**: 골드/보석/헌터 카드(헌터별, `HunterState.Cards`)/헌터 레벨/최고 웨이브는 IPlayerDataService(전역)가 들고 IPlayerDataStore로 저장한다. 최고 웨이브는 GameplayService가 `ReportWaveReached`로 기록하고 로비 웨이브 맵이 구독한다. 저장 위치는 구현체 교체로 서버 전환이 가능해야 한다. 로컬 저장을 지워 새 계정으로 시작하려면 메뉴 `SlimeTD > Data > Reset Player Data`를 쓴다. 타워 레벨은 로비에서 정하고 인게임에서는 오르지 않는다
 - **"손맛"이 이 프로젝트의 최우선 품질 기준**이다. 피격/처치 연출은 비용을 아끼지 않는다
+- **게임 씬과 맵**: 게임 씬은 `SingleGameScene`, `MultiGameScene` 두 개이고 맵을 갖지 않는다. 맵은 프리팹(`Assets/Prefabs/Game/Map/<mapKey>.prefab`, 루트에 `GameMap`)이고 스테이지의 `mapKey`(Stages.csv)로 `GameInitiator`가 로드해 게임 씬에 넣는다. 씬마다 `GameLifetimeScope._stageKey`로 스테이지를 정한다 (싱글 `Stage_SingleNormal`, 멀티 `Stage_MultiNormal`). 맵은 경로(`MapPath`: 입구 번호 + 스플라인) 목록과 배치 구역(`MapZone`: 자리 번호 + 그리드) 목록을 갖는다. 멀티는 두 사람이 맵 하나를 같이 막는 협동이고 경쟁이 아니다: 경로 2개(위·아래 입구 → 가운데 줄 합류 → 기지)와 구역 2개(slot 0 = 나/아래, slot 1 = 팀원/위)다. 웨이브는 게임에 하나(`WaveSpawner`)이고 무리 안에서 입구를 번갈아 내보낸다. 팀원 구역은 서버가 붙기 전까지 비워 둔다
 - **그리드 배치**: 맵은 `GridMapData`(ScriptableObject)로 셀 단위 관리한다. 배치 가능/불가/경로 상태를 셀마다 지정하고, 에디터 도구(`GridMapDataInspector`, `GridSceneViewDrawer`, `GridPaintMode`)로 편집한다
 - **슬라임 렌더 순서**: `SlimeRenderOrderService`가 슬라임 간 깊이(Z-order)를 관리한다. 상세 설계는 [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md) 참고
 

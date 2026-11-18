@@ -5,8 +5,6 @@ using VContainer;
 
 public class Zone : MonoBehaviour
 {
-    [NotNull][SerializeField] private GridMapReference _gridMapReference;
-    [NotNull][SerializeField] private WaveSpawner _waveSpawner;
     [NotNull][SerializeField] private TowerSpawner _towerSpawner;
     [NotNull][SerializeField] private TowerInputHandler _towerInputHandler;
     [NotNull][SerializeField] private Transform _spawnRoot;
@@ -38,15 +36,15 @@ public class Zone : MonoBehaviour
         _spawnRequestedSubscriber = spawnRequestedSubscriber;
     }
 
-    public void Initialize(StageData stage)
+    public void Initialize(MapZone mapZone)
     {
-        if (_gridMapReference == null || _gridMapReference.GridMapData == null)
+        if (mapZone == null || mapZone.GridMapData == null)
         {
-            Debug.Log("[Zone] GridMapReference가 연결되지 않았습니다.", this);
+            Debug.Log("[Zone] 맵 배치 구역의 그리드가 없습니다.", this);
             return;
         }
 
-        _towerCells = new TowerCells(_gridMapReference.GridMapData);
+        _towerCells = new TowerCells(mapZone.GridMapData);
         _mergeFinder = new TowerMergeFinder(_towerCells, _gameplayService?.Catalog, data => _playerDataService == null || _playerDataService.IsAvailable(data.Id));
 
         if (_towerSpawner != null)
@@ -58,12 +56,6 @@ public class Zone : MonoBehaviour
         if (_towerInputHandler != null)
         {
             _towerInputHandler.Initialize(_towerCells, _groundHeightSampler);
-        }
-
-        if (_waveSpawner != null)
-        {
-            _resolver.Inject(_waveSpawner);
-            _waveSpawner.Initialize(stage, _spawnRoot);
         }
 
         _disposables?.Dispose();

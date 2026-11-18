@@ -43,11 +43,15 @@ public class StageData : ScriptableObject
     [Tooltip("일반 슬라임에만 적용. 보스는 기본 HP 고정")]
     [SerializeField] private float _normalHpGrowth = 0.06f;
 
+    [Header("맵")]
+    [SerializeField] private string _mapKey;
+
     [Header("웨이브 (1웨이브부터)")]
     [SerializeField] private List<StageWave> _waves = new();
 
     public int StageId => _stageId;
     public string CodeName => _codeName;
+    public string MapKey => _mapKey;
     public GameMode Mode => _mode;
     public Difficulty Difficulty => _difficulty;
     public string DisplayName => _displayName;

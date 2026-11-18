@@ -47,7 +47,7 @@ public class GameplayService : IGameplayService
         gameProgressSubscriber.Subscribe(OnGameProgress).AddTo(_disposables);
     }
 
-    public async UniTask InitializeAsync()
+    public async UniTask InitializeAsync(string stageKey = DataKeys.Stage_SingleNormal)
     {
         _info.PreviousBestWave.Value = _playerDataService.BestWave.Value;
         _info.ReachedWave.Value = 0;
@@ -70,7 +70,9 @@ public class GameplayService : IGameplayService
         if (SkillCatalog == null)
             Debug.Log($"[GameplayService] {DataKeys.SkillCatalog} 로드에 실패했습니다.");
 
-        Stage = await _resourceLoadService.LoadAsync<StageData>(DataKeys.Stage_SingleNormal);
+        Stage = await _resourceLoadService.LoadAsync<StageData>(stageKey);
+        if (Stage == null)
+            Debug.Log($"[GameplayService] {stageKey} 로드에 실패했습니다.");
 
         DepthBucketSettings = await _resourceLoadService.LoadAsync<SlimeDepthBucketSettings>(DataKeys.SlimeDepthBucketSettings);
         if (DepthBucketSettings == null)
