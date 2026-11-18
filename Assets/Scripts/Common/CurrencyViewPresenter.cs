@@ -9,12 +9,12 @@ public class CurrencyViewPresenter : IDisposable
     private readonly IPublisher<CurrencyViewClickedEvent> _clickedPublisher;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-    public CurrencyViewPresenter(CurrencyView view, IPlayerDataService playerDataService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
+    public CurrencyViewPresenter(CurrencyView view, IAccountService accountService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
     {
         _view = view;
         _clickedPublisher = clickedPublisher;
 
-        GetSource(view.Type, playerDataService)
+        GetSource(view.Type, accountService)
             .Subscribe(view.SetValue)
             .AddTo(_disposables);
 
@@ -34,7 +34,7 @@ public class CurrencyViewPresenter : IDisposable
         // TODO: 상점이 생기면 CurrencyViewClickedEvent를 받아 상점 열기
     }
 
-    private static IReadOnlyReactiveProperty<int> GetSource(CurrencyType type, IPlayerDataService service)
+    private static IReadOnlyReactiveProperty<int> GetSource(CurrencyType type, IAccountService service)
     {
         switch (type)
         {

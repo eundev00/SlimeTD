@@ -48,7 +48,7 @@ public class HunterCardPresenter : IStartable, IDisposable
         }
     }
 
-    private readonly IPlayerDataService _playerDataService;
+    private readonly IAccountService _accountService;
     private readonly IPopupService _popupService;
     private readonly IResourceLoadService _resourceLoadService;
     private readonly HunterCardView _view;
@@ -59,12 +59,12 @@ public class HunterCardPresenter : IStartable, IDisposable
     private int _sortIndex;
 
     public HunterCardPresenter(
-        IPlayerDataService playerDataService,
+        IAccountService accountService,
         IPopupService popupService,
         IResourceLoadService resourceLoadService,
         HunterCardView view)
     {
-        _playerDataService = playerDataService;
+        _accountService = accountService;
         _popupService = popupService;
         _resourceLoadService = resourceLoadService;
         _view = view;
@@ -93,7 +93,7 @@ public class HunterCardPresenter : IStartable, IDisposable
             return;
         }
 
-        foreach (var hunter in _playerDataService.Hunters)
+        foreach (var hunter in _accountService.Hunters)
         {
             if (!hunter.Data.Enabled)
                 continue;
@@ -123,7 +123,7 @@ public class HunterCardPresenter : IStartable, IDisposable
                 .AddTo(_disposables);
         }
 
-        _playerDataService.Gold
+        _accountService.Gold
             .Subscribe(_ => RefreshAll())
             .AddTo(_disposables);
 
@@ -161,7 +161,7 @@ public class HunterCardPresenter : IStartable, IDisposable
         int level = hunter.Level.Value;
         bool maxLevel = level >= TowerLevelService.MaxLevel;
 
-        _playerDataService.TryGetLevelUpCost(hunter.TowerId, out int neededCards, out _);
+        _accountService.TryGetLevelUpCost(hunter.TowerId, out int neededCards, out _);
 
         entry.Card.Set(
             hunter.Data.TowerName,
@@ -172,7 +172,7 @@ public class HunterCardPresenter : IStartable, IDisposable
             maxLevel,
             hunter.Cards.Value,
             neededCards,
-            _playerDataService.CanLevelUp(hunter.TowerId));
+            _accountService.CanLevelUp(hunter.TowerId));
     }
 
     private void ToggleSort()

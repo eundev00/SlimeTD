@@ -10,9 +10,10 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
         builder.Register<ResourceLoadService>(Lifetime.Singleton).As<IResourceLoadService>();
         builder.Register<TowerLevelService>(Lifetime.Singleton).As<ITowerLevelService>();
-        builder.Register<LocalPlayerDataStore>(Lifetime.Singleton).As<IPlayerDataStore>();
-        builder.Register<PlayerDataService>(Lifetime.Singleton).As<IPlayerDataService>();
+        builder.Register<GameServerConnection>(Lifetime.Singleton).As<IGameServerConnection>();
+        builder.Register<AccountService>(Lifetime.Singleton).As<IAccountService>();
         builder.RegisterEntryPoint<BootstrapEntryPoint>();
+        builder.RegisterComponentInHierarchy<ServerConnectErrorView>();
 
         builder.RegisterComponentInHierarchy<UpdateSubscriptionService>()
                .As<IUpdateSubscriptionService>();

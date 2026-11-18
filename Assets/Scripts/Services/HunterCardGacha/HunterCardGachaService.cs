@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class HunterCardGachaService : IHunterCardGachaService
 {
-    private readonly IPlayerDataService _playerDataService;
+    private readonly IAccountService _accountService;
     private readonly IResourceLoadService _resourceLoadService;
     private readonly System.Random _random = new System.Random();
 
     private HunterCardGachaConfig _config;
     private HunterCardGachaRoller _roller;
 
-    public HunterCardGachaService(IPlayerDataService playerDataService, IResourceLoadService resourceLoadService)
+    public HunterCardGachaService(IAccountService accountService, IResourceLoadService resourceLoadService)
     {
-        _playerDataService = playerDataService;
+        _accountService = accountService;
         _resourceLoadService = resourceLoadService;
     }
 
@@ -36,7 +36,7 @@ public class HunterCardGachaService : IHunterCardGachaService
     public async UniTask<HunterCardGachaResult> DrawAsync(int packId)
     {
         var config = await GetConfigAsync();
-        if (config == null || !_playerDataService.IsInitialized)
+        if (config == null || !_accountService.IsInitialized)
             return null;
 
         if (!config.TryGetPack(packId, out var pack))
@@ -45,14 +45,14 @@ public class HunterCardGachaService : IHunterCardGachaService
             return null;
         }
 
-        if (_playerDataService.Gold.Value < pack.Price)
+        if (_accountService.Gold.Value < pack.Price)
             return null;
 
         var owned = new List<HunterCardGachaCandidate>();
         var locked = new List<HunterCardGachaCandidate>();
         CollectCandidates(owned, locked);
 
-        int pity = _playerDataService.HunterCardGachaPity;
+        int pity = _accountService.HunterCardGachaPity;
         var picks = _roller.Roll(pack, owned, locked, ref pity);
         if (picks.Count == 0)
         {
@@ -65,12 +65,12 @@ public class HunterCardGachaService : IHunterCardGachaService
             cards.Add(ToCard(picks[i], config));
 
         var result = new HunterCardGachaResult(pack.Id, pack.Price, cards, pity);
-        return _playerDataService.TryApplyHunterCardGachaResult(result) ? result : null;
+        return _accountService.TryApplyHunterCardGachaResult(result) ? result : null;
     }
 
     private void CollectCandidates(List<HunterCardGachaCandidate> owned, List<HunterCardGachaCandidate> locked)
     {
-        var hunters = _playerDataService.Hunters;
+        var hunters = _accountService.Hunters;
         for (int i = 0; i < hunters.Count; i++)
         {
             var data = hunters[i].Data;
@@ -91,7 +91,7 @@ public class HunterCardGachaService : IHunterCardGachaService
         if (pick.IsLocked)
             return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Unlock);
 
-        if (_playerDataService.TryGetHunter(pick.TowerId, out var hunter) && hunter.Level.Value >= TowerLevelService.MaxLevel)
+        if (_accountService.TryGetHunter(pick.TowerId, out var hunter) && hunter.Level.Value >= TowerLevelService.MaxLevel)
             return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Refund, config.MaxLevelRefundGold);
 
         return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Card);

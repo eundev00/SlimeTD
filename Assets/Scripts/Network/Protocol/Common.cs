@@ -24,13 +24,21 @@ namespace SlimeTD.Protocol {
     static CommonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgxjb21tb24ucHJvdG8SB3NsaW1ldGQqfAoFTXNnSWQSDwoLTVNHX0lEX05P",
-            "TkUQABIUChBNU0dfSURfTE9HSU5fUkVREGQSFAoQTVNHX0lEX0xPR0lOX1JF",
-            "UxBlEhoKFU1TR19JRF9HRVRfUExBWUVSX1JFURDIARIaChVNU0dfSURfR0VU",
-            "X1BMQVlFUl9SRVMQyQEqfgoKUmVzdWx0Q29kZRISCg5SRVNVTFRfQ09ERV9P",
-            "SxAAEh8KG1JFU1VMVF9DT0RFX0lOVkFMSURfUkVRVUVTVBABEh0KGVJFU1VM",
-            "VF9DT0RFX05PVF9MT0dHRURfSU4QAhIcChhSRVNVTFRfQ09ERV9TRVJWRVJf",
-            "RVJST1IQA0ITqgIQU2xpbWVURC5Qcm90b2NvbGIGcHJvdG8z"));
+            "Cgxjb21tb24ucHJvdG8SB3NsaW1ldGQqigIKBU1zZ0lkEg8KC01TR19JRF9O",
+            "T05FEAASFAoQTVNHX0lEX0xPR0lOX1JFURBkEhQKEE1TR19JRF9MT0dJTl9S",
+            "RVMQZRIfChpNU0dfSURfR0VUX1BMQVlFUl9JTkZPX1JFURDIARIfChpNU0df",
+            "SURfR0VUX1BMQVlFUl9JTkZPX1JFUxDJARIfChpNU0dfSURfSFVOVEVSX0xF",
+            "VkVMX1VQX1JFURCsAhIfChpNU0dfSURfSFVOVEVSX0xFVkVMX1VQX1JFUxCt",
+            "AhIfChpNU0dfSURfSFVOVEVSX1BVUkNIQVNFX1JFURCuAhIfChpNU0dfSURf",
+            "SFVOVEVSX1BVUkNIQVNFX1JFUxCvAiq4AgoKUmVzdWx0Q29kZRISCg5SRVNV",
+            "TFRfQ09ERV9PSxAAEh8KG1JFU1VMVF9DT0RFX0lOVkFMSURfUkVRVUVTVBAB",
+            "Eh0KGVJFU1VMVF9DT0RFX05PVF9MT0dHRURfSU4QAhIcChhSRVNVTFRfQ09E",
+            "RV9TRVJWRVJfRVJST1IQAxIZChVSRVNVTFRfQ09ERV9OT1RfRk9VTkQQBBId",
+            "ChlSRVNVTFRfQ09ERV9IVU5URVJfTE9DS0VEEAUSGQoVUkVTVUxUX0NPREVf",
+            "TUFYX0xFVkVMEAYSIAocUkVTVUxUX0NPREVfTk9UX0VOT1VHSF9JVEVNUxAH",
+            "EiAKHFJFU1VMVF9DT0RFX0FMUkVBRFlfVU5MT0NLRUQQCBIfChtSRVNVTFRf",
+            "Q09ERV9OT1RfUFVSQ0hBU0FCTEUQCUITqgIQU2xpbWVURC5Qcm90b2NvbGIG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SlimeTD.Protocol.MsgId), typeof(global::SlimeTD.Protocol.ResultCode), }, null, null));
@@ -41,24 +49,52 @@ namespace SlimeTD.Protocol {
   #region Enums
   /// <summary>
   /// 와이어 헤더의 메시지 ID. 서버와 클라이언트가 같은 값을 쓴다. 한 번 정한 값은 바꾸지 않는다.
-  /// 1~99: 시스템, 100~199: 계정, 200~299: 플레이어 데이터
+  /// 1~99: 시스템, 100~199: 계정, 200~299: 플레이어 데이터, 300~399: 헌터
   /// </summary>
   public enum MsgId {
     [pbr::OriginalName("MSG_ID_NONE")] None = 0,
     [pbr::OriginalName("MSG_ID_LOGIN_REQ")] LoginReq = 100,
     [pbr::OriginalName("MSG_ID_LOGIN_RES")] LoginRes = 101,
-    [pbr::OriginalName("MSG_ID_GET_PLAYER_REQ")] GetPlayerReq = 200,
-    [pbr::OriginalName("MSG_ID_GET_PLAYER_RES")] GetPlayerRes = 201,
+    [pbr::OriginalName("MSG_ID_GET_PLAYER_INFO_REQ")] GetPlayerInfoReq = 200,
+    [pbr::OriginalName("MSG_ID_GET_PLAYER_INFO_RES")] GetPlayerInfoRes = 201,
+    [pbr::OriginalName("MSG_ID_HUNTER_LEVEL_UP_REQ")] HunterLevelUpReq = 300,
+    [pbr::OriginalName("MSG_ID_HUNTER_LEVEL_UP_RES")] HunterLevelUpRes = 301,
+    [pbr::OriginalName("MSG_ID_HUNTER_PURCHASE_REQ")] HunterPurchaseReq = 302,
+    [pbr::OriginalName("MSG_ID_HUNTER_PURCHASE_RES")] HunterPurchaseRes = 303,
   }
 
   /// <summary>
-  /// 모든 응답의 결과 코드. 클라이언트는 이 값으로 분기한다.
+  /// 모든 응답의 결과 코드. 클라이언트는 이 값으로 분기한다. 한 번 정한 값은 바꾸지 않는다.
   /// </summary>
   public enum ResultCode {
     [pbr::OriginalName("RESULT_CODE_OK")] Ok = 0,
     [pbr::OriginalName("RESULT_CODE_INVALID_REQUEST")] InvalidRequest = 1,
     [pbr::OriginalName("RESULT_CODE_NOT_LOGGED_IN")] NotLoggedIn = 2,
     [pbr::OriginalName("RESULT_CODE_SERVER_ERROR")] ServerError = 3,
+    /// <summary>
+    /// 없는 대상 (예: 데이터에 없는 타워)
+    /// </summary>
+    [pbr::OriginalName("RESULT_CODE_NOT_FOUND")] NotFound = 4,
+    /// <summary>
+    /// 잠긴 헌터라 할 수 없음
+    /// </summary>
+    [pbr::OriginalName("RESULT_CODE_HUNTER_LOCKED")] HunterLocked = 5,
+    /// <summary>
+    /// 이미 최대 레벨
+    /// </summary>
+    [pbr::OriginalName("RESULT_CODE_MAX_LEVEL")] MaxLevel = 6,
+    /// <summary>
+    /// 재화나 카드가 부족함
+    /// </summary>
+    [pbr::OriginalName("RESULT_CODE_NOT_ENOUGH_ITEMS")] NotEnoughItems = 7,
+    /// <summary>
+    /// 이미 해금된 헌터
+    /// </summary>
+    [pbr::OriginalName("RESULT_CODE_ALREADY_UNLOCKED")] AlreadyUnlocked = 8,
+    /// <summary>
+    /// 구매할 수 없는 헌터 (가격 0)
+    /// </summary>
+    [pbr::OriginalName("RESULT_CODE_NOT_PURCHASABLE")] NotPurchasable = 9,
   }
 
   #endregion

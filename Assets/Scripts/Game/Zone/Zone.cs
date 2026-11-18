@@ -12,7 +12,7 @@ public class Zone : MonoBehaviour
     private IObjectResolver _resolver;
     private IGroundHeightSampler _groundHeightSampler;
     private IGameplayService _gameplayService;
-    private IPlayerDataService _playerDataService;
+    private IAccountService _accountService;
     private ISubscriber<TowerSpawnRequestedEvent> _spawnRequestedSubscriber;
 
     private TowerCells _towerCells;
@@ -26,13 +26,13 @@ public class Zone : MonoBehaviour
         IObjectResolver resolver,
         IGroundHeightSampler groundHeightSampler,
         IGameplayService gameplayService,
-        IPlayerDataService playerDataService,
+        IAccountService accountService,
         ISubscriber<TowerSpawnRequestedEvent> spawnRequestedSubscriber)
     {
         _resolver = resolver;
         _groundHeightSampler = groundHeightSampler;
         _gameplayService = gameplayService;
-        _playerDataService = playerDataService;
+        _accountService = accountService;
         _spawnRequestedSubscriber = spawnRequestedSubscriber;
     }
 
@@ -45,7 +45,7 @@ public class Zone : MonoBehaviour
         }
 
         _towerCells = new TowerCells(mapZone.GridMapData);
-        _mergeFinder = new TowerMergeFinder(_towerCells, _gameplayService?.Catalog, data => _playerDataService == null || _playerDataService.IsAvailable(data.Id));
+        _mergeFinder = new TowerMergeFinder(_towerCells, _gameplayService?.Catalog, data => _accountService == null || _accountService.IsAvailable(data.Id));
 
         if (_towerSpawner != null)
         {

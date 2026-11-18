@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 272e6f57d30b4d0aa0cf038df42ef0a1, type: 3}
+  m_Name: ItemCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::ItemCatalog
+  _items:
+  - _itemId: 1000001
+    _codeName: Gold
+  - _itemId: 1000002
+    _codeName: Gem
+  - _itemId: 1000003
+    _codeName: Jelly
+  - _itemId: 2101001
+    _codeName: HunterCardPack_1
+  - _itemId: 2101002
+    _codeName: HunterCardPack_10

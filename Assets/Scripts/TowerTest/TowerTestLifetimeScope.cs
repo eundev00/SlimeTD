@@ -14,8 +14,7 @@ public class TowerTestLifetimeScope : LifetimeScope
     {
         builder.Register<ResourceLoadService>(Lifetime.Singleton).As<IResourceLoadService>();
         builder.Register<TowerLevelService>(Lifetime.Singleton).As<ITowerLevelService>();
-        builder.Register<LocalPlayerDataStore>(Lifetime.Singleton).As<IPlayerDataStore>();
-        builder.Register<PlayerDataService>(Lifetime.Singleton).As<IPlayerDataService>();
+        builder.Register<TowerTestAccountService>(Lifetime.Singleton).As<IAccountService>();
 
         builder.RegisterComponentInHierarchy<UpdateSubscriptionService>()
                .As<IUpdateSubscriptionService>();

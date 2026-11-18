@@ -16,10 +16,10 @@ public class CurrencyView : MonoBehaviour
 
     public event Action Clicked;
 
-    public void Initialize(IPlayerDataService playerDataService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
+    public void Initialize(IAccountService accountService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
     {
         _presenter?.Dispose();
-        _presenter = new CurrencyViewPresenter(this, playerDataService, clickedPublisher);
+        _presenter = new CurrencyViewPresenter(this, accountService, clickedPublisher);
     }
 
     private void Start()

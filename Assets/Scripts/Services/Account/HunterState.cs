@@ -1,4 +1,4 @@
-using UniRx;
+﻿using UniRx;
 
 public class HunterState
 {
@@ -8,13 +8,13 @@ public class HunterState
     public ReactiveProperty<bool> Unlocked { get; }
     public ReactiveProperty<int> Cards { get; }
 
-    public HunterState(TowerData data, HunterRecord record)
+    public HunterState(TowerData data, int level, bool unlocked, int cards)
     {
         TowerId = data.Id;
         Data = data;
-        Level = new ReactiveProperty<int>(record.Level);
-        Unlocked = new ReactiveProperty<bool>(record.Unlocked);
-        Cards = new ReactiveProperty<int>(record.Cards);
+        Level = new ReactiveProperty<int>(level);
+        Unlocked = new ReactiveProperty<bool>(unlocked);
+        Cards = new ReactiveProperty<int>(cards);
     }
 
     public void Dispose()

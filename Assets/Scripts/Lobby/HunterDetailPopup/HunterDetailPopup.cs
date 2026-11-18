@@ -44,6 +44,7 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private Button _buyButton;
     [NotNull][SerializeField] private TMP_Text _buyCostText;
     [NotNull][SerializeField] private Button _closeButton;
+    [NotNull][SerializeField] private TMP_Text _messageText;
 
     [SerializeField] private Color _lockedThumbnailColor = new Color(0.11f, 0.12f, 0.11f);
 
@@ -63,10 +64,10 @@ public class HunterDetailPopup : PopupBase
     }
 
     [Inject]
-    public void Construct(IPlayerDataService playerDataService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
+    public void Construct(IAccountService accountService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
     {
-        _goldCurrency.Initialize(playerDataService, clickedPublisher);
-        _gemCurrency.Initialize(playerDataService, clickedPublisher);
+        _goldCurrency.Initialize(accountService, clickedPublisher);
+        _gemCurrency.Initialize(accountService, clickedPublisher);
     }
 
     private void Start()
@@ -92,6 +93,7 @@ public class HunterDetailPopup : PopupBase
 
     protected override void OnClose()
     {
+        ShowMessage(string.Empty);
         _skillSlots.CloseTooltips();
         _towerId.Value = 0;
     }
@@ -179,6 +181,12 @@ public class HunterDetailPopup : PopupBase
         _upgradeDisabled.SetActive(true);
         _upgradeMax.SetActive(true);
         _upgradeCostText.text = string.Empty;
+    }
+
+    public void ShowMessage(string message)
+    {
+        _messageText.text = message;
+        _messageText.gameObject.SetActive(!string.IsNullOrEmpty(message));
     }
 
     public void ShowUnavailable()

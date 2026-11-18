@@ -9,6 +9,7 @@ public static class DataKeys
     public const string GridMapData_Coop01_Zone0 = "GridMapData_Coop01_Zone0";
     public const string GridMapData_Coop01_Zone1 = "GridMapData_Coop01_Zone1";
     public const string HunterCardGachaConfig = "HunterCardGachaConfig";
+    public const string ItemCatalog = "ItemCatalog";
     public const string ServerConfig = "ServerConfig";
     public const string SkillCatalog = "SkillCatalog";
     public const string SlimeData_Boss_01 = "SlimeData_Boss_01";
@@ -43,6 +44,7 @@ public static class DataKeys
         { GridMapData_Coop01_Zone0, "Assets/Datas/Grid/GridMapData_Coop01_Zone0.asset" },
         { GridMapData_Coop01_Zone1, "Assets/Datas/Grid/GridMapData_Coop01_Zone1.asset" },
         { HunterCardGachaConfig, "Assets/Datas/HunterCardGachaConfig.asset" },
+        { ItemCatalog, "Assets/Datas/ItemCatalog.asset" },
         { ServerConfig, "Assets/Datas/ServerConfig.asset" },
         { SkillCatalog, "Assets/Datas/SkillCatalog.asset" },
         { SlimeData_Boss_01, "Assets/Datas/Slimes/SlimeData_Boss_01.asset" },

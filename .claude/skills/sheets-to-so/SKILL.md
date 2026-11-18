@@ -133,12 +133,12 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 
 ### NewAccount.csv (+ Items.csv codeName) → `Assets/Datas/GameConfig.asset`
 
-서버 전용 시트지만 서버 전까지 로컬 계정 생성에 쓴다. codeName이 `Gold`인 아이템의 amount → `_initialLobbyGold`, `Gem` → `_initialGem`. 다른 아이템은 클라이언트가 아직 지급하지 못하므로 보고만 한다.
+서버가 새 계정을 만들 때 쓰는 시트다. 클라이언트는 계정을 서버에서 받으므로 지금은 이 값을 쓰지 않는다 (`_initialLobbyGold`, `_initialGem`은 남아 있지만 쓰는 곳이 없다).
 
 ### Enums.csv → `Assets/Scripts/Data/SheetEnums.cs`
 
 이넘을 손으로 맞춘다 (서버 프로토콜 코드가 생기면 그쪽 이넘으로 교체 예정). 기존 이넘(`SkillTrigger`, `SkillEffectType`, `VfxAnchor`, `SlimeRenderGroup`, `TowerAttackType`)은 에셋에 숫자로 저장돼 있으므로 값이 바뀌면 해당 에셋도 다시 반영해야 한다.
 
-### Items.csv
+### Items.csv → `Assets/Datas/ItemCatalog.asset` `_items`
 
-클라이언트가 아직 아이템을 쓰지 않아 반영할 SO가 없다.
+행마다 `_itemId` = itemId, `_codeName` = codeName (itemId 순서). 클라이언트는 서버가 보내는 아이템 ID를 codeName(`Gold`, `Gem`)으로 찾는다.

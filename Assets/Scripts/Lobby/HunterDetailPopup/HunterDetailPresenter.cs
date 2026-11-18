@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using SlimeTD.Protocol;
 using System;
 using UniRx;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.U2D;
 public class HunterDetailPresenter : IPopupPresenter
 {
     private readonly HunterDetailPopup _popup;
-    private readonly IPlayerDataService _playerDataService;
+    private readonly IAccountService _accountService;
     private readonly IResourceLoadService _resourceLoadService;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -16,11 +17,12 @@ public class HunterDetailPresenter : IPopupPresenter
     private SpriteAtlas _skillAtlas;
     private SpriteAtlasCache _thumbnails = new SpriteAtlasCache(null);
     private bool _disposed;
+    private bool _requesting;
 
-    public HunterDetailPresenter(HunterDetailPopup popup, IPlayerDataService playerDataService, IResourceLoadService resourceLoadService)
+    public HunterDetailPresenter(HunterDetailPopup popup, IAccountService accountService, IResourceLoadService resourceLoadService)
     {
         _popup = popup;
-        _playerDataService = playerDataService;
+        _accountService = accountService;
         _resourceLoadService = resourceLoadService;
     }
 
@@ -33,8 +35,8 @@ public class HunterDetailPresenter : IPopupPresenter
             .Subscribe(Bind)
             .AddTo(_disposables);
 
-        _playerDataService.Gold.Subscribe(_ => Render()).AddTo(_disposables);
-        _playerDataService.Gem.Subscribe(_ => Render()).AddTo(_disposables);
+        _accountService.Gold.Subscribe(_ => Render()).AddTo(_disposables);
+        _accountService.Gem.Subscribe(_ => Render()).AddTo(_disposables);
 
         _popup.UpgradeClicked += HandleUpgradeClicked;
         _popup.BuyClicked += HandleBuyClicked;
@@ -77,7 +79,7 @@ public class HunterDetailPresenter : IPopupPresenter
 
     private void Bind(int towerId)
     {
-        if (!_playerDataService.TryGetHunter(towerId, out var hunter))
+        if (!_accountService.TryGetHunter(towerId, out var hunter))
         {
             Debug.Log($"[HunterDetailPresenter] 헌터를 찾을 수 없습니다: {towerId}");
             return;
@@ -97,18 +99,48 @@ public class HunterDetailPresenter : IPopupPresenter
 
     private void HandleUpgradeClicked()
     {
-        if (_hunter == null)
+        if (_hunter == null || _requesting)
             return;
 
-        _playerDataService.TryLevelUp(_hunter.TowerId);
+        RequestAsync(_accountService.LevelUpAsync(_hunter.TowerId)).Forget();
     }
 
     private void HandleBuyClicked()
     {
-        if (_hunter == null)
+        if (_hunter == null || _requesting)
             return;
 
-        _playerDataService.TryPurchaseHunter(_hunter.TowerId);
+        RequestAsync(_accountService.PurchaseHunterAsync(_hunter.TowerId)).Forget();
+    }
+
+    // 응답을 기다리는 동안 버튼을 잠가 같은 요청이 두 번 가지 않게 한다
+    private async UniTaskVoid RequestAsync(UniTask<ResultCode> request)
+    {
+        _requesting = true;
+        _popup.ShowMessage(string.Empty);
+        Render();
+
+        var result = await request;
+        if (_disposed)
+            return;
+
+        _requesting = false;
+        _popup.ShowMessage(ResultMessage(result));
+        Render();
+    }
+
+    private static string ResultMessage(ResultCode result)
+    {
+        return result switch
+        {
+            ResultCode.Ok => string.Empty,
+            ResultCode.NotEnoughItems => "재화나 카드가 부족합니다",
+            ResultCode.MaxLevel => "이미 최대 레벨입니다",
+            ResultCode.HunterLocked => "보유하지 않은 헌터입니다",
+            ResultCode.AlreadyUnlocked => "이미 보유한 헌터입니다",
+            ResultCode.NotPurchasable => "구매할 수 없는 헌터입니다",
+            _ => "서버 요청에 실패했습니다",
+        };
     }
 
     private void HandleCloseClicked()
@@ -124,7 +156,7 @@ public class HunterDetailPresenter : IPopupPresenter
         bool unlocked = _hunter.Unlocked.Value;
         int level = _hunter.Level.Value;
         bool maxLevel = level >= TowerLevelService.MaxLevel;
-        bool canLevelUp = unlocked && !maxLevel && _playerDataService.CanLevelUp(_hunter.TowerId);
+        bool canLevelUp = unlocked && !maxLevel && _accountService.CanLevelUp(_hunter.TowerId);
 
         RenderInfo();
         _popup.SetThumbnail(_thumbnails.GetSprite(_hunter.Data.ThumbnailName), unlocked);
@@ -156,7 +188,7 @@ public class HunterDetailPresenter : IPopupPresenter
             return;
         }
 
-        _playerDataService.TryGetLevelUpCost(_hunter.TowerId, out int neededCards, out _);
+        _accountService.TryGetLevelUpCost(_hunter.TowerId, out int neededCards, out _);
         _popup.SetCardProgress(_hunter.Cards.Value, neededCards);
     }
 
@@ -193,7 +225,7 @@ public class HunterDetailPresenter : IPopupPresenter
                 return;
             }
 
-            _popup.ShowBuy(price.ToString("N0"), _playerDataService.Gem.Value >= price);
+            _popup.ShowBuy(price.ToString("N0"), !_requesting && _accountService.Gem.Value >= price);
             return;
         }
 
@@ -203,7 +235,7 @@ public class HunterDetailPresenter : IPopupPresenter
             return;
         }
 
-        _playerDataService.TryGetLevelUpCost(towerId, out _, out int neededGold);
-        _popup.ShowUpgrade(neededGold.ToString("N0"), _playerDataService.CanLevelUp(towerId));
+        _accountService.TryGetLevelUpCost(towerId, out _, out int neededGold);
+        _popup.ShowUpgrade(neededGold.ToString("N0"), !_requesting && _accountService.CanLevelUp(towerId));
     }
 }

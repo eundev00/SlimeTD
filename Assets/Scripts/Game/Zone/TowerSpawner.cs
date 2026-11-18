@@ -8,7 +8,7 @@ public class TowerSpawner : MonoBehaviour
     private IObjectResolver _resolver;
     private IGameplayService _gameplayService;
     private IGroundHeightSampler _groundHeightSampler;
-    private IPlayerDataService _playerDataService;
+    private IAccountService _accountService;
     private ITowerPrefabProvider _prefabProvider;
     private TowerCells _towerCells;
 
@@ -20,13 +20,13 @@ public class TowerSpawner : MonoBehaviour
         IObjectResolver resolver,
         IGameplayService gameplayService,
         IGroundHeightSampler groundHeightSampler,
-        IPlayerDataService playerDataService,
+        IAccountService accountService,
         ITowerPrefabProvider prefabProvider)
     {
         _resolver = resolver;
         _gameplayService = gameplayService;
         _groundHeightSampler = groundHeightSampler;
-        _playerDataService = playerDataService;
+        _accountService = accountService;
         _prefabProvider = prefabProvider;
     }
 
@@ -175,7 +175,7 @@ public class TowerSpawner : MonoBehaviour
 
     private bool IsAvailable(TowerData towerData)
     {
-        return _playerDataService == null || _playerDataService.IsAvailable(towerData.Id);
+        return _accountService == null || _accountService.IsAvailable(towerData.Id);
     }
 
     private GameObject CreateTower(GameObject prefab, TowerData towerData, Vector3 position)

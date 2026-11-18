@@ -14,7 +14,7 @@ public class HunterCardRevealPresenter : IPopupPresenter
     private const int OpenAllIntervalMs = 90;
 
     private readonly HunterCardRevealPopup _popup;
-    private readonly IPlayerDataService _playerDataService;
+    private readonly IAccountService _accountService;
     private readonly IResourceLoadService _resourceLoadService;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
@@ -23,10 +23,10 @@ public class HunterCardRevealPresenter : IPopupPresenter
     private bool _openingAll;
     private bool _disposed;
 
-    public HunterCardRevealPresenter(HunterCardRevealPopup popup, IPlayerDataService playerDataService, IResourceLoadService resourceLoadService)
+    public HunterCardRevealPresenter(HunterCardRevealPopup popup, IAccountService accountService, IResourceLoadService resourceLoadService)
     {
         _popup = popup;
-        _playerDataService = playerDataService;
+        _accountService = accountService;
         _resourceLoadService = resourceLoadService;
     }
 
@@ -67,7 +67,7 @@ public class HunterCardRevealPresenter : IPopupPresenter
         var items = new List<HunterCardRevealItem>(result.Cards.Count);
         foreach (var card in result.Cards)
         {
-            if (_playerDataService.TryGetHunter(card.TowerId, out var hunter))
+            if (_accountService.TryGetHunter(card.TowerId, out var hunter))
                 items.Add(new HunterCardRevealItem(hunter.Data.TowerName, card.GradeId, thumbnails.GetSprite(hunter.Data.ThumbnailName)));
             else
                 items.Add(new HunterCardRevealItem(card.TowerId.ToString(), card.GradeId, null));

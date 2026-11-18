@@ -5,14 +5,14 @@ public class GameResultPresenter : IPopupPresenter
     private readonly GameResultPopup _popup;
     private readonly ISceneLoader _sceneLoader;
     private readonly IGameplayService _gameplayService;
-    private readonly IPlayerDataService _playerDataService;
+    private readonly IAccountService _accountService;
 
-    public GameResultPresenter(GameResultPopup popup, ISceneLoader sceneLoader, IGameplayService gameplayService, IPlayerDataService playerDataService)
+    public GameResultPresenter(GameResultPopup popup, ISceneLoader sceneLoader, IGameplayService gameplayService, IAccountService accountService)
     {
         _popup = popup;
         _sceneLoader = sceneLoader;
         _gameplayService = gameplayService;
-        _playerDataService = playerDataService;
+        _accountService = accountService;
     }
 
     public void Initialize()
@@ -20,7 +20,7 @@ public class GameResultPresenter : IPopupPresenter
         var info = _gameplayService.Info;
 
         // 로비를 거치지 않은 에디터 테스트에서는 기록이 저장되지 않아 신기록을 표시하지 않는다
-        bool isNewRecord = _playerDataService.IsInitialized && info.ReachedWave.Value > info.PreviousBestWave.Value;
+        bool isNewRecord = _accountService.IsInitialized && info.ReachedWave.Value > info.PreviousBestWave.Value;
 
         _popup.Setup(info.IsCleared.Value, info.ReachedWave.Value, isNewRecord);
 

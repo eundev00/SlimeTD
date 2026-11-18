@@ -6,7 +6,7 @@ public class HunterCardGachaPresenter : IPopupPresenter
 {
     private readonly HunterCardGachaPopup _popup;
     private readonly IHunterCardGachaService _gachaService;
-    private readonly IPlayerDataService _playerDataService;
+    private readonly IAccountService _accountService;
     private readonly IPopupService _popupService;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
@@ -14,11 +14,11 @@ public class HunterCardGachaPresenter : IPopupPresenter
     private bool _drawing;
     private bool _disposed;
 
-    public HunterCardGachaPresenter(HunterCardGachaPopup popup, IHunterCardGachaService gachaService, IPlayerDataService playerDataService, IPopupService popupService)
+    public HunterCardGachaPresenter(HunterCardGachaPopup popup, IHunterCardGachaService gachaService, IAccountService accountService, IPopupService popupService)
     {
         _popup = popup;
         _gachaService = gachaService;
-        _playerDataService = playerDataService;
+        _accountService = accountService;
         _popupService = popupService;
     }
 
@@ -57,7 +57,7 @@ public class HunterCardGachaPresenter : IPopupPresenter
                 Debug.Log($"[HunterCardGachaPresenter] 설정에 없는 팩입니다: {pack.PackId}", pack);
         }
 
-        _playerDataService.Gold.Subscribe(_ => RenderAffordable()).AddTo(_disposables);
+        _accountService.Gold.Subscribe(_ => RenderAffordable()).AddTo(_disposables);
     }
 
     private void RenderAffordable()
@@ -65,7 +65,7 @@ public class HunterCardGachaPresenter : IPopupPresenter
         if (_config == null)
             return;
 
-        int gold = _playerDataService.Gold.Value;
+        int gold = _accountService.Gold.Value;
         foreach (var pack in _popup.Packs)
         {
             bool affordable = !_drawing && _config.TryGetPack(pack.PackId, out var data) && gold >= data.Price;

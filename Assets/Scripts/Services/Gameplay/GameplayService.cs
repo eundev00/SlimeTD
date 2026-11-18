@@ -7,7 +7,7 @@ public class GameplayService : IGameplayService
 {
     private readonly GameplayInfo _info;
     private readonly IPopupService _popupService;
-    private readonly IPlayerDataService _playerDataService;
+    private readonly IAccountService _accountService;
     private readonly IPublisher<GameProgressEvent> _gameProgressPublisher;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
     private bool _gameOverPublished;
@@ -30,7 +30,7 @@ public class GameplayService : IGameplayService
     public GameplayService(
         IResourceLoadService resourceLoadService,
         IPopupService popupService,
-        IPlayerDataService playerDataService,
+        IAccountService accountService,
         ISubscriber<SlimeReachedEndEvent> reachedEndSubscriber,
         ISubscriber<SlimeKilledEvent> killedSubscriber,
         IPublisher<GameProgressEvent> gameProgressPublisher,
@@ -40,7 +40,7 @@ public class GameplayService : IGameplayService
         _gameProgressPublisher = gameProgressPublisher;
         _resourceLoadService = resourceLoadService;
         _popupService = popupService;
-        _playerDataService = playerDataService;
+        _accountService = accountService;
 
         reachedEndSubscriber.Subscribe(OnSlimeReachedEnd).AddTo(_disposables);
         killedSubscriber.Subscribe(OnSlimeKilled).AddTo(_disposables);
@@ -49,7 +49,7 @@ public class GameplayService : IGameplayService
 
     public async UniTask InitializeAsync(string stageKey = DataKeys.Stage_SingleNormal)
     {
-        _info.PreviousBestWave.Value = _playerDataService.BestWave.Value;
+        _info.PreviousBestWave.Value = _accountService.BestWave.Value;
         _info.ReachedWave.Value = 0;
 
         Config =await _resourceLoadService.LoadAsync<GameConfig>(DataKeys.GameConfig);
@@ -170,7 +170,7 @@ public class GameplayService : IGameplayService
     private void ReportWaveReached(int wave)
     {
         _info.ReachedWave.Value = Mathf.Max(_info.ReachedWave.Value, wave);
-        _playerDataService.ReportWaveReached(wave);
+        _accountService.ReportWaveReached(wave);
     }
 
     private void OnSlimeReachedEnd(SlimeReachedEndEvent e)

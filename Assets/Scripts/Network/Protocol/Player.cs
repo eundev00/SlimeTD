@@ -24,23 +24,23 @@ namespace SlimeTD.Protocol {
     static PlayerReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgxwbGF5ZXIucHJvdG8SB3NsaW1ldGQaDGNvbW1vbi5wcm90byIOCgxHZXRQ",
-            "bGF5ZXJSZXEiWAoMR2V0UGxheWVyUmVzEiMKBnJlc3VsdBgBIAEoDjITLnNs",
-            "aW1ldGQuUmVzdWx0Q29kZRIjCgZwbGF5ZXIYAiABKAsyEy5zbGltZXRkLlBs",
-            "YXllckluZm8iqwEKClBsYXllckluZm8SEgoKYWNjb3VudF9pZBgBIAEoAxIh",
-            "CgVpdGVtcxgCIAMoCzISLnNsaW1ldGQuSXRlbVN0YWNrEiQKBnN0YWdlcxgD",
-            "IAMoCzIULnNsaW1ldGQuU3RhZ2VSZWNvcmQSHgoWaHVudGVyX2NhcmRfZ2Fj",
-            "aGFfcGl0eRgEIAEoBRIgCgdodW50ZXJzGAUgAygLMg8uc2xpbWV0ZC5IdW50",
-            "ZXIiLAoJSXRlbVN0YWNrEg8KB2l0ZW1faWQYASABKAUSDgoGYW1vdW50GAIg",
-            "ASgDIjIKC1N0YWdlUmVjb3JkEhAKCHN0YWdlX2lkGAEgASgFEhEKCWJlc3Rf",
-            "d2F2ZRgCIAEoBSJKCgZIdW50ZXISEAoIdG93ZXJfaWQYASABKAUSDQoFbGV2",
-            "ZWwYAiABKAUSEAoIdW5sb2NrZWQYAyABKAgSDQoFY2FyZHMYBCABKAVCE6oC",
-            "EFNsaW1lVEQuUHJvdG9jb2xiBnByb3RvMw=="));
+            "CgxwbGF5ZXIucHJvdG8SB3NsaW1ldGQaDGNvbW1vbi5wcm90byISChBHZXRQ",
+            "bGF5ZXJJbmZvUmVxIlwKEEdldFBsYXllckluZm9SZXMSIwoGcmVzdWx0GAEg",
+            "ASgOMhMuc2xpbWV0ZC5SZXN1bHRDb2RlEiMKBnBsYXllchgCIAEoCzITLnNs",
+            "aW1ldGQuUGxheWVySW5mbyKrAQoKUGxheWVySW5mbxISCgphY2NvdW50X2lk",
+            "GAEgASgDEiEKBWl0ZW1zGAIgAygLMhIuc2xpbWV0ZC5JdGVtU3RhY2sSJAoG",
+            "c3RhZ2VzGAMgAygLMhQuc2xpbWV0ZC5TdGFnZVJlY29yZBIeChZodW50ZXJf",
+            "Y2FyZF9nYWNoYV9waXR5GAQgASgFEiAKB2h1bnRlcnMYBSADKAsyDy5zbGlt",
+            "ZXRkLkh1bnRlciIsCglJdGVtU3RhY2sSDwoHaXRlbV9pZBgBIAEoBRIOCgZh",
+            "bW91bnQYAiABKAMiMgoLU3RhZ2VSZWNvcmQSEAoIc3RhZ2VfaWQYASABKAUS",
+            "EQoJYmVzdF93YXZlGAIgASgFIkoKBkh1bnRlchIQCgh0b3dlcl9pZBgBIAEo",
+            "BRINCgVsZXZlbBgCIAEoBRIQCgh1bmxvY2tlZBgDIAEoCBINCgVjYXJkcxgE",
+            "IAEoBUITqgIQU2xpbWVURC5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::SlimeTD.Protocol.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.GetPlayerReq), global::SlimeTD.Protocol.GetPlayerReq.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.GetPlayerRes), global::SlimeTD.Protocol.GetPlayerRes.Parser, new[]{ "Result", "Player" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.GetPlayerInfoReq), global::SlimeTD.Protocol.GetPlayerInfoReq.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.GetPlayerInfoRes), global::SlimeTD.Protocol.GetPlayerInfoRes.Parser, new[]{ "Result", "Player" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.PlayerInfo), global::SlimeTD.Protocol.PlayerInfo.Parser, new[]{ "AccountId", "Items", "Stages", "HunterCardGachaPity", "Hunters" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.ItemStack), global::SlimeTD.Protocol.ItemStack.Parser, new[]{ "ItemId", "Amount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.StageRecord), global::SlimeTD.Protocol.StageRecord.Parser, new[]{ "StageId", "BestWave" }, null, null, null, null),
@@ -55,16 +55,16 @@ namespace SlimeTD.Protocol {
   /// 로그인한 계정의 데이터를 받는다. 로그인 전이면 RESULT_CODE_NOT_LOGGED_IN.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class GetPlayerReq : pb::IMessage<GetPlayerReq>
+  public sealed partial class GetPlayerInfoReq : pb::IMessage<GetPlayerInfoReq>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<GetPlayerReq> _parser = new pb::MessageParser<GetPlayerReq>(() => new GetPlayerReq());
+    private static readonly pb::MessageParser<GetPlayerInfoReq> _parser = new pb::MessageParser<GetPlayerInfoReq>(() => new GetPlayerInfoReq());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<GetPlayerReq> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetPlayerInfoReq> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -80,7 +80,7 @@ namespace SlimeTD.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetPlayerReq() {
+    public GetPlayerInfoReq() {
       OnConstruction();
     }
 
@@ -88,25 +88,25 @@ namespace SlimeTD.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetPlayerReq(GetPlayerReq other) : this() {
+    public GetPlayerInfoReq(GetPlayerInfoReq other) : this() {
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetPlayerReq Clone() {
-      return new GetPlayerReq(this);
+    public GetPlayerInfoReq Clone() {
+      return new GetPlayerInfoReq(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as GetPlayerReq);
+      return Equals(other as GetPlayerInfoReq);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(GetPlayerReq other) {
+    public bool Equals(GetPlayerInfoReq other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -166,7 +166,7 @@ namespace SlimeTD.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(GetPlayerReq other) {
+    public void MergeFrom(GetPlayerInfoReq other) {
       if (other == null) {
         return;
       }
@@ -216,16 +216,16 @@ namespace SlimeTD.Protocol {
   }
 
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class GetPlayerRes : pb::IMessage<GetPlayerRes>
+  public sealed partial class GetPlayerInfoRes : pb::IMessage<GetPlayerInfoRes>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<GetPlayerRes> _parser = new pb::MessageParser<GetPlayerRes>(() => new GetPlayerRes());
+    private static readonly pb::MessageParser<GetPlayerInfoRes> _parser = new pb::MessageParser<GetPlayerInfoRes>(() => new GetPlayerInfoRes());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<GetPlayerRes> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetPlayerInfoRes> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -241,7 +241,7 @@ namespace SlimeTD.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetPlayerRes() {
+    public GetPlayerInfoRes() {
       OnConstruction();
     }
 
@@ -249,7 +249,7 @@ namespace SlimeTD.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetPlayerRes(GetPlayerRes other) : this() {
+    public GetPlayerInfoRes(GetPlayerInfoRes other) : this() {
       result_ = other.result_;
       player_ = other.player_ != null ? other.player_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -257,8 +257,8 @@ namespace SlimeTD.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetPlayerRes Clone() {
-      return new GetPlayerRes(this);
+    public GetPlayerInfoRes Clone() {
+      return new GetPlayerInfoRes(this);
     }
 
     /// <summary>Field number for the "result" field.</summary>
@@ -288,12 +288,12 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as GetPlayerRes);
+      return Equals(other as GetPlayerInfoRes);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(GetPlayerRes other) {
+    public bool Equals(GetPlayerInfoRes other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -379,7 +379,7 @@ namespace SlimeTD.Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(GetPlayerRes other) {
+    public void MergeFrom(GetPlayerInfoRes other) {
       if (other == null) {
         return;
       }

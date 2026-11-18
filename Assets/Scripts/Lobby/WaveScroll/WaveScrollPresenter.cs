@@ -4,21 +4,21 @@ using VContainer.Unity;
 
 public class WaveScrollPresenter : IStartable, IDisposable
 {
-    private readonly IPlayerDataService _playerDataService;
+    private readonly IAccountService _accountService;
     private readonly StageData _stage;
     private readonly WaveScrollView _view;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-    public WaveScrollPresenter(IPlayerDataService playerDataService, StageData stage, WaveScrollView view)
+    public WaveScrollPresenter(IAccountService accountService, StageData stage, WaveScrollView view)
     {
-        _playerDataService = playerDataService;
+        _accountService = accountService;
         _stage = stage;
         _view = view;
     }
 
     public void Start()
     {
-        _playerDataService.BestWave
+        _accountService.BestWave
             .Subscribe(wave => _view.SetBestWave(wave, _stage.FinalWave))
             .AddTo(_disposables);
     }
