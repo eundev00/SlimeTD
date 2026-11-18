@@ -14,9 +14,11 @@ public class GameInitiator : IAsyncStartable, IDisposable
     private readonly ISlimePrefabProvider _slimePrefabProvider;
     private readonly IResourceLoadService _resourceLoadService;
     private readonly Zone _zone;
+    private readonly WaveSpawner _waveSpawner;
+    private readonly GameSceneSettings _sceneSettings;
     private readonly SlimeDepthBucketBinder _depthBucketBinder = new SlimeDepthBucketBinder();
 
-    public GameInitiator(IGameplayService gameplayService, ITowerLevelService towerLevelService, ITowerPrefabProvider towerPrefabProvider, ISlimePrefabProvider slimePrefabProvider, IResourceLoadService resourceLoadService, Zone zone)
+    public GameInitiator(IGameplayService gameplayService, ITowerLevelService towerLevelService, ITowerPrefabProvider towerPrefabProvider, ISlimePrefabProvider slimePrefabProvider, IResourceLoadService resourceLoadService, Zone zone, WaveSpawner waveSpawner, GameSceneSettings sceneSettings)
     {
         _gameplayService = gameplayService;
         _towerLevelService = towerLevelService;
@@ -24,24 +26,35 @@ public class GameInitiator : IAsyncStartable, IDisposable
         _slimePrefabProvider = slimePrefabProvider;
         _resourceLoadService = resourceLoadService;
         _zone = zone;
+        _waveSpawner = waveSpawner;
+        _sceneSettings = sceneSettings;
     }
 
     public async UniTask StartAsync(CancellationToken ct)
     {
-        await _gameplayService.InitializeAsync();
+        await _gameplayService.InitializeAsync(_sceneSettings.StageKey);
         await _towerPrefabProvider.LoadAsync(_gameplayService.Catalog);
         await _slimePrefabProvider.LoadAsync(_gameplayService.Stage);
 
         var map = await CreateMapAsync(_gameplayService.Stage);
-        if (map == null || map.Lanes.Count == 0)
+        if (map == null)
             return;
+
+        // TODO: 팀원 구역(slot 1)은 서버가 붙기 전까지 Zone 없이 비워 둔다
+        var myZone = map.GetZone(0);
+        if (myZone == null || map.Paths.Count == 0)
+        {
+            Debug.Log("[GameInitiator] 맵에 내 배치 구역(slot 0) 또는 경로가 없습니다.", map);
+            return;
+        }
 
         // 로비에서 레벨을 정하는 구조가 생기기 전까지 디버그 레벨을 기본값으로 쓴다.
         if (_gameplayService.Config != null)
             _towerLevelService.SetDefaultLevel(_gameplayService.Config.DebugTowerLevel);
 
         _depthBucketBinder.Bind(_gameplayService.DepthBucketSettings);
-        _zone.Initialize(_gameplayService.Stage, map.Lanes[0]);
+        _zone.Initialize(myZone);
+        _waveSpawner.Initialize(_gameplayService.Stage, map.Paths);
     }
 
     private async UniTask<GameMap> CreateMapAsync(StageData stage)

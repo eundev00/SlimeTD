@@ -388,6 +388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveSpawner
   _overlapWaveWindow: 3
+  _spawnRoot: {fileID: 1284309022}
 --- !u!4 &148512323
 Transform:
   m_ObjectHideFlags: 0
@@ -1687,7 +1688,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 9
+  orthographic size: 7.875
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -1974,7 +1975,7 @@ Camera:
   far clip plane: 1000
   field of view: 20
   orthographic: 1
-  orthographic size: 9
+  orthographic size: 7.875
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2216,7 +2217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 816663ae6bbf04711adb844a3b1d8ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Zone
-  _waveSpawner: {fileID: 148512322}
   _towerSpawner: {fileID: 616196741}
   _towerInputHandler: {fileID: 600387862}
   _spawnRoot: {fileID: 1284309022}
@@ -2460,6 +2460,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _popupRoot: {fileID: 1436157988}
+  _stageKey: Stage_MultiNormal
 --- !u!4 &1772568649
 Transform:
   m_ObjectHideFlags: 0

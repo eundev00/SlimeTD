@@ -6,6 +6,7 @@ using VContainer.Unity;
 public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] private RectTransform _popupRoot;
+    [SerializeField] private string _stageKey = DataKeys.Stage_SingleNormal;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -18,9 +19,11 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<SlimePrefabProvider>(Lifetime.Singleton).As<ISlimePrefabProvider>();
         builder.Register<GroundHeightSampler>(Lifetime.Scoped).As<IGroundHeightSampler>();
         builder.Register<SpawnOrderCounter>(Lifetime.Scoped).As<ISpawnOrderCounter>();
+        builder.RegisterInstance(new GameSceneSettings(_stageKey));
         builder.RegisterEntryPoint<GameInitiator>();
 
         builder.RegisterComponentInHierarchy<Zone>();
+        builder.RegisterComponentInHierarchy<WaveSpawner>();
 
         builder.RegisterComponentInHierarchy<TopHudView>();
         builder.RegisterEntryPoint<TopHudPresenter>();

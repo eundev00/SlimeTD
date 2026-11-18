@@ -258,7 +258,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2663756825752918321}
-  - {fileID: 1389148657040725285}
+  - {fileID: 1490837016841811594}
+  - {fileID: 777755282147580808}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7445449915585011528
@@ -273,8 +274,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b67640bb1467848850732ccbe8d851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameMap
-  _lanes:
-  - {fileID: 9066289605341655557}
+  _paths:
+  - {fileID: 1402775614388588632}
+  _zones:
+  - {fileID: 946709960682721939}
 --- !u!1 &3140925379313661650
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,54 +313,6 @@ Transform:
   - {fileID: 712484525022911347}
   m_Father: {fileID: 232082120355519474}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4659498554580418165
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1389148657040725285}
-  - component: {fileID: 9066289605341655557}
-  m_Layer: 0
-  m_Name: Lane
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1389148657040725285
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4659498554580418165}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 777755282147580808}
-  - {fileID: 1490837016841811594}
-  m_Father: {fileID: 7841390626167062989}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9066289605341655557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4659498554580418165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d73246e8406e31a45a5b2be014a2e11b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapLane
-  _gridMapReference: {fileID: 1820622696204132731}
-  _path: {fileID: 1320061060827873131}
 --- !u!1 &5675658258848465504
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,8 +464,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1490837016841811594}
   - component: {fileID: 1320061060827873131}
+  - component: {fileID: 1402775614388588632}
   m_Layer: 0
-  m_Name: Spline
+  m_Name: Path0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -529,7 +485,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1389148657040725285}
+  m_Father: {fileID: 7841390626167062989}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1320061060827873131
 MonoBehaviour:
@@ -1111,6 +1067,20 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
+--- !u!114 &1402775614388588632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7419780206182352581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bece5c9d9409244e85b2dd1c30d9bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapPath
+  _entrance: 0
+  _spline: {fileID: 1320061060827873131}
 --- !u!1 &7885177869189690599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1243,8 +1213,9 @@ GameObject:
   m_Component:
   - component: {fileID: 777755282147580808}
   - component: {fileID: 1820622696204132731}
+  - component: {fileID: 946709960682721939}
   m_Layer: 0
-  m_Name: GridMapReference
+  m_Name: Zone0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1263,7 +1234,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1389148657040725285}
+  m_Father: {fileID: 7841390626167062989}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1820622696204132731
 MonoBehaviour:
@@ -1279,6 +1250,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridMapReference
   _gridMapData: {fileID: 11400000, guid: 673d04eedb32846cfa7d7a87d850d56b, type: 2}
   _showGizmos: 1
+--- !u!114 &946709960682721939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8584849848813655567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4044494fc2a41046b2f500473a5f383, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapZone
+  _slot: 0
+  _gridMapReference: {fileID: 1820622696204132731}
 --- !u!1001 &21664346986976293
 PrefabInstance:
   m_ObjectHideFlags: 0

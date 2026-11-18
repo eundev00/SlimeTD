@@ -6,6 +6,8 @@ public static class DataKeys
     public const string GradeStyle = "GradeStyle";
     public const string GridMapData1 = "GridMapData1";
     public const string GridMapData2 = "GridMapData2";
+    public const string GridMapData_Coop01_Zone0 = "GridMapData_Coop01_Zone0";
+    public const string GridMapData_Coop01_Zone1 = "GridMapData_Coop01_Zone1";
     public const string HunterCardGachaConfig = "HunterCardGachaConfig";
     public const string SkillCatalog = "SkillCatalog";
     public const string SlimeData_Boss_01 = "SlimeData_Boss_01";
@@ -19,6 +21,7 @@ public static class DataKeys
     public const string SlimeData_Slime_04 = "SlimeData_Slime_04";
     public const string SlimeData_Slime_05 = "SlimeData_Slime_05";
     public const string SlimeDepthBucketSettings = "SlimeDepthBucketSettings";
+    public const string Stage_MultiNormal = "Stage_MultiNormal";
     public const string Stage_SingleNormal = "Stage_SingleNormal";
     public const string TowerCatalog = "TowerCatalog";
     public const string TowerData_Archer = "TowerData_Archer";
@@ -36,6 +39,8 @@ public static class DataKeys
         { GradeStyle, "Assets/Datas/GradeStyle.asset" },
         { GridMapData1, "Assets/Datas/Grid/GridMapData1.asset" },
         { GridMapData2, "Assets/Datas/Grid/GridMapData2.asset" },
+        { GridMapData_Coop01_Zone0, "Assets/Datas/Grid/GridMapData_Coop01_Zone0.asset" },
+        { GridMapData_Coop01_Zone1, "Assets/Datas/Grid/GridMapData_Coop01_Zone1.asset" },
         { HunterCardGachaConfig, "Assets/Datas/HunterCardGachaConfig.asset" },
         { SkillCatalog, "Assets/Datas/SkillCatalog.asset" },
         { SlimeData_Boss_01, "Assets/Datas/Slimes/SlimeData_Boss_01.asset" },
@@ -49,6 +54,7 @@ public static class DataKeys
         { SlimeData_Slime_04, "Assets/Datas/Slimes/SlimeData_Slime_04.asset" },
         { SlimeData_Slime_05, "Assets/Datas/Slimes/SlimeData_Slime_05.asset" },
         { SlimeDepthBucketSettings, "Assets/Datas/SlimeDepthBucketSettings.asset" },
+        { Stage_MultiNormal, "Assets/Datas/Stages/Stage_MultiNormal.asset" },
         { Stage_SingleNormal, "Assets/Datas/Stages/Stage_SingleNormal.asset" },
         { TowerCatalog, "Assets/Datas/TowerCatalog.asset" },
         { TowerData_Archer, "Assets/Datas/Characters/Archer/TowerData_Archer.asset" },

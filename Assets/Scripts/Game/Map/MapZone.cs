@@ -1,11 +1,11 @@
 using UnityEngine;
-using UnityEngine.Splines;
 
-public class MapLane : MonoBehaviour
+// slot 0이 나(아래), 1이 팀원(위)이다
+public class MapZone : MonoBehaviour
 {
+    [SerializeField] private int _slot;
     [NotNull][SerializeField] private GridMapReference _gridMapReference;
-    [NotNull][SerializeField] private SplineContainer _path;
 
+    public int Slot => _slot;
     public GridMapData GridMapData => _gridMapReference != null ? _gridMapReference.GridMapData : null;
-    public SplineContainer Path => _path;
 }
