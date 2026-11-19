@@ -13,12 +13,13 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 {
     private static readonly int DepthBucketId = Shader.PropertyToID("_SlimeDepthBucket");
 
-    // 사망 연출은 일반 슬라임 몸(반지름 약 0.26) 크기에 맞춰 만들고, 큰 슬라임은 몸 크기 비율만큼 키운다
-    private const float DeathVfxBaseRadius = 0.2637f;
+    // 사망·기절 연출은 일반 슬라임 몸(반지름 약 0.26) 크기에 맞춰 만들고, 큰 슬라임은 몸 크기 비율만큼 키운다
+    private const float VfxBaseRadius = 0.2637f;
 
     [SerializeField] private SkinnedMeshRenderer[] _depthBucketRenderers;
     [NotNull][SerializeField] private Transform _damageTextAnchor;
     [SerializeField] private GameObject _deathVfx;
+    [SerializeField] private GameObject _stunVfx;
     [NotNull][SerializeField] private Collider _bodyCollider;
 
     private SplineAnimate _splineAnimate;
@@ -30,6 +31,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
     private IPublisher<SlimeReachedEndEvent> _reachedEndPublisher;
     private IGameObjectPoolService _poolService;
     private IVfxPlayer _vfxPlayer;
+    private GameObject _stunVfxInstance;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private DamageTextSpawner _damageTextSpawner;
     private CancellationTokenSource _cancellationTokenSource;
@@ -198,7 +200,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
             _killedPublisher.Publish(new SlimeKilledEvent(_jellyReward));
             // 죽는 모션 없이 바로 풀로 돌려보내고, 연기는 바닥에 가리지 않게 몸 가운데에서 따로 재생한다
             var body = _bodyCollider.bounds;
-            _vfxPlayer?.Play(_deathVfx, body.center, body.extents.y / DeathVfxBaseRadius);
+            _vfxPlayer?.Play(_deathVfx, body.center, body.extents.y / VfxBaseRadius);
             _poolService.Release(gameObject);
             return;
         }
@@ -221,6 +223,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
             if (_stunRemaining <= 0f)
             {
                 _stunRemaining = 0f;
+                SetStunVfx(false);
                 if (!_gameOver && _splineAnimate != null)
                     _splineAnimate.Play();
             }
@@ -238,14 +241,36 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 
         _stunRemaining = Mathf.Max(_stunRemaining, duration);
         _splineAnimate.Pause();
+        SetStunVfx(true);
         RegisterUpdate();
     }
 
     private void ClearStun()
     {
         _stunRemaining = 0f;
+        SetStunVfx(false);
         if (!_slow.IsActive)
             UnregisterUpdate();
+    }
+
+    // 기절 표시는 슬라임을 따라다녀야 해서 자식으로 한 번만 만들어 두고 켜고 끈다. 머리 위 높이와 크기는 몸 충돌체로 정한다
+    private void SetStunVfx(bool active)
+    {
+        if (_stunVfx == null || (!active && _stunVfxInstance == null))
+            return;
+
+        if (_stunVfxInstance == null)
+        {
+            var body = _bodyCollider.bounds;
+            _stunVfxInstance = Instantiate(_stunVfx, transform);
+            _stunVfxInstance.transform.position = new Vector3(body.center.x, body.max.y, body.center.z);
+            _stunVfxInstance.transform.localScale = _stunVfx.transform.localScale * (body.extents.y / VfxBaseRadius);
+        }
+
+        if (_stunVfxInstance.activeSelf == active)
+            return;
+
+        _stunVfxInstance.SetActive(active);
     }
 
     private float SlowMinSpeedRatio => _gameplayService?.Config != null ? _gameplayService.Config.SlowMinSpeedRatio : 0.25f;

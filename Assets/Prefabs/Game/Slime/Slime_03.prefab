@@ -403,6 +403,7 @@ MonoBehaviour:
   - {fileID: 4132043665068717296}
   _damageTextAnchor: {fileID: 5490144096737003682}
   _deathVfx: {fileID: 187952, guid: 074112fabd878e149b43553a8e625993, type: 3}
+  _stunVfx: {fileID: 109542, guid: 824536e9998293848ab1cfbe44114bd1, type: 3}
   _bodyCollider: {fileID: 3552660595142011349}
 --- !u!114 &9215837291409383890
 MonoBehaviour:
