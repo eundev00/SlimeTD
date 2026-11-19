@@ -44,5 +44,6 @@ public class TowerTestAccountService : IAccountService
 
     public bool CanLevelUp(int towerId) => false;
     public UniTask<ResultCode> LevelUpAsync(int towerId) => UniTask.FromResult(ResultCode.InvalidRequest);
-    public bool TryApplyHunterCardGachaResult(HunterCardGachaResult result) => false;
+    public UniTask<(ResultCode Result, IReadOnlyList<HunterCardGachaCard> Cards)> DrawHunterCardGachaAsync(int packId) =>
+        UniTask.FromResult<(ResultCode, IReadOnlyList<HunterCardGachaCard>)>((ResultCode.InvalidRequest, null));
 }

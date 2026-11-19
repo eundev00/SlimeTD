@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using SlimeTD.Protocol;
 using UniRx;
 using UnityEngine;
 
@@ -85,9 +86,10 @@ public class HunterCardGachaPresenter : IPopupPresenter
     private async UniTaskVoid DrawAsync(int packId)
     {
         _drawing = true;
+        _popup.ShowMessage(string.Empty);
         RenderAffordable();
 
-        var result = await _gachaService.DrawAsync(packId);
+        var (code, result) = await _gachaService.DrawAsync(packId);
 
         _drawing = false;
         if (_disposed)
@@ -97,13 +99,25 @@ public class HunterCardGachaPresenter : IPopupPresenter
 
         if (result == null)
         {
-            Debug.Log($"[HunterCardGachaPresenter] 뽑기에 실패했습니다: {packId}");
+            Debug.Log($"[HunterCardGachaPresenter] 뽑기에 실패했습니다: {packId} {code}");
+            _popup.ShowMessage(FailMessage(code));
             return;
         }
 
         var revealPopup = await _popupService.OpenAsync<HunterCardRevealPopup>(PrefabKeys.HunterCardRevealPopup);
         if (revealPopup != null)
             revealPopup.SetResult(result);
+    }
+
+    private static string FailMessage(ResultCode code)
+    {
+        return code switch
+        {
+            ResultCode.NotEnoughItems => "골드가 부족합니다",
+            ResultCode.NotFound => "없는 상품입니다",
+            ResultCode.NotAvailable => "뽑을 수 있는 헌터가 없습니다",
+            _ => "서버 요청에 실패했습니다",
+        };
     }
 
     private void HandleCloseClicked()

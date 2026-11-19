@@ -1,15 +1,14 @@
-using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
+using SlimeTD.Protocol;
 using UnityEngine;
 
+// 판정 코드(HunterCardGachaRoller)는 서버와 같은 규칙으로 남겨 두고, 에디터 확률 시뮬레이터에서만 쓴다
 public class HunterCardGachaService : IHunterCardGachaService
 {
     private readonly IAccountService _accountService;
     private readonly IResourceLoadService _resourceLoadService;
-    private readonly System.Random _random = new System.Random();
 
     private HunterCardGachaConfig _config;
-    private HunterCardGachaRoller _roller;
 
     public HunterCardGachaService(IAccountService accountService, IResourceLoadService resourceLoadService)
     {
@@ -24,76 +23,20 @@ public class HunterCardGachaService : IHunterCardGachaService
 
         _config = await _resourceLoadService.LoadAsync<HunterCardGachaConfig>(DataKeys.HunterCardGachaConfig);
         if (_config == null)
-        {
             Debug.Log($"[HunterCardGachaService] {DataKeys.HunterCardGachaConfig} 로드에 실패했습니다.");
-            return null;
-        }
 
-        _roller = new HunterCardGachaRoller(_config, _random);
         return _config;
     }
 
-    public async UniTask<HunterCardGachaResult> DrawAsync(int packId)
+    public async UniTask<(ResultCode Result, HunterCardGachaResult Gacha)> DrawAsync(int packId)
     {
         var config = await GetConfigAsync();
-        if (config == null || !_accountService.IsInitialized)
-            return null;
+        int price = config != null && config.TryGetPack(packId, out var pack) ? pack.Price : 0;
 
-        if (!config.TryGetPack(packId, out var pack))
-        {
-            Debug.Log($"[HunterCardGachaService] 팩을 찾을 수 없습니다: {packId}");
-            return null;
-        }
+        var (result, cards) = await _accountService.DrawHunterCardGachaAsync(packId);
+        if (result != ResultCode.Ok)
+            return (result, null);
 
-        if (_accountService.Gold.Value < pack.Price)
-            return null;
-
-        var owned = new List<HunterCardGachaCandidate>();
-        var locked = new List<HunterCardGachaCandidate>();
-        CollectCandidates(owned, locked);
-
-        int pity = _accountService.HunterCardGachaPity;
-        var picks = _roller.Roll(pack, owned, locked, ref pity);
-        if (picks.Count == 0)
-        {
-            Debug.Log("[HunterCardGachaService] 뽑을 수 있는 헌터가 없습니다.");
-            return null;
-        }
-
-        var cards = new List<HunterCardGachaCard>(picks.Count);
-        for (int i = 0; i < picks.Count; i++)
-            cards.Add(ToCard(picks[i], config));
-
-        var result = new HunterCardGachaResult(pack.Id, pack.Price, cards, pity);
-        return _accountService.TryApplyHunterCardGachaResult(result) ? result : null;
-    }
-
-    private void CollectCandidates(List<HunterCardGachaCandidate> owned, List<HunterCardGachaCandidate> locked)
-    {
-        var hunters = _accountService.Hunters;
-        for (int i = 0; i < hunters.Count; i++)
-        {
-            var data = hunters[i].Data;
-            if (data == null || !data.Enabled || !data.InGacha)
-                continue;
-
-            var candidate = new HunterCardGachaCandidate(data.Id, data.GradeId);
-            if (hunters[i].Unlocked.Value)
-                owned.Add(candidate);
-            else
-                locked.Add(candidate);
-        }
-    }
-
-    // 최대 레벨 헌터의 카드는 카드 대신 골드로 바꿔 준다. 같은 팩 안에서는 레벨이 오르지 않으므로 지금 레벨로 판단한다.
-    private HunterCardGachaCard ToCard(HunterCardGachaPick pick, HunterCardGachaConfig config)
-    {
-        if (pick.IsLocked)
-            return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Unlock);
-
-        if (_accountService.TryGetHunter(pick.TowerId, out var hunter) && hunter.Level.Value >= TowerLevelService.MaxLevel)
-            return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Refund, config.MaxLevelRefundGold);
-
-        return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Card);
+        return (result, new HunterCardGachaResult(packId, price, cards, _accountService.HunterCardGachaPity));
     }
 }

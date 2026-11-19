@@ -287,39 +287,45 @@ public class AccountService : IAccountService, IDisposable
         _bestWave.Value = wave;
     }
 
-    public bool TryApplyHunterCardGachaResult(HunterCardGachaResult result)
+    // 확률은 서버가 굴린다. 카드 목록은 연출용이고, 계정 값은 응답의 아이템·헌터·천장으로 갱신한다
+    public async UniTask<(ResultCode Result, IReadOnlyList<HunterCardGachaCard> Cards)> DrawHunterCardGachaAsync(int packId)
     {
-        if (!IsInitialized || result == null || _gold.Value < result.Price)
-            return false;
+        if (!IsInitialized)
+            return (ResultCode.NotLoggedIn, null);
 
-        WarnNotSaved(nameof(TryApplyHunterCardGachaResult));
-        _gold.Value -= result.Price;
-
-        var cards = result.Cards;
-        for (int i = 0; i < cards.Count; i++)
+        try
         {
-            var card = cards[i];
-            if (!_huntersById.TryGetValue(card.TowerId, out var hunter))
-                continue;
+            var res = await _connection.RequestAsync(MsgId.HunterCardGachaDrawReq, new HunterCardGachaDrawReq { PackId = packId }, MsgId.HunterCardGachaDrawRes, HunterCardGachaDrawRes.Parser);
+            if (res.Result != ResultCode.Ok)
+                return (res.Result, null);
 
-            switch (card.Kind)
-            {
-                case HunterCardGachaCardKind.Unlock:
-                    hunter.Unlocked.Value = true;
-                    break;
-                case HunterCardGachaCardKind.Refund:
-                    _gold.Value += card.RefundGold;
-                    break;
-                default:
-                    hunter.Cards.Value += 1;
-                    break;
-            }
+            ApplyItems(res.Items);
+            foreach (var hunter in res.Hunters)
+                ApplyHunter(hunter);
+            HunterCardGachaPity = res.Pity;
+
+            var cards = new List<HunterCardGachaCard>(res.Cards.Count);
+            foreach (var card in res.Cards)
+                cards.Add(new HunterCardGachaCard(card.TowerId, card.GradeId, ToCardKind(card.Kind), (int)card.RefundGold, card.IsPity));
+
+            return (ResultCode.Ok, cards);
         }
-
-        HunterCardGachaPity = result.PityAfter;
-        return true;
+        catch (Exception e)
+        {
+            Debug.Log($"[AccountService] 헌터 카드 뽑기 요청 실패: {e.Message}");
+            return (ResultCode.ServerError, null);
+        }
     }
 
+    private static HunterCardGachaCardKind ToCardKind(GachaCardKind kind)
+    {
+        return kind switch
+        {
+            GachaCardKind.Unlock => HunterCardGachaCardKind.Unlock,
+            GachaCardKind.Refund => HunterCardGachaCardKind.Refund,
+            _ => HunterCardGachaCardKind.Card,
+        };
+    }
     private static void WarnNotSaved(string action)
     {
         Debug.LogWarning($"[AccountService] 서버 미반영: {action}은 서버 기능이 없어 저장되지 않습니다.");

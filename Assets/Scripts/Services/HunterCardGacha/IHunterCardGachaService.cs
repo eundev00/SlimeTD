@@ -1,9 +1,10 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
+using SlimeTD.Protocol;
 
 public interface IHunterCardGachaService
 {
     UniTask<HunterCardGachaConfig> GetConfigAsync();
 
-    // 골드가 부족하거나 뽑을 헌터가 없으면 null이다. 결과는 반환 전에 지급과 저장까지 끝난다.
-    UniTask<HunterCardGachaResult> DrawAsync(int packId);
+    // 서버가 확률을 굴리고 지급까지 끝낸다. 실패하면 결과는 null이다
+    UniTask<(ResultCode Result, HunterCardGachaResult Gacha)> DrawAsync(int packId);
 }

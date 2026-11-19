@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class HunterCardGachaPopup : PopupBase
     [NotNull][SerializeField] private HunterCardGachaPackView[] _packs;
     [NotNull][SerializeField] private Button _closeButton;
     [NotNull][SerializeField] private Button _dimButton;
+    [NotNull][SerializeField] private TMP_Text _messageText;
 
     public IReadOnlyList<HunterCardGachaPackView> Packs => _packs;
 
@@ -41,6 +43,12 @@ public class HunterCardGachaPopup : PopupBase
             _closeButton.onClick.RemoveListener(OnCloseClicked);
         if (_dimButton != null)
             _dimButton.onClick.RemoveListener(OnCloseClicked);
+    }
+
+    public void ShowMessage(string message)
+    {
+        _messageText.text = message;
+        _messageText.gameObject.SetActive(!string.IsNullOrEmpty(message));
     }
 
     private void OnPackClicked(int packId)

@@ -28,5 +28,5 @@ public interface IAccountService
     bool TryGetLevelUpCost(int towerId, out int cards, out int gold);
     bool CanLevelUp(int towerId);
     UniTask<ResultCode> LevelUpAsync(int towerId);
-    bool TryApplyHunterCardGachaResult(HunterCardGachaResult result);
+    UniTask<(ResultCode Result, IReadOnlyList<HunterCardGachaCard> Cards)> DrawHunterCardGachaAsync(int packId);
 }

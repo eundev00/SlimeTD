@@ -24,21 +24,23 @@ namespace SlimeTD.Protocol {
     static CommonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgxjb21tb24ucHJvdG8SB3NsaW1ldGQqigIKBU1zZ0lkEg8KC01TR19JRF9O",
+            "Cgxjb21tb24ucHJvdG8SB3NsaW1ldGQq2gIKBU1zZ0lkEg8KC01TR19JRF9O",
             "T05FEAASFAoQTVNHX0lEX0xPR0lOX1JFURBkEhQKEE1TR19JRF9MT0dJTl9S",
             "RVMQZRIfChpNU0dfSURfR0VUX1BMQVlFUl9JTkZPX1JFURDIARIfChpNU0df",
             "SURfR0VUX1BMQVlFUl9JTkZPX1JFUxDJARIfChpNU0dfSURfSFVOVEVSX0xF",
             "VkVMX1VQX1JFURCsAhIfChpNU0dfSURfSFVOVEVSX0xFVkVMX1VQX1JFUxCt",
             "AhIfChpNU0dfSURfSFVOVEVSX1BVUkNIQVNFX1JFURCuAhIfChpNU0dfSURf",
-            "SFVOVEVSX1BVUkNIQVNFX1JFUxCvAiq4AgoKUmVzdWx0Q29kZRISCg5SRVNV",
-            "TFRfQ09ERV9PSxAAEh8KG1JFU1VMVF9DT0RFX0lOVkFMSURfUkVRVUVTVBAB",
-            "Eh0KGVJFU1VMVF9DT0RFX05PVF9MT0dHRURfSU4QAhIcChhSRVNVTFRfQ09E",
-            "RV9TRVJWRVJfRVJST1IQAxIZChVSRVNVTFRfQ09ERV9OT1RfRk9VTkQQBBId",
-            "ChlSRVNVTFRfQ09ERV9IVU5URVJfTE9DS0VEEAUSGQoVUkVTVUxUX0NPREVf",
-            "TUFYX0xFVkVMEAYSIAocUkVTVUxUX0NPREVfTk9UX0VOT1VHSF9JVEVNUxAH",
-            "EiAKHFJFU1VMVF9DT0RFX0FMUkVBRFlfVU5MT0NLRUQQCBIfChtSRVNVTFRf",
-            "Q09ERV9OT1RfUFVSQ0hBU0FCTEUQCUITqgIQU2xpbWVURC5Qcm90b2NvbGIG",
-            "cHJvdG8z"));
+            "SFVOVEVSX1BVUkNIQVNFX1JFUxCvAhImCiFNU0dfSURfSFVOVEVSX0NBUkRf",
+            "R0FDSEFfRFJBV19SRVEQsAISJgohTVNHX0lEX0hVTlRFUl9DQVJEX0dBQ0hB",
+            "X0RSQVdfUkVTELECKtcCCgpSZXN1bHRDb2RlEhIKDlJFU1VMVF9DT0RFX09L",
+            "EAASHwobUkVTVUxUX0NPREVfSU5WQUxJRF9SRVFVRVNUEAESHQoZUkVTVUxU",
+            "X0NPREVfTk9UX0xPR0dFRF9JThACEhwKGFJFU1VMVF9DT0RFX1NFUlZFUl9F",
+            "UlJPUhADEhkKFVJFU1VMVF9DT0RFX05PVF9GT1VORBAEEh0KGVJFU1VMVF9D",
+            "T0RFX0hVTlRFUl9MT0NLRUQQBRIZChVSRVNVTFRfQ09ERV9NQVhfTEVWRUwQ",
+            "BhIgChxSRVNVTFRfQ09ERV9OT1RfRU5PVUdIX0lURU1TEAcSIAocUkVTVUxU",
+            "X0NPREVfQUxSRUFEWV9VTkxPQ0tFRBAIEh8KG1JFU1VMVF9DT0RFX05PVF9Q",
+            "VVJDSEFTQUJMRRAJEh0KGVJFU1VMVF9DT0RFX05PVF9BVkFJTEFCTEUQCkIT",
+            "qgIQU2xpbWVURC5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SlimeTD.Protocol.MsgId), typeof(global::SlimeTD.Protocol.ResultCode), }, null, null));
@@ -61,6 +63,8 @@ namespace SlimeTD.Protocol {
     [pbr::OriginalName("MSG_ID_HUNTER_LEVEL_UP_RES")] HunterLevelUpRes = 301,
     [pbr::OriginalName("MSG_ID_HUNTER_PURCHASE_REQ")] HunterPurchaseReq = 302,
     [pbr::OriginalName("MSG_ID_HUNTER_PURCHASE_RES")] HunterPurchaseRes = 303,
+    [pbr::OriginalName("MSG_ID_HUNTER_CARD_GACHA_DRAW_REQ")] HunterCardGachaDrawReq = 304,
+    [pbr::OriginalName("MSG_ID_HUNTER_CARD_GACHA_DRAW_RES")] HunterCardGachaDrawRes = 305,
   }
 
   /// <summary>
@@ -95,6 +99,10 @@ namespace SlimeTD.Protocol {
     /// 구매할 수 없는 헌터 (가격 0)
     /// </summary>
     [pbr::OriginalName("RESULT_CODE_NOT_PURCHASABLE")] NotPurchasable = 9,
+    /// <summary>
+    /// 지금은 할 수 없음 (예: 뽑을 수 있는 헌터가 없음)
+    /// </summary>
+    [pbr::OriginalName("RESULT_CODE_NOT_AVAILABLE")] NotAvailable = 10,
   }
 
   #endregion
