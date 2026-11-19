@@ -11,7 +11,6 @@ public class SlimeAnimation : MonoBehaviour, IPoolItem
 
     private static readonly int IdleStateHash = Animator.StringToHash("Idle");
     private static readonly int HitStateHash = Animator.StringToHash("Hit");
-    private static readonly int DieStateHash = Animator.StringToHash("Die");
 
 
     private void Awake()
@@ -72,18 +71,8 @@ public class SlimeAnimation : MonoBehaviour, IPoolItem
 
         _slime.Stats.CurrentHealth
             .Pairwise()
-            .Where(pair => pair.Previous > pair.Current)
-            .Subscribe(pair =>
-            {
-                if (pair.Current > 0)
-                {
-                    Play(HitStateHash);
-                }
-                else
-                {
-                    Play(DieStateHash);
-                }
-            })
+            .Where(pair => pair.Previous > pair.Current && pair.Current > 0)
+            .Subscribe(_ => Play(HitStateHash))
             .AddTo(_disposables);
     }
 

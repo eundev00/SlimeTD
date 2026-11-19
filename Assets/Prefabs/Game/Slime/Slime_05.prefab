@@ -367,11 +367,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cafa8867af1f4772806c795bd687a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaseSlime
-  _dieAnimationDuration: 1
   _depthBucketRenderers:
   - {fileID: 5807686432058566521}
   - {fileID: 1825165534152143458}
   _damageTextAnchor: {fileID: 1478327742592422935}
+  _deathVfx: {fileID: 187952, guid: 074112fabd878e149b43553a8e625993, type: 3}
+  _bodyCollider: {fileID: 7728436527363987313}
 --- !u!114 &9215837291409383890
 MonoBehaviour:
   m_ObjectHideFlags: 0

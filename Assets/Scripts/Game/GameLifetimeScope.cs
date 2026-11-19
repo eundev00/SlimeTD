@@ -10,6 +10,7 @@ public class GameLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        builder.Register<VfxPlayer>(Lifetime.Scoped).As<IVfxPlayer>();
         builder.Register<GameObjectPoolService>(Lifetime.Scoped)
                .As<IGameObjectPoolService>();
 

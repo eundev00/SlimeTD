@@ -90,6 +90,7 @@ public static class PrefabKeys
     public const string TreeOrange = "TreeOrange";
     public const string TreePine = "TreePine";
     public const string VfxKnightSlash = "VfxKnightSlash";
+    public const string VfxSlimeDeath = "VfxSlimeDeath";
     public const string VfxSwordSlash = "VfxSwordSlash";
     public const string VfxSwordSlashCrush = "VfxSwordSlashCrush";
     public const string WaveForest = "WaveForest";
@@ -184,6 +185,7 @@ public static class PrefabKeys
         { TreeOrange, "Assets/Prefabs/Game/Env/TreeOrange.prefab" },
         { TreePine, "Assets/Prefabs/Game/Env/TreePine.prefab" },
         { VfxKnightSlash, "Assets/Prefabs/Game/Vfx/VfxKnightSlash.prefab" },
+        { VfxSlimeDeath, "Assets/Prefabs/Game/Vfx/VfxSlimeDeath.prefab" },
         { VfxSwordSlash, "Assets/Prefabs/Game/Vfx/VfxSwordSlash.prefab" },
         { VfxSwordSlashCrush, "Assets/Prefabs/Game/Vfx/VfxSwordSlashCrush.prefab" },
         { WaveForest, "Assets/Prefabs/Lobby/LobbyMain/WaveForest.prefab" },

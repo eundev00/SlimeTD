@@ -26,7 +26,7 @@ public class DummySlime : MonoBehaviour, ISlime
             _damageTextAnchor = transform;
     }
 
-    // 죽지 않는 더미라 체력이 바닥나기 전에 다시 채운다. 0이 되면 SlimeAnimation이 사망 연출을 튼다.
+    // 죽지 않는 더미라 체력이 바닥나기 전에 다시 채운다. 0이 되면 맞는 연출이 나오지 않는다.
     public void TakeDamage(DamageInfo info)
     {
         if (_stats.CurrentHealth.Value - info.Damage <= 0)

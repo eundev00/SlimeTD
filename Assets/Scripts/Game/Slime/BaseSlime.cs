@@ -13,9 +13,13 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 {
     private static readonly int DepthBucketId = Shader.PropertyToID("_SlimeDepthBucket");
 
-    [SerializeField] private float _dieAnimationDuration = 1f;
+    // 사망 연출은 일반 슬라임 몸(반지름 약 0.26) 크기에 맞춰 만들고, 큰 슬라임은 몸 크기 비율만큼 키운다
+    private const float DeathVfxBaseRadius = 0.2637f;
+
     [SerializeField] private SkinnedMeshRenderer[] _depthBucketRenderers;
     [NotNull][SerializeField] private Transform _damageTextAnchor;
+    [SerializeField] private GameObject _deathVfx;
+    [NotNull][SerializeField] private Collider _bodyCollider;
 
     private SplineAnimate _splineAnimate;
     private MaterialPropertyBlock _propertyBlock;
@@ -25,6 +29,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
     private IPublisher<SlimeKilledEvent> _killedPublisher;
     private IPublisher<SlimeReachedEndEvent> _reachedEndPublisher;
     private IGameObjectPoolService _poolService;
+    private IVfxPlayer _vfxPlayer;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private DamageTextSpawner _damageTextSpawner;
     private CancellationTokenSource _cancellationTokenSource;
@@ -48,7 +53,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
         DamageTextSpawner damageTextSpawner,
         IUpdateSubscriptionService updateService,
-        IGameplayService gameplayService)
+        IGameplayService gameplayService,
+        IVfxPlayer vfxPlayer)
     {
         _killedPublisher = killedPublisher;
         _reachedEndPublisher = reachedEndPublisher;
@@ -57,6 +63,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
         _damageTextSpawner = damageTextSpawner;
         _updateService = updateService;
         _gameplayService = gameplayService;
+        _vfxPlayer = vfxPlayer;
     }
 
 
@@ -189,7 +196,10 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
             ClearStun();
             _splineAnimate.Pause();
             _killedPublisher.Publish(new SlimeKilledEvent(_jellyReward));
-            OnDiedAsync();
+            // 죽는 모션 없이 바로 풀로 돌려보내고, 연기는 바닥에 가리지 않게 몸 가운데에서 따로 재생한다
+            var body = _bodyCollider.bounds;
+            _vfxPlayer?.Play(_deathVfx, body.center, body.extents.y / DeathVfxBaseRadius);
+            _poolService.Release(gameObject);
             return;
         }
 
@@ -296,20 +306,6 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 
 
 
-    private async void OnDiedAsync()
-    {
-        try
-        {
-            await UniTask.Delay(
-                TimeSpan.FromSeconds(_dieAnimationDuration),
-                cancellationToken: _cancellationTokenSource.Token);
-
-            _poolService.Release(gameObject);
-        }
-        catch (OperationCanceledException)
-        {
-        }
-    }
 
     protected virtual void OnReachedEnd()
     {
