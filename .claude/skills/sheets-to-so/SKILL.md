@@ -27,7 +27,7 @@ description: SlimeTD-Data 저장소의 기획 시트(CSV)를 클라이언트 Scr
 - 빈 문자열은 `_vfxKey: ` (콜론 뒤 공백, 값 없음)
 - bool은 `1`/`0`, 이넘은 **정수 값**(`Assets/Scripts/Data/SheetEnums.cs`의 값). 시트에는 이름이 적혀 있다
 - 실수는 시트 값을 그대로 쓴다 (`0.15`, `2.5`)
-- **int 배열**(`_levelUpCost._cards`, `_gold`)은 hex 한 줄이다. 값마다 int32 리틀엔디언 8자리를 이어 붙인다 (5 → `05000000`, 300 → `2c010000`)
+- **int 배열**(`_levelUpCost._cards`, `_coin`)은 hex 한 줄이다. 값마다 int32 리틀엔디언 8자리를 이어 붙인다 (5 → `05000000`, 300 → `2c010000`)
 - 리스트는 `- ` 항목. 객체 리스트는 첫 필드 앞에 `- `, 나머지 필드는 두 칸 더 들여쓴다 (기존 파일 모양을 따른다)
 - 에셋 참조는 `{fileID: 11400000, guid: <대상 .asset.meta의 guid>, type: 2}`
 - CRLF/LF는 원래 파일을 따른다. Unity 에셋은 LF다
@@ -62,9 +62,9 @@ description: SlimeTD-Data 저장소의 기획 시트(CSV)를 클라이언트 Scr
 | `_baseAttack`, `_attackGrowthRate` | 그 등급의 Grades.csv `baseAttack`, `attackGrowthRate` |
 | `_projectileSpeed`, `_projectileHitRadius`, `_projectileLifetime` | TowerProjectiles.csv의 `speed`, `hitRadius`, `lifetime`. 행이 없으면 0 |
 | `_startUnlocked` | startUnlocked (비우면 0) |
-| `_unlockGemPrice` | unlockGemPrice (비우면 0) |
+| `_unlockDiamondPrice` | unlockDiamondPrice (비우면 0) |
 | `_inGacha` | inGacha (비우면 1) |
-| `_levelUpCost._cards`, `_gold` | 그 등급의 LevelUpCosts.csv를 level 1~14 순서로 14개 (hex 배열) |
+| `_levelUpCost._cards`, `_coin` | 그 등급의 LevelUpCosts.csv를 level 1~14 순서로 14개 (hex 배열) |
 
 - 타워 프리팹은 시트에 없다. `codeName`과 같은 이름의 프리팹을 `TowerPrefabProvider`가 로드하고, 투사체 모양은 그 프리팹의 `ProjectileLauncher._projectilePrefab`이 정한다
 - 타워를 새로 추가하면 에셋을 만들고 **`TowerCatalog.asset`의 `_towers`에 towerId 순서로 참조를 추가**한다. 프리팹(`Assets/Prefabs/Game/Characters/<codeName>.prefab`)이 없으면 사용자에게 알린다
@@ -97,7 +97,7 @@ description: SlimeTD-Data 저장소의 기획 시트(CSV)를 클라이언트 Scr
 
 - `_packs`: 행마다 `_id` = packId, `_cardCount`, `_price`, `_guaranteeGradeId`
 - `_gradeWeights`: 등급마다 `_gradeId`, `_weight` = gachaWeight
-- `_lockedCardChance`, `_pityCount`, `_pityGradeId`, `_maxLevelRefundGold`: Settings의 같은 key
+- `_lockedCardChance`, `_pityCount`, `_pityGradeId`, `_maxLevelRefundCoin`: Settings의 같은 key
 
 ### Slimes.csv → `Assets/Datas/Slimes/SlimeData_<codeName>.asset`
 
@@ -107,7 +107,7 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 |---|---|
 | `_slimeId` | slimeId |
 | `_codeName` | codeName |
-| `_baseHealth`, `_baseSpeed`, `_lifeCost`, `_jellyReward` | 같은 이름의 열 |
+| `_baseHealth`, `_baseSpeed`, `_lifeCost`, `_goldReward` | 같은 이름의 열 |
 | `_renderGroup` | `SlimeRenderGroup` 값 (Normal 0, Boss 1) |
 | `_instantGameOver` | 보스만. instantGameOver |
 
@@ -121,7 +121,7 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 | `_mode`, `_difficulty` | `GameMode`, `Difficulty` 값 |
 | `_displayName` | name (한글 이스케이프) |
 | `_enabled` | enabled |
-| `_startingLife`, `_startingJelly`, `_spawnInterval`, `_interWaveDelay`, `_normalHpGrowth` | 같은 이름의 열 |
+| `_startingLife`, `_startingGold`, `_spawnInterval`, `_interWaveDelay`, `_normalHpGrowth` | 같은 이름의 열 |
 | `_mapKey` | mapKey. 같은 이름의 맵 프리팹(`Assets/Prefabs/Game/Map/<mapKey>.prefab`)이 없으면 보고한다 |
 | `_waves` | 웨이브 1부터 순서대로 항목 하나씩. 각 항목의 `_groups`는 order 순서로 `_slime` = 그 slimeId 슬라임 에셋 참조, `_count`, `_delay`(비우면 0) |
 
@@ -133,7 +133,7 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 
 ### NewAccount.csv (+ Items.csv codeName) → `Assets/Datas/GameConfig.asset`
 
-서버 전용 시트지만 서버 전까지 로컬 계정 생성에 쓴다. codeName이 `Gold`인 아이템의 amount → `_initialLobbyGold`, `Gem` → `_initialGem`. 다른 아이템은 클라이언트가 아직 지급하지 못하므로 보고만 한다.
+서버 전용 시트지만 서버 전까지 로컬 계정 생성에 쓴다. codeName이 `Coin`인 아이템의 amount → `_initialCoin`, `Diamond` → `_initialDiamond`. 다른 아이템은 클라이언트가 아직 지급하지 못하므로 보고만 한다.
 
 ### Enums.csv → `Assets/Scripts/Data/SheetEnums.cs`
 

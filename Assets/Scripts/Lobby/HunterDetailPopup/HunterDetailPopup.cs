@@ -11,8 +11,8 @@ using VContainer;
 public class HunterDetailPopup : PopupBase
 {
     [Header("재화 칩 (오른쪽 상단)")]
-    [NotNull][SerializeField] private CurrencyView _goldCurrency;
-    [NotNull][SerializeField] private CurrencyView _gemCurrency;
+    [NotNull][SerializeField] private CurrencyView _coinCurrency;
+    [NotNull][SerializeField] private CurrencyView _diamondCurrency;
 
     [Header("헌터 정보")]
     [NotNull][SerializeField] private Image _thumbnail;
@@ -65,8 +65,8 @@ public class HunterDetailPopup : PopupBase
     [Inject]
     public void Construct(IPlayerDataService playerDataService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
     {
-        _goldCurrency.Initialize(playerDataService, clickedPublisher);
-        _gemCurrency.Initialize(playerDataService, clickedPublisher);
+        _coinCurrency.Initialize(playerDataService, clickedPublisher);
+        _diamondCurrency.Initialize(playerDataService, clickedPublisher);
     }
 
     private void Start()
@@ -112,8 +112,8 @@ public class HunterDetailPopup : PopupBase
 
     public void SetUnlocked(bool unlocked)
     {
-        _goldCurrency.gameObject.SetActive(unlocked);
-        _gemCurrency.gameObject.SetActive(!unlocked);
+        _coinCurrency.gameObject.SetActive(unlocked);
+        _diamondCurrency.gameObject.SetActive(!unlocked);
 
         _levelRow.SetActive(unlocked);
         _lockedRow.SetActive(!unlocked);

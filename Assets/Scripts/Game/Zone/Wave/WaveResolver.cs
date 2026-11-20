@@ -36,7 +36,7 @@ public static class WaveResolver
                 : ScaleHealth(slime.BaseHealth, stage.NormalHpGrowth, waveNumber);
 
             for (int i = 0; i < group.Count; i++)
-                results.Add(new SpawnPlan(slime, health, slime.JellyReward, i == 0 ? group.Delay : 0f, interval));
+                results.Add(new SpawnPlan(slime, health, slime.GoldReward, i == 0 ? group.Delay : 0f, interval));
         }
     }
 

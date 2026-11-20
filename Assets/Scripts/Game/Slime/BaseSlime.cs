@@ -26,7 +26,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
     private MaterialPropertyBlock _propertyBlock;
     private SlimeStats _stats;
     private SlimeDataBase _data;
-    private int _jellyReward;
+    private int _goldReward;
     private IPublisher<SlimeKilledEvent> _killedPublisher;
     private IPublisher<SlimeReachedEndEvent> _reachedEndPublisher;
     private IGameObjectPoolService _poolService;
@@ -118,7 +118,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
     public virtual void OnReturnToPool()
     {
         _stats?.Reset(0);
-        _jellyReward = 0;
+        _goldReward = 0;
         ClearSlow();
         ClearStun();
 
@@ -147,13 +147,13 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 
 
 
-    public virtual void Initialize(SplineContainer splineContainer, SlimeDataBase data, int health, int jellyReward)
+    public virtual void Initialize(SplineContainer splineContainer, SlimeDataBase data, int health, int goldReward)
     {
         if (_splineAnimate == null || data == null)
             return;
 
         _data = data;
-        _jellyReward = jellyReward;
+        _goldReward = goldReward;
         _stats.Reset(health);
         ClearSlow();
         ClearStun();
@@ -197,7 +197,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
             ClearSlow();
             ClearStun();
             _splineAnimate.Pause();
-            _killedPublisher.Publish(new SlimeKilledEvent(_jellyReward));
+            _killedPublisher.Publish(new SlimeKilledEvent(_goldReward));
             // 죽는 모션 없이 바로 풀로 돌려보내고, 연기는 바닥에 가리지 않게 몸 가운데에서 따로 재생한다
             var body = _bodyCollider.bounds;
             _vfxPlayer?.Play(_deathVfx, body.center, body.extents.y / VfxBaseRadius);

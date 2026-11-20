@@ -45,7 +45,7 @@ public class HunterCardGachaService : IHunterCardGachaService
             return null;
         }
 
-        if (_playerDataService.Gold.Value < pack.Price)
+        if (_playerDataService.Coin.Value < pack.Price)
             return null;
 
         var owned = new List<HunterCardGachaCandidate>();
@@ -85,14 +85,14 @@ public class HunterCardGachaService : IHunterCardGachaService
         }
     }
 
-    // 최대 레벨 헌터의 카드는 카드 대신 골드로 바꿔 준다. 같은 팩 안에서는 레벨이 오르지 않으므로 지금 레벨로 판단한다.
+    // 최대 레벨 헌터의 카드는 카드 대신 코인으로 바꿔 준다. 같은 팩 안에서는 레벨이 오르지 않으므로 지금 레벨로 판단한다.
     private HunterCardGachaCard ToCard(HunterCardGachaPick pick, HunterCardGachaConfig config)
     {
         if (pick.IsLocked)
             return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Unlock);
 
         if (_playerDataService.TryGetHunter(pick.TowerId, out var hunter) && hunter.Level.Value >= TowerLevelService.MaxLevel)
-            return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Refund, config.MaxLevelRefundGold);
+            return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Refund, config.MaxLevelRefundCoin);
 
         return new HunterCardGachaCard(pick.TowerId, pick.GradeId, HunterCardGachaCardKind.Card);
     }

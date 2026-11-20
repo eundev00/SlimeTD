@@ -123,7 +123,7 @@ public class HunterCardPresenter : IStartable, IDisposable
                 .AddTo(_disposables);
         }
 
-        _playerDataService.Gold
+        _playerDataService.Coin
             .Subscribe(_ => RefreshAll())
             .AddTo(_disposables);
 

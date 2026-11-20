@@ -10,14 +10,14 @@ public class HunterCardGachaConfig : ScriptableObject
     [SerializeField] private float _lockedCardChance;
     [SerializeField] private int _pityCount;
     [SerializeField] private int _pityGradeId;
-    [SerializeField] private int _maxLevelRefundGold;
+    [SerializeField] private int _maxLevelRefundCoin;
 
     public IReadOnlyList<HunterCardGachaPack> Packs => _packs ?? Array.Empty<HunterCardGachaPack>();
     public IReadOnlyList<HunterCardGachaGradeWeight> GradeWeights => _gradeWeights ?? Array.Empty<HunterCardGachaGradeWeight>();
     public float LockedCardChance => _lockedCardChance;
     public int PityCount => _pityCount;
     public int PityGradeId => _pityGradeId;
-    public int MaxLevelRefundGold => _maxLevelRefundGold;
+    public int MaxLevelRefundCoin => _maxLevelRefundCoin;
 
     public bool TryGetPack(int packId, out HunterCardGachaPack pack)
     {

@@ -3009,7 +3009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f271945079b428aba37e7c8301421c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameplayHudView
-  _jellyText: {fileID: 361942112}
+  _goldText: {fileID: 361942112}
   _summonCostText: {fileID: 1983398}
   _testSummonButton: {fileID: 1266907872}
 --- !u!114 &2070556915

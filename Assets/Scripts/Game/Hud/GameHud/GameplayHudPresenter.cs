@@ -24,8 +24,8 @@ public class GameplayHudPresenter : IStartable, IDisposable
     {
         _view.TestSummonButtonClicked += HandleTestSummonButtonClicked;
 
-        _gameplayService.Info.Jelly
-            .Subscribe(_view.SetJelly)
+        _gameplayService.Info.Gold
+            .Subscribe(_view.SetGold)
             .AddTo(_disposables);
 
         _gameplayService.Info.SummonCost

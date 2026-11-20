@@ -4,8 +4,8 @@ using System.Collections.Generic;
 [Serializable]
 public class PlayerData
 {
-    public int Gold;
-    public int Gem;
+    public int Coin;
+    public int Diamond;
     public int BestWave;
     public int HunterCardGachaPity;
     public List<HunterRecord> Hunters = new List<HunterRecord>();

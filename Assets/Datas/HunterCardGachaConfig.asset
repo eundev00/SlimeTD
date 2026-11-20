@@ -33,4 +33,4 @@ MonoBehaviour:
   _lockedCardChance: 1
   _pityCount: 80
   _pityGradeId: 4
-  _maxLevelRefundGold: 70
+  _maxLevelRefundCoin: 70

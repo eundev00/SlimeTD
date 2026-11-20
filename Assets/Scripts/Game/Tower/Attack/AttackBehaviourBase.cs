@@ -136,8 +136,8 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         var roll = _pendingRoll;
         Apply(target, roll, _pendingDamage);
 
-        if (roll.Jelly > 0)
-            Context.AddJelly(roll.Jelly);
+        if (roll.Gold > 0)
+            Context.AddGold(roll.Gold);
     }
 
     private void PlayPendingVfx()

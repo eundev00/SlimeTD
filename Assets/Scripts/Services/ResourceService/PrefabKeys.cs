@@ -19,8 +19,8 @@ public static class PrefabKeys
     public const string CubeGrass = "CubeGrass";
     public const string CubeGround = "CubeGround";
     public const string CubeSand = "CubeSand";
-    public const string CurrencyGem = "CurrencyGem";
-    public const string CurrencyGold = "CurrencyGold";
+    public const string CurrencyCoin = "CurrencyCoin";
+    public const string CurrencyDiamond = "CurrencyDiamond";
     public const string DamageText = "DamageText";
     public const string GameResultPopup = "GameResultPopup";
     public const string GoodSlime = "GoodSlime";
@@ -115,8 +115,8 @@ public static class PrefabKeys
         { CubeGrass, "Assets/Prefabs/Game/Ground/CubeGrass.prefab" },
         { CubeGround, "Assets/Prefabs/Game/Ground/CubeGround.prefab" },
         { CubeSand, "Assets/Prefabs/Game/Ground/CubeSand.prefab" },
-        { CurrencyGem, "Assets/Prefabs/Common/CurrencyGem.prefab" },
-        { CurrencyGold, "Assets/Prefabs/Common/CurrencyGold.prefab" },
+        { CurrencyCoin, "Assets/Prefabs/Common/CurrencyCoin.prefab" },
+        { CurrencyDiamond, "Assets/Prefabs/Common/CurrencyDiamond.prefab" },
         { DamageText, "Assets/Prefabs/Game/UI/DamageText.prefab" },
         { GameResultPopup, "Assets/Prefabs/Game/UI/Popup/GameResultPopup.prefab" },
         { GoodSlime, "Assets/Prefabs/Game/Characters/GoodSlime.prefab" },

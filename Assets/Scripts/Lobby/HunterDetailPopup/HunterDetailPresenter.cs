@@ -33,8 +33,8 @@ public class HunterDetailPresenter : IPopupPresenter
             .Subscribe(Bind)
             .AddTo(_disposables);
 
-        _playerDataService.Gold.Subscribe(_ => Render()).AddTo(_disposables);
-        _playerDataService.Gem.Subscribe(_ => Render()).AddTo(_disposables);
+        _playerDataService.Coin.Subscribe(_ => Render()).AddTo(_disposables);
+        _playerDataService.Diamond.Subscribe(_ => Render()).AddTo(_disposables);
 
         _popup.UpgradeClicked += HandleUpgradeClicked;
         _popup.BuyClicked += HandleBuyClicked;
@@ -160,7 +160,7 @@ public class HunterDetailPresenter : IPopupPresenter
         _popup.SetCardProgress(_hunter.Cards.Value, neededCards);
     }
 
-    // 레벨업 조건(카드/골드)이 안 돼도 다음 레벨 공격력 증가량은 보여 준다.
+    // 레벨업 조건(카드/코인)이 안 돼도 다음 레벨 공격력 증가량은 보여 준다.
     private void RenderStats(int level, bool maxLevel)
     {
         var data = _hunter.Data;
@@ -186,14 +186,14 @@ public class HunterDetailPresenter : IPopupPresenter
 
         if (!unlocked)
         {
-            int price = _hunter.Data.UnlockGemPrice;
+            int price = _hunter.Data.UnlockDiamondPrice;
             if (price <= 0)
             {
                 _popup.ShowUnavailable();
                 return;
             }
 
-            _popup.ShowBuy(price.ToString("N0"), _playerDataService.Gem.Value >= price);
+            _popup.ShowBuy(price.ToString("N0"), _playerDataService.Diamond.Value >= price);
             return;
         }
 
@@ -203,7 +203,7 @@ public class HunterDetailPresenter : IPopupPresenter
             return;
         }
 
-        _playerDataService.TryGetLevelUpCost(towerId, out _, out int neededGold);
-        _popup.ShowUpgrade(neededGold.ToString("N0"), _playerDataService.CanLevelUp(towerId));
+        _playerDataService.TryGetLevelUpCost(towerId, out _, out int neededCoin);
+        _popup.ShowUpgrade(neededCoin.ToString("N0"), _playerDataService.CanLevelUp(towerId));
     }
 }

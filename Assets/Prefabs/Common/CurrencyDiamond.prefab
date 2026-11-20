@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 1821272056612726539}
   - component: {fileID: 96396121401962665}
   m_Layer: 0
-  m_Name: CurrencyGem
+  m_Name: CurrencyDiamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
