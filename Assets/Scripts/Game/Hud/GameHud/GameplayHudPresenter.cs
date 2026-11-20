@@ -24,13 +24,23 @@ public class GameplayHudPresenter : IStartable, IDisposable
     {
         _view.TestSummonButtonClicked += HandleTestSummonButtonClicked;
 
-        _gameplayService.Info.Gold
-            .Subscribe(_view.SetGold)
-            .AddTo(_disposables);
+        var info = _gameplayService.Info;
 
-        _gameplayService.Info.SummonCost
-            .Subscribe(_view.SetSummonCost)
+        info.Gold.Subscribe(_view.SetGold).AddTo(_disposables);
+        info.Jelly.Subscribe(_view.SetJelly).AddTo(_disposables);
+        info.SummonCost.Subscribe(_view.SetSummonCost).AddTo(_disposables);
+
+        info.Gold
+            .CombineLatest(info.SummonCost, IsAffordable)
+            .DistinctUntilChanged()
+            .Subscribe(_view.SetSummonAffordable)
             .AddTo(_disposables);
+    }
+
+    private bool IsAffordable(int gold, int cost)
+    {
+        var config = _gameplayService.Config;
+        return (config != null && config.IgnoreGoldCost) || gold >= cost;
     }
 
     private void HandleTestSummonButtonClicked()

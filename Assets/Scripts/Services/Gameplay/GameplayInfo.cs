@@ -6,6 +6,7 @@ public class GameplayInfo
 {
     public ReactiveProperty<int> Life { get; }
     public ReactiveProperty<int> Gold { get; }
+    public ReactiveProperty<int> Jelly { get; }
     public ReactiveProperty<int> CurrentWave { get; }
     public ReactiveProperty<int> MaxWave { get; }
     public ReactiveProperty<int> ReachedWave { get; }
@@ -17,6 +18,7 @@ public class GameplayInfo
     {
         Life = new ReactiveProperty<int>(startingLife);
         Gold = new ReactiveProperty<int>(startingGold);
+        Jelly = new ReactiveProperty<int>(0);
         CurrentWave = new ReactiveProperty<int>(0);
         MaxWave = new ReactiveProperty<int>(0);
         ReachedWave = new ReactiveProperty<int>(0);
@@ -29,6 +31,7 @@ public class GameplayInfo
     {
         Life.Dispose();
         Gold.Dispose();
+        Jelly.Dispose();
         CurrentWave.Dispose();
         MaxWave.Dispose();
         ReachedWave.Dispose();
