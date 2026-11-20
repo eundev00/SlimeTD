@@ -55,7 +55,9 @@ public class Zone : MonoBehaviour
 
         if (_towerInputHandler != null)
         {
-            _towerInputHandler.Initialize(_towerCells, _groundHeightSampler);
+            _towerInputHandler.Initialize(_towerCells);
+            _towerInputHandler.EmptyCellTapped -= OnEmptyCellTapped;
+            _towerInputHandler.EmptyCellTapped += OnEmptyCellTapped;
         }
 
         _disposables?.Dispose();
@@ -68,6 +70,9 @@ public class Zone : MonoBehaviour
     {
         _disposables?.Dispose();
         _disposables = null;
+
+        if (_towerInputHandler != null)
+            _towerInputHandler.EmptyCellTapped -= OnEmptyCellTapped;
     }
 
     private void OnTowerSpawnRequested(TowerData towerData)
@@ -76,6 +81,14 @@ public class Zone : MonoBehaviour
             return;
 
         _towerSpawner.TrySpawn(towerData);
+    }
+
+    private void OnEmptyCellTapped(Vector2Int cell)
+    {
+        if (_towerSpawner == null)
+            return;
+
+        _towerSpawner.TrySpawn(null, cell);
     }
 
     public bool TryGetCellCenter(Vector3 worldPosition, out Vector3 cellCenter)

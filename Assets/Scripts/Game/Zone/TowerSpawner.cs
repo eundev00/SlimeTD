@@ -44,7 +44,7 @@ public class TowerSpawner : MonoBehaviour
         }
     }
 
-    public bool TrySpawn(TowerData towerData = null)
+    public bool TrySpawn(TowerData towerData = null, Vector2Int? targetCell = null)
     {
         if (towerData == null && !TryDrawTower(out towerData))
             return false;
@@ -62,7 +62,14 @@ public class TowerSpawner : MonoBehaviour
             return false;
         }
 
-        if (!_towerCells.TryGetRandomFreeCell(out var cell))
+        Vector2Int cell;
+        if (targetCell.HasValue)
+        {
+            cell = targetCell.Value;
+            if (!_towerCells.IsFree(cell))
+                return false;
+        }
+        else if (!_towerCells.TryGetRandomFreeCell(out cell))
         {
             Debug.Log("[TowerSpawner] 배치 가능한 빈 칸이 없습니다.", this);
             return false;

@@ -19,8 +19,6 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     [NotNull][SerializeField] private TowerRangeIndicator _rangeIndicator;
     [NotNull][SerializeField] private TowerAnimator _animator;
     [NotNull][SerializeField] private TowerAnimationEventListener _animationEventListener;
-    [NotNull][SerializeField] private Transform _liftTarget;
-    [SerializeField] private float _liftHeight = 0.35f;
 
     private Collider[] _colliders;
 
@@ -43,14 +41,9 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private bool _isAttacking;
 
     private bool _gameOver;
-    private bool _dragged;
     private bool _attackRegistered;
 
     private readonly ReactiveProperty<bool> _isSelected = new ReactiveProperty<bool>(false);
-    private readonly ReactiveProperty<bool> _isDragging = new ReactiveProperty<bool>(false);
-
-    private Vector3 _originPosition;
-    private Vector3 _liftTargetLocalPosition;
 
     private TargetInfo _currentTarget;
     private TargetInfo _attackTarget;
@@ -72,7 +65,6 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     void ITowerContext.PlaySkillVfx(IReadOnlyList<TowerSkillData> skills) => _skillVfx.Play(skills);
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
-    public IReadOnlyReactiveProperty<bool> IsDragging => _isDragging;
 
     [Inject]
     public void Construct(
@@ -138,11 +130,6 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
     private void Start()
     {
-        if (_liftTarget != null)
-        {
-            _liftTargetLocalPosition = _liftTarget.localPosition;
-        }
-
         ApplySelection();
 
         if (_data == null)
@@ -196,7 +183,6 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         _stats?.Dispose();
 
         _isSelected.Dispose();
-        _isDragging.Dispose();
     }
 
     private void StopAttacking()
@@ -206,23 +192,9 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         _attackCancellation?.Cancel();
     }
 
-    private void AbortAttack()
-    {
-        if (_gameOver || _attackCancellation == null)
-            return;
-
-        _attackCancellation.Cancel();
-        _attackCancellation.Dispose();
-        _attackCancellation = new CancellationTokenSource();
-
-        _hasTarget = false;
-        _attackTarget = default;
-        _animator?.PlayIdle();
-    }
-
     private void ApplyAttackActive()
     {
-        bool shouldAttack = !_gameOver && !_dragged;
+        bool shouldAttack = !_gameOver;
         if (shouldAttack == _attackRegistered)
             return;
 
@@ -329,83 +301,6 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
         _isSelected.Value = false;
         ApplySelection();
-    }
-
-    public void BeginDrag()
-    {
-        if (_isDragging.Value)
-            return;
-
-        _originPosition = transform.position;
-        _isDragging.Value = true;
-
-        _dragged = true;
-        ApplyAttackActive();
-        AbortAttack();
-        ApplyLift(true);
-
-        if (_rangeIndicator != null)
-        {
-            _rangeIndicator.Show();
-        }
-    }
-
-    public void UpdateDragPosition(Vector3 worldPosition, bool isValid)
-    {
-        if (!_isDragging.Value)
-            return;
-
-        transform.position = worldPosition;
-
-        if (_rangeIndicator != null)
-        {
-            _rangeIndicator.SetValid(isValid);
-        }
-    }
-
-    public void EndDrag(Vector3 snappedWorldPosition)
-    {
-        if (!_isDragging.Value)
-            return;
-
-        transform.position = snappedWorldPosition;
-        FinishDrag();
-    }
-
-    public void CancelDrag()
-    {
-        if (!_isDragging.Value)
-            return;
-
-        transform.position = _originPosition;
-        FinishDrag();
-    }
-
-    private void FinishDrag()
-    {
-        _isDragging.Value = false;
-
-        _dragged = false;
-        ApplyAttackActive();
-        ApplyLift(false);
-
-        if (_rangeIndicator != null)
-        {
-            _rangeIndicator.ResetColor();
-        }
-
-        if (!_isSelected.Value)
-            _rangeIndicator?.Hide();
-    }
-
-    private void ApplyLift(bool lifted)
-    {
-        if (_liftTarget == null)
-            return;
-
-        _liftTarget.localPosition = lifted
-            ? _liftTargetLocalPosition + Vector3.up * _liftHeight
-            : _liftTargetLocalPosition;
     }
 
     private void ApplySelection()

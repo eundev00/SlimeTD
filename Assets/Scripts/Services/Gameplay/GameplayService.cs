@@ -86,7 +86,7 @@ public class GameplayService : IGameplayService
 
     public bool TrySpendSummonCost()
     {
-        if (Config == null)
+        if (Config == null || _gameEnded)
             return false;
 
         int cost = _info.SummonCost.Value;
