@@ -84,9 +84,11 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 
 ### 최고 웨이브 기록 규칙
 
-`GameplayService`가 `IPlayerDataService.ReportWaveReached(n)`을 호출한다. 기존 기록보다 클 때만 갱신·저장하고, 로비를 거치지 않아 초기화되지 않았으면 무시한다(빈 헌터 목록으로 저장이 덮이는 것을 막는다).
+최고 웨이브는 서버가 기록한다. 싱글 전투가 끝나면 결과를 서버에 보내고, 서버가 같은 전투를 다시 계산해 맞으면 기록한 뒤 `best_wave`를 돌려준다. 클라이언트는 그 값으로 `IAccountService.SetBestWave`를 부르고 웨이브 맵이 구독한다. 불일치면 기록하지 않는다 ([데이터 구조 설계](슬라임TD_데이터구조설계.md#싱글-전투-서버-검증)).
 
-| 시점 | 기록 값 |
+`GameplayService`가 결과 팝업과 서버에 보내는 도달 웨이브(`ReachedWave`)는 아래 규칙으로 정한다.
+
+| 시점 | 도달 웨이브 |
 |---|---|
 | `WaveStarted` (일반 웨이브) | 그 웨이브 번호 |
 | `WaveStarted` (마지막 웨이브) | 번호 − 1 |

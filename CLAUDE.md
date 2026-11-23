@@ -116,7 +116,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 
 ## 4. 구현 시 주의점
 
-- **슬라임 이동**: `SplineContainer` + `SplineAnimate`로 경로를 따르고, 갱신은 UpdateSubscriptionService에 붙인다. 타겟 탐색 로직은 Service 계층에 두고 View는 표현만 한다
+- **슬라임 이동**: `SplineContainer` 경로를 고정 업데이트(1틱 = 1/30초, `IFixedUpdatable`)마다 `속도 / 30`씩 가고, 화면은 `Update`에서 틱 사이를 보간한다. 웨이브 일정도 틱이다. 프레임 시간으로 움직이면 싱글 서버 검증과 어긋나므로 `SplineAnimate`와 `UniTask.Delay`로 되돌리지 않는다 ([데이터 구조 설계](Doc/슬라임TD_데이터구조설계.md#싱글-전투-서버-검증)). 타겟 탐색 로직은 Service 계층에 두고 View는 표현만 한다
 - **오브젝트 풀링**: 슬라임/발사체는 스폰 빈도가 높다. Unity `ObjectPool<T>`를 쓰고, 반환 시 `ReactiveProperty`와 구독 상태를 반드시 초기화한다
 - **밸런스 수치**: 체력/데미지/골드/라이프 차감량은 ScriptableObject로 분리해 코드에 하드코딩하지 않는다
 - **기획 데이터 파이프라인**: 수치의 원본은 데이터 저장소 `C:\Projects\SlimeTD-Data\Sheets`(CSV)다. 클라이언트 프로젝트 안에 CSV 복사본을 두지 않고, 시트는 데이터 저장소에서만 고친다. 클라이언트 SO(TowerData, TowerCatalog, SkillCatalog, HunterCardGachaConfig, 슬라임, `StageData`, GameConfig)는 **서버 연결 전까지 쓰는 임시 데이터**다. 시트를 SO에 반영할 때는 `sheets-to-so` 스킬(`.claude/skills/sheets-to-so`)을 쓰고, 에셋의 숫자 필드를 인스펙터에서 직접 고치지 않는다. 타워 프리팹은 `codeName`과 같은 이름의 프리팹을 `TowerPrefabProvider`가 로드하고, 투사체 모양은 타워 프리팹의 `ProjectileLauncher`가 가진다 (공격 방식과 투사체 속도·판정·수명은 시트 값). 슬라임 프리팹도 `codeName`과 같은 이름의 프리팹을 `SlimePrefabProvider`가 로드한다. 썸네일 연결은 인스펙터에서 한다. 이넘은 `Assets/Scripts/Data/SheetEnums.cs`에 `Enums.csv`를 옮겨 적은 임시 파일이다 (서버 프로토콜 코드가 생기면 교체). 스킬은 타워 한 개에 귀속되고 TowerData는 스킬을 모른다 (타워 생성 시 `SkillCatalog.GetSkills(towerId)`로 찾는다). 열 설명은 데이터 저장소 `Sheets/README.md`, 상세는 [Doc/슬라임TD_데이터구조설계.md](Doc/슬라임TD_데이터구조설계.md) 참고
