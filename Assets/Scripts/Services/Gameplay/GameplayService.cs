@@ -8,6 +8,7 @@ public class GameplayService : IGameplayService
     private readonly GameplayInfo _info;
     private readonly IPopupService _popupService;
     private readonly IAccountService _accountService;
+    private readonly ISingleBattleService _singleBattleService;
     private readonly IPublisher<GameProgressEvent> _gameProgressPublisher;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
     private bool _gameOverPublished;
@@ -31,6 +32,7 @@ public class GameplayService : IGameplayService
         IResourceLoadService resourceLoadService,
         IPopupService popupService,
         IAccountService accountService,
+        ISingleBattleService singleBattleService,
         ISubscriber<SlimeReachedEndEvent> reachedEndSubscriber,
         ISubscriber<SlimeKilledEvent> killedSubscriber,
         IPublisher<GameProgressEvent> gameProgressPublisher,
@@ -41,6 +43,7 @@ public class GameplayService : IGameplayService
         _resourceLoadService = resourceLoadService;
         _popupService = popupService;
         _accountService = accountService;
+        _singleBattleService = singleBattleService;
 
         reachedEndSubscriber.Subscribe(OnSlimeReachedEnd).AddTo(_disposables);
         killedSubscriber.Subscribe(OnSlimeKilled).AddTo(_disposables);
@@ -136,6 +139,7 @@ public class GameplayService : IGameplayService
             if (_info.IsCleared.Value)
                 ReportWaveReached(e.WaveIndex);
 
+            _singleBattleService.FinishAsync(_info.IsCleared.Value, _info.ReachedWave.Value, _info.Life.Value).Forget();
             _popupService.OpenAsync(PrefabKeys.GameResultPopup).Forget();
             return;
         }
@@ -166,11 +170,9 @@ public class GameplayService : IGameplayService
         }
     }
 
-    // 저장하는 최고 기록과 결과 팝업에 보이는 도달 웨이브가 같은 값이어야 해서 한 곳에서 처리한다
     private void ReportWaveReached(int wave)
     {
         _info.ReachedWave.Value = Mathf.Max(_info.ReachedWave.Value, wave);
-        _accountService.ReportWaveReached(wave);
     }
 
     private void OnSlimeReachedEnd(SlimeReachedEndEvent e)
@@ -178,6 +180,7 @@ public class GameplayService : IGameplayService
         if (_gameOverPublished || _gameEnded)
             return;
 
+        _singleBattleService.RecordArrival(e.SpawnNumber);
         _info.Life.Value = e.InstantGameOver ? 0 : Mathf.Max(0, _info.Life.Value - e.LifeCost);
 
         if (_info.Life.Value <= 0)
@@ -218,6 +221,7 @@ public class GameplayService : IGameplayService
 
     public void Dispose()
     {
+        _singleBattleService.Abandon();
         _disposables.Dispose();
         _info.Dispose();
     }

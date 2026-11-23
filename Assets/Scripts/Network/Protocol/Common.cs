@@ -24,7 +24,7 @@ namespace SlimeTD.Protocol {
     static CommonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgxjb21tb24ucHJvdG8SB3NsaW1ldGQq2gIKBU1zZ0lkEg8KC01TR19JRF9O",
+            "Cgxjb21tb24ucHJvdG8SB3NsaW1ldGQq8AMKBU1zZ0lkEg8KC01TR19JRF9O",
             "T05FEAASFAoQTVNHX0lEX0xPR0lOX1JFURBkEhQKEE1TR19JRF9MT0dJTl9S",
             "RVMQZRIfChpNU0dfSURfR0VUX1BMQVlFUl9JTkZPX1JFURDIARIfChpNU0df",
             "SURfR0VUX1BMQVlFUl9JTkZPX1JFUxDJARIfChpNU0dfSURfSFVOVEVSX0xF",
@@ -32,15 +32,19 @@ namespace SlimeTD.Protocol {
             "AhIfChpNU0dfSURfSFVOVEVSX1BVUkNIQVNFX1JFURCuAhIfChpNU0dfSURf",
             "SFVOVEVSX1BVUkNIQVNFX1JFUxCvAhImCiFNU0dfSURfSFVOVEVSX0NBUkRf",
             "R0FDSEFfRFJBV19SRVEQsAISJgohTVNHX0lEX0hVTlRFUl9DQVJEX0dBQ0hB",
-            "X0RSQVdfUkVTELECKtcCCgpSZXN1bHRDb2RlEhIKDlJFU1VMVF9DT0RFX09L",
-            "EAASHwobUkVTVUxUX0NPREVfSU5WQUxJRF9SRVFVRVNUEAESHQoZUkVTVUxU",
-            "X0NPREVfTk9UX0xPR0dFRF9JThACEhwKGFJFU1VMVF9DT0RFX1NFUlZFUl9F",
-            "UlJPUhADEhkKFVJFU1VMVF9DT0RFX05PVF9GT1VORBAEEh0KGVJFU1VMVF9D",
-            "T0RFX0hVTlRFUl9MT0NLRUQQBRIZChVSRVNVTFRfQ09ERV9NQVhfTEVWRUwQ",
-            "BhIgChxSRVNVTFRfQ09ERV9OT1RfRU5PVUdIX0lURU1TEAcSIAocUkVTVUxU",
-            "X0NPREVfQUxSRUFEWV9VTkxPQ0tFRBAIEh8KG1JFU1VMVF9DT0RFX05PVF9Q",
-            "VVJDSEFTQUJMRRAJEh0KGVJFU1VMVF9DT0RFX05PVF9BVkFJTEFCTEUQCkIT",
-            "qgIQU2xpbWVURC5Qcm90b2NvbGIGcHJvdG8z"));
+            "X0RSQVdfUkVTELECEiMKHk1TR19JRF9TSU5HTEVfQkFUVExFX1NUQVJUX1JF",
+            "URCQAxIjCh5NU0dfSURfU0lOR0xFX0JBVFRMRV9TVEFSVF9SRVMQkQMSJAof",
+            "TVNHX0lEX1NJTkdMRV9CQVRUTEVfRklOSVNIX1JFURCSAxIkCh9NU0dfSURf",
+            "U0lOR0xFX0JBVFRMRV9GSU5JU0hfUkVTEJMDKvgCCgpSZXN1bHRDb2RlEhIK",
+            "DlJFU1VMVF9DT0RFX09LEAASHwobUkVTVUxUX0NPREVfSU5WQUxJRF9SRVFV",
+            "RVNUEAESHQoZUkVTVUxUX0NPREVfTk9UX0xPR0dFRF9JThACEhwKGFJFU1VM",
+            "VF9DT0RFX1NFUlZFUl9FUlJPUhADEhkKFVJFU1VMVF9DT0RFX05PVF9GT1VO",
+            "RBAEEh0KGVJFU1VMVF9DT0RFX0hVTlRFUl9MT0NLRUQQBRIZChVSRVNVTFRf",
+            "Q09ERV9NQVhfTEVWRUwQBhIgChxSRVNVTFRfQ09ERV9OT1RfRU5PVUdIX0lU",
+            "RU1TEAcSIAocUkVTVUxUX0NPREVfQUxSRUFEWV9VTkxPQ0tFRBAIEh8KG1JF",
+            "U1VMVF9DT0RFX05PVF9QVVJDSEFTQUJMRRAJEh0KGVJFU1VMVF9DT0RFX05P",
+            "VF9BVkFJTEFCTEUQChIfChtSRVNVTFRfQ09ERV9CQVRUTEVfTUlTTUFUQ0gQ",
+            "C0ITqgIQU2xpbWVURC5Qcm90b2NvbGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SlimeTD.Protocol.MsgId), typeof(global::SlimeTD.Protocol.ResultCode), }, null, null));
@@ -51,7 +55,7 @@ namespace SlimeTD.Protocol {
   #region Enums
   /// <summary>
   /// 와이어 헤더의 메시지 ID. 서버와 클라이언트가 같은 값을 쓴다. 한 번 정한 값은 바꾸지 않는다.
-  /// 1~99: 시스템, 100~199: 계정, 200~299: 플레이어 데이터, 300~399: 헌터
+  /// 1~99: 시스템, 100~199: 계정, 200~299: 플레이어 데이터, 300~399: 헌터, 400~499: 싱글 전투, 500~599: 협동 전투
   /// </summary>
   public enum MsgId {
     [pbr::OriginalName("MSG_ID_NONE")] None = 0,
@@ -65,6 +69,10 @@ namespace SlimeTD.Protocol {
     [pbr::OriginalName("MSG_ID_HUNTER_PURCHASE_RES")] HunterPurchaseRes = 303,
     [pbr::OriginalName("MSG_ID_HUNTER_CARD_GACHA_DRAW_REQ")] HunterCardGachaDrawReq = 304,
     [pbr::OriginalName("MSG_ID_HUNTER_CARD_GACHA_DRAW_RES")] HunterCardGachaDrawRes = 305,
+    [pbr::OriginalName("MSG_ID_SINGLE_BATTLE_START_REQ")] SingleBattleStartReq = 400,
+    [pbr::OriginalName("MSG_ID_SINGLE_BATTLE_START_RES")] SingleBattleStartRes = 401,
+    [pbr::OriginalName("MSG_ID_SINGLE_BATTLE_FINISH_REQ")] SingleBattleFinishReq = 402,
+    [pbr::OriginalName("MSG_ID_SINGLE_BATTLE_FINISH_RES")] SingleBattleFinishRes = 403,
   }
 
   /// <summary>
@@ -103,6 +111,10 @@ namespace SlimeTD.Protocol {
     /// 지금은 할 수 없음 (예: 뽑을 수 있는 헌터가 없음)
     /// </summary>
     [pbr::OriginalName("RESULT_CODE_NOT_AVAILABLE")] NotAvailable = 10,
+    /// <summary>
+    /// 전투 결과가 서버 재계산과 다름 (기록하지 않음)
+    /// </summary>
+    [pbr::OriginalName("RESULT_CODE_BATTLE_MISMATCH")] BattleMismatch = 11,
   }
 
   #endregion

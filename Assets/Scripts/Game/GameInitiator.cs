@@ -16,9 +16,10 @@ public class GameInitiator : IAsyncStartable, IDisposable
     private readonly Zone _zone;
     private readonly WaveSpawner _waveSpawner;
     private readonly GameSceneSettings _sceneSettings;
+    private readonly ISingleBattleService _singleBattleService;
     private readonly SlimeDepthBucketBinder _depthBucketBinder = new SlimeDepthBucketBinder();
 
-    public GameInitiator(IGameplayService gameplayService, ITowerLevelService towerLevelService, ITowerPrefabProvider towerPrefabProvider, ISlimePrefabProvider slimePrefabProvider, IResourceLoadService resourceLoadService, Zone zone, WaveSpawner waveSpawner, GameSceneSettings sceneSettings)
+    public GameInitiator(IGameplayService gameplayService, ITowerLevelService towerLevelService, ITowerPrefabProvider towerPrefabProvider, ISlimePrefabProvider slimePrefabProvider, IResourceLoadService resourceLoadService, Zone zone, WaveSpawner waveSpawner, GameSceneSettings sceneSettings, ISingleBattleService singleBattleService)
     {
         _gameplayService = gameplayService;
         _towerLevelService = towerLevelService;
@@ -28,11 +29,16 @@ public class GameInitiator : IAsyncStartable, IDisposable
         _zone = zone;
         _waveSpawner = waveSpawner;
         _sceneSettings = sceneSettings;
+        _singleBattleService = singleBattleService;
     }
 
     public async UniTask StartAsync(CancellationToken ct)
     {
-        await _gameplayService.InitializeAsync(_sceneSettings.StageKey);
+        var battleStage = _singleBattleService.HasBattle ? _singleBattleService.Stage : null;
+        string stageKey = battleStage != null ? "Stage_" + battleStage.CodeName : _sceneSettings.StageKey;
+        await _gameplayService.InitializeAsync(stageKey);
+        if (battleStage != null)
+            WarnStageDifference(_gameplayService.Stage, battleStage);
         await _towerPrefabProvider.LoadAsync(_gameplayService.Catalog);
         await _slimePrefabProvider.LoadAsync(_gameplayService.Stage);
 
@@ -55,6 +61,21 @@ public class GameInitiator : IAsyncStartable, IDisposable
         _depthBucketBinder.Bind(_gameplayService.DepthBucketSettings);
         _zone.Initialize(myZone);
         _waveSpawner.Initialize(_gameplayService.Stage, map.Paths);
+    }
+
+    // 클라이언트 에셋과 서버 시트 값이 다르면 서버 검증 결과가 어긋난다
+    private static void WarnStageDifference(StageData local, SlimeTD.Protocol.BattleStage server)
+    {
+        if (local == null)
+            return;
+
+        if (local.StageId != server.StageId || local.MapKey != server.MapKey || local.FinalWave != server.FinalWave
+            || local.StartingLife != server.StartingLife || local.StartingGold != server.StartingGold
+            || !Mathf.Approximately(local.SpawnInterval, server.SpawnInterval) || !Mathf.Approximately(local.InterWaveDelay, server.InterWaveDelay))
+        {
+            Debug.LogWarning($"[GameInitiator] 스테이지 값이 서버와 다릅니다. 클라 {local.StageId}/{local.MapKey}/웨이브 {local.FinalWave}/라이프 {local.StartingLife}/골드 {local.StartingGold}/간격 {local.SpawnInterval}/대기 {local.InterWaveDelay}, " +
+                $"서버 {server.StageId}/{server.MapKey}/웨이브 {server.FinalWave}/라이프 {server.StartingLife}/골드 {server.StartingGold}/간격 {server.SpawnInterval}/대기 {server.InterWaveDelay}");
+        }
     }
 
     private async UniTask<GameMap> CreateMapAsync(StageData stage)

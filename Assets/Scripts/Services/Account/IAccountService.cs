@@ -24,7 +24,7 @@ public interface IAccountService
     void AddCoin(int amount);
     void AddDiamond(int amount);
     void AddHunterCards(int towerId, int amount);
-    void ReportWaveReached(int wave);
+    void SetBestWave(int wave);
     bool TryGetLevelUpCost(int towerId, out int cards, out int coin);
     bool CanLevelUp(int towerId);
     UniTask<ResultCode> LevelUpAsync(int towerId);

@@ -33,7 +33,7 @@ public class TowerTestAccountService : IAccountService
     public void AddCoin(int amount) { }
     public void AddDiamond(int amount) { }
     public void AddHunterCards(int towerId, int amount) { }
-    public void ReportWaveReached(int wave) { }
+    public void SetBestWave(int wave) { }
 
     public bool TryGetLevelUpCost(int towerId, out int cards, out int coin)
     {

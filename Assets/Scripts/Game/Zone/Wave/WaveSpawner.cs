@@ -23,6 +23,7 @@ public class WaveSpawner : MonoBehaviour
     private IGameplayService _gameplayService;
     private ISpawnOrderCounter _spawnOrderCounter;
     private ISlimePrefabProvider _slimePrefabProvider;
+    private ISingleBattleService _singleBattleService;
 
     private CompositeDisposable _disposables;
     private CancellationTokenSource _spawnCts;
@@ -36,8 +37,10 @@ public class WaveSpawner : MonoBehaviour
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
         ISpawnOrderCounter spawnOrderCounter,
         IGameplayService gameplayService,
-        ISlimePrefabProvider slimePrefabProvider)
+        ISlimePrefabProvider slimePrefabProvider,
+        ISingleBattleService singleBattleService)
     {
+        _singleBattleService = singleBattleService;
         _poolService = poolService;
         _gameProgressPublisher = gameProgressPublisher;
         _gameProgressSubscriber = gameProgressSubscriber;
@@ -158,6 +161,7 @@ public class WaveSpawner : MonoBehaviour
     private async UniTaskVoid RunAllWavesAsync()
     {
         var token = _spawnCts.Token;
+        _singleBattleService.MarkStarted();
 
         try
         {
@@ -266,7 +270,7 @@ public class WaveSpawner : MonoBehaviour
 
         slime.SetDepthBucket(_spawnOrderCounter.NextBucket(slimeData.RenderGroup));
 
-        slime.Initialize(path, slimeData, plan.Health, plan.GoldReward);
+        slime.Initialize(path, slimeData, plan.Health, plan.GoldReward, _spawnCount);
     }
 
     private void OnGameOver()

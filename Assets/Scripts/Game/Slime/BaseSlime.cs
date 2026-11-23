@@ -27,6 +27,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
     private SlimeStats _stats;
     private SlimeDataBase _data;
     private int _goldReward;
+    private int _spawnNumber;
     private IPublisher<SlimeKilledEvent> _killedPublisher;
     private IPublisher<SlimeReachedEndEvent> _reachedEndPublisher;
     private IGameObjectPoolService _poolService;
@@ -147,13 +148,14 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 
 
 
-    public virtual void Initialize(SplineContainer splineContainer, SlimeDataBase data, int health, int goldReward)
+    public virtual void Initialize(SplineContainer splineContainer, SlimeDataBase data, int health, int goldReward, int spawnNumber)
     {
         if (_splineAnimate == null || data == null)
             return;
 
         _data = data;
         _goldReward = goldReward;
+        _spawnNumber = spawnNumber;
         _stats.Reset(health);
         ClearSlow();
         ClearStun();
@@ -334,7 +336,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 
     protected virtual void OnReachedEnd()
     {
-        _reachedEndPublisher.Publish(new SlimeReachedEndEvent(_data.LifeCost, _data.InstantGameOver));
+        _reachedEndPublisher.Publish(new SlimeReachedEndEvent(_spawnNumber, _data.LifeCost, _data.InstantGameOver));
         _poolService.Release(gameObject);
     }
 

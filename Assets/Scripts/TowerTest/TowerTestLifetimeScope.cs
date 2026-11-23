@@ -15,6 +15,9 @@ public class TowerTestLifetimeScope : LifetimeScope
         builder.Register<ResourceLoadService>(Lifetime.Singleton).As<IResourceLoadService>();
         builder.Register<TowerLevelService>(Lifetime.Singleton).As<ITowerLevelService>();
         builder.Register<TowerTestAccountService>(Lifetime.Singleton).As<IAccountService>();
+        // 전투를 시작하지 않으므로 서버에 요청하지 않는다
+        builder.Register<GameServerConnection>(Lifetime.Singleton).As<IGameServerConnection>();
+        builder.Register<SingleBattleService>(Lifetime.Singleton).As<ISingleBattleService>();
 
         builder.RegisterComponentInHierarchy<UpdateSubscriptionService>()
                .As<IUpdateSubscriptionService>();

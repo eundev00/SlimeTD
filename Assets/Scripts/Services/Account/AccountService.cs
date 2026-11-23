@@ -278,12 +278,9 @@ public class AccountService : IAccountService, IDisposable
         hunter.Cards.Value = Mathf.Max(0, hunter.Cards.Value + amount);
     }
 
-    public void ReportWaveReached(int wave)
+    // 서버가 싱글 전투 결과를 확인하고 기록한 값을 받는다
+    public void SetBestWave(int wave)
     {
-        if (!IsInitialized || wave <= _bestWave.Value)
-            return;
-
-        WarnNotSaved(nameof(ReportWaveReached));
         _bestWave.Value = wave;
     }
 
