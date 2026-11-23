@@ -106,12 +106,13 @@ public class GameplayService : IGameplayService
         _info.MaxWave.Value = maxWave;
     }
 
-    public void AddGold(int amount)
+    public void AddSkillGold(int amount, Vector2Int cell)
     {
         if (amount <= 0 || _gameEnded)
             return;
 
         _info.Gold.Value += amount;
+        _singleBattleService.RecordSkillGold(cell, amount);
     }
 
     public bool TrySpendGold(int amount)
@@ -139,7 +140,7 @@ public class GameplayService : IGameplayService
             if (_info.IsCleared.Value)
                 ReportWaveReached(e.WaveIndex);
 
-            _singleBattleService.FinishAsync(_info.IsCleared.Value, _info.ReachedWave.Value, _info.Life.Value).Forget();
+            _singleBattleService.FinishAsync(_info.IsCleared.Value, _info.ReachedWave.Value, _info.Life.Value, _info.Gold.Value).Forget();
             _popupService.OpenAsync(PrefabKeys.GameResultPopup).Forget();
             return;
         }
@@ -198,6 +199,7 @@ public class GameplayService : IGameplayService
         if (_gameEnded)
             return;
 
+        _singleBattleService.RecordKill(e.SpawnNumber);
         _info.Gold.Value = Mathf.Max(0, _info.Gold.Value + e.GoldReward);
         Debug.Log($"[GameplayService] 골드 {_info.Gold.Value}");
 

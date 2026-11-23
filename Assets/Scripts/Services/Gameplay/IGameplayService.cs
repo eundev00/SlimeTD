@@ -11,7 +11,7 @@ public interface IGameplayService : IDisposable
     SlimeDepthBucketSettings DepthBucketSettings { get; }
 
     UniTask InitializeAsync(string stageKey = DataKeys.Stage_SingleNormal);
-    void AddGold(int amount);
+    void AddSkillGold(int amount, UnityEngine.Vector2Int cell);
     bool TrySpendGold(int amount);
     bool TrySpendSummonCost();
     void SetMaxWave(int maxWave);

@@ -49,6 +49,24 @@ public class TowerCatalog : ScriptableObject
         return true;
     }
 
+    public bool HasNextGrade(TowerData source, Func<TowerData, bool> filter = null)
+    {
+        if (source == null)
+            return false;
+
+        EnsureIndex();
+        if (!_byGrade.TryGetValue(source.GradeId + 1, out var candidates))
+            return false;
+
+        for (int i = 0; i < candidates.Count; i++)
+        {
+            if (filter == null || filter(candidates[i]))
+                return true;
+        }
+
+        return false;
+    }
+
     public bool TryDrawNextGrade(TowerData source, out TowerData result, Func<TowerData, bool> filter = null)
     {
         result = null;

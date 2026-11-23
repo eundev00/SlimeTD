@@ -9,12 +9,13 @@ using UnityEngine;
 using UnityEngine.Splines;
 using VContainer;
 
-public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
+public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpdatable
 {
     private static readonly int DepthBucketId = Shader.PropertyToID("_SlimeDepthBucket");
 
     // 사망·기절 연출은 일반 슬라임 몸(반지름 약 0.26) 크기에 맞춰 만들고, 큰 슬라임은 몸 크기 비율만큼 키운다
     private const float VfxBaseRadius = 0.2637f;
+    private const float TicksPerSecond = 30f;
 
     [SerializeField] private SkinnedMeshRenderer[] _depthBucketRenderers;
     [NotNull][SerializeField] private Transform _damageTextAnchor;
@@ -28,6 +29,12 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
     private SlimeDataBase _data;
     private int _goldReward;
     private int _spawnNumber;
+    private SplineContainer _container;
+    private float _pathLength;
+    private float _localPerWorld;
+    private float _distance;
+    private float _previousDistance;
+    private bool _moving;
     private IPublisher<SlimeKilledEvent> _killedPublisher;
     private IPublisher<SlimeReachedEndEvent> _reachedEndPublisher;
     private IGameObjectPoolService _poolService;
@@ -92,8 +99,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
 
         _stats = new SlimeStats(0);
 
-        _splineAnimate.AnimationMethod = SplineAnimate.Method.Speed;
-        _splineAnimate.Loop = SplineAnimate.LoopMode.Once;
+        // 이동은 서버 검증과 같은 틱(고정 업데이트)으로 직접 계산한다. 컴포넌트는 경로 참조용으로만 남긴다
+        _splineAnimate.enabled = false;
     }
 
 
@@ -110,10 +117,6 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
                 StopMoving();
         }).AddTo(_disposables);
 
-        if (_splineAnimate != null)
-        {
-            _splineAnimate.Completed += OnReachedEnd;
-        }
     }
 
     public virtual void OnReturnToPool()
@@ -130,20 +133,15 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
         _cancellationTokenSource?.Dispose();
         _cancellationTokenSource = null;
 
-        if (_splineAnimate != null)
-        {
-            _splineAnimate.Completed -= OnReachedEnd;
-            _splineAnimate.Pause();
-            _splineAnimate.NormalizedTime = 0f;
-        }
+        _moving = false;
+        _container = null;
+        UnregisterUpdate();
     }
 
     private void StopMoving()
     {
         _gameOver = true;
-
-        if (_splineAnimate != null)
-            _splineAnimate.Pause();
+        _moving = false;
     }
 
 
@@ -160,12 +158,70 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
         ClearSlow();
         ClearStun();
 
-        _splineAnimate.Container = splineContainer;
-        _splineAnimate.MaxSpeed = data.BaseSpeed;
-        _splineAnimate.NormalizedTime = 0f;
+        _container = splineContainer;
+        _pathLength = splineContainer.CalculateLength(0);
+        float localLength = splineContainer.Splines[0].GetLength();
+        _localPerWorld = _pathLength > 0f ? localLength / _pathLength : 1f;
+        _distance = 0f;
+        _previousDistance = 0f;
+        ApplyPose(0f);
 
-        if (!_gameOver)
-            _splineAnimate.Play();
+        _moving = !_gameOver;
+        RegisterUpdate();
+    }
+
+    public void ManagedFixedUpdate()
+    {
+        if (!_moving || _data == null)
+            return;
+
+        float dt = 1f / TicksPerSecond;
+        _slow.Tick(dt, SlowMinSpeedRatio);
+
+        _previousDistance = _distance;
+
+        if (_stunRemaining > 0f)
+        {
+            _stunRemaining -= dt;
+            if (_stunRemaining <= 0f)
+            {
+                _stunRemaining = 0f;
+                SetStunVfx(false);
+            }
+            return;
+        }
+
+        _distance += _data.BaseSpeed * _slow.SpeedRatio / TicksPerSecond;
+        if (_distance >= _pathLength)
+        {
+            _moving = false;
+            OnReachedEnd();
+        }
+    }
+
+    // 틱 사이는 직전 틱 위치와 보간해서 그린다
+    public void ManagedUpdate()
+    {
+        if (!_moving)
+            return;
+
+        float alpha = Mathf.Clamp01((Time.time - Time.fixedTime) / Time.fixedDeltaTime);
+        ApplyPose(Mathf.Lerp(_previousDistance, _distance, alpha));
+    }
+
+    private void ApplyPose(float distance)
+    {
+        if (_container == null)
+            return;
+
+        float t = _container.Splines[0].ConvertIndexUnit(Mathf.Min(distance, _pathLength) * _localPerWorld, PathIndexUnit.Distance, PathIndexUnit.Normalized);
+        if (!_container.Evaluate(0, t, out var position, out var tangent, out var up))
+            return;
+
+        transform.position = position;
+        Vector3 forward = tangent;
+        if (forward.sqrMagnitude > 0.0001f)
+            transform.rotation = Quaternion.LookRotation(forward, up);
     }
 
     public void SetDepthBucket(int bucket)
@@ -198,8 +254,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
         {
             ClearSlow();
             ClearStun();
-            _splineAnimate.Pause();
-            _killedPublisher.Publish(new SlimeKilledEvent(_goldReward));
+            _moving = false;
+            _killedPublisher.Publish(new SlimeKilledEvent(_spawnNumber, _goldReward));
             // 죽는 모션 없이 바로 풀로 돌려보내고, 연기는 바닥에 가리지 않게 몸 가운데에서 따로 재생한다
             var body = _bodyCollider.bounds;
             _vfxPlayer?.Play(_deathVfx, body.center, body.extents.y / VfxBaseRadius);
@@ -214,45 +270,17 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
             ApplyStun(info.StunDuration);
     }
 
-    public void ManagedUpdate()
-    {
-        if (_slow.Tick(Time.deltaTime, SlowMinSpeedRatio))
-            ApplySpeed();
-
-        if (_stunRemaining > 0f)
-        {
-            _stunRemaining -= Time.deltaTime;
-            if (_stunRemaining <= 0f)
-            {
-                _stunRemaining = 0f;
-                SetStunVfx(false);
-                if (!_gameOver && _splineAnimate != null)
-                    _splineAnimate.Play();
-            }
-        }
-
-        if (!_slow.IsActive && _stunRemaining <= 0f)
-            UnregisterUpdate();
-    }
-
     // 기절은 새로 걸리면 남은 시간과 비교해 긴 쪽으로 갱신한다.
     private void ApplyStun(float duration)
     {
-        if (_splineAnimate == null)
-            return;
-
         _stunRemaining = Mathf.Max(_stunRemaining, duration);
-        _splineAnimate.Pause();
         SetStunVfx(true);
-        RegisterUpdate();
     }
 
     private void ClearStun()
     {
         _stunRemaining = 0f;
         SetStunVfx(false);
-        if (!_slow.IsActive)
-            UnregisterUpdate();
     }
 
     // 기절 표시는 슬라임을 따라다녀야 해서 자식으로 한 번만 만들어 두고 켜고 끈다. 머리 위 높이와 크기는 몸 충돌체로 정한다
@@ -287,30 +315,11 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
             percent *= _gameplayService?.Config != null ? _gameplayService.Config.BossSlowScale : 0.5f;
 
         _slow.Apply(info.SourceSpawnId, percent, info.SlowDuration, SlowMinSpeedRatio);
-        ApplySpeed();
-        RegisterUpdate();
-    }
-
-    // SplineAnimate는 속도를 바꾸면 진행 시간을 다시 계산해서 위치가 튄다. 진행률을 보존해 둔다.
-    private void ApplySpeed()
-    {
-        if (_splineAnimate == null || _data == null)
-            return;
-
-        float progress = _splineAnimate.NormalizedTime;
-        _splineAnimate.MaxSpeed = _data.BaseSpeed * _slow.SpeedRatio;
-        _splineAnimate.NormalizedTime = progress;
     }
 
     private void ClearSlow()
     {
-        bool wasSlowed = _slow.IsActive;
         _slow.Clear();
-        if (_stunRemaining <= 0f)
-            UnregisterUpdate();
-
-        if (wasSlowed)
-            ApplySpeed();
     }
 
     private void RegisterUpdate()
@@ -319,6 +328,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
             return;
 
         _updateService.RegisterUpdatable(this);
+        _updateService.RegisterFixedUpdatable(this);
         _updateRegistered = true;
     }
 
@@ -328,6 +338,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable
             return;
 
         _updateService.UnregisterUpdatable(this);
+        _updateService.UnregisterFixedUpdatable(this);
         _updateRegistered = false;
     }
 

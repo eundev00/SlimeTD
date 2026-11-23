@@ -7,14 +7,16 @@ using UnityEngine;
 // 싱글은 클라이언트가 혼자 플레이하고, 끝나면 서버가 같은 전투를 다시 계산해 결과를 확인한다
 public class SingleBattleService : ISingleBattleService
 {
-    private const float TicksPerSecond = 30f;
-
     private readonly IGameServerConnection _connection;
     private readonly IAccountService _accountService;
     private readonly List<SlimeArrival> _arrivals = new List<SlimeArrival>();
+    private readonly List<SlimeKill> _kills = new List<SlimeKill>();
+    private readonly List<HunterSummon> _summons = new List<HunterSummon>();
+    private readonly List<HunterMerge> _merges = new List<HunterMerge>();
+    private readonly List<SkillGold> _skillGolds = new List<SkillGold>();
 
     private long _battleId;
-    private float _startTime;
+    private int _tick;
     private bool _started;
 
     public bool HasBattle { get; private set; }
@@ -57,8 +59,15 @@ public class SingleBattleService : ISingleBattleService
         if (!HasBattle)
             return;
 
-        _startTime = Time.time;
+        _tick = 0;
         _started = true;
+    }
+
+    // 고정 업데이트 1번 = 1틱 (WaveSpawner가 매 고정 업데이트 처음에 부른다)
+    public void AdvanceTick()
+    {
+        if (IsRecording)
+            _tick++;
     }
 
     public void RecordArrival(int slimeId)
@@ -69,7 +78,33 @@ public class SingleBattleService : ISingleBattleService
         _arrivals.Add(new SlimeArrival { SlimeId = slimeId, Tick = CurrentTick() });
     }
 
-    public async UniTask FinishAsync(bool victory, int reachedWave, int life)
+    public void RecordKill(int slimeId)
+    {
+        if (IsRecording)
+            _kills.Add(new SlimeKill { SlimeId = slimeId, Tick = CurrentTick() });
+    }
+
+    public void RecordSummon(Vector2Int cell, int towerId)
+    {
+        if (IsRecording)
+            _summons.Add(new HunterSummon { Tick = CurrentTick(), X = cell.x, Y = cell.y, TowerId = towerId });
+    }
+
+    public void RecordMerge(Vector2Int cell, Vector2Int partnerCell, int resultTowerId)
+    {
+        if (IsRecording)
+            _merges.Add(new HunterMerge { Tick = CurrentTick(), X = cell.x, Y = cell.y, PartnerX = partnerCell.x, PartnerY = partnerCell.y, ResultTowerId = resultTowerId });
+    }
+
+    public void RecordSkillGold(Vector2Int cell, int amount)
+    {
+        if (IsRecording)
+            _skillGolds.Add(new SkillGold { Tick = CurrentTick(), X = cell.x, Y = cell.y, Amount = amount });
+    }
+
+    private bool IsRecording => HasBattle && _started;
+
+    public async UniTask FinishAsync(bool victory, int reachedWave, int life, int gold)
     {
         if (!HasBattle || !_started)
             return;
@@ -81,8 +116,13 @@ public class SingleBattleService : ISingleBattleService
             ReachedWave = reachedWave,
             Life = life,
             EndTick = CurrentTick(),
+            Gold = gold,
         };
         req.Arrivals.AddRange(_arrivals);
+        req.Kills.AddRange(_kills);
+        req.Summons.AddRange(_summons);
+        req.Merges.AddRange(_merges);
+        req.SkillGolds.AddRange(_skillGolds);
         Clear();
 
         try
@@ -116,7 +156,7 @@ public class SingleBattleService : ISingleBattleService
 
     private int CurrentTick()
     {
-        return Mathf.RoundToInt((Time.time - _startTime) * TicksPerSecond);
+        return _tick;
     }
 
     private void Clear()
@@ -125,6 +165,11 @@ public class SingleBattleService : ISingleBattleService
         Stage = null;
         _battleId = 0;
         _started = false;
+        _tick = 0;
         _arrivals.Clear();
+        _kills.Clear();
+        _summons.Clear();
+        _merges.Clear();
+        _skillGolds.Clear();
     }
 }

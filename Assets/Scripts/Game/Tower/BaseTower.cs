@@ -56,12 +56,15 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     // 데이터 ID(TowerData.Id)와 다르다. 소환과 합성으로 생길 때마다 새로 받는 게임 중 번호다.
     public int SpawnId { get; private set; }
 
+    // 배치 구역 그리드 좌표. 배치할 때 TowerSpawner가 정한다
+    public Vector2Int Cell { get; set; }
+
     Transform ITowerContext.Transform => transform;
     Vector3 ITowerContext.AimDirection => transform.forward;
     IGameObjectPoolService ITowerContext.Pool => _poolService;
     TowerAnimator ITowerContext.Animator => _animator;
     TowerSkillController ITowerContext.Skills => _skills;
-    void ITowerContext.AddGold(int amount) => _gameplayService.AddGold(amount);
+    void ITowerContext.AddGold(int amount) => _gameplayService.AddSkillGold(amount, Cell);
     void ITowerContext.PlaySkillVfx(IReadOnlyList<TowerSkillData> skills) => _skillVfx.Play(skills);
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;

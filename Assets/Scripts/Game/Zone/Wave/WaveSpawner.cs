@@ -1,15 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using MessagePipe;
 using Services.PoolService;
+using Services.UpdateService;
 using UniRx;
 using UnityEngine;
 using VContainer;
 
-public class WaveSpawner : MonoBehaviour
+public class WaveSpawner : MonoBehaviour, IFixedUpdatable
 {
+    private const int TicksPerSecond = 30;
+
+    private enum ScheduleKind { WaveStart, Spawn, WaveSpawnFinished }
+
+    private readonly struct ScheduleEntry
+    {
+        public readonly int Tick;
+        public readonly ScheduleKind Kind;
+        public readonly int Wave;
+        public readonly SpawnPlan Plan;
+        public readonly int Count;
+        public readonly bool IsLastWave;
+
+        public ScheduleEntry(int tick, ScheduleKind kind, int wave, SpawnPlan plan, int count, bool isLastWave)
+        {
+            Tick = tick;
+            Kind = kind;
+            Wave = wave;
+            Plan = plan;
+            Count = count;
+            IsLastWave = isLastWave;
+        }
+    }
+
     // 웨이브가 겹쳐 스폰되므로 동시 생존 수를 이 창(window) 크기로 근사한다.
     [SerializeField] private int _overlapWaveWindow = 3;
     [NotNull][SerializeField] private Transform _spawnRoot;
@@ -24,10 +47,15 @@ public class WaveSpawner : MonoBehaviour
     private ISpawnOrderCounter _spawnOrderCounter;
     private ISlimePrefabProvider _slimePrefabProvider;
     private ISingleBattleService _singleBattleService;
+    private IUpdateSubscriptionService _updateService;
+
+    private readonly List<ScheduleEntry> _schedule = new List<ScheduleEntry>();
+    private int _scheduleIndex;
+    private int _tick;
+    private bool _running;
+    private bool _lastWaveSpawnFinished;
 
     private CompositeDisposable _disposables;
-    private CancellationTokenSource _spawnCts;
-    private bool _waveClearedReceived;
     private bool _gameOver;
 
     [Inject]
@@ -38,8 +66,10 @@ public class WaveSpawner : MonoBehaviour
         ISpawnOrderCounter spawnOrderCounter,
         IGameplayService gameplayService,
         ISlimePrefabProvider slimePrefabProvider,
-        ISingleBattleService singleBattleService)
+        ISingleBattleService singleBattleService,
+        IUpdateSubscriptionService updateService)
     {
+        _updateService = updateService;
         _singleBattleService = singleBattleService;
         _poolService = poolService;
         _gameProgressPublisher = gameProgressPublisher;
@@ -70,7 +100,6 @@ public class WaveSpawner : MonoBehaviour
         _gameplayService.SetMaxWave(_stage.FinalWave);
 
         _gameOver = false;
-        _waveClearedReceived = false;
         _spawnOrderCounter.Reset();
 
         _disposables = new CompositeDisposable();
@@ -79,15 +108,13 @@ public class WaveSpawner : MonoBehaviour
             if (evt.EventType == GameProgressType.GameOver)
                 OnGameOver();
             else if (evt.EventType == GameProgressType.WaveCleared)
-                _waveClearedReceived = true;
+                OnWaveCleared();
         }).AddTo(_disposables);
-
-        _spawnCts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
 
         PreparePools();
 
         if (_gameplayService.Config.AutoStartWave)
-            RunAllWavesAsync().Forget();
+            StartWaves();
     }
 
     private void OnDestroy()
@@ -95,9 +122,7 @@ public class WaveSpawner : MonoBehaviour
         _disposables?.Dispose();
         _disposables = null;
 
-        _spawnCts?.Cancel();
-        _spawnCts?.Dispose();
-        _spawnCts = null;
+        StopWaves();
     }
 
     private void PreparePools()
@@ -158,74 +183,105 @@ public class WaveSpawner : MonoBehaviour
         }
     }
 
-    private async UniTaskVoid RunAllWavesAsync()
+    // 서버 전투 코어와 같은 일정: 1틱 = 고정 업데이트 1번 (1/30초). 웨이브 일정은 시작할 때 틱으로 미리 정한다
+    private void BuildSchedule()
     {
-        var token = _spawnCts.Token;
-        _singleBattleService.MarkStarted();
+        _schedule.Clear();
+        _scheduleIndex = 0;
+        _tick = 0;
+        _lastWaveSpawnFinished = false;
 
-        try
+        int tick = 0;
+        for (int waveIndex = 1; waveIndex <= _stage.FinalWave; waveIndex++)
         {
-            for (int waveIndex = 1; waveIndex <= _stage.FinalWave; waveIndex++)
+            var plans = new List<SpawnPlan>();
+            WaveResolver.Resolve(_stage, waveIndex, plans, true);
+            if (plans.Count == 0)
             {
-                await RunWaveAsync(waveIndex, token);
+                Debug.Log($"[WaveSpawner] 웨이브 {waveIndex} 스폰 목록이 비어 건너뜁니다.", this);
+                continue;
             }
 
-            if (_gameOver)
-                return;
+            bool isLastWave = waveIndex == _stage.FinalWave;
+            tick += SecondsToTicks(_stage.InterWaveDelay);
+            _schedule.Add(new ScheduleEntry(tick, ScheduleKind.WaveStart, waveIndex, default, plans.Count, isLastWave));
+            Debug.Log($"[WaveSpawner] 웨이브 {waveIndex} 슬라임 {plans.Count}마리 [{DescribePlans(plans)}]");
 
-            _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.StageCleared, _stage.FinalWave));
-            Debug.Log("[WaveSpawner] 스테이지 클리어");
-        }
-        catch (OperationCanceledException)
-        {
-            // 게임오버 또는 파괴로 스폰 루프 취소 시 정상 종료.
+            foreach (var plan in plans)
+            {
+                tick += SecondsToTicks(plan.DelayBefore);
+                _schedule.Add(new ScheduleEntry(tick, ScheduleKind.Spawn, waveIndex, plan, 0, isLastWave));
+                tick += SecondsToTicks(plan.SpawnInterval);
+            }
+
+            _schedule.Add(new ScheduleEntry(tick, ScheduleKind.WaveSpawnFinished, waveIndex, default, plans.Count, isLastWave));
         }
     }
 
-    private async UniTask RunWaveAsync(int waveIndex, CancellationToken token)
+    private static int SecondsToTicks(float seconds)
     {
-        var plans = new List<SpawnPlan>();
-        WaveResolver.Resolve(_stage, waveIndex, plans, true);
-
-        if (plans.Count == 0)
-        {
-            Debug.Log($"[WaveSpawner] 웨이브 {waveIndex} 스폰 목록이 비어 건너뜁니다.", this);
-            return;
-        }
-
-        float startDelay = _stage.InterWaveDelay;
-        if (startDelay > 0f)
-            await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: token);
-
-        bool isLastWave = waveIndex == _stage.FinalWave;
-        int totalSlimeCount = plans.Count;
-
-        _waveClearedReceived = false;
-        _gameProgressPublisher.Publish(
-            new GameProgressEvent(GameProgressType.WaveStarted, waveIndex, totalSlimeCount, isLastWave));
-        Debug.Log($"[WaveSpawner] 웨이브 {waveIndex} 시작, 슬라임 {totalSlimeCount}마리 [{DescribePlans(plans)}]");
-
-        foreach (var plan in plans)
-        {
-            if (plan.DelayBefore > 0f)
-                await UniTask.Delay(TimeSpan.FromSeconds(plan.DelayBefore), cancellationToken: token);
-
-            SpawnOne(plan);
-
-            if (plan.SpawnInterval > 0f)
-                await UniTask.Delay(TimeSpan.FromSeconds(plan.SpawnInterval), cancellationToken: token);
-        }
-
-        _gameProgressPublisher.Publish(
-            new GameProgressEvent(GameProgressType.WaveSpawnFinished, waveIndex, totalSlimeCount, isLastWave));
-        Debug.Log($"[WaveSpawner] 웨이브 {waveIndex} 스폰 완료");
-
-        // 일반 웨이브는 스폰이 끝나면 곧바로 다음 웨이브로 넘어간다. 슬라임 전멸을 기다리는 건
-        // 마지막 웨이브뿐이며, 이 대기가 곧 스테이지 클리어 판정이다.
-        if (isLastWave)
-            await UniTask.WaitUntil(() => _waveClearedReceived, cancellationToken: token);
+        return seconds <= 0f ? 0 : (int)Math.Round(seconds * TicksPerSecond, MidpointRounding.AwayFromZero);
     }
 
+    private void StartWaves()
+    {
+        BuildSchedule();
+        _singleBattleService.MarkStarted();
+        _updateService.RegisterFixedUpdatable(this);
+        _running = true;
+    }
+
+    private void StopWaves()
+    {
+        if (!_running)
+            return;
+
+        _running = false;
+        _updateService.UnregisterFixedUpdatable(this);
+    }
+
+    public void ManagedFixedUpdate()
+    {
+        if (!_running || _gameOver)
+            return;
+
+        _tick++;
+        _singleBattleService.AdvanceTick();
+
+        while (_scheduleIndex < _schedule.Count && _schedule[_scheduleIndex].Tick <= _tick)
+        {
+            var entry = _schedule[_scheduleIndex++];
+            switch (entry.Kind)
+            {
+                case ScheduleKind.WaveStart:
+                    _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.WaveStarted, entry.Wave, entry.Count, entry.IsLastWave));
+                    Debug.Log($"[WaveSpawner] 웨이브 {entry.Wave} 시작 (틱 {_tick})");
+                    break;
+                case ScheduleKind.Spawn:
+                    SpawnOne(entry.Plan);
+                    break;
+                case ScheduleKind.WaveSpawnFinished:
+                    if (entry.IsLastWave)
+                        _lastWaveSpawnFinished = true;
+                    _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.WaveSpawnFinished, entry.Wave, entry.Count, entry.IsLastWave));
+                    break;
+            }
+
+            if (_gameOver || !_running)
+                return;
+        }
+    }
+
+    // 마지막 웨이브 스폰이 끝난 뒤 슬라임이 모두 처리되면 클리어다. 처치는 틱 사이에 일어나므로 받은 즉시 끝낸다
+    private void OnWaveCleared()
+    {
+        if (!_running || !_lastWaveSpawnFinished || _gameOver)
+            return;
+
+        StopWaves();
+        _gameProgressPublisher.Publish(new GameProgressEvent(GameProgressType.StageCleared, _stage.FinalWave));
+        Debug.Log($"[WaveSpawner] 스테이지 클리어 (틱 {_tick})");
+    }
     private static string DescribePlans(List<SpawnPlan> plans)
     {
         var builder = new System.Text.StringBuilder();
@@ -276,6 +332,6 @@ public class WaveSpawner : MonoBehaviour
     private void OnGameOver()
     {
         _gameOver = true;
-        _spawnCts?.Cancel();
+        StopWaves();
     }
 }

@@ -48,6 +48,10 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         var skills = Context.Skills;
         _pendingRoll = skills != null ? skills.RollAttack() : default;
         _pendingDamage = ResolveDamage(_pendingRoll);
+
+        // 골드 스킬은 타격 결과와 상관없이 발동하면 바로 준다 (서버 검증 규칙)
+        if (_pendingRoll.Gold > 0)
+            Context.AddGold(_pendingRoll.Gold);
         _vfxPending = skills != null && (skills.LastProcs.Count > 0 || skills.AttackVfxSkills.Count > 0);
         string attackTrigger = SelectTrigger(skills, animator);
 
@@ -133,11 +137,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         if (!target.IsValid)
             return;
 
-        var roll = _pendingRoll;
-        Apply(target, roll, _pendingDamage);
-
-        if (roll.Gold > 0)
-            Context.AddGold(roll.Gold);
+        Apply(target, _pendingRoll, _pendingDamage);
     }
 
     private void PlayPendingVfx()

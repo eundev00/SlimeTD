@@ -10,6 +10,7 @@ public class TowerSpawner : MonoBehaviour
     private IGroundHeightSampler _groundHeightSampler;
     private IAccountService _accountService;
     private ITowerPrefabProvider _prefabProvider;
+    private ISingleBattleService _singleBattleService;
     private TowerCells _towerCells;
 
     private Transform _spawnRoot;
@@ -21,8 +22,10 @@ public class TowerSpawner : MonoBehaviour
         IGameplayService gameplayService,
         IGroundHeightSampler groundHeightSampler,
         IAccountService accountService,
-        ITowerPrefabProvider prefabProvider)
+        ITowerPrefabProvider prefabProvider,
+        ISingleBattleService singleBattleService)
     {
+        _singleBattleService = singleBattleService;
         _resolver = resolver;
         _gameplayService = gameplayService;
         _groundHeightSampler = groundHeightSampler;
@@ -102,6 +105,8 @@ public class TowerSpawner : MonoBehaviour
         }
 
         _towerCells.Register(cell, handler);
+        SetCell(handler, cell);
+        _singleBattleService.RecordSummon(cell, towerData.Id);
         return true;
     }
 
@@ -154,7 +159,15 @@ public class TowerSpawner : MonoBehaviour
         }
 
         _towerCells.Register(resultCell, handler);
+        SetCell(handler, resultCell);
+        _singleBattleService.RecordMerge(resultCell, partnerCell, resultData.Id);
         return true;
+    }
+
+    private static void SetCell(ITowerInteractionHandler handler, Vector2Int cell)
+    {
+        if (handler is BaseTower tower)
+            tower.Cell = cell;
     }
 
     private bool TryDrawTower(out TowerData towerData)

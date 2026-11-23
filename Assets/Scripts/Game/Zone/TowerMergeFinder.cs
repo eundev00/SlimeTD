@@ -43,35 +43,60 @@ public class TowerMergeFinder
         if (sourceTower.Data == null)
             return false;
 
-        if (!TryResolveMergeResult(sourceTower.Data, out _))
+        if (_catalog == null || !_catalog.HasNextGrade(sourceTower.Data, _resultFilter))
             return false;
 
         if (!TryFindCell(source, out sourceCell))
             return false;
 
-        int nearestDistance = int.MaxValue;
+        var grid = _towerCells.GridMapData;
+        int maxRing = grid != null ? Mathf.Max(grid.Width, grid.Height) : 0;
 
-        foreach (var entry in _towerCells.Towers)
+        // 서버 검증과 같은 규칙: 가까운 고리부터, 고리 안에서는 바로 위 칸부터 시계 방향
+        for (int ring = 1; ring <= maxRing; ring++)
         {
-            if (ReferenceEquals(entry.Value, source))
-                continue;
+            int count = ring * 8;
+            for (int i = 0; i < count; i++)
+            {
+                var cell = sourceCell + RingOffset(ring, i);
+                if (!_towerCells.TryGetTower(cell, out var candidate))
+                    continue;
 
-            if (entry.Value is not BaseTower candidate || candidate == null)
-                continue;
+                if (candidate is not BaseTower candidateTower || candidateTower == null)
+                    continue;
 
-            if (candidate.Data == null || candidate.Data.Id != sourceTower.Data.Id)
-                continue;
+                if (candidateTower.Data == null || candidateTower.Data.Id != sourceTower.Data.Id)
+                    continue;
 
-            int distance = (entry.Key - sourceCell).sqrMagnitude;
-            if (distance >= nearestDistance)
-                continue;
-
-            nearestDistance = distance;
-            partnerCell = entry.Key;
-            partner = entry.Value;
+                partnerCell = cell;
+                partner = candidate;
+                return true;
+            }
         }
 
-        return partner != null;
+        return false;
+    }
+
+    // (0, r)에서 시작해 오른쪽 위 → 오른쪽 아래 → 왼쪽 아래 → 왼쪽 위 → (-1, r)로 끝난다
+    private static Vector2Int RingOffset(int r, int index)
+    {
+        if (index <= r)
+            return new Vector2Int(index, r);
+
+        index -= r;
+        if (index <= 2 * r)
+            return new Vector2Int(r, r - index);
+
+        index -= 2 * r;
+        if (index <= 2 * r)
+            return new Vector2Int(r - index, -r);
+
+        index -= 2 * r;
+        if (index <= 2 * r)
+            return new Vector2Int(-r, -r + index);
+
+        index -= 2 * r;
+        return new Vector2Int(-r + index, r);
     }
 
     private bool TryFindCell(ITowerInteractionHandler tower, out Vector2Int cell)
