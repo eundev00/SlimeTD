@@ -13,6 +13,7 @@ public class Zone : MonoBehaviour
     private IGroundHeightSampler _groundHeightSampler;
     private IGameplayService _gameplayService;
     private IAccountService _accountService;
+    private ISingleBattleService _singleBattleService;
     private ISubscriber<TowerSpawnRequestedEvent> _spawnRequestedSubscriber;
 
     private TowerCells _towerCells;
@@ -27,8 +28,10 @@ public class Zone : MonoBehaviour
         IGroundHeightSampler groundHeightSampler,
         IGameplayService gameplayService,
         IAccountService accountService,
-        ISubscriber<TowerSpawnRequestedEvent> spawnRequestedSubscriber)
+        ISubscriber<TowerSpawnRequestedEvent> spawnRequestedSubscriber,
+        ISingleBattleService singleBattleService)
     {
+        _singleBattleService = singleBattleService;
         _resolver = resolver;
         _groundHeightSampler = groundHeightSampler;
         _gameplayService = gameplayService;
@@ -130,9 +133,14 @@ public class Zone : MonoBehaviour
         if (!_mergeFinder.TryFindMergePartner(source, out var sourceCell, out var partnerCell, out var partner))
             return false;
 
-        if (!_mergeFinder.TryResolveMergeResult(sourceTower.Data, out var resultData))
-            return false;
+        // 서버 검증: 합성이 실제로 일어날 때만 시드 목록에서 뽑고, 실패하면 되돌린다
+        var random = _singleBattleService.MergeRandom;
+        ulong savedRandom = random != null ? random.Save() : 0;
+        if (_mergeFinder.TryResolveMergeResult(sourceTower.Data, out var resultData, random)
+            && _towerSpawner.TryMerge(resultData, sourceCell, source, partnerCell, partner))
+            return true;
 
-        return _towerSpawner.TryMerge(resultData, sourceCell, source, partnerCell, partner);
+        random?.Restore(savedRandom);
+        return false;
     }
 }

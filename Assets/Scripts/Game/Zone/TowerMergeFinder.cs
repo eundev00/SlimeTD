@@ -115,13 +115,13 @@ public class TowerMergeFinder
         return false;
     }
 
-    public bool TryResolveMergeResult(TowerData sourceData, out TowerData resultData)
+    public bool TryResolveMergeResult(TowerData sourceData, out TowerData resultData, SlimeTD.Battle.BattleRandom random = null)
     {
         resultData = null;
 
         if (_catalog == null || sourceData == null)
             return false;
 
-        return _catalog.TryDrawNextGrade(sourceData, out resultData, _resultFilter);
+        return _catalog.TryDrawNextGrade(sourceData, out resultData, _resultFilter, random);
     }
 }

@@ -49,9 +49,6 @@ public class TowerSpawner : MonoBehaviour
 
     public bool TrySpawn(TowerData towerData = null, Vector2Int? targetCell = null)
     {
-        if (towerData == null && !TryDrawTower(out towerData))
-            return false;
-
         if (_resolver == null || _towerCells == null)
         {
             Debug.Log("[TowerSpawner] Initialize가 호출되지 않았습니다.", this);
@@ -78,16 +75,22 @@ public class TowerSpawner : MonoBehaviour
             return false;
         }
 
-        if (!_prefabProvider.TryGet(towerData, out var prefab))
+        if (!CanAffordSummon())
         {
-            Debug.Log($"[TowerSpawner] 타워 프리팹이 없습니다: {towerData.CodeName}", this);
+            Debug.Log($"[TowerSpawner] 골드가 부족합니다. 필요: {_gameplayService.Info.SummonCost.Value}, 보유: {_gameplayService.Info.Gold.Value}", this);
             return false;
         }
 
-        // 골드 차감은 실패 가능한 검증을 모두 통과한 뒤에 한다. 차감 후 실패하면 환불 경로가 없다.
-        if (!_gameplayService.TrySpendSummonCost())
+        // 서버 검증: 소환이 실제로 성공할 때만 시드 목록에서 뽑는다. 뒤에서 실패하면 뽑기 전 위치로 되돌린다
+        var random = _singleBattleService.SummonRandom;
+        ulong savedRandom = random != null ? random.Save() : 0;
+        if (towerData == null && !TryDrawTower(out towerData, random))
+            return false;
+
+        if (!_prefabProvider.TryGet(towerData, out var prefab) || !_gameplayService.TrySpendSummonCost())
         {
-            Debug.Log($"[TowerSpawner] 골드가 부족합니다. 필요: {_gameplayService.Info.SummonCost.Value}, 보유: {_gameplayService.Info.Gold.Value}", this);
+            Debug.Log($"[TowerSpawner] 소환하지 못했습니다: {towerData.CodeName}", this);
+            random?.Restore(savedRandom);
             return false;
         }
 
@@ -170,7 +173,17 @@ public class TowerSpawner : MonoBehaviour
             tower.Cell = cell;
     }
 
-    private bool TryDrawTower(out TowerData towerData)
+    private bool CanAffordSummon()
+    {
+        var config = _gameplayService.Config;
+        if (config == null)
+            return false;
+
+        int cost = _gameplayService.Info.SummonCost.Value;
+        return config.IgnoreGoldCost || cost <= 0 || _gameplayService.Info.Gold.Value >= cost;
+    }
+
+    private bool TryDrawTower(out TowerData towerData, SlimeTD.Battle.BattleRandom random)
     {
         towerData = null;
 
@@ -184,7 +197,7 @@ public class TowerSpawner : MonoBehaviour
         var config = _gameplayService.Config;
         int gradeId = config != null ? config.SummonGradeId : DefaultSummonGradeId;
 
-        if (!catalog.TryDraw(gradeId, out towerData, IsAvailable))
+        if (!catalog.TryDraw(gradeId, out towerData, IsAvailable, random))
         {
             Debug.Log($"[TowerSpawner] 등급 {gradeId}에서 뽑을 타워가 없습니다.", this);
             return false;

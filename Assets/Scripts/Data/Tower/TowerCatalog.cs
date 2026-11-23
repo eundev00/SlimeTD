@@ -26,7 +26,8 @@ public class TowerCatalog : ScriptableObject
     }
 
     // 비활성이거나 프리팹이 없는 타워는 뽑기 후보에서 제외한다. filter가 있으면 통과한 타워만 후보가 된다.
-    public bool TryDraw(int gradeId, out TowerData data, Func<TowerData, bool> filter = null)
+    // random이 있으면 서버 검증과 같은 방식(후보를 towerId 오름차순, NextInt)으로 뽑는다
+    public bool TryDraw(int gradeId, out TowerData data, Func<TowerData, bool> filter = null, SlimeTD.Battle.BattleRandom random = null)
     {
         data = null;
         EnsureIndex();
@@ -45,7 +46,14 @@ public class TowerCatalog : ScriptableObject
         if (_drawBuffer.Count == 0)
             return false;
 
-        data = _drawBuffer[UnityEngine.Random.Range(0, _drawBuffer.Count)];
+        if (random == null)
+        {
+            data = _drawBuffer[UnityEngine.Random.Range(0, _drawBuffer.Count)];
+            return true;
+        }
+
+        _drawBuffer.Sort((a, b) => a.Id.CompareTo(b.Id));
+        data = _drawBuffer[random.NextInt(_drawBuffer.Count)];
         return true;
     }
 
@@ -67,14 +75,14 @@ public class TowerCatalog : ScriptableObject
         return false;
     }
 
-    public bool TryDrawNextGrade(TowerData source, out TowerData result, Func<TowerData, bool> filter = null)
+    public bool TryDrawNextGrade(TowerData source, out TowerData result, Func<TowerData, bool> filter = null, SlimeTD.Battle.BattleRandom random = null)
     {
         result = null;
 
         if (source == null)
             return false;
 
-        return TryDraw(source.GradeId + 1, out result, filter);
+        return TryDraw(source.GradeId + 1, out result, filter, random);
     }
 
     private void EnsureIndex()

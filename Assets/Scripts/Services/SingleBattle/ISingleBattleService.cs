@@ -6,6 +6,10 @@ public interface ISingleBattleService
     bool HasBattle { get; }
     BattleStage Stage { get; }
 
+    // 진행 중인 싱글 전투가 없으면 null (그때는 UnityEngine.Random으로 뽑는다)
+    SlimeTD.Battle.BattleRandom SummonRandom { get; }
+    SlimeTD.Battle.BattleRandom MergeRandom { get; }
+
     UniTask<ResultCode> StartAsync(int stageId);
     void MarkStarted();
     void AdvanceTick();

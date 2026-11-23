@@ -21,6 +21,8 @@ public class SingleBattleService : ISingleBattleService
 
     public bool HasBattle { get; private set; }
     public BattleStage Stage { get; private set; }
+    public SlimeTD.Battle.BattleRandom SummonRandom { get; private set; }
+    public SlimeTD.Battle.BattleRandom MergeRandom { get; private set; }
 
     public SingleBattleService(IGameServerConnection connection, IAccountService accountService)
     {
@@ -43,6 +45,8 @@ public class SingleBattleService : ISingleBattleService
 
             _battleId = res.BattleId;
             Stage = res.Stage;
+            SummonRandom = SlimeTD.Battle.BattleRandom.ForSummon(res.Seed);
+            MergeRandom = SlimeTD.Battle.BattleRandom.ForMerge(res.Seed);
             HasBattle = true;
             Debug.Log($"[SingleBattleService] 전투 시작: {_battleId}, 스테이지 {Stage.StageId} {Stage.CodeName}");
             return ResultCode.Ok;
@@ -163,6 +167,8 @@ public class SingleBattleService : ISingleBattleService
     {
         HasBattle = false;
         Stage = null;
+        SummonRandom = null;
+        MergeRandom = null;
         _battleId = 0;
         _started = false;
         _tick = 0;
