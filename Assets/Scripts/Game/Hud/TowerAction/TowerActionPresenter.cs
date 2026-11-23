@@ -12,7 +12,6 @@ public class TowerActionPresenter : IStartable, ILateUpdatable, IDisposable
     private readonly IUpdateSubscriptionService _updateService;
     private readonly ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
-    private readonly SerialDisposable _dragSubscription = new SerialDisposable();
 
     private TowerInputHandler _inputHandler;
     private ITowerInteractionHandler _selected;
@@ -59,7 +58,6 @@ public class TowerActionPresenter : IStartable, ILateUpdatable, IDisposable
         if (_selected is not MonoBehaviour behaviour || behaviour == null)
         {
             _selected = null;
-            _dragSubscription.Disposable = null;
             _view.Hide();
             return;
         }
@@ -74,23 +72,14 @@ public class TowerActionPresenter : IStartable, ILateUpdatable, IDisposable
         if (_gameEnded || tower is not BaseTower selectedTower || selectedTower == null)
         {
             _selected = null;
-            _dragSubscription.Disposable = null;
             _view.Hide();
             return;
         }
 
-        _dragSubscription.Disposable = tower.IsDragging.Subscribe(HandleDraggingChanged);
+        _view.SetMergeButtonInteractable(_zone.CanMerge(tower));
         _view.Show();
 
         UpdateScreenPosition(selectedTower.transform.position);
-    }
-
-    private void HandleDraggingChanged(bool dragging)
-    {
-        if (_selected == null)
-            return;
-
-        _view.SetMergeButtonInteractable(!dragging && _zone.CanMerge(_selected));
     }
 
     private void UpdateScreenPosition(Vector3 towerPosition)
@@ -136,7 +125,6 @@ public class TowerActionPresenter : IStartable, ILateUpdatable, IDisposable
 
         _gameEnded = true;
         _selected = null;
-        _dragSubscription.Disposable = null;
         _view.Hide();
     }
 
@@ -153,7 +141,6 @@ public class TowerActionPresenter : IStartable, ILateUpdatable, IDisposable
             _view.MergeButtonClicked -= HandleMergeButtonClicked;
         }
 
-        _dragSubscription.Dispose();
         _disposables.Dispose();
     }
 }

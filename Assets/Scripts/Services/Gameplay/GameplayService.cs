@@ -79,18 +79,18 @@ public class GameplayService : IGameplayService
             Debug.Log($"[GameplayService] {DataKeys.SlimeDepthBucketSettings} 로드에 실패했습니다.");
 
         _info.Life.SetValueAndForceNotify(Stage != null ? Stage.StartingLife : 0);
-        _info.Jelly.SetValueAndForceNotify(Stage != null ? Stage.StartingJelly : 0);
+        _info.Gold.SetValueAndForceNotify(Stage != null ? Stage.StartingGold : 0);
         _summonCount = 0;
         _info.SummonCost.SetValueAndForceNotify(Config.SummonBaseCost);
     }
 
     public bool TrySpendSummonCost()
     {
-        if (Config == null)
+        if (Config == null || _gameEnded)
             return false;
 
         int cost = _info.SummonCost.Value;
-        if (!Config.IgnoreJellyCost && cost > 0 && !TrySpendJelly(cost))
+        if (!Config.IgnoreGoldCost && cost > 0 && !TrySpendGold(cost))
             return false;
 
         _summonCount++;
@@ -103,23 +103,23 @@ public class GameplayService : IGameplayService
         _info.MaxWave.Value = maxWave;
     }
 
-    public void AddJelly(int amount)
+    public void AddGold(int amount)
     {
         if (amount <= 0 || _gameEnded)
             return;
 
-        _info.Jelly.Value += amount;
+        _info.Gold.Value += amount;
     }
 
-    public bool TrySpendJelly(int amount)
+    public bool TrySpendGold(int amount)
     {
         if (amount <= 0)
             return false;
 
-        if (_info.Jelly.Value < amount)
+        if (_info.Gold.Value < amount)
             return false;
 
-        _info.Jelly.Value -= amount;
+        _info.Gold.Value -= amount;
         return true;
     }
 
@@ -195,8 +195,8 @@ public class GameplayService : IGameplayService
         if (_gameEnded)
             return;
 
-        _info.Jelly.Value = Mathf.Max(0, _info.Jelly.Value + e.JellyReward);
-        Debug.Log($"[GameplayService] 젤리 {_info.Jelly.Value}");
+        _info.Gold.Value = Mathf.Max(0, _info.Gold.Value + e.GoldReward);
+        Debug.Log($"[GameplayService] 골드 {_info.Gold.Value}");
 
         OnSlimeRemoved();
     }

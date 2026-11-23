@@ -27,6 +27,17 @@ public class TowerCells
         return _towers.TryGetValue(cell, out tower);
     }
 
+    public bool IsFree(Vector2Int cell)
+    {
+        if (_gridMapData == null || !_gridMapData.IsValidCoordinate(cell.x, cell.y))
+            return false;
+
+        if (_gridMapData.GetCellState(cell.x, cell.y) != GridCellState.Placeable)
+            return false;
+
+        return !_towers.ContainsKey(cell);
+    }
+
     public bool TryGetRandomFreeCell(out Vector2Int cell)
     {
         cell = default;
@@ -40,14 +51,9 @@ public class TowerCells
         {
             for (int x = 0; x < _gridMapData.Width; x++)
             {
-                if (_gridMapData.GetCellState(x, y) != GridCellState.Placeable)
-                    continue;
-
                 var candidate = new Vector2Int(x, y);
-                if (_towers.ContainsKey(candidate))
-                    continue;
-
-                _freeCellBuffer.Add(candidate);
+                if (IsFree(candidate))
+                    _freeCellBuffer.Add(candidate);
             }
         }
 
@@ -72,11 +78,5 @@ public class TowerCells
     public void Unregister(Vector2Int cell)
     {
         _towers.Remove(cell);
-    }
-
-    public void Move(Vector2Int from, Vector2Int to, ITowerInteractionHandler tower)
-    {
-        _towers.Remove(from);
-        Register(to, tower);
     }
 }

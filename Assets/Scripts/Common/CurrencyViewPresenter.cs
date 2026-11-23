@@ -38,8 +38,8 @@ public class CurrencyViewPresenter : IDisposable
     {
         switch (type)
         {
-            case CurrencyType.Gem: return service.Gem;
-            default: return service.Gold;
+            case CurrencyType.Diamond: return service.Diamond;
+            default: return service.Coin;
         }
     }
 }

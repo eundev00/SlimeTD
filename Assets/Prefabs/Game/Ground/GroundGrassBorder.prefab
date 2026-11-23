@@ -44,6 +44,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PBOX_Grass_BOD_02
       objectReference: {fileID: 0}
+    - target: {fileID: 137184, guid: 9f2f908f2b17ffb4ab30b12121fb9870, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 432572, guid: 9f2f908f2b17ffb4ab30b12121fb9870, type: 3}
       propertyPath: m_LocalScale.x
       value: 16.67

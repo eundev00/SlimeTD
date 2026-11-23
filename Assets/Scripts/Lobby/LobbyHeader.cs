@@ -4,13 +4,13 @@ using VContainer;
 
 public class LobbyHeader : MonoBehaviour
 {
-    [NotNull][SerializeField] private CurrencyView _goldCurrency;
-    [NotNull][SerializeField] private CurrencyView _gemCurrency;
+    [NotNull][SerializeField] private CurrencyView _coinCurrency;
+    [NotNull][SerializeField] private CurrencyView _diamondCurrency;
 
     [Inject]
     public void Construct(IAccountService accountService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
     {
-        _goldCurrency.Initialize(accountService, clickedPublisher);
-        _gemCurrency.Initialize(accountService, clickedPublisher);
+        _coinCurrency.Initialize(accountService, clickedPublisher);
+        _diamondCurrency.Initialize(accountService, clickedPublisher);
     }
 }

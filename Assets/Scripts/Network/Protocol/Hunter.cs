@@ -48,7 +48,7 @@ namespace SlimeTD.Protocol {
   }
   #region Messages
   /// <summary>
-  /// 헌터 레벨업. 비용은 LevelUpCosts.csv (그 헌터의 카드 + 골드). 성공하면 바뀐 헌터와 차감 후 골드 잔액을 돌려준다.
+  /// 헌터 레벨업. 비용은 LevelUpCosts.csv (그 헌터의 카드 + 코인). 성공하면 바뀐 헌터와 차감 후 코인 잔액을 돌려준다.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class HunterLevelUpReq : pb::IMessage<HunterLevelUpReq>
@@ -328,7 +328,7 @@ namespace SlimeTD.Protocol {
         = pb::FieldCodec.ForMessage(26, global::SlimeTD.Protocol.ItemStack.Parser);
     private readonly pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack> items_ = new pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack>();
     /// <summary>
-    /// 성공 시 바뀐 아이템의 현재 수량 (골드)
+    /// 성공 시 바뀐 아이템의 현재 수량 (코인)
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -525,7 +525,7 @@ namespace SlimeTD.Protocol {
   }
 
   /// <summary>
-  /// 잠긴 헌터를 보석으로 구매해 해금한다. 가격은 Towers.csv의 unlockGemPrice (0이면 구매 불가).
+  /// 잠긴 헌터를 다이아로 구매해 해금한다. 가격은 Towers.csv의 unlockDiamondPrice (0이면 구매 불가).
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class HunterPurchaseReq : pb::IMessage<HunterPurchaseReq>
@@ -805,7 +805,7 @@ namespace SlimeTD.Protocol {
         = pb::FieldCodec.ForMessage(26, global::SlimeTD.Protocol.ItemStack.Parser);
     private readonly pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack> items_ = new pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack>();
     /// <summary>
-    /// 성공 시 바뀐 아이템의 현재 수량 (보석)
+    /// 성공 시 바뀐 아이템의 현재 수량 (다이아)
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

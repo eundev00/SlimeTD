@@ -12,6 +12,6 @@ public interface ITowerContext
     TowerAnimator Animator { get; }
     TowerSkillController Skills { get; }
 
-    void AddJelly(int amount);
+    void AddGold(int amount);
     void PlaySkillVfx(IReadOnlyList<TowerSkillData> skills);
 }

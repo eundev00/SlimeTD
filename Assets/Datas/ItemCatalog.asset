@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemCatalog
   _items:
   - _itemId: 1000001
-    _codeName: Gold
+    _codeName: Coin
   - _itemId: 1000002
-    _codeName: Gem
+    _codeName: Diamond
   - _itemId: 1000003
     _codeName: Jelly
+  - _itemId: 1000004
+    _codeName: Gold
   - _itemId: 2101001
     _codeName: HunterCardPack_1
   - _itemId: 2101002

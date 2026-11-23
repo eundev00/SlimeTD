@@ -27,7 +27,7 @@ namespace SlimeTD.Protocol {
             "CgtnYWNoYS5wcm90bxIHc2xpbWV0ZBoMY29tbW9uLnByb3RvGgxwbGF5ZXIu",
             "cHJvdG8iewoJR2FjaGFDYXJkEhAKCHRvd2VyX2lkGAEgASgFEhAKCGdyYWRl",
             "X2lkGAIgASgFEiQKBGtpbmQYAyABKA4yFi5zbGltZXRkLkdhY2hhQ2FyZEtp",
-            "bmQSEwoLcmVmdW5kX2dvbGQYBCABKAMSDwoHaXNfcGl0eRgFIAEoCCIpChZI",
+            "bmQSEwoLcmVmdW5kX2NvaW4YBCABKAMSDwoHaXNfcGl0eRgFIAEoCCIpChZI",
             "dW50ZXJDYXJkR2FjaGFEcmF3UmVxEg8KB3BhY2tfaWQYASABKAUiswEKFkh1",
             "bnRlckNhcmRHYWNoYURyYXdSZXMSIwoGcmVzdWx0GAEgASgOMhMuc2xpbWV0",
             "ZC5SZXN1bHRDb2RlEiEKBWNhcmRzGAIgAygLMhIuc2xpbWV0ZC5HYWNoYUNh",
@@ -39,7 +39,7 @@ namespace SlimeTD.Protocol {
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::SlimeTD.Protocol.CommonReflection.Descriptor, global::SlimeTD.Protocol.PlayerReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SlimeTD.Protocol.GachaCardKind), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.GachaCard), global::SlimeTD.Protocol.GachaCard.Parser, new[]{ "TowerId", "GradeId", "Kind", "RefundGold", "IsPity" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.GachaCard), global::SlimeTD.Protocol.GachaCard.Parser, new[]{ "TowerId", "GradeId", "Kind", "RefundCoin", "IsPity" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.HunterCardGachaDrawReq), global::SlimeTD.Protocol.HunterCardGachaDrawReq.Parser, new[]{ "PackId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.HunterCardGachaDrawRes), global::SlimeTD.Protocol.HunterCardGachaDrawRes.Parser, new[]{ "Result", "Cards", "Items", "Hunters", "Pity" }, null, null, null, null)
           }));
@@ -58,7 +58,7 @@ namespace SlimeTD.Protocol {
     /// </summary>
     [pbr::OriginalName("GACHA_CARD_KIND_UNLOCK")] Unlock = 1,
     /// <summary>
-    /// 최대 레벨 헌터라 카드 대신 골드 (refund_gold)
+    /// 최대 레벨 헌터라 카드 대신 코인 (refund_coin)
     /// </summary>
     [pbr::OriginalName("GACHA_CARD_KIND_REFUND")] Refund = 2,
   }
@@ -104,7 +104,7 @@ namespace SlimeTD.Protocol {
       towerId_ = other.towerId_;
       gradeId_ = other.gradeId_;
       kind_ = other.kind_;
-      refundGold_ = other.refundGold_;
+      refundCoin_ = other.refundCoin_;
       isPity_ = other.isPity_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -151,15 +151,15 @@ namespace SlimeTD.Protocol {
       }
     }
 
-    /// <summary>Field number for the "refund_gold" field.</summary>
-    public const int RefundGoldFieldNumber = 4;
-    private long refundGold_;
+    /// <summary>Field number for the "refund_coin" field.</summary>
+    public const int RefundCoinFieldNumber = 4;
+    private long refundCoin_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public long RefundGold {
-      get { return refundGold_; }
+    public long RefundCoin {
+      get { return refundCoin_; }
       set {
-        refundGold_ = value;
+        refundCoin_ = value;
       }
     }
 
@@ -196,7 +196,7 @@ namespace SlimeTD.Protocol {
       if (TowerId != other.TowerId) return false;
       if (GradeId != other.GradeId) return false;
       if (Kind != other.Kind) return false;
-      if (RefundGold != other.RefundGold) return false;
+      if (RefundCoin != other.RefundCoin) return false;
       if (IsPity != other.IsPity) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -208,7 +208,7 @@ namespace SlimeTD.Protocol {
       if (TowerId != 0) hash ^= TowerId.GetHashCode();
       if (GradeId != 0) hash ^= GradeId.GetHashCode();
       if (Kind != global::SlimeTD.Protocol.GachaCardKind.Card) hash ^= Kind.GetHashCode();
-      if (RefundGold != 0L) hash ^= RefundGold.GetHashCode();
+      if (RefundCoin != 0L) hash ^= RefundCoin.GetHashCode();
       if (IsPity != false) hash ^= IsPity.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -240,9 +240,9 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(24);
         output.WriteEnum((int) Kind);
       }
-      if (RefundGold != 0L) {
+      if (RefundCoin != 0L) {
         output.WriteRawTag(32);
-        output.WriteInt64(RefundGold);
+        output.WriteInt64(RefundCoin);
       }
       if (IsPity != false) {
         output.WriteRawTag(40);
@@ -270,9 +270,9 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(24);
         output.WriteEnum((int) Kind);
       }
-      if (RefundGold != 0L) {
+      if (RefundCoin != 0L) {
         output.WriteRawTag(32);
-        output.WriteInt64(RefundGold);
+        output.WriteInt64(RefundCoin);
       }
       if (IsPity != false) {
         output.WriteRawTag(40);
@@ -297,8 +297,8 @@ namespace SlimeTD.Protocol {
       if (Kind != global::SlimeTD.Protocol.GachaCardKind.Card) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Kind);
       }
-      if (RefundGold != 0L) {
-        size += 1 + pb::CodedOutputStream.ComputeInt64Size(RefundGold);
+      if (RefundCoin != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(RefundCoin);
       }
       if (IsPity != false) {
         size += 1 + 1;
@@ -324,8 +324,8 @@ namespace SlimeTD.Protocol {
       if (other.Kind != global::SlimeTD.Protocol.GachaCardKind.Card) {
         Kind = other.Kind;
       }
-      if (other.RefundGold != 0L) {
-        RefundGold = other.RefundGold;
+      if (other.RefundCoin != 0L) {
+        RefundCoin = other.RefundCoin;
       }
       if (other.IsPity != false) {
         IsPity = other.IsPity;
@@ -362,7 +362,7 @@ namespace SlimeTD.Protocol {
             break;
           }
           case 32: {
-            RefundGold = input.ReadInt64();
+            RefundCoin = input.ReadInt64();
             break;
           }
           case 40: {
@@ -401,7 +401,7 @@ namespace SlimeTD.Protocol {
             break;
           }
           case 32: {
-            RefundGold = input.ReadInt64();
+            RefundCoin = input.ReadInt64();
             break;
           }
           case 40: {
@@ -416,7 +416,7 @@ namespace SlimeTD.Protocol {
   }
 
   /// <summary>
-  /// 헌터 카드 팩을 골드로 산다. 팩 정의는 HunterCardGachaPacks.csv, 판정 규칙은 HunterCardGachaSettings.csv와 Grades.csv의 gachaWeight.
+  /// 헌터 카드 팩을 코인으로 산다. 팩 정의는 HunterCardGachaPacks.csv, 판정 규칙은 HunterCardGachaSettings.csv와 Grades.csv의 gachaWeight.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class HunterCardGachaDrawReq : pb::IMessage<HunterCardGachaDrawReq>
@@ -697,7 +697,7 @@ namespace SlimeTD.Protocol {
         = pb::FieldCodec.ForMessage(26, global::SlimeTD.Protocol.ItemStack.Parser);
     private readonly pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack> items_ = new pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack>();
     /// <summary>
-    /// 성공 시 바뀐 아이템의 현재 수량 (골드)
+    /// 성공 시 바뀐 아이템의 현재 수량 (코인)
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

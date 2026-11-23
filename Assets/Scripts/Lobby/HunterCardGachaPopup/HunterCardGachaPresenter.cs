@@ -58,7 +58,7 @@ public class HunterCardGachaPresenter : IPopupPresenter
                 Debug.Log($"[HunterCardGachaPresenter] 설정에 없는 팩입니다: {pack.PackId}", pack);
         }
 
-        _accountService.Gold.Subscribe(_ => RenderAffordable()).AddTo(_disposables);
+        _accountService.Coin.Subscribe(_ => RenderAffordable()).AddTo(_disposables);
     }
 
     private void RenderAffordable()
@@ -66,10 +66,10 @@ public class HunterCardGachaPresenter : IPopupPresenter
         if (_config == null)
             return;
 
-        int gold = _accountService.Gold.Value;
+        int coin = _accountService.Coin.Value;
         foreach (var pack in _popup.Packs)
         {
-            bool affordable = !_drawing && _config.TryGetPack(pack.PackId, out var data) && gold >= data.Price;
+            bool affordable = !_drawing && _config.TryGetPack(pack.PackId, out var data) && coin >= data.Price;
             pack.SetAffordable(affordable);
         }
     }

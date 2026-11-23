@@ -9,13 +9,10 @@ public class BaseTowerPreview : MonoBehaviour, ITowerInteractionHandler
     [SerializeField] private float _liftHeight = 0.35f;
 
     private readonly ReactiveProperty<bool> _isSelected = new ReactiveProperty<bool>(false);
-    private readonly ReactiveProperty<bool> _isDragging = new ReactiveProperty<bool>(false);
 
-    private Vector3 _originPosition;
     private Vector3 _liftTargetLocalPosition;
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
-    public IReadOnlyReactiveProperty<bool> IsDragging => _isDragging;
 
     private void Start()
     {
@@ -42,7 +39,6 @@ public class BaseTowerPreview : MonoBehaviour, ITowerInteractionHandler
     private void OnDestroy()
     {
         _isSelected.Dispose();
-        _isDragging.Dispose();
     }
 
     public void Select()
@@ -61,56 +57,6 @@ public class BaseTowerPreview : MonoBehaviour, ITowerInteractionHandler
 
         _isSelected.Value = false;
         ApplySelection();
-    }
-
-    public void BeginDrag()
-    {
-        if (_isDragging.Value)
-            return;
-
-        _originPosition = transform.position;
-        _isDragging.Value = true;
-    }
-
-    public void UpdateDragPosition(Vector3 worldPosition, bool isValid)
-    {
-        if (!_isDragging.Value)
-            return;
-
-        transform.position = worldPosition;
-
-        if (_rangeIndicator != null)
-        {
-            _rangeIndicator.SetValid(isValid);
-        }
-    }
-
-    public void EndDrag(Vector3 snappedWorldPosition)
-    {
-        if (!_isDragging.Value)
-            return;
-
-        transform.position = snappedWorldPosition;
-        FinishDrag();
-    }
-
-    public void CancelDrag()
-    {
-        if (!_isDragging.Value)
-            return;
-
-        transform.position = _originPosition;
-        FinishDrag();
-    }
-
-    private void FinishDrag()
-    {
-        _isDragging.Value = false;
-
-        if (_rangeIndicator != null)
-        {
-            _rangeIndicator.ResetColor();
-        }
     }
 
     private void ApplyLift(bool lifted)

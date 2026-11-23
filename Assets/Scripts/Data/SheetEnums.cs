@@ -66,7 +66,7 @@ public enum SkillEffectType
     MultiShot = 4,
     Pierce = 5,
     Slow = 6,
-    JellyGain = 7,
+    GoldGain = 7,
     DamageMultiplier = 8,
     Splash = 9,
     Stun = 10,

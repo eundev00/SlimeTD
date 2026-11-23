@@ -118,7 +118,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 
 - **슬라임 이동**: `SplineContainer` + `SplineAnimate`로 경로를 따르고, 갱신은 UpdateSubscriptionService에 붙인다. 타겟 탐색 로직은 Service 계층에 두고 View는 표현만 한다
 - **오브젝트 풀링**: 슬라임/발사체는 스폰 빈도가 높다. Unity `ObjectPool<T>`를 쓰고, 반환 시 `ReactiveProperty`와 구독 상태를 반드시 초기화한다
-- **밸런스 수치**: 체력/데미지/젤리/라이프 차감량은 ScriptableObject로 분리해 코드에 하드코딩하지 않는다
+- **밸런스 수치**: 체력/데미지/골드/라이프 차감량은 ScriptableObject로 분리해 코드에 하드코딩하지 않는다
 - **기획 데이터 파이프라인**: 수치의 원본은 데이터 저장소 `C:\Projects\SlimeTD-Data\Sheets`(CSV)다. 클라이언트 프로젝트 안에 CSV 복사본을 두지 않고, 시트는 데이터 저장소에서만 고친다. 클라이언트 SO(TowerData, TowerCatalog, SkillCatalog, HunterCardGachaConfig, 슬라임, `StageData`, GameConfig)는 **서버 연결 전까지 쓰는 임시 데이터**다. 시트를 SO에 반영할 때는 `sheets-to-so` 스킬(`.claude/skills/sheets-to-so`)을 쓰고, 에셋의 숫자 필드를 인스펙터에서 직접 고치지 않는다. 타워 프리팹은 `codeName`과 같은 이름의 프리팹을 `TowerPrefabProvider`가 로드하고, 투사체 모양은 타워 프리팹의 `ProjectileLauncher`가 가진다 (공격 방식과 투사체 속도·판정·수명은 시트 값). 슬라임 프리팹도 `codeName`과 같은 이름의 프리팹을 `SlimePrefabProvider`가 로드한다. 썸네일 연결은 인스펙터에서 한다. 이넘은 `Assets/Scripts/Data/SheetEnums.cs`에 `Enums.csv`를 옮겨 적은 임시 파일이다 (서버 프로토콜 코드가 생기면 교체). 스킬은 타워 한 개에 귀속되고 TowerData는 스킬을 모른다 (타워 생성 시 `SkillCatalog.GetSkills(towerId)`로 찾는다). 열 설명은 데이터 저장소 `Sheets/README.md`, 상세는 [Doc/슬라임TD_데이터구조설계.md](Doc/슬라임TD_데이터구조설계.md) 참고
 - **로비 웨이브 맵**: 전투 탭은 맵 선택 대신 세로 스크롤 웨이브 진행도 맵이다. 프리팹은 메뉴 `SlimeTD > Wave > Build Wave Map Forest`(`WaveMapBuilder`)가 만들며 실행마다 소품 배치가 바뀌고 `WaveForest.prefab`을 덮어쓴다. 상세는 [Doc/슬라임TD_로비UI.md](Doc/슬라임TD_로비UI.md) 참고
 - **데이터 ID 규칙**: 모든 데이터(타워, 스킬 등)의 ID는 종류와 상관없이 서로 겹치지 않아야 한다. 새 시트나 행을 추가할 때 기존 시트의 ID와 비교해 중복을 확인한다. 대역: 타워 101~(3자리), 스킬 타워ID×100+순번(5자리. 궁수 10101~, 일병 10301~). 한 번 정한 ID는 바꾸지 않고, 추가는 그 타워의 다음 빈 번호를 쓴다. 자릿수가 다르면 구조적으로 겹치지 않으니 새 종류의 데이터는 자릿수가 다른 대역을 잡는다. 게임 중 타워 인스턴스를 구분하는 번호는 데이터 ID가 아니라 `BaseTower.SpawnId`다 (생성마다 새로 발급, 저장하지 않음)
@@ -127,7 +127,8 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 - **스킬 아이콘**: `Assets/Art/UI/SkillIcon/SkillIcon_{스킬ID}.png` (128x128 투명 PNG). 새 아이콘은 Texture Type을 Sprite로 바꿔야 아틀라스에 들어간다 (Default면 에러 없이 빠진다). 폴더 전체를 `Assets/Art/Images/SkillIconAtlas.spriteatlasv2`가 묶고, 런타임은 `LoadAsync<SpriteAtlas>(AtlasKeys.SkillIconAtlas)` 후 `GetSprite(skill.IconName)`으로 쓴다. `Assets/Art/Images`는 Addressables 폴더로 등록되어 있고 Sprite Packer 모드는 SpriteAtlasV2다
 - **TMP 폰트 글자**: 화면에 보이는 한글(시트의 이름/설명 포함)을 바꾸면 메뉴 `SlimeTD > Data > Trim TMP Fonts To Used Characters`를 다시 실행해야 새 글자가 네모로 깨지지 않는다
 - **데이터 스크립트 위치**: ScriptableObject 정의는 Assets/Scripts/Data/에 둔다 (Game/ 아래에 두지 않는다)
-- **계정(유저 정보)**: 골드/보석/헌터 카드(헌터별, `HunterState.Cards`)/헌터 레벨/최고 웨이브는 `IAccountService`(전역)가 든다. 유저 정보 이름에는 "Data"를 쓰지 않는다 ("Data"는 테이블 데이터). 계정은 서버가 들고 확정한다: Bootstrap에서 서버에 접속·로그인해 받고(실패하면 Bootstrap의 접속 실패 화면), 레벨업·구매·헌터 카드 뽑기는 서버 요청(`LevelUpAsync`, `PurchaseHunterAsync`, `DrawHunterCardGachaAsync`)이다. 뽑기 확률은 서버가 굴리고, 클라이언트의 `HunterCardGachaRoller`는 에디터 확률 시뮬레이터에만 쓴다. 로컬 저장은 없다. 최고 웨이브·재화 지급은 아직 서버 기능이 없어 화면에만 반영되고 "서버 미반영" 경고 로그를 남긴다. 서버 주소는 `ServerConfig`(에디터·모바일 TCP), WebGL은 페이지 주소의 `?server=wss://…/ws`다. 네트워크 계층은 `Assets/Scripts/Network`(`GameServerConnection`, 메시지 클래스는 서버 `Protocol/CSharp`에서 복사, 직접 고치지 않음). `TowerTestScene`은 서버 없이 `TowerTestAccountService`를 쓴다. 타워 레벨은 로비에서 정하고 인게임에서는 오르지 않는다
+- **재화**: 인게임은 골드(소환)와 젤리(강화, 지급처는 추후 작업), 메타는 코인(헌터 레벨업, 헌터 뽑기 팩)과 다이아(헌터 구매)다. 이름이 겹치는 골드는 인게임 재화다 (옛 메타 골드는 코인으로 바꿨다)
+- **계정(유저 정보)**: 코인/다이아/헌터 카드(헌터별, `HunterState.Cards`)/헌터 레벨/최고 웨이브는 `IAccountService`(전역)가 든다. 유저 정보 이름에는 "Data"를 쓰지 않는다 ("Data"는 테이블 데이터). 계정은 서버가 들고 확정한다: Bootstrap에서 서버에 접속·로그인해 받고(실패하면 Bootstrap의 접속 실패 화면), 레벨업·구매·헌터 카드 뽑기는 서버 요청(`LevelUpAsync`, `PurchaseHunterAsync`, `DrawHunterCardGachaAsync`)이다. 뽑기 확률은 서버가 굴리고, 클라이언트의 `HunterCardGachaRoller`는 에디터 확률 시뮬레이터에만 쓴다. 로컬 저장은 없다. 최고 웨이브·재화 지급은 아직 서버 기능이 없어 화면에만 반영되고 "서버 미반영" 경고 로그를 남긴다. 서버 주소는 `ServerConfig`(에디터·모바일 TCP), WebGL은 페이지 주소의 `?server=wss://…/ws`다. 네트워크 계층은 `Assets/Scripts/Network`(`GameServerConnection`, 메시지 클래스는 서버 `Protocol/CSharp`에서 복사, 직접 고치지 않음). `TowerTestScene`은 서버 없이 `TowerTestAccountService`를 쓴다. 타워 레벨은 로비에서 정하고 인게임에서는 오르지 않는다
 - **"손맛"이 이 프로젝트의 최우선 품질 기준**이다. 피격/처치 연출은 비용을 아끼지 않는다
 - **게임 씬과 맵**: 게임 씬은 `SingleGameScene`, `MultiGameScene` 두 개이고 맵을 갖지 않는다. 맵은 프리팹(`Assets/Prefabs/Game/Map/<mapKey>.prefab`, 루트에 `GameMap`)이고 스테이지의 `mapKey`(Stages.csv)로 `GameInitiator`가 로드해 게임 씬에 넣는다. 씬마다 `GameLifetimeScope._stageKey`로 스테이지를 정한다 (싱글 `Stage_SingleNormal`, 멀티 `Stage_MultiNormal`). 맵은 경로(`MapPath`: 입구 번호 + 스플라인) 목록과 배치 구역(`MapZone`: 자리 번호 + 그리드) 목록을 갖는다. 멀티는 두 사람이 맵 하나를 같이 막는 협동이고 경쟁이 아니다: 경로 2개(위·아래 입구 → 가운데 줄 합류 → 기지)와 구역 2개(slot 0 = 나/아래, slot 1 = 팀원/위)다. 웨이브는 게임에 하나(`WaveSpawner`)이고 무리 안에서 입구를 번갈아 내보낸다. 팀원 구역은 서버가 붙기 전까지 비워 둔다
 - **그리드 배치**: 맵은 `GridMapData`(ScriptableObject)로 셀 단위 관리한다. 배치 가능/불가/경로 상태를 셀마다 지정하고, 에디터 도구(`GridMapDataInspector`, `GridSceneViewDrawer`, `GridPaintMode`)로 편집한다
@@ -163,7 +164,7 @@ Match를 0으로 두는 이유는 세로 게임에서 **가로 폭이 UI 레이�
 
 ```
 ┌─────────────────┐
-│  상단 HUD       │  젤리 / 라이프 / 웨이브 (얇게)
+│  상단 HUD       │  골드 / 라이프 / 웨이브 (얇게)
 ├─────────────────┤
 │                 │
 │   맵 / 플레이   │  세로로 긴 경로, 화면 대부분 차지
@@ -174,7 +175,7 @@ Match를 0으로 두는 이유는 세로 게임에서 **가로 폭이 UI 레이�
 ```
 
 - **하단 조작 UI**: 타워 선택·배치·업그레이드 등 자주 쓰는 조작은 화면 하단에 둔다 (한 손 엄지 도달 범위)
-- **상단 HUD**: 젤리/라이프/웨이브 표시는 상단에 얇게 배치하고, 조작 요소를 두지 않는다
+- **상단 HUD**: 골드/라이프/웨이브 표시는 상단에 얇게 배치하고, 조작 요소를 두지 않는다
 - **타워 업그레이드 패널**: 가로 화면처럼 옆에 띄울 공간이 없다. 하단에서 올라오는 **바텀시트** 형태로 처리한다
 - **Safe Area**: 노치/홈 인디케이터 대응을 위해 상·하단 UI 루트에 Safe Area 적용을 전제로 설계한다
 

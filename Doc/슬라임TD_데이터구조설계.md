@@ -7,14 +7,14 @@
 ```
 GameConfig (SO, 1개)
 ├─ startingLife      : int = 20                 // 에셋 값 10
-├─ startingJelly     : int = 0                  // 에셋 값 50 (인게임 재화)
+├─ startingGold      : int = 0                  // 에셋 값 50 (인게임 골드)
 ├─ summonBaseCost    : int = 50                 // 에셋 값 10. 소환 비용 = 기본 + 증가 × 소환 횟수
 ├─ summonCostIncrease: int = 10                 // 에셋 값 2
 ├─ summonGradeId     : int = 1                  // 소환 등급 (일반)
 ├─ slowMinSpeedRatio : float = 0.25             // 감속 하한. 기본 속도의 25% 밑으로 내려가지 않는다
 ├─ bossSlowScale     : float = 0.5              // 보스에게 걸리는 감속 비율 (절반)
-├─ initialLobbyGold  : int = 10000               // 새 계정 시작 골드 (개발용 임시)
-├─ initialGem        : int = 10000               // 새 계정 시작 보석 (개발용 임시)
+├─ initialCoin       : int = 10000               // 새 계정 시작 코인 (개발용 임시)
+├─ initialDiamond    : int = 10000               // 새 계정 시작 다이아 (개발용 임시)
 └─ initialHunterCards : int = 100               // 헌터 기록을 새로 만들 때 헌터마다 주는 카드 (개발용 임시)
 ```
 
@@ -70,8 +70,8 @@ TowerData (SO, 종류당 1개)
 ├─ critChance        : float = 10               // %. 시트
 ├─ critBonus         : float = 100              // %. 시트
 ├─ startUnlocked     : bool                     // 시작 해금 (Towers.csv에서 타워마다 지정)
-├─ unlockGemPrice    : int                      // 잠긴 헌터의 보석 구매 가격. 0이면 구매 불가
-├─ levelUpCost       : LevelUpCostRule          // 등급 시트의 카드/골드 기본값과 레벨당 증가
+├─ unlockDiamondPrice: int                      // 잠긴 헌터의 다이아 구매 가격. 0이면 구매 불가
+├─ levelUpCost       : LevelUpCostRule          // LevelUpCosts 시트의 레벨별 카드/코인
 └─ thumbnailSmall/Large : Sprite                // 카드(54px) / 상세 팝업(128px). 인스펙터에서 연결
 
 스킬은 TowerData가 가지지 않는다. SkillCatalog가 towerId로 찾아 준다 (아래 "타워 스킬")
@@ -87,8 +87,8 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
 
 | 시트 | 키 | 열 |
 |---|---|---|
-| `Grades.csv` | `gradeId` | `name`, `baseAttack`, `attackGrowthRate`, `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel` |
-| `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(1/0, 비우면 잠금), `unlockGemPrice` |
+| `Grades.csv` | `gradeId` | `name`, `baseAttack`, `attackGrowthRate`, `gachaWeight` (레벨별 비용은 `LevelUpCosts.csv`의 `cards`, `coin`) |
+| `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(1/0, 비우면 잠금), `unlockDiamondPrice` |
 | `Skills.csv` | `skillId` | 아래 [타워 스킬](#타워-스킬) 참고 |
 
 - 실행: `sheets-to-so` 스킬로 반영한다. 변환 코드나 메뉴 없이 시트 값을 `TowerData_<코드명>` 에셋에 직접 쓰고 `TowerCatalog`를 시트 기준으로 맞춘다
@@ -97,9 +97,9 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
 
 ## 타워 스킬
 
-스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`) 한 파일이 원천이다. 임포트하면 `SkillCatalog` 하나가 스킬 데이터를 직접 가진다 (스킬별 에셋 파일은 없다). `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 궁수, 일병, 나무꾼, 착한 슬라임, 석궁병, 레인저, 기사 스킬이 들어 있고, 전투에서 실행되는 것은 상시 스탯 효과(`Attack`, `AttackSpeed`, `CritChance`, `CritBonus`), 상시 관통(`Pierce`. 화살 한 발의 판정을 맞은 모든 대상이 공유한다), 상시 감속(`Slow`. 맞은 적에게 건다)과 공격 시 발동 효과(`MultiShot`, `DamageMultiplier`, `Splash`, `JellyGain`)다.
+스킬은 **타워 한 개에 귀속**되고, 시트(`Skills.csv`) 한 파일이 원천이다. 임포트하면 `SkillCatalog` 하나가 스킬 데이터를 직접 가진다 (스킬별 에셋 파일은 없다). `TowerData`는 스킬을 모르고, 스킬이 자기 소속(`towerId`)을 가진다. 지금은 궁수, 일병, 나무꾼, 착한 슬라임, 석궁병, 레인저, 기사 스킬이 들어 있고, 전투에서 실행되는 것은 상시 스탯 효과(`Attack`, `AttackSpeed`, `CritChance`, `CritBonus`), 상시 관통(`Pierce`. 화살 한 발의 판정을 맞은 모든 대상이 공유한다), 상시 감속(`Slow`. 맞은 적에게 건다)과 공격 시 발동 효과(`MultiShot`, `DamageMultiplier`, `Splash`, `GoldGain`)다.
 
-공격 1회마다 `OnAttack` 스킬의 확률과 쿨타임을 한 번만 판정해(`TowerSkillController.RollAttack`) 결과(`AttackSkillRoll`)를 공격 방식에 넘긴다. **데미지 스킬(`MultiShot`, `DamageMultiplier`, `Splash`)이 발동한 공격은 치명타 판정을 하지 않고**, 그 공격의 모든 화살이 같은 데미지를 가진다. 광역(`Splash`)은 맞은 대상 중심 반경 안의 다른 슬라임에게 같은 `DamageInfo`를 준다 (`SplashDamage`). 젤리는 데미지와 무관해 치명타 규칙에 영향이 없으며 `IGameplayService.AddJelly`로 바로 지급한다. 쿨타임은 발동했을 때부터 `Time.time` 기준으로 흐르고 공격속도와 무관하다. 그 밖의 트리거와 효과는 아직 없다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
+공격 1회마다 `OnAttack` 스킬의 확률과 쿨타임을 한 번만 판정해(`TowerSkillController.RollAttack`) 결과(`AttackSkillRoll`)를 공격 방식에 넘긴다. **데미지 스킬(`MultiShot`, `DamageMultiplier`, `Splash`)이 발동한 공격은 치명타 판정을 하지 않고**, 그 공격의 모든 화살이 같은 데미지를 가진다. 광역(`Splash`)은 맞은 대상 중심 반경 안의 다른 슬라임에게 같은 `DamageInfo`를 준다 (`SplashDamage`). 골드 획득(`GoldGain`)은 데미지와 무관해 치명타 규칙에 영향이 없으며 `IGameplayService.AddGold`로 바로 지급한다. 쿨타임은 발동했을 때부터 `Time.time` 기준으로 흐르고 공격속도와 무관하다. 그 밖의 트리거와 효과는 아직 없다. 기존 [타워 스킬 설계](슬라임TD_타워스킬설계.md)의 스킬 목록은 참고용이다.
 
 **정의와 런타임을 나눈다.** `SkillCatalog`의 데이터는 읽기 전용이고, 타워가 만들어질 때(`BaseTower.Initialize`) 레벨에 맞는 활성 스킬을 구해 `TowerStats`(상시 스탯 합산)와 `TowerSkillController`(공격 시 확률 판정)에 넘긴다.
 
@@ -133,7 +133,7 @@ TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
 - 스킬 하나에 효과는 한 개다. 효과가 둘인 스킬이 필요해지면 효과 열을 한 세트 더 추가한다
 - 실행: `sheets-to-so` 스킬로 반영한다. 시트 전체로 `SkillCatalog`의 스킬 목록을 새로 채운다. `towerId`가 `Towers.csv`에 없는 행은 반영하지 않고 보고한다
 - 스킬 ID는 `타워ID×100+순번`이다 (궁수 10101~, 일병 10301~). 한 번 정한 ID는 바꾸지 않고, 추가는 그 타워의 다음 빈 번호를 쓴다
-- `effectType`: `CritChance` / `CritBonus` / `AttackSpeed` / `Attack` / `MultiShot` / `Pierce` / `Slow` / `JellyGain` / `DamageMultiplier` / `Splash`
+- `effectType`: `CritChance` / `CritBonus` / `AttackSpeed` / `Attack` / `MultiShot` / `Pierce` / `Slow` / `GoldGain` / `DamageMultiplier` / `Splash`
 - `value`: `%`가 붙으면 `Percent`, 없으면 `Fixed`로 읽는다. 효과마다 쓸 수 있는 단위가 정해져 있다 (`SkillEffectRules`). `MultiShot`의 값은 추가로 쏘는 발수(2연발이면 1)이고, `DamageMultiplier`는 공격력의 총 배율(300%는 3배, 치명타 보너스와 달리 "더하기"가 아니다)이다
 
 | 효과 | 고정 | 퍼센트 |
@@ -142,14 +142,14 @@ TowerSkillData ([Serializable] 클래스. SkillCatalog 안에 들어 있다)
 | `AttackSpeed` | 없음 | +N% (예: +10% → 1.1배) |
 | `CritChance`, `CritBonus` | +N%p | 없음 |
 | `Slow` (이감) | 없음 | 슬라임 기본 속도의 N% 감소. `duration`(초)이 필요하다 |
-| `MultiShot`, `Pierce`, `JellyGain` | +N (발 수, 관통 수, 젤리) | 없음 |
+| `MultiShot`, `Pierce`, `GoldGain` | +N (발 수, 관통 수, 인게임 골드) | 없음 |
 | `DamageMultiplier` | 없음 | 공격력의 N% (스킬 발동 시 치명타 판정 없이 이 배율로만 계산) |
 | `Splash` (광역) | 반경 N (같은 데미지) | 없음 |
 
 - 업그레이드: 같은 스킬을 강화하는 단계(예: 2연발 확률 10% → 20%)는 새 행을 만들고 `upgradeOf`에 이전 단계의 스킬 ID를 넣는다. 같은 계열인지는 이 연결로 안다 (대표 = `upgradeOf`가 없는 스킬, 따라가면 계열 전체). 업그레이드가 해금되면 이전 단계는 비활성이 되고 가장 높게 해금된 단계 하나만 활성이다. 대체 대상은 같은 타워의 더 낮은 해금 레벨 스킬이어야 하고, 아니면 임포트 때 경고한다
 - 지원하지 않는 단위 조합이나 해석할 수 없는 값이 있는 행은 로그를 남기고 건너뛴다
 - 공격력(레벨) = `baseAttack × (1 + attackGrowthRate / 100 × (레벨 - 1))`. 공격속도는 레벨로 오르지 않는다. 기본 100%이고 스킬이 가산한다
-- 데미지는 발사 시점(근접은 타격 프레임)에 `DamageInfo`(데미지, 치명타 여부)로 확정되어 슬라임에게 전달된다. 효과 목록은 이후 단계에서 `DamageInfo`에 추가한다. 공격 시 확률로 젤리를 얻는 스킬(운빨존많겜 산적 방식)은 타워가 공격할 때 바로 지급한다
+- 데미지는 발사 시점(근접은 타격 프레임)에 `DamageInfo`(데미지, 치명타 여부)로 확정되어 슬라임에게 전달된다. 효과 목록은 이후 단계에서 `DamageInfo`에 추가한다. 공격 시 확률로 골드를 얻는 스킬(운빨존많겜 산적 방식)은 타워가 공격할 때 바로 지급한다
 - **타워 레벨**은 로비에서 올리는 영구 성장이며 최대 15다. 타워 종류별로 저장하며 합성과 무관하다. 인게임에서는 오르지 않고, 게임 시작 시 정해진 값을 타워 생성 시점에 스냅샷으로 받는다 (`ITowerLevelService`, 전역 스코프)
 - 버프/디버프 중첩은 [타워 스킬 설계 5장](슬라임TD_타워스킬설계.md#5-버프--디버프)을 따른다. 감속은 타워 단위(`SpawnId`)로 구분해 다른 타워끼리 곱연산으로 쌓고, 같은 타워는 지속 시간만 갱신한다. 감속 정보는 타격 정보(`DamageInfo.SourceSpawnId`, `SlowPercent`, `SlowDuration`)에 실려 슬라임의 `SlimeSlow`가 관리한다. 광역과 관통으로 맞은 대상에도 같이 걸린다
 - **타워 강화**(전투 중 성장)는 런타임 상태로만 존재하고 전투가 끝나면 초기화된다. 후순위
@@ -162,22 +162,22 @@ IPlayerDataStore                                // 저장 위치를 숨기는 �
 └─ LocalPlayerDataStore (persistentDataPath/player.json) — 서버 전환 시 구현체만 교체
 
 PlayerData (저장 대상)
-├─ gold, gem        : int
+├─ coin, diamond    : int
 ├─ bestWave         : int                      // 도달한 최고 웨이브. 저장 파일에 없으면 0
 └─ hunters          : HunterRecord[] { towerId, level, unlocked, cards }   // 헌터 카드는 헌터별
 
 IPlayerDataService (Project 스코프)
-├─ Gold, Gem, BestWave : ReactiveProperty<int>
+├─ Coin, Diamond, BestWave : ReactiveProperty<int>
 ├─ Hunters          : HunterState[] { Level, Unlocked, Cards : ReactiveProperty }
-└─ AddGold / AddHunterCards(towerId, n) / UnlockHunter / TryLevelUp / IsUnlocked / IsAvailable / ReportWaveReached
+└─ AddCoin / AddDiamond / AddHunterCards(towerId, n) / UnlockHunter / TryLevelUp / IsUnlocked / IsAvailable / ReportWaveReached
 ```
 
 - `ReportWaveReached(n)`은 기존 값보다 클 때만 갱신·저장한다. 초기화 전(게임 씬만 단독 실행)에는 저장하지 않는다. 호출 시점과 값 규칙은 [로비 UI](슬라임TD_로비UI.md#최고-웨이브-기록-규칙) 참고
 
-- 레벨업은 그 헌터의 `Cards`와 골드를 함께 차감한다. 잠긴 헌터도 `AddHunterCards`로 카드를 받을 수 있지만 레벨업은 해금 후에만 된다
-- 레벨업 비용은 `TowerData.levelUpCost`(LevelUpCosts 시트 값)에서 읽는다. `Grades.csv`의 `cardBase`, `cardPerLevel`, `goldBase`, `goldPerLevel`이 원천이다
+- 레벨업은 그 헌터의 `Cards`와 코인을 함께 차감한다. 잠긴 헌터도 `AddHunterCards`로 카드를 받을 수 있지만 레벨업은 해금 후에만 된다
+- 레벨업 비용은 `TowerData.levelUpCost`(LevelUpCosts 시트 값)에서 읽는다. `LevelUpCosts.csv`의 `cards`, `coin`이 원천이다
 - 로드와 레벨업 때 `ITowerLevelService`에 레벨을 반영하며, 게임 씬은 이 값을 그대로 읽는다
-- 해금: 시작 해금은 `Towers.csv`의 `startUnlocked`로 타워마다 정한다 (등급 기본값은 없다). 잠긴 헌터는 `unlockGemPrice`만큼 보석을 써서 `TryPurchaseHunter`로 해금한다
+- 해금: 시작 해금은 `Towers.csv`의 `startUnlocked`로 타워마다 정한다 (등급 기본값은 없다). 잠긴 헌터는 `unlockDiamondPrice`만큼 다이아를 써서 `TryPurchaseHunter`로 해금한다
 - 소환/합성 후보는 `IsAvailable`로 해금된 헌터만 거른다. 로비를 거치지 않은 에디터 테스트에서는 제한이 없다
 
 ## 런타임 상태

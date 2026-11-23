@@ -44,7 +44,7 @@ public class TowerSpawner : MonoBehaviour
         }
     }
 
-    public bool TrySpawn(TowerData towerData = null)
+    public bool TrySpawn(TowerData towerData = null, Vector2Int? targetCell = null)
     {
         if (towerData == null && !TryDrawTower(out towerData))
             return false;
@@ -62,7 +62,14 @@ public class TowerSpawner : MonoBehaviour
             return false;
         }
 
-        if (!_towerCells.TryGetRandomFreeCell(out var cell))
+        Vector2Int cell;
+        if (targetCell.HasValue)
+        {
+            cell = targetCell.Value;
+            if (!_towerCells.IsFree(cell))
+                return false;
+        }
+        else if (!_towerCells.TryGetRandomFreeCell(out cell))
         {
             Debug.Log("[TowerSpawner] 배치 가능한 빈 칸이 없습니다.", this);
             return false;
@@ -74,10 +81,10 @@ public class TowerSpawner : MonoBehaviour
             return false;
         }
 
-        // 젤리 차감은 실패 가능한 검증을 모두 통과한 뒤에 한다. 차감 후 실패하면 환불 경로가 없다.
+        // 골드 차감은 실패 가능한 검증을 모두 통과한 뒤에 한다. 차감 후 실패하면 환불 경로가 없다.
         if (!_gameplayService.TrySpendSummonCost())
         {
-            Debug.Log($"[TowerSpawner] 젤리가 부족합니다. 필요: {_gameplayService.Info.SummonCost.Value}, 보유: {_gameplayService.Info.Jelly.Value}", this);
+            Debug.Log($"[TowerSpawner] 골드가 부족합니다. 필요: {_gameplayService.Info.SummonCost.Value}, 보유: {_gameplayService.Info.Gold.Value}", this);
             return false;
         }
 

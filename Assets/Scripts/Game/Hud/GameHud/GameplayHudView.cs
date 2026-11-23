@@ -5,43 +5,27 @@ using UnityEngine.UI;
 
 public class GameplayHudView : MonoBehaviour
 {
-    [NotNull][SerializeField] private Button _summonButton;
+    [NotNull][SerializeField] private TMP_Text _goldText;
     [NotNull][SerializeField] private TMP_Text _jellyText;
     [NotNull][SerializeField] private TMP_Text _summonCostText;
+    [SerializeField] private Color _affordableCostColor = Color.white;
+    [SerializeField] private Color _unaffordableCostColor = new Color(1f, 0.42f, 0.42f);
     [SerializeField] private Button _testSummonButton;
 
-    public event Action SummonButtonClicked;
     public event Action TestSummonButtonClicked;
 
     private void Start()
     {
-        if (_summonButton == null)
-        {
-            Debug.Log("[GameplayHudView] _summonButton이 연결되지 않았습니다.", this);
-            return;
-        }
-        _summonButton.onClick.AddListener(OnSummonButtonClicked);
-
         if (_testSummonButton != null)
             _testSummonButton.onClick.AddListener(OnTestSummonButtonClicked);
     }
 
     private void OnDestroy()
     {
-        if (_summonButton != null)
-        {
-            _summonButton.onClick.RemoveListener(OnSummonButtonClicked);
-        }
-
         if (_testSummonButton != null)
         {
             _testSummonButton.onClick.RemoveListener(OnTestSummonButtonClicked);
         }
-    }
-
-    private void OnSummonButtonClicked()
-    {
-        SummonButtonClicked?.Invoke();
     }
 
     private void OnTestSummonButtonClicked()
@@ -49,10 +33,10 @@ public class GameplayHudView : MonoBehaviour
         TestSummonButtonClicked?.Invoke();
     }
 
-    public void SetSummonButtonInteractable(bool interactable)
+    public void SetGold(int gold)
     {
-        if (_summonButton != null)
-            _summonButton.interactable = interactable;
+        if (_goldText != null)
+            _goldText.text = gold.ToString();
     }
 
     public void SetJelly(int jelly)
@@ -65,5 +49,11 @@ public class GameplayHudView : MonoBehaviour
     {
         if (_summonCostText != null)
             _summonCostText.text = cost.ToString();
+    }
+
+    public void SetSummonAffordable(bool affordable)
+    {
+        if (_summonCostText != null)
+            _summonCostText.color = affordable ? _affordableCostColor : _unaffordableCostColor;
     }
 }

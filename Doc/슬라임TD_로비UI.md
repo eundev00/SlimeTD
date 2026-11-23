@@ -20,16 +20,16 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 | 클래스 | 위치 | 역할 |
 |---|---|---|
 | `LobbyTabs` | `Scripts/Lobby` | 탭 버튼 ↔ 패널 전환. 잠긴 탭은 선택 불가 |
-| `LobbyHeader` | 〃 | 골드/보석 `CurrencyView` 초기화 (메서드 주입) |
+| `LobbyHeader` | 〃 | 코인/다이아 `CurrencyView` 초기화 (메서드 주입) |
 | `BattleView` / `BattlePresenter` | `Scripts/Lobby/BattleView` | 전투 탭. `WaveScrollSlot`과 시작 버튼(`StartClicked`, `SetStartInteractable`)을 노출하고, Presenter가 `TransitionAsync(Lobby, Game)`으로 게임 씬에 들어간다 |
 | `WaveScrollView` / `WaveScrollPresenter` | `Scripts/Lobby/WaveScroll` | 웨이브 진행도 맵 (아래) |
 | `HunterCardView` / `HunterCardPresenter` / `HunterCard` / `SortButton` | `Scripts/Lobby/HunterView` | 헌터 탭. 카드는 레벨순/등급순 4단계 정렬 |
 | `HunterDetailPopup` / `HunterDetailPresenter` | `Scripts/Lobby/HunterDetailPopup` | 헌터 상세 팝업. 레벨업/해금/MAX 버튼, 스킬 슬롯 |
-| `CurrencyView` / `CurrencyViewPresenter` | `Scripts/Common` | 재화 칩(골드/보석). 값 구독과 클릭 이벤트 발행. `CurrencyType` 값은 프리팹에 정수로 저장되므로 바꾸지 않는다 |
+| `CurrencyView` / `CurrencyViewPresenter` | `Scripts/Common` | 재화 칩(코인/다이아. 프리팹 `CurrencyCoin`, `CurrencyDiamond`). 값 구독과 클릭 이벤트 발행. `CurrencyType` 값은 프리팹에 정수로 저장되므로 바꾸지 않는다 |
 | `SkillSlotGroup` / `SkillSlotItem` | `Scripts/Common` | 스킬 슬롯 공통 UI. 헌터 상세 팝업과 인게임 타워 정보가 같이 쓴다 (아래) |
 
 - `CurrencyView`은 클릭하면 `CurrencyViewClickedEvent(CurrencyType)`를 MessagePipe로 발행한다. 상점이 생기면 이 이벤트를 받아 연다 (`// TODO` 상태)
-- 헌터 카드는 `hunter.Data.Enabled`인 헌터만 만든다. 레벨/해금/그 헌터의 카드 수/골드가 바뀌면 카드를 갱신한다
+- 헌터 카드는 `hunter.Data.Enabled`인 헌터만 만든다. 레벨/해금/그 헌터의 카드 수/코인이 바뀌면 카드를 갱신한다
 - 헌터 카드 수는 헌터별이다. 카드와 상세 팝업의 레벨업 게이지가 "그 헌터의 보유 카드 / 다음 레벨 필요 카드"를 보여 준다. 공용 카드 칩은 없다
 - 전투 시작: `BattleView`의 시작 버튼 → `BattlePresenter`가 버튼을 잠그고 `SceneNames.Game`으로 전환한다. 게임 → 로비 복귀는 `TopHudPresenter`와 `GameResultPresenter`가 한다. 게임1/테스트 씬으로 가는 DEV 버튼은 지금 연결되어 있지 않다
 - 헌터 카드와 상세 팝업은 `ThumbnailAtlas`의 `Thumb_{codeName}` 스프라이트를 쓴다 (`TowerData.ThumbnailName`). 카드와 팝업이 같은 스프라이트를 쓴다. 잠긴 헌터는 어두운 실루엣으로 칠한다 (`_lockedThumbnailColor`)

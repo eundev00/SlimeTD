@@ -18,4 +18,4 @@ MonoBehaviour:
   _baseSpeed: 1
   _lifeCost: 1
   _renderGroup: 0
-  _jellyReward: 1
+  _goldReward: 1

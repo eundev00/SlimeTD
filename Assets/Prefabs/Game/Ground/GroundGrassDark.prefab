@@ -40,6 +40,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2583902667430096998}
     m_Modifications:
+    - target: {fileID: 129554, guid: dfd293b8166f2874ea50647e9de4e5fc, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 192644, guid: dfd293b8166f2874ea50647e9de4e5fc, type: 3}
       propertyPath: m_Name
       value: PBOX1_Grass_06

@@ -6,8 +6,8 @@ using UniRx;
 public interface IAccountService
 {
     bool IsInitialized { get; }
-    IReadOnlyReactiveProperty<int> Gold { get; }
-    IReadOnlyReactiveProperty<int> Gem { get; }
+    IReadOnlyReactiveProperty<int> Coin { get; }
+    IReadOnlyReactiveProperty<int> Diamond { get; }
     IReadOnlyReactiveProperty<int> BestWave { get; }
     IReadOnlyList<HunterState> Hunters { get; }
     int HunterCardGachaPity { get; }
@@ -21,11 +21,11 @@ public interface IAccountService
 
     UniTask<ResultCode> PurchaseHunterAsync(int towerId);
 
-    void AddGold(int amount);
-    void AddGem(int amount);
+    void AddCoin(int amount);
+    void AddDiamond(int amount);
     void AddHunterCards(int towerId, int amount);
     void ReportWaveReached(int wave);
-    bool TryGetLevelUpCost(int towerId, out int cards, out int gold);
+    bool TryGetLevelUpCost(int towerId, out int cards, out int coin);
     bool CanLevelUp(int towerId);
     UniTask<ResultCode> LevelUpAsync(int towerId);
     UniTask<(ResultCode Result, IReadOnlyList<HunterCardGachaCard> Cards)> DrawHunterCardGachaAsync(int packId);

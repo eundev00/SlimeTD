@@ -16,8 +16,8 @@ public class ItemEntry
 [CreateAssetMenu(fileName = "ItemCatalog", menuName = "SlimeTD/Item Catalog")]
 public class ItemCatalog : ScriptableObject
 {
-    public const string Gold = "Gold";
-    public const string Gem = "Gem";
+    public const string Coin = "Coin";
+    public const string Diamond = "Diamond";
 
     [SerializeField] private List<ItemEntry> _items = new List<ItemEntry>();
 

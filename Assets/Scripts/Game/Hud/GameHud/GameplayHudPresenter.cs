@@ -8,76 +8,39 @@ public class GameplayHudPresenter : IStartable, IDisposable
     private readonly GameplayHudView _view;
     private readonly IGameplayService _gameplayService;
     private readonly IPublisher<TowerSpawnRequestedEvent> _spawnRequestedPublisher;
-    private readonly ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
-    private bool _gameEnded;
-    private bool _disposed;
 
     public GameplayHudPresenter(
         GameplayHudView view,
         IGameplayService gameplayService,
-        IPublisher<TowerSpawnRequestedEvent> spawnRequestedPublisher,
-        ISubscriber<GameProgressEvent> gameProgressSubscriber)
+        IPublisher<TowerSpawnRequestedEvent> spawnRequestedPublisher)
     {
         _view = view;
         _gameplayService = gameplayService;
         _spawnRequestedPublisher = spawnRequestedPublisher;
-        _gameProgressSubscriber = gameProgressSubscriber;
     }
 
     public void Start()
     {
-        _view.SummonButtonClicked += HandleSummonButtonClicked;
         _view.TestSummonButtonClicked += HandleTestSummonButtonClicked;
-        _view.SetSummonButtonInteractable(false);
 
-        _gameplayService.Info.Jelly
-            .Subscribe(jelly =>
-            {
-                _view.SetJelly(jelly);
-                ApplySummonInteractable();
-            })
+        var info = _gameplayService.Info;
+
+        info.Gold.Subscribe(_view.SetGold).AddTo(_disposables);
+        info.Jelly.Subscribe(_view.SetJelly).AddTo(_disposables);
+        info.SummonCost.Subscribe(_view.SetSummonCost).AddTo(_disposables);
+
+        info.Gold
+            .CombineLatest(info.SummonCost, IsAffordable)
+            .DistinctUntilChanged()
+            .Subscribe(_view.SetSummonAffordable)
             .AddTo(_disposables);
-
-        _gameplayService.Info.SummonCost
-            .Subscribe(cost =>
-            {
-                _view.SetSummonCost(cost);
-                ApplySummonInteractable();
-            })
-            .AddTo(_disposables);
-
-        _gameProgressSubscriber.Subscribe(HandleGameProgress).AddTo(_disposables);
     }
 
-    private void ApplySummonInteractable()
+    private bool IsAffordable(int gold, int cost)
     {
-        if (_disposed)
-            return;
-
-        var gameConfig = _gameplayService.Config;
-        if (gameConfig == null)
-            return;
-
-        bool affordable = gameConfig.IgnoreJellyCost
-            || _gameplayService.Info.Jelly.Value >= _gameplayService.Info.SummonCost.Value;
-
-        _view.SetSummonButtonInteractable(!_gameEnded && affordable);
-    }
-
-    private void HandleGameProgress(GameProgressEvent e)
-    {
-        if (e.EventType != GameProgressType.GameOver && e.EventType != GameProgressType.StageCleared)
-            return;
-
-        _gameEnded = true;
-        ApplySummonInteractable();
-    }
-
-    private void HandleSummonButtonClicked()
-    {
-        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent(null));
+        var config = _gameplayService.Config;
+        return (config != null && config.IgnoreGoldCost) || gold >= cost;
     }
 
     private void HandleTestSummonButtonClicked()
@@ -87,11 +50,8 @@ public class GameplayHudPresenter : IStartable, IDisposable
 
     public void Dispose()
     {
-        _disposed = true;
-
         if (_view != null)
         {
-            _view.SummonButtonClicked -= HandleSummonButtonClicked;
             _view.TestSummonButtonClicked -= HandleTestSummonButtonClicked;
         }
 

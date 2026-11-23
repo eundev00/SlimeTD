@@ -19,7 +19,7 @@ MonoBehaviour:
   _displayName: "\uBA40\uD2F0 \uBCF4\uD1B5"
   _enabled: 1
   _startingLife: 10
-  _startingJelly: 50
+  _startingGold: 50
   _spawnInterval: 0.8
   _interWaveDelay: 2
   _normalHpGrowth: 0.06

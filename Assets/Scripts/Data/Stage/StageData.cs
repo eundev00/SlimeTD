@@ -35,7 +35,7 @@ public class StageData : ScriptableObject
 
     [Header("플레이어")]
     [SerializeField] private int _startingLife = 10;
-    [SerializeField] private int _startingJelly;
+    [SerializeField] private int _startingGold;
 
     [Header("진행")]
     [SerializeField] private float _spawnInterval = 0.8f;
@@ -57,7 +57,7 @@ public class StageData : ScriptableObject
     public string DisplayName => _displayName;
     public bool Enabled => _enabled;
     public int StartingLife => _startingLife;
-    public int StartingJelly => _startingJelly;
+    public int StartingGold => _startingGold;
     public float SpawnInterval => _spawnInterval;
     public float InterWaveDelay => _interWaveDelay;
     public float NormalHpGrowth => _normalHpGrowth;

@@ -182,7 +182,7 @@ public class TowerTestSpawner : MonoBehaviour
         GUI.Label(new Rect(20f, y, 1040f, 110f), DescribeSkills(data.Id), _labelStyle);
 
         y += 110f;
-        GUI.Label(new Rect(20f, y, 1040f, 60f), $"젤리: {_gameplayService.Info.Jelly.Value}", _labelStyle);
+        GUI.Label(new Rect(20f, y, 1040f, 60f), $"골드: {_gameplayService.Info.Gold.Value}", _labelStyle);
     }
 
     private string DescribeSkills(int towerId)

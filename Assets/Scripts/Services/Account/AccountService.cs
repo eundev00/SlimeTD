@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Google.Protobuf.Collections;
@@ -12,18 +12,18 @@ public class AccountService : IAccountService, IDisposable
     private readonly ITowerLevelService _towerLevelService;
     private readonly IGameServerConnection _connection;
 
-    private readonly ReactiveProperty<int> _gold = new ReactiveProperty<int>();
-    private readonly ReactiveProperty<int> _gem = new ReactiveProperty<int>();
+    private readonly ReactiveProperty<int> _coin = new ReactiveProperty<int>();
+    private readonly ReactiveProperty<int> _diamond = new ReactiveProperty<int>();
     private readonly ReactiveProperty<int> _bestWave = new ReactiveProperty<int>();
     private readonly List<HunterState> _hunters = new List<HunterState>();
     private readonly Dictionary<int, HunterState> _huntersById = new Dictionary<int, HunterState>();
 
-    private int _goldItemId;
-    private int _gemItemId;
+    private int _coinItemId;
+    private int _diamondItemId;
 
     public bool IsInitialized { get; private set; }
-    public IReadOnlyReactiveProperty<int> Gold => _gold;
-    public IReadOnlyReactiveProperty<int> Gem => _gem;
+    public IReadOnlyReactiveProperty<int> Coin => _coin;
+    public IReadOnlyReactiveProperty<int> Diamond => _diamond;
     public IReadOnlyReactiveProperty<int> BestWave => _bestWave;
     public IReadOnlyList<HunterState> Hunters => _hunters;
     public int HunterCardGachaPity { get; private set; }
@@ -52,9 +52,9 @@ public class AccountService : IAccountService, IDisposable
             return false;
         }
 
-        if (!items.TryGetItemId(ItemCatalog.Gold, out _goldItemId) || !items.TryGetItemId(ItemCatalog.Gem, out _gemItemId))
+        if (!items.TryGetItemId(ItemCatalog.Coin, out _coinItemId) || !items.TryGetItemId(ItemCatalog.Diamond, out _diamondItemId))
         {
-            Debug.Log("[AccountService] ItemCatalog에 Gold 또는 Gem이 없습니다.");
+            Debug.Log("[AccountService] ItemCatalog에 Coin 또는 Diamond가 없습니다.");
             return false;
         }
 
@@ -133,10 +133,10 @@ public class AccountService : IAccountService, IDisposable
         foreach (var item in items)
         {
             int amount = (int)Math.Min(item.Amount, int.MaxValue);
-            if (item.ItemId == _goldItemId)
-                _gold.Value = amount;
-            else if (item.ItemId == _gemItemId)
-                _gem.Value = amount;
+            if (item.ItemId == _coinItemId)
+                _coin.Value = amount;
+            else if (item.ItemId == _diamondItemId)
+                _diamond.Value = amount;
         }
     }
 
@@ -213,10 +213,10 @@ public class AccountService : IAccountService, IDisposable
         }
     }
 
-    public bool TryGetLevelUpCost(int towerId, out int cards, out int gold)
+    public bool TryGetLevelUpCost(int towerId, out int cards, out int coin)
     {
         cards = 0;
-        gold = 0;
+        coin = 0;
 
         if (!_huntersById.TryGetValue(towerId, out var hunter))
             return false;
@@ -227,18 +227,18 @@ public class AccountService : IAccountService, IDisposable
 
         var rule = hunter.Data.LevelUpCost;
         cards = rule.GetCards(level);
-        gold = rule.GetGold(level);
+        coin = rule.GetCoin(level);
         return true;
     }
 
     // 버튼 표시용이다. 최종 판단은 서버가 한다
     public bool CanLevelUp(int towerId)
     {
-        if (!TryGetLevelUpCost(towerId, out int cards, out int gold))
+        if (!TryGetLevelUpCost(towerId, out int cards, out int coin))
             return false;
 
         var hunter = _huntersById[towerId];
-        return hunter.Unlocked.Value && hunter.Cards.Value >= cards && _gold.Value >= gold;
+        return hunter.Unlocked.Value && hunter.Cards.Value >= cards && _coin.Value >= coin;
     }
 
     // TODO: 아래는 서버 기능이 아직 없어 이 화면에만 반영되고 저장되지 않는다
@@ -251,22 +251,22 @@ public class AccountService : IAccountService, IDisposable
         hunter.Unlocked.Value = true;
     }
 
-    public void AddGold(int amount)
+    public void AddCoin(int amount)
     {
         if (amount == 0)
             return;
 
-        WarnNotSaved(nameof(AddGold));
-        _gold.Value = Mathf.Max(0, _gold.Value + amount);
+        WarnNotSaved(nameof(AddCoin));
+        _coin.Value = Mathf.Max(0, _coin.Value + amount);
     }
 
-    public void AddGem(int amount)
+    public void AddDiamond(int amount)
     {
         if (amount == 0)
             return;
 
-        WarnNotSaved(nameof(AddGem));
-        _gem.Value = Mathf.Max(0, _gem.Value + amount);
+        WarnNotSaved(nameof(AddDiamond));
+        _diamond.Value = Mathf.Max(0, _diamond.Value + amount);
     }
 
     public void AddHunterCards(int towerId, int amount)
@@ -306,7 +306,7 @@ public class AccountService : IAccountService, IDisposable
 
             var cards = new List<HunterCardGachaCard>(res.Cards.Count);
             foreach (var card in res.Cards)
-                cards.Add(new HunterCardGachaCard(card.TowerId, card.GradeId, ToCardKind(card.Kind), (int)card.RefundGold, card.IsPity));
+                cards.Add(new HunterCardGachaCard(card.TowerId, card.GradeId, ToCardKind(card.Kind), (int)card.RefundCoin, card.IsPity));
 
             return (ResultCode.Ok, cards);
         }
@@ -343,8 +343,8 @@ public class AccountService : IAccountService, IDisposable
     public void Dispose()
     {
         ClearHunters();
-        _gold.Dispose();
-        _gem.Dispose();
+        _coin.Dispose();
+        _diamond.Dispose();
         _bestWave.Dispose();
     }
 }
