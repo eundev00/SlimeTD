@@ -128,7 +128,8 @@ public class AccountService : IAccountService, IDisposable
         HunterCardGachaPity = player.HunterCardGachaPity;
     }
 
-    private void ApplyItems(RepeatedField<ItemStack> items)
+    // 서버 응답의 아이템 현재 수량으로 코인·다이아를 맞춘다
+    public void ApplyItems(IEnumerable<ItemStack> items)
     {
         foreach (var item in items)
         {

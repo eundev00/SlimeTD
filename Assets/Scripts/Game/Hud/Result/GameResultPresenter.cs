@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using SlimeTD.Protocol;
+using UniRx;
 
 public class GameResultPresenter : IPopupPresenter
 {
@@ -6,13 +9,21 @@ public class GameResultPresenter : IPopupPresenter
     private readonly ISceneLoader _sceneLoader;
     private readonly IGameplayService _gameplayService;
     private readonly IAccountService _accountService;
+    private readonly ISingleBattleService _singleBattleService;
+    private readonly IResourceLoadService _resourceLoadService;
+    private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
-    public GameResultPresenter(GameResultPopup popup, ISceneLoader sceneLoader, IGameplayService gameplayService, IAccountService accountService)
+    private ItemCatalog _itemCatalog;
+
+    public GameResultPresenter(GameResultPopup popup, ISceneLoader sceneLoader, IGameplayService gameplayService, IAccountService accountService,
+        ISingleBattleService singleBattleService, IResourceLoadService resourceLoadService)
     {
         _popup = popup;
         _sceneLoader = sceneLoader;
         _gameplayService = gameplayService;
         _accountService = accountService;
+        _singleBattleService = singleBattleService;
+        _resourceLoadService = resourceLoadService;
     }
 
     public void Initialize()
@@ -26,6 +37,35 @@ public class GameResultPresenter : IPopupPresenter
 
         _popup.RestartButtonClicked += HandleRestartButtonClicked;
         _popup.LobbyButtonClicked += HandleLobbyButtonClicked;
+
+        SubscribeRewardsAsync().Forget();
+    }
+
+    private async UniTaskVoid SubscribeRewardsAsync()
+    {
+        _itemCatalog = await _resourceLoadService.LoadAsync<ItemCatalog>(DataKeys.ItemCatalog);
+        if (_disposables.IsDisposed)
+            return;
+
+        // 서버 결과 응답은 팝업이 열린 뒤에 온다
+        _singleBattleService.Rewards
+            .Subscribe(ShowRewards)
+            .AddTo(_disposables);
+    }
+
+    private void ShowRewards(IReadOnlyList<ItemStack> rewards)
+    {
+        if (rewards == null || _itemCatalog == null)
+        {
+            _popup.SetRewards(null);
+            return;
+        }
+
+        var list = new List<(string, long)>(rewards.Count);
+        foreach (var reward in rewards)
+            list.Add((_itemCatalog.GetCodeName(reward.ItemId), reward.Amount));
+
+        _popup.SetRewards(list);
     }
 
     private void HandleRestartButtonClicked()
@@ -42,6 +82,7 @@ public class GameResultPresenter : IPopupPresenter
 
     public void Dispose()
     {
+        _disposables.Dispose();
         _popup.RestartButtonClicked -= HandleRestartButtonClicked;
         _popup.LobbyButtonClicked -= HandleLobbyButtonClicked;
     }

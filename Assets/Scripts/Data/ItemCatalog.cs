@@ -37,4 +37,15 @@ public class ItemCatalog : ScriptableObject
         itemId = 0;
         return false;
     }
+
+    public string GetCodeName(int itemId)
+    {
+        foreach (var item in _items)
+        {
+            if (item.ItemId == itemId)
+                return item.CodeName;
+        }
+
+        return null;
+    }
 }

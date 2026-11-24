@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using SlimeTD.Protocol;
+using UniRx;
 using UnityEngine;
 
 // 싱글은 클라이언트가 혼자 플레이하고, 끝나면 서버가 같은 전투를 다시 계산해 결과를 확인한다
@@ -14,6 +15,7 @@ public class SingleBattleService : ISingleBattleService
     private readonly List<HunterSummon> _summons = new List<HunterSummon>();
     private readonly List<HunterMerge> _merges = new List<HunterMerge>();
     private readonly List<SkillGold> _skillGolds = new List<SkillGold>();
+    private readonly ReactiveProperty<IReadOnlyList<ItemStack>> _rewards = new ReactiveProperty<IReadOnlyList<ItemStack>>();
 
     private long _battleId;
     private int _tick;
@@ -23,6 +25,7 @@ public class SingleBattleService : ISingleBattleService
     public BattleStage Stage { get; private set; }
     public SlimeTD.Battle.BattleRandom SummonRandom { get; private set; }
     public SlimeTD.Battle.BattleRandom MergeRandom { get; private set; }
+    public IReadOnlyReactiveProperty<IReadOnlyList<ItemStack>> Rewards => _rewards;
 
     public SingleBattleService(IGameServerConnection connection, IAccountService accountService)
     {
@@ -33,6 +36,7 @@ public class SingleBattleService : ISingleBattleService
     public async UniTask<ResultCode> StartAsync(int stageId)
     {
         Clear();
+        _rewards.Value = null;
 
         try
         {
@@ -135,6 +139,8 @@ public class SingleBattleService : ISingleBattleService
             if (res.Result == ResultCode.Ok)
             {
                 _accountService.SetBestWave(res.BestWave);
+                _accountService.ApplyItems(res.Items);
+                _rewards.Value = new List<ItemStack>(res.Rewards);
                 Debug.Log($"[SingleBattleService] 서버 검증 일치: {res.Outcome}, 웨이브 {res.ReachedWave}, 최고 {res.BestWave}, 신기록 {res.NewRecord}, 끝 틱 {req.EndTick}");
                 return;
             }
@@ -147,6 +153,8 @@ public class SingleBattleService : ISingleBattleService
         {
             Debug.Log($"[SingleBattleService] 전투 종료 요청 실패: {e.Message}");
         }
+
+        _rewards.Value = Array.Empty<ItemStack>();
     }
 
     // 끝나기 전에 게임 씬을 나가면 버린다. 서버 쪽 전투는 다음 시작 때 무효가 된다

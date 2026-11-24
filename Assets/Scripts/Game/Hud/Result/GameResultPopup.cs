@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,11 @@ public class GameResultPopup : PopupBase
     [SerializeField] private TMP_Text _waveText;
     [SerializeField] private GameObject _newRecordMark;
     [SerializeField] private GameObject _rewardRoot;
+    [SerializeField] private RewardItemView _rewardItemTemplate;
+    [SerializeField] private Sprite _coinIcon;
+    [SerializeField] private Sprite _diamondIcon;
+
+    private readonly List<RewardItemView> _rewardItems = new List<RewardItemView>();
 
     public event Action RestartButtonClicked;
     public event Action LobbyButtonClicked;
@@ -70,10 +76,43 @@ public class GameResultPopup : PopupBase
         if (_newRecordMark != null)
             _newRecordMark.SetActive(isNewRecord);
 
-        if (_rewardRoot != null)
-            _rewardRoot.SetActive(true);
-
+        SetRewards(null);
         SetButtonsInteractable(true);
+    }
+
+    public void SetRewards(IReadOnlyList<(string codeName, long amount)> rewards)
+    {
+        if (_rewardRoot == null || _rewardItemTemplate == null)
+            return;
+
+        _rewardItemTemplate.gameObject.SetActive(false);
+        foreach (var item in _rewardItems)
+            Destroy(item.gameObject);
+        _rewardItems.Clear();
+
+        _rewardRoot.SetActive(rewards != null && rewards.Count > 0);
+        if (rewards == null)
+            return;
+
+        foreach (var (codeName, amount) in rewards)
+        {
+            var item = Instantiate(_rewardItemTemplate, _rewardItemTemplate.transform.parent);
+            item.gameObject.SetActive(true);
+            item.Setup(GetIcon(codeName), amount);
+            _rewardItems.Add(item);
+        }
+    }
+
+    private Sprite GetIcon(string codeName)
+    {
+        switch (codeName)
+        {
+            case ItemCatalog.Coin: return _coinIcon;
+            case ItemCatalog.Diamond: return _diamondIcon;
+            default:
+                Debug.Log($"[GameResultPopup] 아이콘이 없는 보상입니다: {codeName}", this);
+                return null;
+        }
     }
 
     public void SetButtonsInteractable(bool interactable)

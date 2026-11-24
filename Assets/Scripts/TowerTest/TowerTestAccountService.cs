@@ -34,6 +34,7 @@ public class TowerTestAccountService : IAccountService
     public void AddDiamond(int amount) { }
     public void AddHunterCards(int towerId, int amount) { }
     public void SetBestWave(int wave) { }
+    public void ApplyItems(IEnumerable<ItemStack> items) { }
 
     public bool TryGetLevelUpCost(int towerId, out int cards, out int coin)
     {
