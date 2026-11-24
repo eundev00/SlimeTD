@@ -219,7 +219,12 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
             return;
 
         transform.position = position;
+
+        // 직선 경로는 탄젠트가 0이라 노트 위(시작점 포함)에서 방향이 0이 된다. 조금 옆 지점의 방향을 쓴다
         Vector3 forward = tangent;
+        if (forward.sqrMagnitude <= 0.0001f)
+            forward = _container.EvaluateTangent(0, t < 1f ? Mathf.Min(1f, t + 0.01f) : t - 0.01f);
+
         if (forward.sqrMagnitude > 0.0001f)
             transform.rotation = Quaternion.LookRotation(forward, up);
     }
