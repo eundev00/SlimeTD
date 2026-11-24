@@ -61,10 +61,10 @@ description: SlimeTD-Data 저장소의 기획 시트(CSV)를 클라이언트 Scr
 | `_attackRange`, `_attackCooldown`, `_critChance`, `_critBonus` | 같은 이름의 열 |
 | `_baseAttack`, `_attackGrowthRate` | 그 등급의 Grades.csv `baseAttack`, `attackGrowthRate` |
 | `_projectileSpeed`, `_projectileHitRadius`, `_projectileLifetime` | TowerProjectiles.csv의 `speed`, `hitRadius`, `lifetime`. 행이 없으면 0 |
-| `_startUnlocked` | startUnlocked (비우면 0) |
-| `_unlockDiamondPrice` | unlockDiamondPrice (비우면 0) |
-| `_inGacha` | inGacha (비우면 1) |
-| `_levelUpCost._cards`, `_coin` | 그 등급의 LevelUpCosts.csv를 level 1~14 순서로 14개 (hex 배열) |
+| `_unlockDiamondPrice` | unlockDiamondPrice (비우면 0). 화면 표시용 |
+| `_levelUpCost._cards`, `_coin` | 그 등급의 LevelUpCosts.csv를 level 1~14 순서로 14개 (hex 배열). 화면 표시용 |
+
+- `startUnlocked`, `inGacha`는 서버만 쓴다 (해금 상태는 계정에서 받는다)
 
 - 타워 프리팹은 시트에 없다. `codeName`과 같은 이름의 프리팹을 `TowerPrefabProvider`가 로드하고, 투사체 모양은 그 프리팹의 `ProjectileLauncher._projectilePrefab`이 정한다
 - 타워를 새로 추가하면 에셋을 만들고 **`TowerCatalog.asset`의 `_towers`에 towerId 순서로 참조를 추가**한다. 프리팹(`Assets/Prefabs/Game/Characters/<codeName>.prefab`)이 없으면 사용자에게 알린다
@@ -93,11 +93,10 @@ description: SlimeTD-Data 저장소의 기획 시트(CSV)를 클라이언트 Scr
 
 허용 단위(README "effectType과 수치 해석")를 어긴 행은 반영하지 말고 보고한다.
 
-### HunterCardGachaPacks.csv + HunterCardGachaSettings.csv + Grades.csv `gachaWeight` → `Assets/Datas/HunterCardGachaConfig.asset`
+### HunterCardGachaPacks.csv → `Assets/Datas/HunterCardGachaConfig.asset`
 
-- `_packs`: 행마다 `_id` = packId, `_cardCount`, `_price`, `_guaranteeGradeId`
-- `_gradeWeights`: 등급마다 `_gradeId`, `_weight` = gachaWeight
-- `_lockedCardChance`, `_pityCount`, `_pityGradeId`, `_maxLevelRefundCoin`: Settings의 같은 key
+- `_packs`: 행마다 `_id` = packId, `_cardCount`, `_price`(팩 티켓 수량), `_guaranteeGradeId`. 화면 표시용
+- 확률(`Grades.csv` gachaWeight)과 `HunterCardGachaSettings.csv`(만렙 환급)는 서버만 쓴다
 
 ### Slimes.csv → `Assets/Datas/Slimes/SlimeData_<codeName>.asset`
 
@@ -131,9 +130,9 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 
 `_summonBaseCost`, `_summonCostIncrease`, `_summonGradeId`, `_slowMinSpeedRatio`, `_bossSlowScale` = 같은 이름의 key.
 
-### NewAccount.csv (+ Items.csv codeName) → `Assets/Datas/GameConfig.asset`
+### 서버 전용 시트 (반영하지 않는다)
 
-서버가 새 계정을 만들 때 쓰는 시트다. 클라이언트는 계정을 서버에서 받으므로 지금은 이 값을 쓰지 않는다 (`_initialCoin`, `_initialDiamond`는 남아 있지만 쓰는 곳이 없다).
+`NewAccount.csv`, `StageRewards.csv`, `HunterCardGachaSettings.csv`와 `GameConstants.csv`의 `energy.*`, `userLevel.*`, `reward.*` key는 서버만 쓴다. 클라이언트는 계정·응답으로 받는다.
 
 ### Enums.csv → `Assets/Scripts/Data/SheetEnums.cs`
 

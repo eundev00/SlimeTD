@@ -19,7 +19,6 @@ public enum ItemType
 {
     None = 0,
     Currency = 1,
-    HunterCardPack = 2,
 }
 
 public enum ItemScope

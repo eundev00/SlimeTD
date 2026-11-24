@@ -35,7 +35,7 @@ namespace SlimeTD.Protocol {
             "X0RSQVdfUkVTELECEiMKHk1TR19JRF9TSU5HTEVfQkFUVExFX1NUQVJUX1JF",
             "URCQAxIjCh5NU0dfSURfU0lOR0xFX0JBVFRMRV9TVEFSVF9SRVMQkQMSJAof",
             "TVNHX0lEX1NJTkdMRV9CQVRUTEVfRklOSVNIX1JFURCSAxIkCh9NU0dfSURf",
-            "U0lOR0xFX0JBVFRMRV9GSU5JU0hfUkVTEJMDKvgCCgpSZXN1bHRDb2RlEhIK",
+            "U0lOR0xFX0JBVFRMRV9GSU5JU0hfUkVTEJMDKpsDCgpSZXN1bHRDb2RlEhIK",
             "DlJFU1VMVF9DT0RFX09LEAASHwobUkVTVUxUX0NPREVfSU5WQUxJRF9SRVFV",
             "RVNUEAESHQoZUkVTVUxUX0NPREVfTk9UX0xPR0dFRF9JThACEhwKGFJFU1VM",
             "VF9DT0RFX1NFUlZFUl9FUlJPUhADEhkKFVJFU1VMVF9DT0RFX05PVF9GT1VO",
@@ -44,7 +44,8 @@ namespace SlimeTD.Protocol {
             "RU1TEAcSIAocUkVTVUxUX0NPREVfQUxSRUFEWV9VTkxPQ0tFRBAIEh8KG1JF",
             "U1VMVF9DT0RFX05PVF9QVVJDSEFTQUJMRRAJEh0KGVJFU1VMVF9DT0RFX05P",
             "VF9BVkFJTEFCTEUQChIfChtSRVNVTFRfQ09ERV9CQVRUTEVfTUlTTUFUQ0gQ",
-            "C0ITqgIQU2xpbWVURC5Qcm90b2NvbGIGcHJvdG8z"));
+            "CxIhCh1SRVNVTFRfQ09ERV9OT1RfRU5PVUdIX0VORVJHWRAMQhOqAhBTbGlt",
+            "ZVRELlByb3RvY29sYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SlimeTD.Protocol.MsgId), typeof(global::SlimeTD.Protocol.ResultCode), }, null, null));
@@ -115,6 +116,10 @@ namespace SlimeTD.Protocol {
     /// 전투 결과가 서버 재계산과 다름 (기록하지 않음)
     /// </summary>
     [pbr::OriginalName("RESULT_CODE_BATTLE_MISMATCH")] BattleMismatch = 11,
+    /// <summary>
+    /// 에너지가 모자라 전투를 시작할 수 없음
+    /// </summary>
+    [pbr::OriginalName("RESULT_CODE_NOT_ENOUGH_ENERGY")] NotEnoughEnergy = 12,
   }
 
   #endregion

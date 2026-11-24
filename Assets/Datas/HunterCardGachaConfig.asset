@@ -15,22 +15,9 @@ MonoBehaviour:
   _packs:
   - _id: 1001
     _cardCount: 1
-    _price: 100
+    _price: 10
     _guaranteeGradeId: 0
   - _id: 1002
     _cardCount: 10
-    _price: 1000
+    _price: 100
     _guaranteeGradeId: 2
-  _gradeWeights:
-  - _gradeId: 1
-    _weight: 70
-  - _gradeId: 2
-    _weight: 22
-  - _gradeId: 3
-    _weight: 7
-  - _gradeId: 4
-    _weight: 1
-  _lockedCardChance: 1
-  _pityCount: 80
-  _pityGradeId: 4
-  _maxLevelRefundCoin: 70

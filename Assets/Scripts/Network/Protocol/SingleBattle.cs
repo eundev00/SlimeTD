@@ -26,42 +26,46 @@ namespace SlimeTD.Protocol {
           string.Concat(
             "ChNzaW5nbGVfYmF0dGxlLnByb3RvEgdzbGltZXRkGgxjb21tb24ucHJvdG8a",
             "DGJhdHRsZS5wcm90bxoMcGxheWVyLnByb3RvIigKFFNpbmdsZUJhdHRsZVN0",
-            "YXJ0UmVxEhAKCHN0YWdlX2lkGAEgASgFIoEBChRTaW5nbGVCYXR0bGVTdGFy",
+            "YXJ0UmVxEhAKCHN0YWdlX2lkGAEgASgFIsIBChRTaW5nbGVCYXR0bGVTdGFy",
             "dFJlcxIjCgZyZXN1bHQYASABKA4yEy5zbGltZXRkLlJlc3VsdENvZGUSEQoJ",
             "YmF0dGxlX2lkGAIgASgDEgwKBHNlZWQYAyABKAQSIwoFc3RhZ2UYBCABKAsy",
-            "FC5zbGltZXRkLkJhdHRsZVN0YWdlIkQKDEh1bnRlclN1bW1vbhIMCgR0aWNr",
-            "GAEgASgFEgkKAXgYAiABKAUSCQoBeRgDIAEoBRIQCgh0b3dlcl9pZBgEIAEo",
-            "BSJwCgtIdW50ZXJNZXJnZRIMCgR0aWNrGAEgASgFEgkKAXgYAiABKAUSCQoB",
-            "eRgDIAEoBRIRCglwYXJ0bmVyX3gYBCABKAUSEQoJcGFydG5lcl95GAUgASgF",
-            "EhcKD3Jlc3VsdF90b3dlcl9pZBgGIAEoBSIrCglTbGltZUtpbGwSEAoIc2xp",
-            "bWVfaWQYASABKAUSDAoEdGljaxgCIAEoBSI/CglTa2lsbEdvbGQSDAoEdGlj",
-            "axgBIAEoBRIJCgF4GAIgASgFEgkKAXkYAyABKAUSDgoGYW1vdW50GAQgASgF",
-            "ItoCChVTaW5nbGVCYXR0bGVGaW5pc2hSZXESEQoJYmF0dGxlX2lkGAEgASgD",
-            "EicKB291dGNvbWUYAiABKA4yFi5zbGltZXRkLkJhdHRsZU91dGNvbWUSFAoM",
-            "cmVhY2hlZF93YXZlGAMgASgFEgwKBGxpZmUYBCABKAUSEAoIZW5kX3RpY2sY",
-            "BSABKAUSJwoIYXJyaXZhbHMYBiADKAsyFS5zbGltZXRkLlNsaW1lQXJyaXZh",
-            "bBIMCgRnb2xkGAcgASgFEiYKB3N1bW1vbnMYCCADKAsyFS5zbGltZXRkLkh1",
-            "bnRlclN1bW1vbhIkCgZtZXJnZXMYCSADKAsyFC5zbGltZXRkLkh1bnRlck1l",
-            "cmdlEiEKBWtpbGxzGAogAygLMhIuc2xpbWV0ZC5TbGltZUtpbGwSJwoLc2tp",
-            "bGxfZ29sZHMYCyADKAsyEi5zbGltZXRkLlNraWxsR29sZCKXAgoVU2luZ2xl",
-            "QmF0dGxlRmluaXNoUmVzEiMKBnJlc3VsdBgBIAEoDjITLnNsaW1ldGQuUmVz",
-            "dWx0Q29kZRInCgdvdXRjb21lGAIgASgOMhYuc2xpbWV0ZC5CYXR0bGVPdXRj",
-            "b21lEhQKDHJlYWNoZWRfd2F2ZRgDIAEoBRIRCgliZXN0X3dhdmUYBCABKAUS",
-            "EgoKbmV3X3JlY29yZBgFIAEoCBIrCgptaXNtYXRjaGVzGAYgAygLMhcuc2xp",
-            "bWV0ZC5CYXR0bGVNaXNtYXRjaBIjCgdyZXdhcmRzGAcgAygLMhIuc2xpbWV0",
-            "ZC5JdGVtU3RhY2sSIQoFaXRlbXMYCCADKAsyEi5zbGltZXRkLkl0ZW1TdGFj",
-            "a0ITqgIQU2xpbWVURC5Qcm90b2NvbGIGcHJvdG8z"));
+            "FC5zbGltZXRkLkJhdHRsZVN0YWdlEiEKBWl0ZW1zGAUgAygLMhIuc2xpbWV0",
+            "ZC5JdGVtU3RhY2sSHAoUZW5lcmd5X3JlY292ZXJfYXRfbXMYBiABKAMiRAoM",
+            "SHVudGVyU3VtbW9uEgwKBHRpY2sYASABKAUSCQoBeBgCIAEoBRIJCgF5GAMg",
+            "ASgFEhAKCHRvd2VyX2lkGAQgASgFInAKC0h1bnRlck1lcmdlEgwKBHRpY2sY",
+            "ASABKAUSCQoBeBgCIAEoBRIJCgF5GAMgASgFEhEKCXBhcnRuZXJfeBgEIAEo",
+            "BRIRCglwYXJ0bmVyX3kYBSABKAUSFwoPcmVzdWx0X3Rvd2VyX2lkGAYgASgF",
+            "IisKCVNsaW1lS2lsbBIQCghzbGltZV9pZBgBIAEoBRIMCgR0aWNrGAIgASgF",
+            "Ij8KCVNraWxsR29sZBIMCgR0aWNrGAEgASgFEgkKAXgYAiABKAUSCQoBeRgD",
+            "IAEoBRIOCgZhbW91bnQYBCABKAUi2gIKFVNpbmdsZUJhdHRsZUZpbmlzaFJl",
+            "cRIRCgliYXR0bGVfaWQYASABKAMSJwoHb3V0Y29tZRgCIAEoDjIWLnNsaW1l",
+            "dGQuQmF0dGxlT3V0Y29tZRIUCgxyZWFjaGVkX3dhdmUYAyABKAUSDAoEbGlm",
+            "ZRgEIAEoBRIQCghlbmRfdGljaxgFIAEoBRInCghhcnJpdmFscxgGIAMoCzIV",
+            "LnNsaW1ldGQuU2xpbWVBcnJpdmFsEgwKBGdvbGQYByABKAUSJgoHc3VtbW9u",
+            "cxgIIAMoCzIVLnNsaW1ldGQuSHVudGVyU3VtbW9uEiQKBm1lcmdlcxgJIAMo",
+            "CzIULnNsaW1ldGQuSHVudGVyTWVyZ2USIQoFa2lsbHMYCiADKAsyEi5zbGlt",
+            "ZXRkLlNsaW1lS2lsbBInCgtza2lsbF9nb2xkcxgLIAMoCzISLnNsaW1ldGQu",
+            "U2tpbGxHb2xkIvcCChVTaW5nbGVCYXR0bGVGaW5pc2hSZXMSIwoGcmVzdWx0",
+            "GAEgASgOMhMuc2xpbWV0ZC5SZXN1bHRDb2RlEicKB291dGNvbWUYAiABKA4y",
+            "Fi5zbGltZXRkLkJhdHRsZU91dGNvbWUSFAoMcmVhY2hlZF93YXZlGAMgASgF",
+            "EhEKCWJlc3Rfd2F2ZRgEIAEoBRISCgpuZXdfcmVjb3JkGAUgASgIEisKCm1p",
+            "c21hdGNoZXMYBiADKAsyFy5zbGltZXRkLkJhdHRsZU1pc21hdGNoEiMKB3Jl",
+            "d2FyZHMYByADKAsyEi5zbGltZXRkLkl0ZW1TdGFjaxIhCgVpdGVtcxgIIAMo",
+            "CzISLnNsaW1ldGQuSXRlbVN0YWNrEhMKC2ZpcnN0X2NsZWFyGAkgASgISgQI",
+            "ChAPUgp1c2VyX2xldmVsUg51c2VyX2xldmVsX3Vwc1IRdXNlcl9sZXZlbF91",
+            "cF9leHBSCHVzZXJfZXhwUgpleHBfcmV3YXJkQhOqAhBTbGltZVRELlByb3Rv",
+            "Y29sYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::SlimeTD.Protocol.CommonReflection.Descriptor, global::SlimeTD.Protocol.BattleReflection.Descriptor, global::SlimeTD.Protocol.PlayerReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.SingleBattleStartReq), global::SlimeTD.Protocol.SingleBattleStartReq.Parser, new[]{ "StageId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.SingleBattleStartRes), global::SlimeTD.Protocol.SingleBattleStartRes.Parser, new[]{ "Result", "BattleId", "Seed", "Stage" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.SingleBattleStartRes), global::SlimeTD.Protocol.SingleBattleStartRes.Parser, new[]{ "Result", "BattleId", "Seed", "Stage", "Items", "EnergyRecoverAtMs" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.HunterSummon), global::SlimeTD.Protocol.HunterSummon.Parser, new[]{ "Tick", "X", "Y", "TowerId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.HunterMerge), global::SlimeTD.Protocol.HunterMerge.Parser, new[]{ "Tick", "X", "Y", "PartnerX", "PartnerY", "ResultTowerId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.SlimeKill), global::SlimeTD.Protocol.SlimeKill.Parser, new[]{ "SlimeId", "Tick" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.SkillGold), global::SlimeTD.Protocol.SkillGold.Parser, new[]{ "Tick", "X", "Y", "Amount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.SingleBattleFinishReq), global::SlimeTD.Protocol.SingleBattleFinishReq.Parser, new[]{ "BattleId", "Outcome", "ReachedWave", "Life", "EndTick", "Arrivals", "Gold", "Summons", "Merges", "Kills", "SkillGolds" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.SingleBattleFinishRes), global::SlimeTD.Protocol.SingleBattleFinishRes.Parser, new[]{ "Result", "Outcome", "ReachedWave", "BestWave", "NewRecord", "Mismatches", "Rewards", "Items" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.SingleBattleFinishRes), global::SlimeTD.Protocol.SingleBattleFinishRes.Parser, new[]{ "Result", "Outcome", "ReachedWave", "BestWave", "NewRecord", "Mismatches", "Rewards", "Items", "FirstClear" }, null, null, null, null)
           }));
     }
     #endregion
@@ -69,7 +73,12 @@ namespace SlimeTD.Protocol {
   }
   #region Messages
   /// <summary>
-  /// 전투를 시작한다. 한 계정에 진행 중인 싱글 전투는 하나다. 새로 시작하면 이전 전투는 버린다.
+  /// 싱글 전투. 클라이언트가 혼자 플레이하고(서버는 실시간으로 돌리지 않는다), 끝나면 결과를 보내
+  /// 서버가 같은 전투를 처음부터 다시 계산해 확인한다. 같으면 최고 웨이브를 기록하고 보상을 준다.
+  /// 보상 (StageRewards.csv): 클리어면 Clear 보상 전부, 실패면 Clear 보상 × (통과 구간 ÷ 전체 구간) × reward.failRate (버림).
+  /// 통과 구간 = 도달 웨이브 ÷ reward.segmentWaves (버림), 전체 구간 = 최종 웨이브 ÷ reward.segmentWaves. 처음 클리어하면 FirstClear 보상도.
+  /// 전투를 시작한다. 한 계정에 진행 중인 싱글 전투는 하나다. 새로 시작하면 이전 전투는 버린다 (쓴 에너지는 돌려주지 않는다).
+  /// 시작할 때 에너지를 쓴다 (GameConstants energy.costPerBattle). 모자라면 RESULT_CODE_NOT_ENOUGH_ENERGY.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class SingleBattleStartReq : pb::IMessage<SingleBattleStartReq>
@@ -311,6 +320,8 @@ namespace SlimeTD.Protocol {
       battleId_ = other.battleId_;
       seed_ = other.seed_;
       stage_ = other.stage_ != null ? other.stage_.Clone() : null;
+      items_ = other.items_.Clone();
+      energyRecoverAtMs_ = other.energyRecoverAtMs_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -351,7 +362,7 @@ namespace SlimeTD.Protocol {
     public const int SeedFieldNumber = 3;
     private ulong seed_;
     /// <summary>
-    /// 전투 난수 시드 (헌터가 들어가면 쓴다)
+    /// 전투 난수 시드 (BattleRandom.ForSummon / ForMerge)
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -374,6 +385,35 @@ namespace SlimeTD.Protocol {
       }
     }
 
+    /// <summary>Field number for the "items" field.</summary>
+    public const int ItemsFieldNumber = 5;
+    private static readonly pb::FieldCodec<global::SlimeTD.Protocol.ItemStack> _repeated_items_codec
+        = pb::FieldCodec.ForMessage(42, global::SlimeTD.Protocol.ItemStack.Parser);
+    private readonly pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack> items_ = new pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack>();
+    /// <summary>
+    /// 에너지 현재 수량 (성공이면 쓴 뒤, 모자라면 회복을 반영한 지금 값)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack> Items {
+      get { return items_; }
+    }
+
+    /// <summary>Field number for the "energy_recover_at_ms" field.</summary>
+    public const int EnergyRecoverAtMsFieldNumber = 6;
+    private long energyRecoverAtMs_;
+    /// <summary>
+    /// 에너지가 다음에 1 회복되는 시각 (Unix 밀리초). 최대치 이상이면 0
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long EnergyRecoverAtMs {
+      get { return energyRecoverAtMs_; }
+      set {
+        energyRecoverAtMs_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -393,6 +433,8 @@ namespace SlimeTD.Protocol {
       if (BattleId != other.BattleId) return false;
       if (Seed != other.Seed) return false;
       if (!object.Equals(Stage, other.Stage)) return false;
+      if(!items_.Equals(other.items_)) return false;
+      if (EnergyRecoverAtMs != other.EnergyRecoverAtMs) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -404,6 +446,8 @@ namespace SlimeTD.Protocol {
       if (BattleId != 0L) hash ^= BattleId.GetHashCode();
       if (Seed != 0UL) hash ^= Seed.GetHashCode();
       if (stage_ != null) hash ^= Stage.GetHashCode();
+      hash ^= items_.GetHashCode();
+      if (EnergyRecoverAtMs != 0L) hash ^= EnergyRecoverAtMs.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -438,6 +482,11 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(34);
         output.WriteMessage(Stage);
       }
+      items_.WriteTo(output, _repeated_items_codec);
+      if (EnergyRecoverAtMs != 0L) {
+        output.WriteRawTag(48);
+        output.WriteInt64(EnergyRecoverAtMs);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -464,6 +513,11 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(34);
         output.WriteMessage(Stage);
       }
+      items_.WriteTo(ref output, _repeated_items_codec);
+      if (EnergyRecoverAtMs != 0L) {
+        output.WriteRawTag(48);
+        output.WriteInt64(EnergyRecoverAtMs);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -485,6 +539,10 @@ namespace SlimeTD.Protocol {
       }
       if (stage_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Stage);
+      }
+      size += items_.CalculateSize(_repeated_items_codec);
+      if (EnergyRecoverAtMs != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(EnergyRecoverAtMs);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -512,6 +570,10 @@ namespace SlimeTD.Protocol {
           Stage = new global::SlimeTD.Protocol.BattleStage();
         }
         Stage.MergeFrom(other.Stage);
+      }
+      items_.Add(other.items_);
+      if (other.EnergyRecoverAtMs != 0L) {
+        EnergyRecoverAtMs = other.EnergyRecoverAtMs;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -551,6 +613,14 @@ namespace SlimeTD.Protocol {
             input.ReadMessage(Stage);
             break;
           }
+          case 42: {
+            items_.AddEntriesFrom(input, _repeated_items_codec);
+            break;
+          }
+          case 48: {
+            EnergyRecoverAtMs = input.ReadInt64();
+            break;
+          }
         }
       }
     #endif
@@ -587,6 +657,14 @@ namespace SlimeTD.Protocol {
               Stage = new global::SlimeTD.Protocol.BattleStage();
             }
             input.ReadMessage(Stage);
+            break;
+          }
+          case 42: {
+            items_.AddEntriesFrom(ref input, _repeated_items_codec);
+            break;
+          }
+          case 48: {
+            EnergyRecoverAtMs = input.ReadInt64();
             break;
           }
         }
@@ -2431,6 +2509,7 @@ namespace SlimeTD.Protocol {
       mismatches_ = other.mismatches_.Clone();
       rewards_ = other.rewards_.Clone();
       items_ = other.items_.Clone();
+      firstClear_ = other.firstClear_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2526,7 +2605,7 @@ namespace SlimeTD.Protocol {
         = pb::FieldCodec.ForMessage(58, global::SlimeTD.Protocol.ItemStack.Parser);
     private readonly pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack> rewards_ = new pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack>();
     /// <summary>
-    /// 이번에 받은 보상 (StageRewards.csv, 검증 일치일 때만)
+    /// 이번에 받은 재화 보상 (검증 일치일 때만). 클리어 보상(또는 실패 보상)과 최초 클리어 보상을 합친 것
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2540,12 +2619,27 @@ namespace SlimeTD.Protocol {
         = pb::FieldCodec.ForMessage(66, global::SlimeTD.Protocol.ItemStack.Parser);
     private readonly pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack> items_ = new pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack>();
     /// <summary>
-    /// 보상을 받은 아이템의 현재 수량
+    /// 보상을 받은 재화의 현재 수량
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack> Items {
       get { return items_; }
+    }
+
+    /// <summary>Field number for the "first_clear" field.</summary>
+    public const int FirstClearFieldNumber = 9;
+    private bool firstClear_;
+    /// <summary>
+    /// 이번이 이 스테이지 최초 클리어 (최초 클리어 보상 포함)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool FirstClear {
+      get { return firstClear_; }
+      set {
+        firstClear_ = value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2571,6 +2665,7 @@ namespace SlimeTD.Protocol {
       if(!mismatches_.Equals(other.mismatches_)) return false;
       if(!rewards_.Equals(other.rewards_)) return false;
       if(!items_.Equals(other.items_)) return false;
+      if (FirstClear != other.FirstClear) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2586,6 +2681,7 @@ namespace SlimeTD.Protocol {
       hash ^= mismatches_.GetHashCode();
       hash ^= rewards_.GetHashCode();
       hash ^= items_.GetHashCode();
+      if (FirstClear != false) hash ^= FirstClear.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2627,6 +2723,10 @@ namespace SlimeTD.Protocol {
       mismatches_.WriteTo(output, _repeated_mismatches_codec);
       rewards_.WriteTo(output, _repeated_rewards_codec);
       items_.WriteTo(output, _repeated_items_codec);
+      if (FirstClear != false) {
+        output.WriteRawTag(72);
+        output.WriteBool(FirstClear);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2660,6 +2760,10 @@ namespace SlimeTD.Protocol {
       mismatches_.WriteTo(ref output, _repeated_mismatches_codec);
       rewards_.WriteTo(ref output, _repeated_rewards_codec);
       items_.WriteTo(ref output, _repeated_items_codec);
+      if (FirstClear != false) {
+        output.WriteRawTag(72);
+        output.WriteBool(FirstClear);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2688,6 +2792,9 @@ namespace SlimeTD.Protocol {
       size += mismatches_.CalculateSize(_repeated_mismatches_codec);
       size += rewards_.CalculateSize(_repeated_rewards_codec);
       size += items_.CalculateSize(_repeated_items_codec);
+      if (FirstClear != false) {
+        size += 1 + 1;
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -2718,6 +2825,9 @@ namespace SlimeTD.Protocol {
       mismatches_.Add(other.mismatches_);
       rewards_.Add(other.rewards_);
       items_.Add(other.items_);
+      if (other.FirstClear != false) {
+        FirstClear = other.FirstClear;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2769,6 +2879,10 @@ namespace SlimeTD.Protocol {
             items_.AddEntriesFrom(input, _repeated_items_codec);
             break;
           }
+          case 72: {
+            FirstClear = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -2818,6 +2932,10 @@ namespace SlimeTD.Protocol {
           }
           case 66: {
             items_.AddEntriesFrom(ref input, _repeated_items_codec);
+            break;
+          }
+          case 72: {
+            FirstClear = input.ReadBool();
             break;
           }
         }

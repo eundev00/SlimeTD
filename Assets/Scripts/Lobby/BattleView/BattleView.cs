@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class BattleView : MonoBehaviour
     [NotNull][SerializeField] private Button _devTestButton;
     [NotNull][SerializeField] private Button _hunterCardGachaButton;
     [NotNull][SerializeField] private GameObject _hunterCardGachaNotice;
+    [NotNull][SerializeField] private TMP_Text _energyCostText;
 
     public RectTransform WaveScrollSlot => _waveScrollSlot;
 
@@ -20,6 +22,12 @@ public class BattleView : MonoBehaviour
     {
         if (_hunterCardGachaNotice != null)
             _hunterCardGachaNotice.SetActive(visible);
+    }
+
+    public void SetEnergyCost(int cost)
+    {
+        if (_energyCostText != null)
+            _energyCostText.text = cost.ToString();
     }
 
     public void SetStartInteractable(bool interactable)

@@ -26,10 +26,8 @@ public class TowerData : ScriptableObject
     [SerializeField] private float _projectileHitRadius;
     [SerializeField] private float _projectileLifetime;
 
-    [Header("메타")]
-    [SerializeField] private bool _startUnlocked;
+    [Header("메타 (서버가 판정, 화면 표시용 사본)")]
     [SerializeField] private int _unlockDiamondPrice;
-    [SerializeField] private bool _inGacha = true;
     [SerializeField] private LevelUpCostRule _levelUpCost;
 
     public int Id => _id;
@@ -46,9 +44,7 @@ public class TowerData : ScriptableObject
     public float CritBonus => _critBonus;
     public float AttackSpeedPercent => BaseAttackSpeedPercent;
     public ProjectileStats Projectile => new ProjectileStats(_projectileSpeed, _projectileHitRadius, _projectileLifetime);
-    public bool StartUnlocked => _startUnlocked;
     public int UnlockDiamondPrice => _unlockDiamondPrice;
-    public bool InGacha => _inGacha;
     public LevelUpCostRule LevelUpCost => _levelUpCost;
 
     public float GetAttack(int level)

@@ -8,9 +8,14 @@ public interface IAccountService
     bool IsInitialized { get; }
     IReadOnlyReactiveProperty<int> Coin { get; }
     IReadOnlyReactiveProperty<int> Diamond { get; }
+    IReadOnlyReactiveProperty<int> PackTicket { get; }
+    IReadOnlyReactiveProperty<int> Energy { get; }
+    IReadOnlyReactiveProperty<int> EnergyMax { get; }
+    // 다음 에너지 1 회복 시각 (서버 시계 Unix ms). 0이면 최대치 이상이라 회복하지 않는다
+    IReadOnlyReactiveProperty<long> EnergyRecoverAtMs { get; }
+    long ServerNowMs { get; }
     IReadOnlyReactiveProperty<int> BestWave { get; }
     IReadOnlyList<HunterState> Hunters { get; }
-    int HunterCardGachaPity { get; }
 
     // 서버 접속, 로그인, 계정 받기까지 한다. 실패하면 false
     UniTask<bool> InitializeAsync();
@@ -26,6 +31,8 @@ public interface IAccountService
     void AddHunterCards(int towerId, int amount);
     void SetBestWave(int wave);
     void ApplyItems(IEnumerable<ItemStack> items);
+    void SetEnergyRecoverAt(long serverMs);
+    UniTask RefreshItemsAsync();
     bool TryGetLevelUpCost(int towerId, out int cards, out int coin);
     bool CanLevelUp(int towerId);
     UniTask<ResultCode> LevelUpAsync(int towerId);

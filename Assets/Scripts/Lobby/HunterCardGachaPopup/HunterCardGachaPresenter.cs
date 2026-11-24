@@ -58,7 +58,7 @@ public class HunterCardGachaPresenter : IPopupPresenter
                 Debug.Log($"[HunterCardGachaPresenter] 설정에 없는 팩입니다: {pack.PackId}", pack);
         }
 
-        _accountService.Coin.Subscribe(_ => RenderAffordable()).AddTo(_disposables);
+        _accountService.PackTicket.Subscribe(_ => RenderAffordable()).AddTo(_disposables);
     }
 
     private void RenderAffordable()
@@ -66,10 +66,10 @@ public class HunterCardGachaPresenter : IPopupPresenter
         if (_config == null)
             return;
 
-        int coin = _accountService.Coin.Value;
+        int tickets = _accountService.PackTicket.Value;
         foreach (var pack in _popup.Packs)
         {
-            bool affordable = !_drawing && _config.TryGetPack(pack.PackId, out var data) && coin >= data.Price;
+            bool affordable = !_drawing && _config.TryGetPack(pack.PackId, out var data) && tickets >= data.Price;
             pack.SetAffordable(affordable);
         }
     }
@@ -113,7 +113,7 @@ public class HunterCardGachaPresenter : IPopupPresenter
     {
         return code switch
         {
-            ResultCode.NotEnoughItems => "골드가 부족합니다",
+            ResultCode.NotEnoughItems => "팩 티켓이 부족합니다",
             ResultCode.NotFound => "없는 상품입니다",
             ResultCode.NotAvailable => "뽑을 수 있는 헌터가 없습니다",
             _ => "서버 요청에 실패했습니다",

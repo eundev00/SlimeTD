@@ -7,6 +7,9 @@ public interface IGameServerConnection
 {
     IReadOnlyReactiveProperty<bool> IsConnected { get; }
 
+    // 서버 시계 기준 현재 시각 (Unix ms). 기기 시계가 틀려도 서버가 보낸 시각과 맞는다
+    long ServerNowMs { get; }
+
     UniTask<bool> ConnectAsync();
     UniTask<TResponse> RequestAsync<TResponse>(MsgId requestId, IMessage request, MsgId responseId, MessageParser<TResponse> parser)
         where TResponse : IMessage<TResponse>;

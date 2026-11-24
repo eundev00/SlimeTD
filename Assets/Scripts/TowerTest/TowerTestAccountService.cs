@@ -14,9 +14,13 @@ public class TowerTestAccountService : IAccountService
     public bool IsInitialized => false;
     public IReadOnlyReactiveProperty<int> Coin => _coin;
     public IReadOnlyReactiveProperty<int> Diamond => _diamond;
+    public IReadOnlyReactiveProperty<int> PackTicket => _diamond;
+    public IReadOnlyReactiveProperty<int> Energy => _diamond;
+    public IReadOnlyReactiveProperty<int> EnergyMax => _diamond;
+    public IReadOnlyReactiveProperty<long> EnergyRecoverAtMs { get; } = new ReactiveProperty<long>();
+    public long ServerNowMs => System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     public IReadOnlyReactiveProperty<int> BestWave => _bestWave;
     public IReadOnlyList<HunterState> Hunters => _hunters;
-    public int HunterCardGachaPity => 0;
 
     public UniTask<bool> InitializeAsync() => UniTask.FromResult(true);
 
@@ -35,6 +39,8 @@ public class TowerTestAccountService : IAccountService
     public void AddHunterCards(int towerId, int amount) { }
     public void SetBestWave(int wave) { }
     public void ApplyItems(IEnumerable<ItemStack> items) { }
+    public void SetEnergyRecoverAt(long serverMs) { }
+    public UniTask RefreshItemsAsync() => UniTask.CompletedTask;
 
     public bool TryGetLevelUpCost(int towerId, out int cards, out int coin)
     {

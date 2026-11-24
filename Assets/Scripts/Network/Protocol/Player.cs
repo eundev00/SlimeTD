@@ -27,23 +27,26 @@ namespace SlimeTD.Protocol {
             "CgxwbGF5ZXIucHJvdG8SB3NsaW1ldGQaDGNvbW1vbi5wcm90byISChBHZXRQ",
             "bGF5ZXJJbmZvUmVxIlwKEEdldFBsYXllckluZm9SZXMSIwoGcmVzdWx0GAEg",
             "ASgOMhMuc2xpbWV0ZC5SZXN1bHRDb2RlEiMKBnBsYXllchgCIAEoCzITLnNs",
-            "aW1ldGQuUGxheWVySW5mbyKrAQoKUGxheWVySW5mbxISCgphY2NvdW50X2lk",
+            "aW1ldGQuUGxheWVySW5mbyKWAgoKUGxheWVySW5mbxISCgphY2NvdW50X2lk",
             "GAEgASgDEiEKBWl0ZW1zGAIgAygLMhIuc2xpbWV0ZC5JdGVtU3RhY2sSJAoG",
-            "c3RhZ2VzGAMgAygLMhQuc2xpbWV0ZC5TdGFnZVJlY29yZBIeChZodW50ZXJf",
-            "Y2FyZF9nYWNoYV9waXR5GAQgASgFEiAKB2h1bnRlcnMYBSADKAsyDy5zbGlt",
-            "ZXRkLkh1bnRlciIsCglJdGVtU3RhY2sSDwoHaXRlbV9pZBgBIAEoBRIOCgZh",
-            "bW91bnQYAiABKAMiMgoLU3RhZ2VSZWNvcmQSEAoIc3RhZ2VfaWQYASABKAUS",
-            "EQoJYmVzdF93YXZlGAIgASgFIkoKBkh1bnRlchIQCgh0b3dlcl9pZBgBIAEo",
-            "BRINCgVsZXZlbBgCIAEoBRIQCgh1bmxvY2tlZBgDIAEoCBINCgVjYXJkcxgE",
-            "IAEoBUITqgIQU2xpbWVURC5Qcm90b2NvbGIGcHJvdG8z"));
+            "c3RhZ2VzGAMgAygLMhQuc2xpbWV0ZC5TdGFnZVJlY29yZBIgCgdodW50ZXJz",
+            "GAUgAygLMg8uc2xpbWV0ZC5IdW50ZXISHAoUZW5lcmd5X3JlY292ZXJfYXRf",
+            "bXMYCCABKAMSEgoKZW5lcmd5X21heBgJIAEoBUoECAQQBUoECAYQB0oECAcQ",
+            "CEoECAoQC1IWaHVudGVyX2NhcmRfZ2FjaGFfcGl0eVIKdXNlcl9sZXZlbFIR",
+            "dXNlcl9sZXZlbF91cF9leHBSCHVzZXJfZXhwIiwKCUl0ZW1TdGFjaxIPCgdp",
+            "dGVtX2lkGAEgASgFEg4KBmFtb3VudBgCIAEoAyJDCgtTdGFnZVJlY29yZBIQ",
+            "CghzdGFnZV9pZBgBIAEoBRIRCgliZXN0X3dhdmUYAiABKAUSDwoHY2xlYXJl",
+            "ZBgDIAEoCCJKCgZIdW50ZXISEAoIdG93ZXJfaWQYASABKAUSDQoFbGV2ZWwY",
+            "AiABKAUSEAoIdW5sb2NrZWQYAyABKAgSDQoFY2FyZHMYBCABKAVCE6oCEFNs",
+            "aW1lVEQuUHJvdG9jb2xiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::SlimeTD.Protocol.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.GetPlayerInfoReq), global::SlimeTD.Protocol.GetPlayerInfoReq.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.GetPlayerInfoRes), global::SlimeTD.Protocol.GetPlayerInfoRes.Parser, new[]{ "Result", "Player" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.PlayerInfo), global::SlimeTD.Protocol.PlayerInfo.Parser, new[]{ "AccountId", "Items", "Stages", "HunterCardGachaPity", "Hunters" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.PlayerInfo), global::SlimeTD.Protocol.PlayerInfo.Parser, new[]{ "AccountId", "Items", "Stages", "Hunters", "EnergyRecoverAtMs", "EnergyMax" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.ItemStack), global::SlimeTD.Protocol.ItemStack.Parser, new[]{ "ItemId", "Amount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.StageRecord), global::SlimeTD.Protocol.StageRecord.Parser, new[]{ "StageId", "BestWave" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.StageRecord), global::SlimeTD.Protocol.StageRecord.Parser, new[]{ "StageId", "BestWave", "Cleared" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.Hunter), global::SlimeTD.Protocol.Hunter.Parser, new[]{ "TowerId", "Level", "Unlocked", "Cards" }, null, null, null, null)
           }));
     }
@@ -497,8 +500,9 @@ namespace SlimeTD.Protocol {
       accountId_ = other.accountId_;
       items_ = other.items_.Clone();
       stages_ = other.stages_.Clone();
-      hunterCardGachaPity_ = other.hunterCardGachaPity_;
       hunters_ = other.hunters_.Clone();
+      energyRecoverAtMs_ = other.energyRecoverAtMs_;
+      energyMax_ = other.energyMax_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -526,7 +530,7 @@ namespace SlimeTD.Protocol {
         = pb::FieldCodec.ForMessage(18, global::SlimeTD.Protocol.ItemStack.Parser);
     private readonly pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack> items_ = new pbc::RepeatedField<global::SlimeTD.Protocol.ItemStack>();
     /// <summary>
-    /// 계정에 저장된 아이템 (재화 포함). Items.csv의 itemId
+    /// 계정에 저장된 아이템 (재화 포함). Items.csv의 itemId. 에너지는 시간 회복을 반영한 현재값
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -548,18 +552,6 @@ namespace SlimeTD.Protocol {
       get { return stages_; }
     }
 
-    /// <summary>Field number for the "hunter_card_gacha_pity" field.</summary>
-    public const int HunterCardGachaPityFieldNumber = 4;
-    private int hunterCardGachaPity_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int HunterCardGachaPity {
-      get { return hunterCardGachaPity_; }
-      set {
-        hunterCardGachaPity_ = value;
-      }
-    }
-
     /// <summary>Field number for the "hunters" field.</summary>
     public const int HuntersFieldNumber = 5;
     private static readonly pb::FieldCodec<global::SlimeTD.Protocol.Hunter> _repeated_hunters_codec
@@ -569,6 +561,36 @@ namespace SlimeTD.Protocol {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pbc::RepeatedField<global::SlimeTD.Protocol.Hunter> Hunters {
       get { return hunters_; }
+    }
+
+    /// <summary>Field number for the "energy_recover_at_ms" field.</summary>
+    public const int EnergyRecoverAtMsFieldNumber = 8;
+    private long energyRecoverAtMs_;
+    /// <summary>
+    /// 에너지가 다음에 1 회복되는 시각 (Unix 밀리초, 서버 시계). 최대치 이상이면 0
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long EnergyRecoverAtMs {
+      get { return energyRecoverAtMs_; }
+      set {
+        energyRecoverAtMs_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "energy_max" field.</summary>
+    public const int EnergyMaxFieldNumber = 9;
+    private int energyMax_;
+    /// <summary>
+    /// 시간 회복 최대치 (보상으로는 넘길 수 있다)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int EnergyMax {
+      get { return energyMax_; }
+      set {
+        energyMax_ = value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -589,8 +611,9 @@ namespace SlimeTD.Protocol {
       if (AccountId != other.AccountId) return false;
       if(!items_.Equals(other.items_)) return false;
       if(!stages_.Equals(other.stages_)) return false;
-      if (HunterCardGachaPity != other.HunterCardGachaPity) return false;
       if(!hunters_.Equals(other.hunters_)) return false;
+      if (EnergyRecoverAtMs != other.EnergyRecoverAtMs) return false;
+      if (EnergyMax != other.EnergyMax) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -601,8 +624,9 @@ namespace SlimeTD.Protocol {
       if (AccountId != 0L) hash ^= AccountId.GetHashCode();
       hash ^= items_.GetHashCode();
       hash ^= stages_.GetHashCode();
-      if (HunterCardGachaPity != 0) hash ^= HunterCardGachaPity.GetHashCode();
       hash ^= hunters_.GetHashCode();
+      if (EnergyRecoverAtMs != 0L) hash ^= EnergyRecoverAtMs.GetHashCode();
+      if (EnergyMax != 0) hash ^= EnergyMax.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -627,11 +651,15 @@ namespace SlimeTD.Protocol {
       }
       items_.WriteTo(output, _repeated_items_codec);
       stages_.WriteTo(output, _repeated_stages_codec);
-      if (HunterCardGachaPity != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(HunterCardGachaPity);
-      }
       hunters_.WriteTo(output, _repeated_hunters_codec);
+      if (EnergyRecoverAtMs != 0L) {
+        output.WriteRawTag(64);
+        output.WriteInt64(EnergyRecoverAtMs);
+      }
+      if (EnergyMax != 0) {
+        output.WriteRawTag(72);
+        output.WriteInt32(EnergyMax);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -648,11 +676,15 @@ namespace SlimeTD.Protocol {
       }
       items_.WriteTo(ref output, _repeated_items_codec);
       stages_.WriteTo(ref output, _repeated_stages_codec);
-      if (HunterCardGachaPity != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(HunterCardGachaPity);
-      }
       hunters_.WriteTo(ref output, _repeated_hunters_codec);
+      if (EnergyRecoverAtMs != 0L) {
+        output.WriteRawTag(64);
+        output.WriteInt64(EnergyRecoverAtMs);
+      }
+      if (EnergyMax != 0) {
+        output.WriteRawTag(72);
+        output.WriteInt32(EnergyMax);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -668,10 +700,13 @@ namespace SlimeTD.Protocol {
       }
       size += items_.CalculateSize(_repeated_items_codec);
       size += stages_.CalculateSize(_repeated_stages_codec);
-      if (HunterCardGachaPity != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(HunterCardGachaPity);
-      }
       size += hunters_.CalculateSize(_repeated_hunters_codec);
+      if (EnergyRecoverAtMs != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(EnergyRecoverAtMs);
+      }
+      if (EnergyMax != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(EnergyMax);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -689,10 +724,13 @@ namespace SlimeTD.Protocol {
       }
       items_.Add(other.items_);
       stages_.Add(other.stages_);
-      if (other.HunterCardGachaPity != 0) {
-        HunterCardGachaPity = other.HunterCardGachaPity;
-      }
       hunters_.Add(other.hunters_);
+      if (other.EnergyRecoverAtMs != 0L) {
+        EnergyRecoverAtMs = other.EnergyRecoverAtMs;
+      }
+      if (other.EnergyMax != 0) {
+        EnergyMax = other.EnergyMax;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -724,12 +762,16 @@ namespace SlimeTD.Protocol {
             stages_.AddEntriesFrom(input, _repeated_stages_codec);
             break;
           }
-          case 32: {
-            HunterCardGachaPity = input.ReadInt32();
-            break;
-          }
           case 42: {
             hunters_.AddEntriesFrom(input, _repeated_hunters_codec);
+            break;
+          }
+          case 64: {
+            EnergyRecoverAtMs = input.ReadInt64();
+            break;
+          }
+          case 72: {
+            EnergyMax = input.ReadInt32();
             break;
           }
         }
@@ -763,12 +805,16 @@ namespace SlimeTD.Protocol {
             stages_.AddEntriesFrom(ref input, _repeated_stages_codec);
             break;
           }
-          case 32: {
-            HunterCardGachaPity = input.ReadInt32();
-            break;
-          }
           case 42: {
             hunters_.AddEntriesFrom(ref input, _repeated_hunters_codec);
+            break;
+          }
+          case 64: {
+            EnergyRecoverAtMs = input.ReadInt64();
+            break;
+          }
+          case 72: {
+            EnergyMax = input.ReadInt32();
             break;
           }
         }
@@ -1050,6 +1096,7 @@ namespace SlimeTD.Protocol {
     public StageRecord(StageRecord other) : this() {
       stageId_ = other.stageId_;
       bestWave_ = other.bestWave_;
+      cleared_ = other.cleared_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1086,6 +1133,21 @@ namespace SlimeTD.Protocol {
       }
     }
 
+    /// <summary>Field number for the "cleared" field.</summary>
+    public const int ClearedFieldNumber = 3;
+    private bool cleared_;
+    /// <summary>
+    /// 한 번이라도 클리어했으면 true (최초 클리어 보상은 이미 받았다)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Cleared {
+      get { return cleared_; }
+      set {
+        cleared_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1103,6 +1165,7 @@ namespace SlimeTD.Protocol {
       }
       if (StageId != other.StageId) return false;
       if (BestWave != other.BestWave) return false;
+      if (Cleared != other.Cleared) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1112,6 +1175,7 @@ namespace SlimeTD.Protocol {
       int hash = 1;
       if (StageId != 0) hash ^= StageId.GetHashCode();
       if (BestWave != 0) hash ^= BestWave.GetHashCode();
+      if (Cleared != false) hash ^= Cleared.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1138,6 +1202,10 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(16);
         output.WriteInt32(BestWave);
       }
+      if (Cleared != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(Cleared);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1156,6 +1224,10 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(16);
         output.WriteInt32(BestWave);
       }
+      if (Cleared != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(Cleared);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1171,6 +1243,9 @@ namespace SlimeTD.Protocol {
       }
       if (BestWave != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(BestWave);
+      }
+      if (Cleared != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1189,6 +1264,9 @@ namespace SlimeTD.Protocol {
       }
       if (other.BestWave != 0) {
         BestWave = other.BestWave;
+      }
+      if (other.Cleared != false) {
+        Cleared = other.Cleared;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1217,6 +1295,10 @@ namespace SlimeTD.Protocol {
             BestWave = input.ReadInt32();
             break;
           }
+          case 24: {
+            Cleared = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -1242,6 +1324,10 @@ namespace SlimeTD.Protocol {
           }
           case 16: {
             BestWave = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            Cleared = input.ReadBool();
             break;
           }
         }

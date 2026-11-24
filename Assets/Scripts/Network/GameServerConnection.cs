@@ -15,8 +15,12 @@ public class GameServerConnection : IGameServerConnection, IDisposable
         new Queue<(MsgId, UniTaskCompletionSource<byte[]>)>();
 
     private IServerTransport _transport;
+    private long _serverOffsetMs;
 
     public IReadOnlyReactiveProperty<bool> IsConnected => _isConnected;
+
+    // 기기 시계와 서버 시계의 차이를 응답마다 맞춘다 (ts가 초 단위라 1초 이내 오차)
+    public long ServerNowMs => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + _serverOffsetMs;
 
     public GameServerConnection(IResourceLoadService resourceLoadService)
     {
@@ -76,8 +80,11 @@ public class GameServerConnection : IGameServerConnection, IDisposable
     {
         _reader.Append(data, length);
 
-        while (_reader.TryRead(out var id, out var body))
+        while (_reader.TryRead(out var id, out var body, out uint serverTime))
         {
+            if (serverTime > 0)
+                _serverOffsetMs = serverTime * 1000L - DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
             if (_pending.Count == 0)
             {
                 Debug.Log($"[GameServerConnection] 기다리는 요청이 없는 응답을 받았습니다: {id}");

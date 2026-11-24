@@ -20,12 +20,14 @@ LobbyLifetimeScope  (_popupRoot, _waveTable을 인스펙터에서 받는다)
 | 클래스 | 위치 | 역할 |
 |---|---|---|
 | `LobbyTabs` | `Scripts/Lobby` | 탭 버튼 ↔ 패널 전환. 잠긴 탭은 선택 불가 |
-| `LobbyHeader` | 〃 | 코인/다이아 `CurrencyView` 초기화 (메서드 주입) |
-| `BattleView` / `BattlePresenter` | `Scripts/Lobby/BattleView` | 전투 탭. `WaveScrollSlot`과 시작 버튼(`StartClicked`, `SetStartInteractable`)을 노출하고, Presenter가 `TransitionAsync(Lobby, Game)`으로 게임 씬에 들어간다 |
+| `LobbyHeader` | 〃 | 에너지/코인/다이아 `CurrencyView`와 `EnergyTimerView` 초기화 (메서드 주입). 왼쪽은 프로필(`LobbyProfile`, 폭 330) |
+| `BattleView` / `BattlePresenter` | `Scripts/Lobby/BattleView` | 전투 탭. `WaveScrollSlot`과 시작 버튼(`StartClicked`, `SetStartInteractable`)을 노출하고, Presenter가 `TransitionAsync(Lobby, Game)`으로 게임 씬에 들어간다. 플레이 버튼 아래 배지(`EnergyCost`)에 에너지 소모량(`GameConfig.EnergyCostPerBattle`)을 표시한다. 에너지가 모자라도 버튼을 막지 않고, 누르면 충전 팝업을 띄운다 (`// TODO`) |
+| `HunterCardGachaPopup` / `HunterCardGachaPresenter` | `Scripts/Lobby/HunterCardGachaPopup` | 헌터 카드팩 구매. 가격은 팩 티켓이고, 팝업 오른쪽 위 `CurrencyPackTicket` 칩에 보유 팩 티켓을 보여 준다 |
 | `WaveScrollView` / `WaveScrollPresenter` | `Scripts/Lobby/WaveScroll` | 웨이브 진행도 맵 (아래) |
 | `HunterCardView` / `HunterCardPresenter` / `HunterCard` / `SortButton` | `Scripts/Lobby/HunterView` | 헌터 탭. 카드는 레벨순/등급순 4단계 정렬 |
-| `HunterDetailPopup` / `HunterDetailPresenter` | `Scripts/Lobby/HunterDetailPopup` | 헌터 상세 팝업. 레벨업/해금/MAX 버튼, 스킬 슬롯 |
-| `CurrencyView` / `CurrencyViewPresenter` | `Scripts/Common` | 재화 칩(코인/다이아. 프리팹 `CurrencyCoin`, `CurrencyDiamond`). 값 구독과 클릭 이벤트 발행. `CurrencyType` 값은 프리팹에 정수로 저장되므로 바꾸지 않는다 |
+| `HunterDetailPopup` / `HunterDetailPresenter` | `Scripts/Lobby/HunterDetailPopup` | 헌터 상세 팝업. 레벨업/해금/MAX 버튼, 스킬 슬롯. 레벨업에 카드가 필요 없는 헌터(전설)는 카드 게이지를 숨긴다 |
+| `CurrencyView` / `CurrencyViewPresenter` | `Scripts/Common` | 재화 칩(프리팹 `CurrencyEnergy`, `CurrencyCoin`, `CurrencyDiamond`, `CurrencyPackTicket`. 칩 전체가 버튼이고 아이콘 오른쪽 아래에 초록 +). 에너지는 "현재/최대", 나머지는 수량. 값 구독과 클릭 이벤트 발행. `CurrencyType` 값은 프리팹에 정수로 저장되므로 바꾸지 않는다 |
+| `EnergyTimerView` | `Scripts/Common` | 에너지 칩 아래 테두리에 걸친 배지에 다음 1 회복까지 남은 시간. 서버 시계(`IGameServerConnection.ServerNowMs`, 응답 헤더 ts로 맞춤) 기준이고, 최대치 이상이면 숨긴다. 시간이 다 되면 `RefreshItemsAsync`로 서버 값을 다시 받는다 |
 | `SkillSlotGroup` / `SkillSlotItem` | `Scripts/Common` | 스킬 슬롯 공통 UI. 헌터 상세 팝업과 인게임 타워 정보가 같이 쓴다 (아래) |
 
 - `CurrencyView`은 클릭하면 `CurrencyViewClickedEvent(CurrencyType)`를 MessagePipe로 발행한다. 상점이 생기면 이 이벤트를 받아 연다 (`// TODO` 상태)

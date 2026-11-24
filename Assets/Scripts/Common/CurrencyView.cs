@@ -46,6 +46,11 @@ public class CurrencyView : MonoBehaviour
         _text.text = value.ToString("N0");
     }
 
+    public void SetText(string text)
+    {
+        _text.text = text;
+    }
+
     private void OnButtonClicked()
     {
         Clicked?.Invoke();

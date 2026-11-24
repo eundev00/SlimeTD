@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using MessagePipe;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 [PopupPresenter(typeof(HunterCardGachaPresenter))]
 public class HunterCardGachaPopup : PopupBase
@@ -11,11 +13,18 @@ public class HunterCardGachaPopup : PopupBase
     [NotNull][SerializeField] private Button _closeButton;
     [NotNull][SerializeField] private Button _dimButton;
     [NotNull][SerializeField] private TMP_Text _messageText;
+    [NotNull][SerializeField] private CurrencyView _packTicketCurrency;
 
     public IReadOnlyList<HunterCardGachaPackView> Packs => _packs;
 
     public event Action<int> PackClicked;
     public event Action CloseClicked;
+
+    [Inject]
+    public void Construct(IAccountService accountService, IPublisher<CurrencyViewClickedEvent> clickedPublisher)
+    {
+        _packTicketCurrency.Initialize(accountService, clickedPublisher);
+    }
 
     private void Start()
     {

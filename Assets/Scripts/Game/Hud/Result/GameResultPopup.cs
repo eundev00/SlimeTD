@@ -9,6 +9,7 @@ public class GameResultPopup : PopupBase
 {
     [NotNull][SerializeField] private Button _restartButton;
     [NotNull][SerializeField] private Button _lobbyButton;
+    [NotNull][SerializeField] private TMP_Text _energyCostText;
 
     [Header("결과 정보")]
     [SerializeField] private TMP_Text _titleText;
@@ -18,6 +19,7 @@ public class GameResultPopup : PopupBase
     [SerializeField] private RewardItemView _rewardItemTemplate;
     [SerializeField] private Sprite _coinIcon;
     [SerializeField] private Sprite _diamondIcon;
+    [SerializeField] private Sprite _packTicketIcon;
 
     private readonly List<RewardItemView> _rewardItems = new List<RewardItemView>();
 
@@ -101,6 +103,15 @@ public class GameResultPopup : PopupBase
             item.Setup(GetIcon(codeName), amount);
             _rewardItems.Add(item);
         }
+
+        // 칸이 넘치면 가운데가 아니라 첫 보상부터 보이게 한다
+        var content = (RectTransform)_rewardItemTemplate.transform.parent;
+        var scroll = content.GetComponentInParent<ScrollRect>();
+        if (scroll != null)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+            scroll.horizontalNormalizedPosition = 0f;
+        }
     }
 
     private Sprite GetIcon(string codeName)
@@ -109,10 +120,17 @@ public class GameResultPopup : PopupBase
         {
             case ItemCatalog.Coin: return _coinIcon;
             case ItemCatalog.Diamond: return _diamondIcon;
+            case ItemCatalog.PackTicket: return _packTicketIcon;
             default:
                 Debug.Log($"[GameResultPopup] 아이콘이 없는 보상입니다: {codeName}", this);
                 return null;
         }
+    }
+
+    public void SetEnergyCost(int cost)
+    {
+        if (_energyCostText != null)
+            _energyCostText.text = cost.ToString();
     }
 
     public void SetButtonsInteractable(bool interactable)

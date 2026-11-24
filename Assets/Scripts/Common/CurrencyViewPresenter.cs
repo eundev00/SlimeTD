@@ -14,9 +14,19 @@ public class CurrencyViewPresenter : IDisposable
         _view = view;
         _clickedPublisher = clickedPublisher;
 
-        GetSource(view.Type, accountService)
-            .Subscribe(view.SetValue)
-            .AddTo(_disposables);
+        if (view.Type == CurrencyType.Energy)
+        {
+            accountService.Energy
+                .CombineLatest(accountService.EnergyMax, (energy, max) => $"{energy}/{max}")
+                .Subscribe(view.SetText)
+                .AddTo(_disposables);
+        }
+        else
+        {
+            GetSource(view.Type, accountService)
+                .Subscribe(view.SetValue)
+                .AddTo(_disposables);
+        }
 
         view.Clicked += HandleClicked;
     }
@@ -39,6 +49,7 @@ public class CurrencyViewPresenter : IDisposable
         switch (type)
         {
             case CurrencyType.Diamond: return service.Diamond;
+            case CurrencyType.PackTicket: return service.PackTicket;
             default: return service.Coin;
         }
     }

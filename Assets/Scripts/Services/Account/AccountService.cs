@@ -14,19 +14,29 @@ public class AccountService : IAccountService, IDisposable
 
     private readonly ReactiveProperty<int> _coin = new ReactiveProperty<int>();
     private readonly ReactiveProperty<int> _diamond = new ReactiveProperty<int>();
+    private readonly ReactiveProperty<int> _packTicket = new ReactiveProperty<int>();
+    private readonly ReactiveProperty<int> _energy = new ReactiveProperty<int>();
+    private readonly ReactiveProperty<int> _energyMax = new ReactiveProperty<int>();
+    private readonly ReactiveProperty<long> _energyRecoverAtMs = new ReactiveProperty<long>();
     private readonly ReactiveProperty<int> _bestWave = new ReactiveProperty<int>();
     private readonly List<HunterState> _hunters = new List<HunterState>();
     private readonly Dictionary<int, HunterState> _huntersById = new Dictionary<int, HunterState>();
 
     private int _coinItemId;
     private int _diamondItemId;
+    private int _packTicketItemId;
+    private int _energyItemId;
 
     public bool IsInitialized { get; private set; }
     public IReadOnlyReactiveProperty<int> Coin => _coin;
     public IReadOnlyReactiveProperty<int> Diamond => _diamond;
+    public IReadOnlyReactiveProperty<int> PackTicket => _packTicket;
+    public IReadOnlyReactiveProperty<int> Energy => _energy;
+    public IReadOnlyReactiveProperty<int> EnergyMax => _energyMax;
+    public IReadOnlyReactiveProperty<long> EnergyRecoverAtMs => _energyRecoverAtMs;
+    public long ServerNowMs => _connection.ServerNowMs;
     public IReadOnlyReactiveProperty<int> BestWave => _bestWave;
     public IReadOnlyList<HunterState> Hunters => _hunters;
-    public int HunterCardGachaPity { get; private set; }
 
     public AccountService(
         IResourceLoadService resourceLoadService,
@@ -52,9 +62,10 @@ public class AccountService : IAccountService, IDisposable
             return false;
         }
 
-        if (!items.TryGetItemId(ItemCatalog.Coin, out _coinItemId) || !items.TryGetItemId(ItemCatalog.Diamond, out _diamondItemId))
+        if (!items.TryGetItemId(ItemCatalog.Coin, out _coinItemId) || !items.TryGetItemId(ItemCatalog.Diamond, out _diamondItemId)
+            || !items.TryGetItemId(ItemCatalog.PackTicket, out _packTicketItemId) || !items.TryGetItemId(ItemCatalog.Energy, out _energyItemId))
         {
-            Debug.Log("[AccountService] ItemCatalog에 Coin 또는 Diamond가 없습니다.");
+            Debug.Log("[AccountService] ItemCatalog에 Coin, Diamond, PackTicket, Energy 중 없는 것이 있습니다.");
             return false;
         }
 
@@ -116,6 +127,8 @@ public class AccountService : IAccountService, IDisposable
         }
 
         ApplyItems(player.Items);
+        _energyMax.Value = player.EnergyMax;
+        SetEnergyRecoverAt(player.EnergyRecoverAtMs);
 
         int bestWave = 0;
         foreach (var stage in player.Stages)
@@ -125,10 +138,9 @@ public class AccountService : IAccountService, IDisposable
         }
 
         _bestWave.Value = bestWave;
-        HunterCardGachaPity = player.HunterCardGachaPity;
     }
 
-    // 서버 응답의 아이템 현재 수량으로 코인·다이아를 맞춘다
+    // 서버 응답의 아이템 현재 수량으로 계정 재화를 맞춘다
     public void ApplyItems(IEnumerable<ItemStack> items)
     {
         foreach (var item in items)
@@ -138,6 +150,41 @@ public class AccountService : IAccountService, IDisposable
                 _coin.Value = amount;
             else if (item.ItemId == _diamondItemId)
                 _diamond.Value = amount;
+            else if (item.ItemId == _packTicketItemId)
+                _packTicket.Value = amount;
+            else if (item.ItemId == _energyItemId)
+                _energy.Value = amount;
+        }
+    }
+
+    // 다음 에너지 1 회복 시각 (서버 시계 Unix ms). 0이면 최대치 이상이라 회복하지 않는다
+    public void SetEnergyRecoverAt(long serverMs)
+    {
+        _energyRecoverAtMs.Value = serverMs;
+    }
+
+    // 계정 재화와 에너지 회복 시각만 서버 값으로 다시 맞춘다 (에너지 회복 시각이 지났을 때 등)
+    public async UniTask RefreshItemsAsync()
+    {
+        if (!IsInitialized)
+            return;
+
+        try
+        {
+            var info = await _connection.RequestAsync(MsgId.GetPlayerInfoReq, new GetPlayerInfoReq(), MsgId.GetPlayerInfoRes, GetPlayerInfoRes.Parser);
+            if (info.Result != ResultCode.Ok)
+            {
+                Debug.Log($"[AccountService] 계정 정보 갱신 실패: {info.Result}");
+                return;
+            }
+
+            ApplyItems(info.Player.Items);
+            _energyMax.Value = info.Player.EnergyMax;
+            SetEnergyRecoverAt(info.Player.EnergyRecoverAtMs);
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"[AccountService] 계정 정보 갱신 요청 실패: {e.Message}");
         }
     }
 
@@ -285,7 +332,7 @@ public class AccountService : IAccountService, IDisposable
         _bestWave.Value = wave;
     }
 
-    // 확률은 서버가 굴린다. 카드 목록은 연출용이고, 계정 값은 응답의 아이템·헌터·천장으로 갱신한다
+    // 확률은 서버가 굴린다. 카드 목록은 연출용이고, 계정 값은 응답의 아이템·헌터로 갱신한다
     public async UniTask<(ResultCode Result, IReadOnlyList<HunterCardGachaCard> Cards)> DrawHunterCardGachaAsync(int packId)
     {
         if (!IsInitialized)
@@ -300,11 +347,13 @@ public class AccountService : IAccountService, IDisposable
             ApplyItems(res.Items);
             foreach (var hunter in res.Hunters)
                 ApplyHunter(hunter);
-            HunterCardGachaPity = res.Pity;
 
             var cards = new List<HunterCardGachaCard>(res.Cards.Count);
             foreach (var card in res.Cards)
-                cards.Add(new HunterCardGachaCard(card.TowerId, card.GradeId, ToCardKind(card.Kind), (int)card.RefundCoin, card.IsPity));
+            {
+                var kind = card.Kind == GachaCardKind.Refund ? HunterCardGachaCardKind.Refund : HunterCardGachaCardKind.Card;
+                cards.Add(new HunterCardGachaCard(card.TowerId, card.GradeId, kind, (int)card.RefundCoin));
+            }
 
             return (ResultCode.Ok, cards);
         }
@@ -315,15 +364,6 @@ public class AccountService : IAccountService, IDisposable
         }
     }
 
-    private static HunterCardGachaCardKind ToCardKind(GachaCardKind kind)
-    {
-        return kind switch
-        {
-            GachaCardKind.Unlock => HunterCardGachaCardKind.Unlock,
-            GachaCardKind.Refund => HunterCardGachaCardKind.Refund,
-            _ => HunterCardGachaCardKind.Card,
-        };
-    }
     private static void WarnNotSaved(string action)
     {
         Debug.LogWarning($"[AccountService] 서버 미반영: {action}은 서버 기능이 없어 저장되지 않습니다.");
@@ -343,6 +383,10 @@ public class AccountService : IAccountService, IDisposable
         ClearHunters();
         _coin.Dispose();
         _diamond.Dispose();
+        _packTicket.Dispose();
+        _energy.Dispose();
+        _energyMax.Dispose();
+        _energyRecoverAtMs.Dispose();
         _bestWave.Dispose();
     }
 }

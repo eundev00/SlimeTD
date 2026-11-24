@@ -5,19 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "HunterCardGachaConfig", menuName = "SlimeTD/Hunter Card Gacha Config", order = 66)]
 public class HunterCardGachaConfig : ScriptableObject
 {
+    // 확률과 환급은 서버가 굴린다. 팩은 화면 표시용 사본이다 (가격 = 팩 티켓)
     [SerializeField] private HunterCardGachaPack[] _packs;
-    [SerializeField] private HunterCardGachaGradeWeight[] _gradeWeights;
-    [SerializeField] private float _lockedCardChance;
-    [SerializeField] private int _pityCount;
-    [SerializeField] private int _pityGradeId;
-    [SerializeField] private int _maxLevelRefundCoin;
 
     public IReadOnlyList<HunterCardGachaPack> Packs => _packs ?? Array.Empty<HunterCardGachaPack>();
-    public IReadOnlyList<HunterCardGachaGradeWeight> GradeWeights => _gradeWeights ?? Array.Empty<HunterCardGachaGradeWeight>();
-    public float LockedCardChance => _lockedCardChance;
-    public int PityCount => _pityCount;
-    public int PityGradeId => _pityGradeId;
-    public int MaxLevelRefundCoin => _maxLevelRefundCoin;
 
     public bool TryGetPack(int packId, out HunterCardGachaPack pack)
     {
@@ -49,14 +40,4 @@ public struct HunterCardGachaPack
     public int Price => _price;
     public int GuaranteeGradeId => _guaranteeGradeId;
     public bool HasGuarantee => _guaranteeGradeId > 0;
-}
-
-[Serializable]
-public struct HunterCardGachaGradeWeight
-{
-    [SerializeField] private int _gradeId;
-    [SerializeField] private float _weight;
-
-    public int GradeId => _gradeId;
-    public float Weight => _weight;
 }

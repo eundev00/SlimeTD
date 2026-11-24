@@ -2,7 +2,6 @@
 using SlimeTD.Protocol;
 using UnityEngine;
 
-// 판정 코드(HunterCardGachaRoller)는 서버와 같은 규칙으로 남겨 두고, 에디터 확률 시뮬레이터에서만 쓴다
 public class HunterCardGachaService : IHunterCardGachaService
 {
     private readonly IAccountService _accountService;
@@ -37,6 +36,6 @@ public class HunterCardGachaService : IHunterCardGachaService
         if (result != ResultCode.Ok)
             return (result, null);
 
-        return (result, new HunterCardGachaResult(packId, price, cards, _accountService.HunterCardGachaPity));
+        return (result, new HunterCardGachaResult(packId, price, cards));
     }
 }

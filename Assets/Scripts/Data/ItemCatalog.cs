@@ -18,6 +18,8 @@ public class ItemCatalog : ScriptableObject
 {
     public const string Coin = "Coin";
     public const string Diamond = "Diamond";
+    public const string PackTicket = "PackTicket";
+    public const string Energy = "Energy";
 
     [SerializeField] private List<ItemEntry> _items = new List<ItemEntry>();
 

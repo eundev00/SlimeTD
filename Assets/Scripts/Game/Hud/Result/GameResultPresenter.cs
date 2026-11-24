@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using SlimeTD.Protocol;
 using UniRx;
+using UnityEngine;
 
 public class GameResultPresenter : IPopupPresenter
 {
@@ -34,6 +35,7 @@ public class GameResultPresenter : IPopupPresenter
         bool isNewRecord = _accountService.IsInitialized && info.ReachedWave.Value > info.PreviousBestWave.Value;
 
         _popup.Setup(info.IsCleared.Value, info.ReachedWave.Value, isNewRecord);
+        _popup.SetEnergyCost(EnergyCost);
 
         _popup.RestartButtonClicked += HandleRestartButtonClicked;
         _popup.LobbyButtonClicked += HandleLobbyButtonClicked;
@@ -70,8 +72,49 @@ public class GameResultPresenter : IPopupPresenter
 
     private void HandleRestartButtonClicked()
     {
+        if (!IsServerBattle)
+        {
+            _popup.SetButtonsInteractable(false);
+            _sceneLoader.ReloadAsync(_popup.SceneName).Forget();
+            return;
+        }
+
+        if (_accountService.Energy.Value < EnergyCost)
+        {
+            ShowNotEnoughEnergy();
+            return;
+        }
+
+        RestartSingleAsync().Forget();
+    }
+
+    private bool IsServerBattle => _popup.SceneName == SceneNames.SingleGame && _accountService.IsInitialized;
+
+    private int EnergyCost => _gameplayService.Config != null ? _gameplayService.Config.EnergyCostPerBattle : 0;
+
+    // 다시 하기도 새 전투라 서버에 시작을 받은 뒤에 씬을 다시 연다
+    private async UniTaskVoid RestartSingleAsync()
+    {
         _popup.SetButtonsInteractable(false);
+
+        var result = await _singleBattleService.StartAsync(_gameplayService.Stage.StageId);
+        if (result != ResultCode.Ok)
+        {
+            if (result == ResultCode.NotEnoughEnergy)
+                ShowNotEnoughEnergy();
+
+            // TODO: 실패 안내 UI
+            _popup.SetButtonsInteractable(true);
+            return;
+        }
+
         _sceneLoader.ReloadAsync(_popup.SceneName).Forget();
+    }
+
+    private void ShowNotEnoughEnergy()
+    {
+        // TODO: 광고 보기 / 다이아 구매 팝업
+        Debug.Log($"[GameResultPresenter] 에너지가 부족합니다: {_accountService.Energy.Value}/{EnergyCost}");
     }
 
     private void HandleLobbyButtonClicked()

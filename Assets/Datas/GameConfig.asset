@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152011e2254784595a1c8bf1d0505129, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfig
-  _initialCoin: 10000
-  _initialDiamond: 10000
-  _initialHunterCards: 100
   _summonBaseCost: 10
   _summonCostIncrease: 2
   _summonGradeId: 1
   _slowMinSpeedRatio: 0.25
   _bossSlowScale: 0.5
+  _energyCostPerBattle: 5
   _ignoreGoldCost: 0
   _autoStartWave: 1
   _testTower: {fileID: 11400000, guid: 7c9bf12d1abd74c4a96351aee94a52ce, type: 2}

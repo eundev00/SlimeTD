@@ -12,11 +12,10 @@ GameConfig (SO, 1개)
 ├─ summonCostIncrease: int = 10                 // 에셋 값 2
 ├─ summonGradeId     : int = 1                  // 소환 등급 (일반)
 ├─ slowMinSpeedRatio : float = 0.25             // 감속 하한. 기본 속도의 25% 밑으로 내려가지 않는다
-├─ bossSlowScale     : float = 0.5              // 보스에게 걸리는 감속 비율 (절반)
-├─ initialCoin       : int = 10000               // 새 계정 시작 코인 (개발용 임시)
-├─ initialDiamond    : int = 10000               // 새 계정 시작 다이아 (개발용 임시)
-└─ initialHunterCards : int = 100               // 헌터 기록을 새로 만들 때 헌터마다 주는 카드 (개발용 임시)
+└─ bossSlowScale     : float = 0.5              // 보스에게 걸리는 감속 비율 (절반)
 ```
+
+새 계정 시작 재화는 서버 `NewAccount.csv`가 정한다 (클라이언트에 두지 않는다).
 
 ## 맵 / 그리드
 
@@ -70,9 +69,8 @@ TowerData (SO, 종류당 1개)
 ├─ attackCooldown    : float                    // 시트
 ├─ critChance        : float = 10               // %. 시트
 ├─ critBonus         : float = 100              // %. 시트
-├─ startUnlocked     : bool                     // 시작 해금 (Towers.csv에서 타워마다 지정)
-├─ unlockDiamondPrice: int                      // 잠긴 헌터의 다이아 구매 가격. 0이면 구매 불가
-├─ levelUpCost       : LevelUpCostRule          // LevelUpCosts 시트의 레벨별 카드/코인
+├─ unlockDiamondPrice: int                      // 잠긴 헌터의 다이아 구매 가격 (표시용, 판정은 서버). 0이면 구매 불가
+├─ levelUpCost       : LevelUpCostRule          // LevelUpCosts 시트의 레벨별 카드/코인 (표시용, 판정은 서버)
 └─ thumbnailSmall/Large : Sprite                // 카드(54px) / 상세 팝업(128px). 인스펙터에서 연결
 
 스킬은 TowerData가 가지지 않는다. SkillCatalog가 towerId로 찾아 준다 (아래 "타워 스킬")
@@ -172,8 +170,9 @@ IAccountService (Project 스코프)
 - 레벨업 비용은 `TowerData.levelUpCost`(LevelUpCosts 시트 값)에서 읽는다. `LevelUpCosts.csv`의 `cards`, `coin`이 원천이다
 - 로그인과 레벨업 때 `ITowerLevelService`에 레벨을 반영하며, 게임 씬은 이 값을 그대로 읽는다
 - 해금: 시작 해금은 `Towers.csv`의 `startUnlocked`로 타워마다 정한다 (등급 기본값은 없다). 잠긴 헌터는 `unlockDiamondPrice`만큼 다이아를 써서 구매한다. 확정 기획은 일반·희귀·영웅은 시작 해금, 전설만 다이아 구매·이벤트다
-- 헌터 카드 뽑기 확률은 서버가 굴린다. 클라이언트의 `HunterCardGachaRoller`는 에디터 확률 시뮬레이터에만 쓴다. 확정 기획은 팩 티켓으로 사고 보유 헌터만 나오며 전설·천장·잠긴 카드가 없다 (반영 전)
-- 경험치·유저 레벨, 팩 티켓, 에너지는 아직 계정에 없다. 서버가 계정 정보와 아이템에 추가하면 `IAccountService`에 붙인다 ([메타 재화 밸런스](슬라임TD_메타재화밸런스.md))
+- 헌터 카드 뽑기는 서버가 굴린다 (팩 티켓으로 사고 보유 헌터만, 전설·천장·잠긴 카드 없음). 클라이언트에는 굴림 코드가 없고 `HunterCardGachaConfig`는 팩 표시용(카드 수, 티켓 가격)만 갖는다
+- 클라이언트 SO의 메타 값(`TowerData`의 레벨업 비용·다이아 가격, 팩)은 서버가 판정하는 값의 표시용 사본이다. 해금, 뽑기 확률, 환급, 새 계정, 보상, 에너지 값은 클라이언트에 두지 않는다
+- 팩 티켓(1000006)과 에너지(1000007)는 서버 계정 아이템이다. 에너지 최대치와 다음 회복 시각은 계정 정보(`energy_max`, `energy_recover_at_ms`)로 온다 ([메타 재화 밸런스](슬라임TD_메타재화밸런스.md))
 - 소환/합성 후보는 `IsAvailable`로 해금된 헌터만 거른다. 로비를 거치지 않은 에디터 테스트에서는 제한이 없다
 - 재화 지급(`AddCoin` 등)은 아직 서버 기능이 없어 화면에만 반영되고 "서버 미반영" 경고를 남긴다
 

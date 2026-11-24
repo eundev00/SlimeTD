@@ -182,6 +182,12 @@ public class HunterDetailPresenter : IPopupPresenter
     {
         _popup.SetLevel(level, TowerLevelService.MaxLevel, canLevelUp);
 
+        // 전설처럼 레벨업에 카드를 쓰지 않는 헌터는 카드 게이지를 숨긴다
+        bool usesCards = _hunter.Data.LevelUpCost.GetCards(1) > 0;
+        _popup.SetCardProgressVisible(usesCards);
+        if (!usesCards)
+            return;
+
         if (maxLevel)
         {
             _popup.SetCardProgressMax();

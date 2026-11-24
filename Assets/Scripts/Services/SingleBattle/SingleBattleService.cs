@@ -41,6 +41,14 @@ public class SingleBattleService : ISingleBattleService
         try
         {
             var res = await _connection.RequestAsync(MsgId.SingleBattleStartReq, new SingleBattleStartReq { StageId = stageId }, MsgId.SingleBattleStartRes, SingleBattleStartRes.Parser);
+
+            // 성공이면 쓴 뒤, 에너지가 모자라면 회복을 반영한 현재 에너지가 온다
+            if (res.Result == ResultCode.Ok || res.Result == ResultCode.NotEnoughEnergy)
+            {
+                _accountService.ApplyItems(res.Items);
+                _accountService.SetEnergyRecoverAt(res.EnergyRecoverAtMs);
+            }
+
             if (res.Result != ResultCode.Ok)
             {
                 Debug.Log($"[SingleBattleService] 전투 시작 실패: {res.Result}");

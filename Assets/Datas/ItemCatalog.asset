@@ -21,7 +21,7 @@ MonoBehaviour:
     _codeName: Jelly
   - _itemId: 1000004
     _codeName: Gold
-  - _itemId: 2101001
-    _codeName: HunterCardPack_1
-  - _itemId: 2101002
-    _codeName: HunterCardPack_10
+  - _itemId: 1000006
+    _codeName: PackTicket
+  - _itemId: 1000007
+    _codeName: Energy

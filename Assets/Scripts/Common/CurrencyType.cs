@@ -3,4 +3,6 @@ public enum CurrencyType
 {
     Coin = 1,
     Diamond = 2,
+    Energy = 3,
+    PackTicket = 4,
 }

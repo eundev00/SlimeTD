@@ -35,10 +35,12 @@ public static class ServerFrameCodec
             _count += length;
         }
 
-        public bool TryRead(out MsgId id, out byte[] body)
+        // serverTime은 응답 헤더의 ts (서버가 보낸 시각, Unix 초)
+        public bool TryRead(out MsgId id, out byte[] body, out uint serverTime)
         {
             id = MsgId.None;
             body = null;
+            serverTime = 0;
 
             if (_count < LengthSize)
                 return false;
@@ -48,6 +50,7 @@ public static class ServerFrameCodec
                 return false;
 
             id = (MsgId)BinaryPrimitives.ReadUInt16BigEndian(_buffer.AsSpan(LengthSize, IdSize));
+            serverTime = BinaryPrimitives.ReadUInt32BigEndian(_buffer.AsSpan(LengthSize + IdSize, 4));
             int bodyOffset = LengthSize + IdSize + ResponseExtraSize;
             body = _buffer.AsSpan(bodyOffset, frameLength - IdSize - ResponseExtraSize).ToArray();
 

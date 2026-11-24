@@ -23,6 +23,7 @@ public class HunterDetailPopup : PopupBase
     [Header("레벨 줄")]
     [NotNull][SerializeField] private GameObject _levelRow;
     [NotNull][SerializeField] private TMP_Text _levelText;
+    [NotNull][SerializeField] private GameObject _cardProgressRoot;
     [NotNull][SerializeField] private Slider _progressSlider;
     [NotNull][SerializeField] private TMP_Text _progressText;
     [NotNull][SerializeField] private GameObject _arrowBadge;
@@ -132,6 +133,11 @@ public class HunterDetailPopup : PopupBase
         float ratio = needed > 0 ? Mathf.Clamp01((float)owned / needed) : 1f;
         _progressSlider.value = ratio;
         _progressText.text = $"{owned}/{needed}";
+    }
+
+    public void SetCardProgressVisible(bool visible)
+    {
+        _cardProgressRoot.SetActive(visible);
     }
 
     public void SetCardProgressMax()
