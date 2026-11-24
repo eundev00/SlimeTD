@@ -6,6 +6,7 @@
 - 타워 로스터: [Doc/슬라임TD_타워로스터.md](Doc/슬라임TD_타워로스터.md)
 - 타워 스킬 설계: [Doc/슬라임TD_타워스킬설계.md](Doc/슬라임TD_타워스킬설계.md)
 - 데이터 구조: [Doc/슬라임TD_데이터구조설계.md](Doc/슬라임TD_데이터구조설계.md)
+- 메타 재화 밸런스: [Doc/슬라임TD_메타재화밸런스.md](Doc/슬라임TD_메타재화밸런스.md)
 - 웨이브 기획: [Doc/슬라임TD_웨이브기획.md](Doc/슬라임TD_웨이브기획.md)
 - 웨이브 데이터: [Doc/슬라임TD_웨이브데이터구조.md](Doc/슬라임TD_웨이브데이터구조.md)
 - 슬라임 렌더링: [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md)
@@ -127,7 +128,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 - **스킬 아이콘**: `Assets/Art/UI/SkillIcon/SkillIcon_{스킬ID}.png` (128x128 투명 PNG). 새 아이콘은 Texture Type을 Sprite로 바꿔야 아틀라스에 들어간다 (Default면 에러 없이 빠진다). 폴더 전체를 `Assets/Art/Images/SkillIconAtlas.spriteatlasv2`가 묶고, 런타임은 `LoadAsync<SpriteAtlas>(AtlasKeys.SkillIconAtlas)` 후 `GetSprite(skill.IconName)`으로 쓴다. `Assets/Art/Images`는 Addressables 폴더로 등록되어 있고 Sprite Packer 모드는 SpriteAtlasV2다
 - **TMP 폰트 글자**: 화면에 보이는 한글(시트의 이름/설명 포함)을 바꾸면 메뉴 `SlimeTD > Data > Trim TMP Fonts To Used Characters`를 다시 실행해야 새 글자가 네모로 깨지지 않는다
 - **데이터 스크립트 위치**: ScriptableObject 정의는 Assets/Scripts/Data/에 둔다 (Game/ 아래에 두지 않는다)
-- **재화**: 인게임은 골드(소환)와 젤리(강화, 지급처는 추후 작업), 메타는 코인(헌터 레벨업, 헌터 뽑기 팩)과 다이아(헌터 구매)다. 이름이 겹치는 골드는 인게임 재화다 (옛 메타 골드는 코인으로 바꿨다)
+- **재화**: 인게임은 골드(소환)와 젤리(강화, 지급처는 추후 작업), 메타는 코인(헌터 레벨업)과 다이아(전설 헌터 구매)다. 경험치(유저 레벨), 팩 티켓(헌터 뽑기 팩), 에너지(입장)는 기획만 확정했고 아직 구현 전이다 ([메타 재화 밸런스](Doc/슬라임TD_메타재화밸런스.md)). 이름이 겹치는 골드는 인게임 재화다 (옛 메타 골드는 코인으로 바꿨다)
 - **계정(유저 정보)**: 코인/다이아/헌터 카드(헌터별, `HunterState.Cards`)/헌터 레벨/최고 웨이브는 `IAccountService`(전역)가 든다. 유저 정보 이름에는 "Data"를 쓰지 않는다 ("Data"는 테이블 데이터). 계정은 서버가 들고 확정한다: Bootstrap에서 서버에 접속·로그인해 받고(실패하면 Bootstrap의 접속 실패 화면), 레벨업·구매·헌터 카드 뽑기는 서버 요청(`LevelUpAsync`, `PurchaseHunterAsync`, `DrawHunterCardGachaAsync`)이다. 뽑기 확률은 서버가 굴리고, 클라이언트의 `HunterCardGachaRoller`는 에디터 확률 시뮬레이터에만 쓴다. 로컬 저장은 없다. 재화 지급은 아직 서버 기능이 없어 화면에만 반영되고 "서버 미반영" 경고 로그를 남긴다. 싱글 전투는 `ISingleBattleService`가 로비에서 시작 요청(응답의 스테이지로 게임 씬을 연다)을, 끝나면 결과(도착 틱 기록 포함)를 보내고 서버가 다시 계산해 확인한 최고 웨이브를 받는다 (서버 `docs`의 싱글 전투 검증 참고). 서버 주소는 `ServerConfig`(에디터·모바일 TCP), WebGL은 페이지 주소의 `?server=wss://…/ws`다. 네트워크 계층은 `Assets/Scripts/Network`(`GameServerConnection`, 메시지 클래스는 서버 `Protocol/CSharp`에서 복사, 직접 고치지 않음). `TowerTestScene`은 서버 없이 `TowerTestAccountService`를 쓴다. 타워 레벨은 로비에서 정하고 인게임에서는 오르지 않는다
 - **"손맛"이 이 프로젝트의 최우선 품질 기준**이다. 피격/처치 연출은 비용을 아끼지 않는다
 - **게임 씬과 맵**: 게임 씬은 `SingleGameScene`, `MultiGameScene` 두 개이고 맵을 갖지 않는다. 맵은 프리팹(`Assets/Prefabs/Game/Map/<mapKey>.prefab`, 루트에 `GameMap`)이고 스테이지의 `mapKey`(Stages.csv)로 `GameInitiator`가 로드해 게임 씬에 넣는다. 씬마다 `GameLifetimeScope._stageKey`로 스테이지를 정한다 (싱글 `Stage_SingleNormal`, 멀티 `Stage_MultiNormal`). 맵은 경로(`MapPath`: 입구 번호 + 스플라인) 목록과 배치 구역(`MapZone`: 자리 번호 + 그리드) 목록을 갖는다. 멀티는 두 사람이 맵 하나를 같이 막는 협동이고 경쟁이 아니다: 경로 2개(위·아래 입구 → 가운데 줄 합류 → 기지)와 구역 2개(slot 0 = 나/아래, slot 1 = 팀원/위)다. 웨이브는 게임에 하나(`WaveSpawner`)이고 무리 안에서 입구를 번갈아 내보낸다. 팀원 구역은 서버가 붙기 전까지 비워 둔다

@@ -171,8 +171,9 @@ IAccountService (Project 스코프)
 - 레벨업은 그 헌터의 `Cards`와 코인을, 구매는 다이아를 쓴다. 차감과 확정은 서버가 하고, 클라이언트의 `CanLevelUp`은 버튼 표시용이다
 - 레벨업 비용은 `TowerData.levelUpCost`(LevelUpCosts 시트 값)에서 읽는다. `LevelUpCosts.csv`의 `cards`, `coin`이 원천이다
 - 로그인과 레벨업 때 `ITowerLevelService`에 레벨을 반영하며, 게임 씬은 이 값을 그대로 읽는다
-- 해금: 시작 해금은 `Towers.csv`의 `startUnlocked`로 타워마다 정한다 (등급 기본값은 없다). 잠긴 헌터는 `unlockDiamondPrice`만큼 다이아를 써서 구매한다
-- 헌터 카드 뽑기 확률은 서버가 굴린다. 클라이언트의 `HunterCardGachaRoller`는 에디터 확률 시뮬레이터에만 쓴다
+- 해금: 시작 해금은 `Towers.csv`의 `startUnlocked`로 타워마다 정한다 (등급 기본값은 없다). 잠긴 헌터는 `unlockDiamondPrice`만큼 다이아를 써서 구매한다. 확정 기획은 일반·희귀·영웅은 시작 해금, 전설만 다이아 구매·이벤트다
+- 헌터 카드 뽑기 확률은 서버가 굴린다. 클라이언트의 `HunterCardGachaRoller`는 에디터 확률 시뮬레이터에만 쓴다. 확정 기획은 팩 티켓으로 사고 보유 헌터만 나오며 전설·천장·잠긴 카드가 없다 (반영 전)
+- 경험치·유저 레벨, 팩 티켓, 에너지는 아직 계정에 없다. 서버가 계정 정보와 아이템에 추가하면 `IAccountService`에 붙인다 ([메타 재화 밸런스](슬라임TD_메타재화밸런스.md))
 - 소환/합성 후보는 `IsAvailable`로 해금된 헌터만 거른다. 로비를 거치지 않은 에디터 테스트에서는 제한이 없다
 - 재화 지급(`AddCoin` 등)은 아직 서버 기능이 없어 화면에만 반영되고 "서버 미반영" 경고를 남긴다
 
