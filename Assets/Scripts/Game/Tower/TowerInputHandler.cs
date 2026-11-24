@@ -89,6 +89,21 @@ public class TowerInputHandler : MonoBehaviour
 
         var ray = _camera.ScreenPointToRay(screenPosition);
 
+        // 타워 몸통이 윗칸까지 덮어서, 그리드 위에서는 콜라이더보다 바닥 칸으로 정한다
+        if (TryGetGridCell(ray, out var tappedCell))
+        {
+            if (_towerCells.TryGetTower(tappedCell, out var cellTower))
+            {
+                SelectTower(cellTower);
+                return;
+            }
+
+            ClearSelection();
+            if (_gridMapData.GetCellState(tappedCell.x, tappedCell.y) == GridCellState.Placeable)
+                EmptyCellTapped?.Invoke(tappedCell);
+            return;
+        }
+
         if (Physics.Raycast(ray, out var hit, _maxRayDistance, _towerLayer))
         {
             var tower = hit.collider.GetComponentInParent<ITowerInteractionHandler>();
@@ -100,16 +115,13 @@ public class TowerInputHandler : MonoBehaviour
         }
 
         ClearSelection();
-
-        if (TryGetEmptyCell(ray, out var cell))
-            EmptyCellTapped?.Invoke(cell);
     }
 
-    private bool TryGetEmptyCell(Ray ray, out Vector2Int cell)
+    private bool TryGetGridCell(Ray ray, out Vector2Int cell)
     {
         cell = default;
 
-        if (_gridMapData == null)
+        if (_gridMapData == null || _towerCells == null)
             return false;
 
         var plane = new Plane(Vector3.up, _gridMapData.Origin);
@@ -120,11 +132,8 @@ public class TowerInputHandler : MonoBehaviour
         if (!_gridMapData.IsValidCoordinate(x, y))
             return false;
 
-        if (_gridMapData.GetCellState(x, y) != GridCellState.Placeable)
-            return false;
-
         cell = new Vector2Int(x, y);
-        return !_towerCells.TryGetTower(cell, out _);
+        return true;
     }
 
     private bool IsPointerOverUI(Vector2 screenPosition)
