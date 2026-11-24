@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SlimeDepthBucketSettings
   m_EditorClassIdentifier: Assembly-CSharp::SlimeDepthBucketSettings
   _enabled: 1
-  _bucketSpacing: 0.3
+  _bucketSpacing: 0.02
   _bucketCount: 16
