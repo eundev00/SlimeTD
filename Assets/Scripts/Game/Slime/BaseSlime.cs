@@ -12,8 +12,6 @@ using VContainer;
 public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpdatable
 {
     private static readonly int StencilRefId = Shader.PropertyToID("_SlimeStencilRef");
-    private static readonly int StencilCompId = Shader.PropertyToID("_SlimeStencilComp");
-    private static readonly int StencilPassId = Shader.PropertyToID("_SlimeStencilPass");
 
     // 사망·기절 연출은 일반 슬라임 몸(반지름 약 0.26) 크기에 맞춰 만들고, 큰 슬라임은 몸 크기 비율만큼 키운다
     private const float VfxBaseRadius = 0.2637f;
@@ -34,6 +32,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
     private int _spawnNumber;
     private SplineContainer _container;
     private float _pathLength;
+    private float _groundHeight;
     private float _localPerWorld;
     private float _distance;
     private float _previousDistance;
@@ -149,10 +148,12 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
 
 
 
-    public virtual void Initialize(SplineContainer splineContainer, SlimeDataBase data, int health, int goldReward, int spawnNumber)
+    public virtual void Initialize(SplineContainer splineContainer, float groundHeight, SlimeDataBase data, int health, int goldReward, int spawnNumber)
     {
         if (_splineAnimate == null || data == null)
             return;
+
+        _groundHeight = groundHeight;
 
         _data = data;
         _goldReward = goldReward;
@@ -222,7 +223,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
         if (!_container.Evaluate(0, t, out var position, out var tangent, out var up))
             return;
 
-        transform.position = position;
+        // 높이는 스플라인이 아니라 경로의 땅 표면이다. 슬라임 메시 바닥이 피벗이라 크기·스케일과 상관없이 땅에 선다
+        transform.position = new Vector3(position.x, _groundHeight, position.z);
 
         // 직선 경로는 탄젠트가 0이라 노트 위(시작점 포함)에서 방향이 0이 된다. 조금 옆 지점의 방향을 쓴다
         Vector3 forward = tangent;
@@ -251,8 +253,6 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
             {
                 int queueOffset = material.renderQueue >= (int)UnityEngine.Rendering.RenderQueue.AlphaTest ? 1 : 0;
                 material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent + queueOffset;
-                material.SetFloat(StencilCompId, (float)UnityEngine.Rendering.CompareFunction.GreaterEqual);
-                material.SetFloat(StencilPassId, (float)UnityEngine.Rendering.StencilOp.Replace);
                 materials.Add(material);
             }
         }

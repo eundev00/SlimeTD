@@ -9,13 +9,22 @@ public class GroundHeightSampler : IGroundHeightSampler
 
     public Vector3 SnapToGround(Vector3 position)
     {
+        return TryGetGroundHeight(position, out float height)
+            ? new Vector3(position.x, height, position.z)
+            : position;
+    }
+
+    public bool TryGetGroundHeight(Vector3 position, out float height)
+    {
         var rayOrigin = new Vector3(position.x, position.y + StartHeight, position.z);
 
         if (Physics.Raycast(rayOrigin, Vector3.down, out var hit, MaxDistance, _groundLayer))
         {
-            return hit.point;
+            height = hit.point.y;
+            return true;
         }
 
-        return position;
+        height = position.y;
+        return false;
     }
 }
