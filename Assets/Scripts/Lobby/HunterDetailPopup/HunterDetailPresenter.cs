@@ -102,6 +102,15 @@ public class HunterDetailPresenter : IPopupPresenter
         if (_hunter == null || _requesting)
             return;
 
+        _accountService.TryGetLevelUpCost(_hunter.TowerId, out _, out int neededCoin);
+        if (IsCoinShort(neededCoin))
+        {
+            // TODO: 상점 팝업으로 이동
+            Debug.Log("[HunterDetailPresenter] 코인 부족: 상점 이동 예정");
+            _popup.ShowMessage("코인이 부족합니다");
+            return;
+        }
+
         RequestAsync(_accountService.LevelUpAsync(_hunter.TowerId)).Forget();
     }
 
@@ -241,7 +250,14 @@ public class HunterDetailPresenter : IPopupPresenter
             return;
         }
 
-        _accountService.TryGetLevelUpCost(towerId, out _, out int neededCoin);
-        _popup.ShowUpgrade(neededCoin.ToString("N0"), !_requesting && _accountService.CanLevelUp(towerId));
+        // 코인만 모자라면 버튼은 눌리게 두고 가격만 빨갛게 한다 (누르면 상점으로 보낼 예정)
+        _accountService.TryGetLevelUpCost(towerId, out int neededCards, out int neededCoin);
+        bool enoughCards = _hunter.Cards.Value >= neededCards;
+        _popup.ShowUpgrade(neededCoin.ToString("N0"), !_requesting && enoughCards, IsCoinShort(neededCoin));
+    }
+
+    private bool IsCoinShort(int neededCoin)
+    {
+        return _accountService.Coin.Value < neededCoin;
     }
 }

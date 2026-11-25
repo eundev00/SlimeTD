@@ -9,14 +9,11 @@ public class TowerInputHandler : MonoBehaviour
     public event Action<ITowerInteractionHandler> SelectionChanged;
     public event Action<Vector2Int> EmptyCellTapped;
 
-    [SerializeField] private float _maxRayDistance = 200f;
-
     private Camera _camera;
     private TowerCells _towerCells;
     private GridMapData _gridMapData;
 
     private InputAction _pressAction;
-    private LayerMask _towerLayer;
     private ITowerInteractionHandler _selected;
     private readonly List<RaycastResult> _uiRaycastResults = new List<RaycastResult>();
 
@@ -34,8 +31,6 @@ public class TowerInputHandler : MonoBehaviour
 
     private void Awake()
     {
-        _towerLayer = LayerMask.GetMask(GameTags.TowerLayer);
-
         _pressAction = new InputAction(type: InputActionType.Button);
         _pressAction.AddBinding("<Mouse>/leftButton");
         _pressAction.AddBinding("<Touchscreen>/primaryTouch/press");
@@ -89,32 +84,22 @@ public class TowerInputHandler : MonoBehaviour
 
         var ray = _camera.ScreenPointToRay(screenPosition);
 
-        // 타워 몸통이 윗칸까지 덮어서, 그리드 위에서는 콜라이더보다 바닥 칸으로 정한다
-        if (TryGetGridCell(ray, out var tappedCell))
+        // 타워 콜라이더는 보지 않는다. 터치는 항상 바닥 칸으로 정하고, 그 칸의 타워 유무로 분기한다
+        if (!TryGetGridCell(ray, out var tappedCell))
         {
-            if (_towerCells.TryGetTower(tappedCell, out var cellTower))
-            {
-                SelectTower(cellTower);
-                return;
-            }
-
             ClearSelection();
-            if (_gridMapData.GetCellState(tappedCell.x, tappedCell.y) == GridCellState.Placeable)
-                EmptyCellTapped?.Invoke(tappedCell);
             return;
         }
 
-        if (Physics.Raycast(ray, out var hit, _maxRayDistance, _towerLayer))
+        if (_towerCells.TryGetTower(tappedCell, out var cellTower))
         {
-            var tower = hit.collider.GetComponentInParent<ITowerInteractionHandler>();
-            if (tower != null)
-            {
-                SelectTower(tower);
-                return;
-            }
+            SelectTower(cellTower);
+            return;
         }
 
         ClearSelection();
+        if (_gridMapData.GetCellState(tappedCell.x, tappedCell.y) == GridCellState.Placeable)
+            EmptyCellTapped?.Invoke(tappedCell);
     }
 
     private bool TryGetGridCell(Ray ray, out Vector2Int cell)

@@ -48,6 +48,9 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private TMP_Text _messageText;
 
     [SerializeField] private Color _lockedThumbnailColor = new Color(0.11f, 0.12f, 0.11f);
+    [SerializeField] private Color _notEnoughCostColor = new Color(1f, 0.3f, 0.25f);
+
+    private Color _costTextColor;
 
     private readonly ReactiveProperty<int> _towerId = new ReactiveProperty<int>();
 
@@ -69,6 +72,11 @@ public class HunterDetailPopup : PopupBase
     {
         _coinCurrency.Initialize(accountService, clickedPublisher);
         _diamondCurrency.Initialize(accountService, clickedPublisher);
+    }
+
+    private void Awake()
+    {
+        _costTextColor = _upgradeCostText.color;
     }
 
     private void Start()
@@ -169,7 +177,7 @@ public class HunterDetailPopup : PopupBase
         _buyCostText.text = costText;
     }
 
-    public void ShowUpgrade(string costText, bool enabled)
+    public void ShowUpgrade(string costText, bool enabled, bool notEnoughCoin)
     {
         SetActionVisible(buy: false, upgrade: true);
 
@@ -177,6 +185,7 @@ public class HunterDetailPopup : PopupBase
         _upgradeDisabled.SetActive(!enabled);
         _upgradeMax.SetActive(false);
         _upgradeCostText.text = costText;
+        _upgradeCostText.color = notEnoughCoin ? _notEnoughCostColor : _costTextColor;
     }
 
     public void ShowMaxLevel()
