@@ -12,6 +12,8 @@ using VContainer;
 public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpdatable
 {
     private static readonly int StencilRefId = Shader.PropertyToID("_SlimeStencilRef");
+    private static readonly int StencilCompId = Shader.PropertyToID("_SlimeStencilComp");
+    private static readonly int StencilPassId = Shader.PropertyToID("_SlimeStencilPass");
 
     // 사망·기절 연출은 일반 슬라임 몸(반지름 약 0.26) 크기에 맞춰 만들고, 큰 슬라임은 몸 크기 비율만큼 키운다
     private const float VfxBaseRadius = 0.2637f;
@@ -253,6 +255,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
             {
                 int queueOffset = material.renderQueue >= (int)UnityEngine.Rendering.RenderQueue.AlphaTest ? 1 : 0;
                 material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent + queueOffset;
+                material.SetFloat(StencilCompId, (float)UnityEngine.Rendering.CompareFunction.GreaterEqual);
+                material.SetFloat(StencilPassId, (float)UnityEngine.Rendering.StencilOp.Replace);
                 materials.Add(material);
             }
         }
