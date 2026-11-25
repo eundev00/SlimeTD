@@ -47,6 +47,8 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
     private ISlimePrefabProvider _slimePrefabProvider;
     private ISingleBattleService _singleBattleService;
     private IUpdateSubscriptionService _updateService;
+    private IGroundHeightSampler _groundHeightSampler;
+    private float[] _pathGroundHeights;
 
     private readonly List<ScheduleEntry> _schedule = new List<ScheduleEntry>();
     private int _scheduleIndex;
@@ -65,9 +67,11 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
         IGameplayService gameplayService,
         ISlimePrefabProvider slimePrefabProvider,
         ISingleBattleService singleBattleService,
-        IUpdateSubscriptionService updateService)
+        IUpdateSubscriptionService updateService,
+        IGroundHeightSampler groundHeightSampler)
     {
         _updateService = updateService;
+        _groundHeightSampler = groundHeightSampler;
         _singleBattleService = singleBattleService;
         _poolService = poolService;
         _gameProgressPublisher = gameProgressPublisher;
@@ -95,6 +99,7 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
         }
 
         _gameplayService.SetMaxWave(_stage.FinalWave);
+        FindPathGroundHeights();
 
         _gameOver = false;
 
@@ -119,6 +124,37 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
         _disposables = null;
 
         StopWaves();
+    }
+
+    // 슬라임 길은 평탄해서 경로마다 땅 높이를 한 번만 찾는다. 타워와 같이 Ground 충돌체에 레이캐스트하고,
+    // 입구(문)처럼 땅 밖인 지점은 건너뛰어 경로에서 처음 땅에 맞는 곳을 쓴다
+    private void FindPathGroundHeights()
+    {
+        const int Samples = 20;
+        _pathGroundHeights = new float[_paths.Count];
+
+        // 맵을 방금 만들었으므로 충돌체 위치를 물리에 반영한 뒤 쏜다
+        Physics.SyncTransforms();
+
+        for (int i = 0; i < _paths.Count; i++)
+        {
+            var spline = _paths[i].Spline;
+            _pathGroundHeights[i] = ((Vector3)spline.EvaluatePosition(0f)).y;
+
+            bool found = false;
+            for (int s = 0; s <= Samples && !found; s++)
+            {
+                Vector3 point = spline.EvaluatePosition((float)s / Samples);
+                if (_groundHeightSampler.TryGetGroundHeight(point, out float height))
+                {
+                    _pathGroundHeights[i] = height;
+                    found = true;
+                }
+            }
+
+            if (!found)
+                Debug.Log($"[WaveSpawner] 경로 {_paths[i].Entrance} 아래에서 땅(Ground 레이어)을 찾지 못해 스플라인 높이를 씁니다.", _paths[i]);
+        }
     }
 
     private void PreparePools()
@@ -303,7 +339,8 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
         }
 
         // 입구가 여럿이면 무리 안에서 번갈아 내보내 입구마다 같은 수가 나온다
-        var path = _paths[_spawnCount % _paths.Count].Spline;
+        int pathIndex = _spawnCount % _paths.Count;
+        var path = _paths[pathIndex].Spline;
         _spawnCount++;
 
         var obj = _poolService.Get(prefab);
@@ -320,7 +357,7 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
             return;
         }
 
-        slime.Initialize(path, slimeData, plan.Health, plan.GoldReward, _spawnCount);
+        slime.Initialize(path, _pathGroundHeights[pathIndex], slimeData, plan.Health, plan.GoldReward, _spawnCount);
     }
 
     private void OnGameOver()
