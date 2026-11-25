@@ -10,9 +10,9 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
         builder.Register<ResourceLoadService>(Lifetime.Singleton).As<IResourceLoadService>();
         builder.Register<TowerLevelService>(Lifetime.Singleton).As<ITowerLevelService>();
-        builder.Register<GameServerConnection>(Lifetime.Singleton).As<IGameServerConnection>();
-        builder.Register<AccountService>(Lifetime.Singleton).As<IAccountService>();
-        builder.Register<SingleBattleService>(Lifetime.Singleton).As<ISingleBattleService>();
+        // 오프라인 테스트 브랜치: 서버에 접속하지 않고 실행마다 새 계정으로 시작한다
+        builder.Register<OfflineAccountService>(Lifetime.Singleton).As<IAccountService>();
+        builder.Register<OfflineSingleBattleService>(Lifetime.Singleton).As<ISingleBattleService>();
         builder.RegisterEntryPoint<BootstrapEntryPoint>();
         builder.RegisterComponentInHierarchy<ServerConnectErrorView>();
 
