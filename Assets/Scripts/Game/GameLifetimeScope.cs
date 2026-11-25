@@ -19,7 +19,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<TowerPrefabProvider>(Lifetime.Singleton).As<ITowerPrefabProvider>();
         builder.Register<SlimePrefabProvider>(Lifetime.Singleton).As<ISlimePrefabProvider>();
         builder.Register<GroundHeightSampler>(Lifetime.Scoped).As<IGroundHeightSampler>();
-        builder.Register<SpawnOrderCounter>(Lifetime.Scoped).As<ISpawnOrderCounter>();
+        builder.Register<SlimeDrawOrderService>(Lifetime.Scoped).As<ISlimeDrawOrderService>();
         builder.RegisterInstance(new GameSceneSettings(_stageKey));
         builder.RegisterEntryPoint<GameInitiator>();
 

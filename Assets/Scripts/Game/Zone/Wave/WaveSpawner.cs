@@ -44,7 +44,6 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
     private IPublisher<GameProgressEvent> _gameProgressPublisher;
     private ISubscriber<GameProgressEvent> _gameProgressSubscriber;
     private IGameplayService _gameplayService;
-    private ISpawnOrderCounter _spawnOrderCounter;
     private ISlimePrefabProvider _slimePrefabProvider;
     private ISingleBattleService _singleBattleService;
     private IUpdateSubscriptionService _updateService;
@@ -63,7 +62,6 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
         IGameObjectPoolService poolService,
         IPublisher<GameProgressEvent> gameProgressPublisher,
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
-        ISpawnOrderCounter spawnOrderCounter,
         IGameplayService gameplayService,
         ISlimePrefabProvider slimePrefabProvider,
         ISingleBattleService singleBattleService,
@@ -74,7 +72,6 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
         _poolService = poolService;
         _gameProgressPublisher = gameProgressPublisher;
         _gameProgressSubscriber = gameProgressSubscriber;
-        _spawnOrderCounter = spawnOrderCounter;
         _gameplayService = gameplayService;
         _slimePrefabProvider = slimePrefabProvider;
     }
@@ -100,7 +97,6 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
         _gameplayService.SetMaxWave(_stage.FinalWave);
 
         _gameOver = false;
-        _spawnOrderCounter.Reset();
 
         _disposables = new CompositeDisposable();
         _gameProgressSubscriber.Subscribe(evt =>
@@ -323,8 +319,6 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
             Debug.Log("[WaveSpawner] 슬라임 프리팹에 BaseSlime 컴포넌트가 없습니다.", obj);
             return;
         }
-
-        slime.SetDepthBucket(_spawnOrderCounter.NextBucket(slimeData.RenderGroup));
 
         slime.Initialize(path, slimeData, plan.Health, plan.GoldReward, _spawnCount);
     }

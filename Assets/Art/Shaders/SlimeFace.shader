@@ -7,6 +7,9 @@ Shader "SlimeTD/SlimeFace"
         _Cutoff("Alpha Cutoff", Range(0, 1)) = 0.5
         [Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", Float) = 2
         _SlimeDepthBucket("Depth Bucket", Float) = 0
+        [HideInInspector] _SlimeStencilRef("Slime Stencil Ref", Float) = 0
+        [HideInInspector] _SlimeStencilComp("Slime Stencil Comp", Float) = 8
+        [HideInInspector] _SlimeStencilPass("Slime Stencil Pass", Float) = 0
     }
 
     SubShader
@@ -27,6 +30,12 @@ Shader "SlimeTD/SlimeFace"
             ZWrite On
             Cull [_Cull]
             AlphaToMask On
+            Stencil
+            {
+                Ref [_SlimeStencilRef]
+                Comp [_SlimeStencilComp]
+                Pass [_SlimeStencilPass]
+            }
 
             HLSLPROGRAM
             #pragma vertex vert

@@ -94,6 +94,11 @@ Shader "SlimeTD/SlimeFlatKit"
 
         _SlimeDepthBucket("Slime Depth Bucket", Float) = 0
 
+        // 슬라임끼리 먼저 나온 쪽이 위에 보이게 하는 스텐실. 기본값(Always/Keep)이면 꺼진 것과 같다 (타워)
+        [HideInInspector] _SlimeStencilRef("Slime Stencil Ref", Float) = 0
+        [HideInInspector] _SlimeStencilComp("Slime Stencil Comp", Float) = 8
+        [HideInInspector] _SlimeStencilPass("Slime Stencil Pass", Float) = 0
+
         [Toggle(SLIME_CUBE_EDGE_ON)] _CubeEdgeEnabled("Cube Edge Lines", Int) = 0
         _CubeEdgeColor("Cube Edge Tint", Color) = (0.6, 0.55, 0.5, 1)
         _CubeEdgeWidth("Cube Edge Width", Range(0, 0.2)) = 0.04
@@ -122,6 +127,12 @@ Shader "SlimeTD/SlimeFlatKit"
             Blend[_SrcBlend][_DstBlend]
             ZWrite[_ZWrite]
             Cull[_Cull]
+            Stencil
+            {
+                Ref [_SlimeStencilRef]
+                Comp [_SlimeStencilComp]
+                Pass [_SlimeStencilPass]
+            }
 
             HLSLPROGRAM
             #pragma shader_feature_local_fragment __ _CELPRIMARYMODE_SINGLE _CELPRIMARYMODE_STEPS _CELPRIMARYMODE_CURVE
