@@ -48,6 +48,7 @@ public static class PrefabKeys
     public const string LumberjackAxe = "LumberjackAxe";
     public const string Map_Coop01 = "Map_Coop01";
     public const string Map_Forest01 = "Map_Forest01";
+    public const string MessagePopup = "MessagePopup";
     public const string Monolith = "Monolith";
     public const string MonolithBolt = "MonolithBolt";
     public const string Mushroom01 = "Mushroom01";
@@ -133,6 +134,7 @@ public static class PrefabKeys
         { LumberjackAxe, "Assets/Prefabs/Game/Characters/LumberjackAxe.prefab" },
         { Map_Coop01, "Assets/Prefabs/Game/Map/Map_Coop01.prefab" },
         { Map_Forest01, "Assets/Prefabs/Game/Map/Map_Forest01.prefab" },
+        { MessagePopup, "Assets/Prefabs/Common/MessagePopup.prefab" },
         { Monolith, "Assets/Prefabs/Game/Characters/Monolith.prefab" },
         { MonolithBolt, "Assets/Prefabs/Game/Characters/MonolithBolt.prefab" },
         { Mushroom01, "Assets/Prefabs/Game/Env/Mushroom01.prefab" },

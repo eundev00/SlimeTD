@@ -7,6 +7,7 @@ public class GameplayService : IGameplayService
 {
     private readonly GameplayInfo _info;
     private readonly IPopupService _popupService;
+    private readonly ISceneLoader _sceneLoader;
     private readonly IAccountService _accountService;
     private readonly ISingleBattleService _singleBattleService;
     private readonly IPublisher<GameProgressEvent> _gameProgressPublisher;
@@ -30,6 +31,7 @@ public class GameplayService : IGameplayService
     public GameplayService(
         IResourceLoadService resourceLoadService,
         IPopupService popupService,
+        ISceneLoader sceneLoader,
         IAccountService accountService,
         ISingleBattleService singleBattleService,
         ISubscriber<SlimeReachedEndEvent> reachedEndSubscriber,
@@ -41,6 +43,7 @@ public class GameplayService : IGameplayService
         _gameProgressPublisher = gameProgressPublisher;
         _resourceLoadService = resourceLoadService;
         _popupService = popupService;
+        _sceneLoader = sceneLoader;
         _accountService = accountService;
         _singleBattleService = singleBattleService;
 
@@ -122,6 +125,13 @@ public class GameplayService : IGameplayService
         return true;
     }
 
+    // 서버 응답을 받은 뒤에 결과 팝업(정상) 또는 에러 팝업을 연다
+    private async UniTaskVoid FinishBattleAsync()
+    {
+        var result = await _singleBattleService.FinishAsync(_info.IsCleared.Value, _info.ReachedWave.Value, _info.Life.Value, _info.Gold.Value);
+        await BattleFinishPopups.OpenAsync(result, _popupService, _sceneLoader);
+    }
+
     private void OnGameProgress(GameProgressEvent e)
     {
         if (e.EventType == GameProgressType.GameOver || e.EventType == GameProgressType.StageCleared)
@@ -135,8 +145,7 @@ public class GameplayService : IGameplayService
             if (_info.IsCleared.Value)
                 ReportWaveReached(e.WaveIndex);
 
-            _singleBattleService.FinishAsync(_info.IsCleared.Value, _info.ReachedWave.Value, _info.Life.Value, _info.Gold.Value).Forget();
-            _popupService.OpenAsync(PrefabKeys.GameResultPopup).Forget();
+            FinishBattleAsync().Forget();
             return;
         }
 

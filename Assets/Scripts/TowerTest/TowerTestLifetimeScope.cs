@@ -12,6 +12,7 @@ public class TowerTestLifetimeScope : LifetimeScope
     // Bootstrap 없이 바로 실행하려고 부모 스코프 없이 ProjectLifetimeScope의 전역 서비스까지 직접 등록한다.
     protected override void Configure(IContainerBuilder builder)
     {
+        builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
         builder.Register<ResourceLoadService>(Lifetime.Singleton).As<IResourceLoadService>();
         builder.Register<TowerLevelService>(Lifetime.Singleton).As<ITowerLevelService>();
         builder.Register<TowerTestAccountService>(Lifetime.Singleton).As<IAccountService>();

@@ -120,10 +120,11 @@ public class SingleBattleService : ISingleBattleService
 
     private bool IsRecording => HasBattle && _started;
 
-    public async UniTask FinishAsync(bool victory, int reachedWave, int life, int gold)
+    // 서버 전투가 아니면(에디터 테스트) 확인할 것이 없어 Ok를 돌려준다
+    public async UniTask<ResultCode> FinishAsync(bool victory, int reachedWave, int life, int gold)
     {
         if (!HasBattle || !_started)
-            return;
+            return ResultCode.Ok;
 
         var req = new SingleBattleFinishReq
         {
@@ -149,20 +150,29 @@ public class SingleBattleService : ISingleBattleService
                 _accountService.SetBestWave(res.BestWave);
                 _accountService.ApplyItems(res.Items);
                 _rewards.Value = new List<ItemStack>(res.Rewards);
-                Debug.Log($"[SingleBattleService] 서버 검증 일치: {res.Outcome}, 웨이브 {res.ReachedWave}, 최고 {res.BestWave}, 신기록 {res.NewRecord}, 끝 틱 {req.EndTick}");
-                return;
+                Debug.Log($"[SingleBattleService] 서버 확인: {res.Outcome}, 웨이브 {res.ReachedWave}, 최고 {res.BestWave}, 신기록 {res.NewRecord}, 끝 틱 {req.EndTick}");
+                // 작은 차이는 보상을 주고 표시만 한다 (서버 기준). 개발 중 원인 확인용
+                LogMismatches(res);
+                return ResultCode.Ok;
             }
 
             Debug.LogWarning($"[SingleBattleService] 전투 결과 확인 실패: {res.Result}, 서버 계산 {res.Outcome} 웨이브 {res.ReachedWave}");
-            foreach (var m in res.Mismatches)
-                Debug.LogWarning($"[SingleBattleService] 불일치 {m.Field}: 클라 {m.Client} / 서버 {m.Server}");
+            LogMismatches(res);
+            _rewards.Value = Array.Empty<ItemStack>();
+            return res.Result;
         }
         catch (Exception e)
         {
             Debug.Log($"[SingleBattleService] 전투 종료 요청 실패: {e.Message}");
+            _rewards.Value = Array.Empty<ItemStack>();
+            return ResultCode.ServerError;
         }
+    }
 
-        _rewards.Value = Array.Empty<ItemStack>();
+    private static void LogMismatches(SingleBattleFinishRes res)
+    {
+        foreach (var m in res.Mismatches)
+            Debug.LogWarning($"[SingleBattleService] 불일치 {m.Field}: 클라 {m.Client} / 서버 {m.Server}");
     }
 
     // 끝나기 전에 게임 씬을 나가면 버린다. 서버 쪽 전투는 다음 시작 때 무효가 된다

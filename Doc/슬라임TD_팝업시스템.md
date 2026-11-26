@@ -24,6 +24,8 @@ Addressables
 | `PopupRoot` | 〃 | 팝업 부모 `_container`와 딤 `_dim`. 씬 LifetimeScope에 `RegisterComponentInHierarchy`로 등록 |
 | `IPopupService` / `PopupService` | 〃 | 프리팹 키로 팝업 생성(`IObjectResolver.Instantiate`로 주입 포함), 재사용, 스택, 딤 위치, 백키 |
 | `GameResultPopup` | `Scripts/Game/Hud/Result` | 결과 팝업. 제목(클리어/게임오버), 도달 웨이브, 신기록 표시와 다시하기/로비 버튼. 백키 = 로비 버튼 |
+| `MessagePopup` | `Scripts/Common` | 공통 안내 팝업. 제목, 문구, 확인 버튼 하나. `Setup(제목, 문구)`로 채우고 `Confirmed`로 확인 뒤 동작을 정한다 (백키 = 확인). 프리팹 `Assets/Prefabs/Common/MessagePopup.prefab` |
+| `BattleFinishPopups` | `Scripts/Game/Hud/Result` | 싱글 전투 종료 응답이 Ok면 결과 팝업, 아니면 결과 코드별 문구로 `MessagePopup`을 열고 확인하면 로비로 간다 |
 | `HunterDetailPopup` | `Scripts/Lobby/HunterDetailPopup` | 로비 헌터 상세. `[PopupPresenter(typeof(HunterDetailPresenter))]`로 Presenter를 붙이고, `SetTowerId`로 대상을 정한다 |
 
 ## 규칙

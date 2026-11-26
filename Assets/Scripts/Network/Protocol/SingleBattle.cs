@@ -37,7 +37,7 @@ namespace SlimeTD.Protocol {
             "BRIRCglwYXJ0bmVyX3kYBSABKAUSFwoPcmVzdWx0X3Rvd2VyX2lkGAYgASgF",
             "IisKCVNsaW1lS2lsbBIQCghzbGltZV9pZBgBIAEoBRIMCgR0aWNrGAIgASgF",
             "Ij8KCVNraWxsR29sZBIMCgR0aWNrGAEgASgFEgkKAXgYAiABKAUSCQoBeRgD",
-            "IAEoBRIOCgZhbW91bnQYBCABKAUi2gIKFVNpbmdsZUJhdHRsZUZpbmlzaFJl",
+            "IAEoBRIOCgZhbW91bnQYBCABKAUi9AIKFVNpbmdsZUJhdHRsZUZpbmlzaFJl",
             "cRIRCgliYXR0bGVfaWQYASABKAMSJwoHb3V0Y29tZRgCIAEoDjIWLnNsaW1l",
             "dGQuQmF0dGxlT3V0Y29tZRIUCgxyZWFjaGVkX3dhdmUYAyABKAUSDAoEbGlm",
             "ZRgEIAEoBRIQCghlbmRfdGljaxgFIAEoBRInCghhcnJpdmFscxgGIAMoCzIV",
@@ -45,16 +45,16 @@ namespace SlimeTD.Protocol {
             "cxgIIAMoCzIVLnNsaW1ldGQuSHVudGVyU3VtbW9uEiQKBm1lcmdlcxgJIAMo",
             "CzIULnNsaW1ldGQuSHVudGVyTWVyZ2USIQoFa2lsbHMYCiADKAsyEi5zbGlt",
             "ZXRkLlNsaW1lS2lsbBInCgtza2lsbF9nb2xkcxgLIAMoCzISLnNsaW1ldGQu",
-            "U2tpbGxHb2xkIvcCChVTaW5nbGVCYXR0bGVGaW5pc2hSZXMSIwoGcmVzdWx0",
-            "GAEgASgOMhMuc2xpbWV0ZC5SZXN1bHRDb2RlEicKB291dGNvbWUYAiABKA4y",
-            "Fi5zbGltZXRkLkJhdHRsZU91dGNvbWUSFAoMcmVhY2hlZF93YXZlGAMgASgF",
-            "EhEKCWJlc3Rfd2F2ZRgEIAEoBRISCgpuZXdfcmVjb3JkGAUgASgIEisKCm1p",
-            "c21hdGNoZXMYBiADKAsyFy5zbGltZXRkLkJhdHRsZU1pc21hdGNoEiMKB3Jl",
-            "d2FyZHMYByADKAsyEi5zbGltZXRkLkl0ZW1TdGFjaxIhCgVpdGVtcxgIIAMo",
-            "CzISLnNsaW1ldGQuSXRlbVN0YWNrEhMKC2ZpcnN0X2NsZWFyGAkgASgISgQI",
-            "ChAPUgp1c2VyX2xldmVsUg51c2VyX2xldmVsX3Vwc1IRdXNlcl9sZXZlbF91",
-            "cF9leHBSCHVzZXJfZXhwUgpleHBfcmV3YXJkQhOqAhBTbGltZVRELlByb3Rv",
-            "Y29sYgZwcm90bzM="));
+            "U2tpbGxHb2xkSgQIDBANSgQIDRAOUgVzbG93c1IFc3R1bnMi9wIKFVNpbmds",
+            "ZUJhdHRsZUZpbmlzaFJlcxIjCgZyZXN1bHQYASABKA4yEy5zbGltZXRkLlJl",
+            "c3VsdENvZGUSJwoHb3V0Y29tZRgCIAEoDjIWLnNsaW1ldGQuQmF0dGxlT3V0",
+            "Y29tZRIUCgxyZWFjaGVkX3dhdmUYAyABKAUSEQoJYmVzdF93YXZlGAQgASgF",
+            "EhIKCm5ld19yZWNvcmQYBSABKAgSKwoKbWlzbWF0Y2hlcxgGIAMoCzIXLnNs",
+            "aW1ldGQuQmF0dGxlTWlzbWF0Y2gSIwoHcmV3YXJkcxgHIAMoCzISLnNsaW1l",
+            "dGQuSXRlbVN0YWNrEiEKBWl0ZW1zGAggAygLMhIuc2xpbWV0ZC5JdGVtU3Rh",
+            "Y2sSEwoLZmlyc3RfY2xlYXIYCSABKAhKBAgKEA9SCnVzZXJfbGV2ZWxSDnVz",
+            "ZXJfbGV2ZWxfdXBzUhF1c2VyX2xldmVsX3VwX2V4cFIIdXNlcl9leHBSCmV4",
+            "cF9yZXdhcmRCE6oCEFNsaW1lVEQuUHJvdG9jb2xiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::SlimeTD.Protocol.CommonReflection.Descriptor, global::SlimeTD.Protocol.BattleReflection.Descriptor, global::SlimeTD.Protocol.PlayerReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -73,8 +73,9 @@ namespace SlimeTD.Protocol {
   }
   #region Messages
   /// <summary>
-  /// 싱글 전투. 클라이언트가 혼자 플레이하고(서버는 실시간으로 돌리지 않는다), 끝나면 결과를 보내
-  /// 서버가 같은 전투를 처음부터 다시 계산해 확인한다. 같으면 최고 웨이브를 기록하고 보상을 준다.
+  /// 싱글 전투. 클라이언트가 혼자 플레이하고(서버는 실시간으로 돌리지 않는다), 끝나면 전투 중 일어난 일을 보낸다.
+  /// 서버는 웨이브 시간표·소환·합성·골드를 다시 계산하고, 처치·도착 보고가 말이 되는지 확인한 뒤 서버 계산 결과로 기록·보상한다.
+  /// 공격과 상태 이상(감속·기절 등)은 계산하지 않는다. 놓친 슬라임은 arrivals 보고로 정한다.
   /// 보상 (StageRewards.csv): 클리어면 Clear 보상 전부, 실패면 Clear 보상 × (통과 구간 ÷ 전체 구간) × reward.failRate (버림).
   /// 통과 구간 = 도달 웨이브 ÷ reward.segmentWaves (버림), 전체 구간 = 최종 웨이브 ÷ reward.segmentWaves. 처음 클리어하면 FirstClear 보상도.
   /// 전투를 시작한다. 한 계정에 진행 중인 싱글 전투는 하나다. 새로 시작하면 이전 전투는 버린다 (쓴 에너지는 돌려주지 않는다).
@@ -2065,7 +2066,7 @@ namespace SlimeTD.Protocol {
         = pb::FieldCodec.ForMessage(50, global::SlimeTD.Protocol.SlimeArrival.Parser);
     private readonly pbc::RepeatedField<global::SlimeTD.Protocol.SlimeArrival> arrivals_ = new pbc::RepeatedField<global::SlimeTD.Protocol.SlimeArrival>();
     /// <summary>
-    /// 끝에 도착한 슬라임 전부
+    /// 끝에 도착한 슬라임 전부 (도착한 틱과 함께). 서버는 이 목록으로 라이프·승패를 계산한다
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2523,7 +2524,9 @@ namespace SlimeTD.Protocol {
     public const int ResultFieldNumber = 1;
     private global::SlimeTD.Protocol.ResultCode result_ = global::SlimeTD.Protocol.ResultCode.Ok;
     /// <summary>
-    /// 결과가 서버 계산과 다르면 RESULT_CODE_BATTLE_MISMATCH (기록하지 않는다)
+    /// 기록·보상은 항상 서버가 다시 계산한 결과(outcome, reached_wave)로 정한다.
+    /// 조작으로 보이는 차이(나올 수 없는 헌터, 시드와 다른 헌터, 없는 스킬, 처치 속도·발동 횟수 초과, 너무 빨리 끝남)가 있으면
+    /// RESULT_CODE_BATTLE_MISMATCH (기록·보상 없음). 그 밖의 차이(결과 값, 도착 시각 등)는 OK로 보상을 주고 mismatches에만 남긴다.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -2593,6 +2596,9 @@ namespace SlimeTD.Protocol {
     private static readonly pb::FieldCodec<global::SlimeTD.Protocol.BattleMismatch> _repeated_mismatches_codec
         = pb::FieldCodec.ForMessage(50, global::SlimeTD.Protocol.BattleMismatch.Parser);
     private readonly pbc::RepeatedField<global::SlimeTD.Protocol.BattleMismatch> mismatches_ = new pbc::RepeatedField<global::SlimeTD.Protocol.BattleMismatch>();
+    /// <summary>
+    /// 클라이언트 보고와 서버 계산이 다른 곳 (result가 OK여도 있을 수 있다. 개발 중 원인 찾기용)
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pbc::RepeatedField<global::SlimeTD.Protocol.BattleMismatch> Mismatches {
