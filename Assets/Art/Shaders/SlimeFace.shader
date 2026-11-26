@@ -6,7 +6,6 @@ Shader "SlimeTD/SlimeFace"
         [MainColor] _BaseColor("Base Color", Color) = (1, 1, 1, 1)
         _Cutoff("Alpha Cutoff", Range(0, 1)) = 0.5
         [Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", Float) = 2
-        _SlimeDepthBucket("Depth Bucket", Float) = 0
         [HideInInspector] _SlimeStencilRef("Slime Stencil Ref", Float) = 0
         [HideInInspector] _SlimeStencilComp("Slime Stencil Comp", Float) = 8
         [HideInInspector] _SlimeStencilPass("Slime Stencil Pass", Float) = 0
@@ -64,16 +63,12 @@ Shader "SlimeTD/SlimeFace"
                 float4 _BaseColor;
                 float _Cutoff;
                 float _Cull;
-                float _SlimeDepthBucket;
             CBUFFER_END
-
-            #include "SlimeDepthBucket.hlsl"
 
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
                 OUT.positionCS = TransformObjectToHClip(IN.positionOS.xyz);
-                OUT.positionCS.z += SlimeDepthBucketOffset();
                 OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
                 return OUT;
             }

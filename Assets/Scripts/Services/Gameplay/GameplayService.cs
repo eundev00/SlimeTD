@@ -24,7 +24,6 @@ public class GameplayService : IGameplayService
     public TowerCatalog Catalog { get; private set; }
     public SkillCatalog SkillCatalog { get; private set; }
     public StageData Stage { get; private set; }
-    public SlimeDepthBucketSettings DepthBucketSettings { get; private set; }
 
     private readonly IResourceLoadService _resourceLoadService;
 
@@ -76,10 +75,6 @@ public class GameplayService : IGameplayService
         Stage = await _resourceLoadService.LoadAsync<StageData>(stageKey);
         if (Stage == null)
             Debug.Log($"[GameplayService] {stageKey} 로드에 실패했습니다.");
-
-        DepthBucketSettings = await _resourceLoadService.LoadAsync<SlimeDepthBucketSettings>(DataKeys.SlimeDepthBucketSettings);
-        if (DepthBucketSettings == null)
-            Debug.Log($"[GameplayService] {DataKeys.SlimeDepthBucketSettings} 로드에 실패했습니다.");
 
         _info.Life.SetValueAndForceNotify(Stage != null ? Stage.StartingLife : 0);
         _info.Gold.SetValueAndForceNotify(Stage != null ? Stage.StartingGold : 0);

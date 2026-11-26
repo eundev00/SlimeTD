@@ -22,7 +22,6 @@ public static class DataKeys
     public const string SlimeData_Slime_03 = "SlimeData_Slime_03";
     public const string SlimeData_Slime_04 = "SlimeData_Slime_04";
     public const string SlimeData_Slime_05 = "SlimeData_Slime_05";
-    public const string SlimeDepthBucketSettings = "SlimeDepthBucketSettings";
     public const string Stage_MultiNormal = "Stage_MultiNormal";
     public const string Stage_SingleNormal = "Stage_SingleNormal";
     public const string TowerCatalog = "TowerCatalog";
@@ -57,7 +56,6 @@ public static class DataKeys
         { SlimeData_Slime_03, "Assets/Datas/Slimes/SlimeData_Slime_03.asset" },
         { SlimeData_Slime_04, "Assets/Datas/Slimes/SlimeData_Slime_04.asset" },
         { SlimeData_Slime_05, "Assets/Datas/Slimes/SlimeData_Slime_05.asset" },
-        { SlimeDepthBucketSettings, "Assets/Datas/SlimeDepthBucketSettings.asset" },
         { Stage_MultiNormal, "Assets/Datas/Stages/Stage_MultiNormal.asset" },
         { Stage_SingleNormal, "Assets/Datas/Stages/Stage_SingleNormal.asset" },
         { TowerCatalog, "Assets/Datas/TowerCatalog.asset" },

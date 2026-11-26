@@ -89,8 +89,6 @@ half3 _LightmapDirection;
 half _DetailMapImpact;
 half4 _DetailMapColor;
 
-float _SlimeDepthBucket;
-
 half4 _CubeEdgeColor;
 half _CubeEdgeWidth;
 half _CubeEdgeHalfSize;
@@ -98,8 +96,6 @@ half _CubeEdgeHalfSize;
 #ifndef FLATKIT_TERRAIN
 CBUFFER_END
 #endif
-
-#include "SlimeDepthBucket.hlsl"
 
 #ifdef UNITY_DOTS_INSTANCING_ENABLED
     UNITY_DOTS_INSTANCING_START(MaterialPropertyMetadata)

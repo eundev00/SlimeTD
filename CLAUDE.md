@@ -133,7 +133,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 - **"손맛"이 이 프로젝트의 최우선 품질 기준**이다. 피격/처치 연출은 비용을 아끼지 않는다
 - **게임 씬과 맵**: 게임 씬은 `SingleGameScene`, `MultiGameScene` 두 개이고 맵을 갖지 않는다. 맵은 프리팹(`Assets/Prefabs/Game/Map/<mapKey>.prefab`, 루트에 `GameMap`)이고 스테이지의 `mapKey`(Stages.csv)로 `GameInitiator`가 로드해 게임 씬에 넣는다. 씬마다 `GameLifetimeScope._stageKey`로 스테이지를 정한다 (싱글 `Stage_SingleNormal`, 멀티 `Stage_MultiNormal`). 맵은 경로(`MapPath`: 입구 번호 + 스플라인) 목록과 배치 구역(`MapZone`: 자리 번호 + 그리드) 목록을 갖는다. 멀티는 두 사람이 맵 하나를 같이 막는 협동이고 경쟁이 아니다: 경로 2개(위·아래 입구 → 가운데 줄 합류 → 기지)와 구역 2개(slot 0 = 나/아래, slot 1 = 팀원/위)다. 웨이브는 게임에 하나(`WaveSpawner`)이고 무리 안에서 입구를 번갈아 내보낸다. 팀원 구역은 서버가 붙기 전까지 비워 둔다
 - **그리드 배치**: 맵은 `GridMapData`(ScriptableObject)로 셀 단위 관리한다. 배치 가능/불가/경로 상태를 셀마다 지정하고, 에디터 도구(`GridMapDataInspector`, `GridSceneViewDrawer`, `GridPaintMode`)로 편집한다
-- **슬라임 렌더 순서**: `SlimeRenderOrderService`가 슬라임 간 깊이(Z-order)를 관리한다. 상세 설계는 [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md) 참고
+- **슬라임 렌더 순서**: 먼저 나온 슬라임이 위에 보인다. `SlimeDrawOrderService`가 등장 순서대로 `sortingOrder`와 스텐실 값을 매기고(보스는 항상 맨 위), 셰이더 스텐실이 나중 슬라임이 덮지 못하게 한다. 슬라임 높이는 스플라인이 아니라 경로 땅 표면(레이캐스트)이다. 상세 설계는 [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md) 참고
 
 ---
 

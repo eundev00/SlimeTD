@@ -92,8 +92,6 @@ Shader "SlimeTD/SlimeFlatKit"
         // Editmode props
         [HideInInspector] _QueueOffset("Queue Offset", Float) = 0.0
 
-        _SlimeDepthBucket("Slime Depth Bucket", Float) = 0
-
         // 슬라임끼리 먼저 나온 쪽이 위에 보이게 하는 스텐실. 기본값(Always/Keep)이면 꺼진 것과 같다 (타워)
         [HideInInspector] _SlimeStencilRef("Slime Stencil Ref", Float) = 0
         [HideInInspector] _SlimeStencilComp("Slime Stencil Comp", Float) = 8
@@ -229,7 +227,7 @@ Shader "SlimeTD/SlimeFlatKit"
             TEXTURE2D(_DetailMap);
             SAMPLER(sampler_DetailMap);
 
-            #pragma vertex SlimeStylizedPassVertex
+            #pragma vertex StylizedPassVertex
             #pragma fragment SlimeStylizedPassFragment
             #if UNITY_VERSION >= 202230
             #define BUMP_SCALE_NOT_SUPPORTED 1
@@ -246,13 +244,6 @@ Shader "SlimeTD/SlimeFlatKit"
 
             #include "Assets/ThirdParty/FlatKit/Shaders/StylizedSurface/LibraryUrp/LitForwardPass_DR.hlsl"
             #include "Assets/ThirdParty/FlatKit/Shaders/StylizedSurface/LibraryUrp/Lighting_DR.hlsl"
-
-            Varyings SlimeStylizedPassVertex(Attributes input)
-            {
-                Varyings output = StylizedPassVertex(input);
-                output.positionCS.z += SlimeDepthBucketOffset();
-                return output;
-            }
 
             // 큐브 칸 경계(오브젝트 공간에서 중심으로부터 _CubeEdgeHalfSize)의 양쪽에 같은 굵기의 선을 칠한다
             // 메시가 칸보다 커서 이웃과 겹쳐도(잔디 덮개) 겹친 양쪽이 같은 자리에 선을 그려 칸마다 테두리가 보인다
@@ -409,20 +400,13 @@ Shader "SlimeTD/SlimeFlatKit"
             #pragma multi_compile _ DOTS_INSTANCING_ON
             #endif
 
-            #pragma vertex SlimeLitPassVertexSimple
+            #pragma vertex LitPassVertexSimple
             #pragma fragment LitPassFragmentSimple
 
             #define BUMP_SCALE_NOT_SUPPORTED 1
 
             #include "SlimeFlatKitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/SimpleLitGBufferPass.hlsl"
-
-            Varyings SlimeLitPassVertexSimple(Attributes input)
-            {
-                Varyings output = LitPassVertexSimple(input);
-                output.positionCS.z += SlimeDepthBucketOffset();
-                return output;
-            }
             ENDHLSL
         }
 
@@ -436,7 +420,7 @@ Shader "SlimeTD/SlimeFlatKit"
             Cull[_Cull]
 
             HLSLPROGRAM
-            #pragma vertex SlimeDepthOnlyVertex
+            #pragma vertex DepthOnlyVertex
             #pragma fragment DepthOnlyFragment
 
             // -------------------------------------
@@ -461,13 +445,6 @@ Shader "SlimeTD/SlimeFlatKit"
             #include "SlimeFlatKitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/DepthOnlyPass.hlsl"
 
-            Varyings SlimeDepthOnlyVertex(Attributes input)
-            {
-                Varyings output = DepthOnlyVertex(input);
-                output.positionCS.z += SlimeDepthBucketOffset();
-                return output;
-            }
-
 			/* start CurvedWorld */
 			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE
 			//#define CURVEDWORLD_BEND_ID_1
@@ -489,7 +466,7 @@ Shader "SlimeTD/SlimeFlatKit"
             Cull[_Cull]
 
             HLSLPROGRAM
-            #pragma vertex SlimeDepthNormalsVertex
+            #pragma vertex DepthNormalsVertex
             #pragma fragment DepthNormalsFragment
 
             // -------------------------------------
@@ -516,13 +493,6 @@ Shader "SlimeTD/SlimeFlatKit"
 
             #include "SlimeFlatKitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/DepthNormalsPass.hlsl"
-
-            Varyings SlimeDepthNormalsVertex(Attributes input)
-            {
-                Varyings output = DepthNormalsVertex(input);
-                output.positionCS.z += SlimeDepthBucketOffset();
-                return output;
-            }
 
 			/* start CurvedWorld */
 			//#define CURVEDWORLD_BEND_TYPE_CLASSICRUNNER_X_POSITIVE

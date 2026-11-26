@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -6,7 +5,7 @@ using UnityEngine.SceneManagement;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
 
-public class GameInitiator : IAsyncStartable, IDisposable
+public class GameInitiator : IAsyncStartable
 {
     private readonly IGameplayService _gameplayService;
     private readonly ITowerLevelService _towerLevelService;
@@ -17,7 +16,6 @@ public class GameInitiator : IAsyncStartable, IDisposable
     private readonly WaveSpawner _waveSpawner;
     private readonly GameSceneSettings _sceneSettings;
     private readonly ISingleBattleService _singleBattleService;
-    private readonly SlimeDepthBucketBinder _depthBucketBinder = new SlimeDepthBucketBinder();
 
     public GameInitiator(IGameplayService gameplayService, ITowerLevelService towerLevelService, ITowerPrefabProvider towerPrefabProvider, ISlimePrefabProvider slimePrefabProvider, IResourceLoadService resourceLoadService, Zone zone, WaveSpawner waveSpawner, GameSceneSettings sceneSettings, ISingleBattleService singleBattleService)
     {
@@ -58,7 +56,6 @@ public class GameInitiator : IAsyncStartable, IDisposable
         if (_gameplayService.Config != null)
             _towerLevelService.SetDefaultLevel(_gameplayService.Config.DebugTowerLevel);
 
-        _depthBucketBinder.Bind(_gameplayService.DepthBucketSettings);
         _zone.Initialize(myZone);
         _waveSpawner.Initialize(_gameplayService.Stage, map.Paths);
     }
@@ -102,10 +99,5 @@ public class GameInitiator : IAsyncStartable, IDisposable
             Debug.Log($"[GameInitiator] 맵 프리팹에 GameMap이 없습니다: {stage.MapKey}", instance);
 
         return map;
-    }
-
-    public void Dispose()
-    {
-        _depthBucketBinder.Dispose();
     }
 }

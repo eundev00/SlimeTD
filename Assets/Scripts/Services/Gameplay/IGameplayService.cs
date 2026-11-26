@@ -8,7 +8,6 @@ public interface IGameplayService : IDisposable
     TowerCatalog Catalog { get; }
     SkillCatalog SkillCatalog { get; }
     StageData Stage { get; }
-    SlimeDepthBucketSettings DepthBucketSettings { get; }
 
     UniTask InitializeAsync(string stageKey = DataKeys.Stage_SingleNormal);
     void AddSkillGold(int amount, UnityEngine.Vector2Int cell);
