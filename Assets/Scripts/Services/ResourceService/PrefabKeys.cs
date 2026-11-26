@@ -16,9 +16,6 @@ public static class PrefabKeys
     public const string Crossbow = "Crossbow";
     public const string CrossbowBolt = "CrossbowBolt";
     public const string CrossbowBow = "CrossbowBow";
-    public const string CubeGrass = "CubeGrass";
-    public const string CubeGround = "CubeGround";
-    public const string CubeSand = "CubeSand";
     public const string CurrencyCoin = "CurrencyCoin";
     public const string CurrencyDiamond = "CurrencyDiamond";
     public const string DamageText = "DamageText";
@@ -74,17 +71,6 @@ public static class PrefabKeys
     public const string StoneWall03 = "StoneWall03";
     public const string Sword = "Sword";
     public const string Swordsman = "Swordsman";
-    public const string TempleBlock = "TempleBlock";
-    public const string TempleBlockAlt = "TempleBlockAlt";
-    public const string TempleBrick = "TempleBrick";
-    public const string TempleDeco = "TempleDeco";
-    public const string TempleFlowerRed = "TempleFlowerRed";
-    public const string TempleFlowerYellow = "TempleFlowerYellow";
-    public const string TempleGrass = "TempleGrass";
-    public const string TempleLeaf = "TempleLeaf";
-    public const string TemplePost = "TemplePost";
-    public const string TempleRail = "TempleRail";
-    public const string TempleStairs = "TempleStairs";
     public const string TreeGreen01 = "TreeGreen01";
     public const string TreeGreen02 = "TreeGreen02";
     public const string TreeOrange = "TreeOrange";
@@ -112,9 +98,6 @@ public static class PrefabKeys
         { Crossbow, "Assets/Prefabs/Game/Characters/Crossbow.prefab" },
         { CrossbowBolt, "Assets/Prefabs/Game/Characters/CrossbowBolt.prefab" },
         { CrossbowBow, "Assets/Prefabs/Game/Characters/CrossbowBow.prefab" },
-        { CubeGrass, "Assets/Prefabs/Game/Ground/CubeGrass.prefab" },
-        { CubeGround, "Assets/Prefabs/Game/Ground/CubeGround.prefab" },
-        { CubeSand, "Assets/Prefabs/Game/Ground/CubeSand.prefab" },
         { CurrencyCoin, "Assets/Prefabs/Common/CurrencyCoin.prefab" },
         { CurrencyDiamond, "Assets/Prefabs/Common/CurrencyDiamond.prefab" },
         { DamageText, "Assets/Prefabs/Game/UI/DamageText.prefab" },
@@ -170,17 +153,6 @@ public static class PrefabKeys
         { StoneWall03, "Assets/Prefabs/Game/Env/StoneWall03.prefab" },
         { Sword, "Assets/Prefabs/Game/Characters/Sword.prefab" },
         { Swordsman, "Assets/Prefabs/Game/Characters/Swordsman.prefab" },
-        { TempleBlock, "Assets/Prefabs/Game/Temple/TempleBlock.prefab" },
-        { TempleBlockAlt, "Assets/Prefabs/Game/Temple/TempleBlockAlt.prefab" },
-        { TempleBrick, "Assets/Prefabs/Game/Temple/TempleBrick.prefab" },
-        { TempleDeco, "Assets/Prefabs/Game/Temple/TempleDeco.prefab" },
-        { TempleFlowerRed, "Assets/Prefabs/Game/Temple/TempleFlowerRed.prefab" },
-        { TempleFlowerYellow, "Assets/Prefabs/Game/Temple/TempleFlowerYellow.prefab" },
-        { TempleGrass, "Assets/Prefabs/Game/Temple/TempleGrass.prefab" },
-        { TempleLeaf, "Assets/Prefabs/Game/Temple/TempleLeaf.prefab" },
-        { TemplePost, "Assets/Prefabs/Game/Temple/TemplePost.prefab" },
-        { TempleRail, "Assets/Prefabs/Game/Temple/TempleRail.prefab" },
-        { TempleStairs, "Assets/Prefabs/Game/Temple/TempleStairs.prefab" },
         { TreeGreen01, "Assets/Prefabs/Game/Env/TreeGreen01.prefab" },
         { TreeGreen02, "Assets/Prefabs/Game/Env/TreeGreen02.prefab" },
         { TreeOrange, "Assets/Prefabs/Game/Env/TreeOrange.prefab" },
