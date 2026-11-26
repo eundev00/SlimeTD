@@ -137,6 +137,15 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         if (!target.IsValid)
             return;
 
+        // 십자 범위 스킬은 공격 방식과 상관없이 투사체 없이 타격 순간 바로 들어간다
+        if (_pendingRoll.CrossRange > 0)
+        {
+            var hitCenters = CrossDamage.Apply(target.Slime, _pendingRoll.CrossRange, _pendingDamage);
+            for (int i = 0; i < hitCenters.Count; i++)
+                Context.PlayTargetVfx(Context.Skills.LastProcs, hitCenters[i]);
+            return;
+        }
+
         Apply(target, _pendingRoll, _pendingDamage);
     }
 

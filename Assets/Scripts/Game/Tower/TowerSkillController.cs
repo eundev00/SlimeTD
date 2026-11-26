@@ -66,6 +66,7 @@ public class TowerSkillController
         float splashRadius = 0f;
         int gold = 0;
         float stun = 0f;
+        int crossRange = 0;
         _lastProcs.Clear();
 
         for (int i = 0; i < _onAttackSkills.Count; i++)
@@ -97,11 +98,14 @@ public class TowerSkillController
                     case SkillEffectType.Stun:
                         stun = Mathf.Max(stun, effect.Duration);
                         break;
+                    case SkillEffectType.Cross:
+                        crossRange = Mathf.Max(crossRange, Mathf.RoundToInt(effect.Value));
+                        break;
                 }
             }
         }
 
-        return new AttackSkillRoll(extraShots, multiplier, splashRadius, gold, stun);
+        return new AttackSkillRoll(extraShots, multiplier, splashRadius, gold, stun, crossRange);
     }
 
     // 쿨타임은 공격속도와 독립이다. 발동했을 때만 시작한다.

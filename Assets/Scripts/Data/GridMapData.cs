@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GridMapData", menuName = "SlimeTD/Grid Map Data", order = 1)]
 public class GridMapData : ScriptableObject
 {
-    private const float FixedCellSize = 1f;
+    public const float FixedCellSize = 1f;
 
     [SerializeField] private Vector3 _centerPosition = Vector3.zero;
     [SerializeField] private Vector3 _origin;

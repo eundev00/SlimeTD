@@ -30,6 +30,7 @@ public class TowerTestLifetimeScope : LifetimeScope
         builder.RegisterMessageBroker<CurrencyViewClickedEvent>(options);
 
         builder.Register<GameObjectPoolService>(Lifetime.Scoped).As<IGameObjectPoolService>();
+        builder.Register<VfxPlayer>(Lifetime.Scoped).As<IVfxPlayer>();
         builder.Register<GameplayService>(Lifetime.Singleton).As<IGameplayService>();
         builder.Register<TowerPrefabProvider>(Lifetime.Singleton).As<ITowerPrefabProvider>();
 

@@ -36,7 +36,7 @@ public class VfxPlayer : IVfxPlayer, IDisposable
             return;
 
         instance.transform.position = position;
-        instance.transform.localScale = Vector3.one * scale;
+        instance.transform.localScale = prefab.transform.localScale * scale;
         foreach (var effect in instance.GetComponentsInChildren<ParticleSystem>(true))
         {
             effect.Clear(false);

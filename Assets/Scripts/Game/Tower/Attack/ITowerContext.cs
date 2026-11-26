@@ -14,4 +14,5 @@ public interface ITowerContext
 
     void AddGold(int amount);
     void PlaySkillVfx(IReadOnlyList<TowerSkillData> skills);
+    void PlayTargetVfx(IReadOnlyList<TowerSkillData> skills, Vector3 position);
 }

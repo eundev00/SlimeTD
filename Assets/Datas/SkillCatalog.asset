@@ -438,23 +438,22 @@ MonoBehaviour:
     _vfxAnchor: 0
     _animTrigger: 
   - _id: 30103
-    _displayName: "\uAD11\uC5ED \uBC29\uCD9C"
-    _description: "5\uCD08\uB9C8\uB2E4 \uACF5\uACA9\uD560 \uB54C \uB9DE\uC740 \uC801
-      \uC8FC\uBCC0 \uBC18\uACBD 1.5\uC758 \uC801\uB3C4 \uD568\uAED8 \uACF5\uACA9\uD55C\uB2E4"
+    _displayName: "\uC5F0\uC1C4 \uD0C0\uACA9"
+    _description: "\uACF5\uACA9\uD560 \uB54C 15% \uD655\uB960\uB85C \uB9DE\uC740 \uC801\uACFC \uC55E\uB4A4\uC88C\uC6B0 1\uCE78\uC758 \uC801\uC744 \uC989\uC2DC \uD568\uAED8 \uACF5\uACA9\uD55C\uB2E4 (\uCFE8\uD0C0\uC784 5\uCD08)"
     _towerId: 301
     _unlockLevel: 10
     _upgradeOfId: 0
     _trigger: 1
     _nth: 0
-    _chance: 0
+    _chance: 15
     _cooldown: 5
     _effects:
-    - _type: 9
-      _value: 1.5
+    - _type: 11
+      _value: 1
       _valueType: 0
       _duration: 0
-    _vfxKey: 
-    _vfxAnchor: 0
+    _vfxKey: VfxRoundHitBlue
+    _vfxAnchor: 4
     _animTrigger: 
   - _id: 30104
     _displayName: "\uAE30\uC808 II"

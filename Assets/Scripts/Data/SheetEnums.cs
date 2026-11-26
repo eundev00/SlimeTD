@@ -69,6 +69,7 @@ public enum SkillEffectType
     DamageMultiplier = 8,
     Splash = 9,
     Stun = 10,
+    Cross = 11,
 }
 
 public enum VfxAnchor
@@ -77,6 +78,7 @@ public enum VfxAnchor
     Center = 1,
     Head = 2,
     Front = 3,
+    Target = 4,
 }
 
 public enum TowerAttackType

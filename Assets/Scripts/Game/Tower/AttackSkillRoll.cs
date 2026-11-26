@@ -5,16 +5,18 @@ public readonly struct AttackSkillRoll
     public readonly float SplashRadius;
     public readonly int Gold;
     public readonly float StunDuration;
+    public readonly int CrossRange;
 
-    public AttackSkillRoll(int extraShots, float damageMultiplier, float splashRadius, int gold, float stunDuration)
+    public AttackSkillRoll(int extraShots, float damageMultiplier, float splashRadius, int gold, float stunDuration, int crossRange)
     {
         ExtraShots = extraShots;
         DamageMultiplier = damageMultiplier;
         SplashRadius = splashRadius;
         Gold = gold;
         StunDuration = stunDuration;
+        CrossRange = crossRange;
     }
 
     // 데미지에 영향을 주는 스킬이 발동한 공격은 치명타 판정을 하지 않는다. 골드와 기절은 데미지와 무관하다.
-    public bool HasDamageProc => ExtraShots > 0 || DamageMultiplier > 0f || SplashRadius > 0f;
+    public bool HasDamageProc => ExtraShots > 0 || DamageMultiplier > 0f || SplashRadius > 0f || CrossRange > 0;
 }

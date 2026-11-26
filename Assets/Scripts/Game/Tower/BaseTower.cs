@@ -32,6 +32,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private ITowerLevelService _levelService;
     private IGameplayService _gameplayService;
     private IResourceLoadService _resourceLoadService;
+    private IVfxPlayer _vfxPlayer;
     private TowerSkillController _skills;
     private readonly TowerSkillVfx _skillVfx = new TowerSkillVfx();
     private readonly List<TowerSkillData> _activeSkills = new List<TowerSkillData>();
@@ -66,6 +67,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     TowerSkillController ITowerContext.Skills => _skills;
     void ITowerContext.AddGold(int amount) => _gameplayService.AddSkillGold(amount, Cell);
     void ITowerContext.PlaySkillVfx(IReadOnlyList<TowerSkillData> skills) => _skillVfx.Play(skills);
+    void ITowerContext.PlayTargetVfx(IReadOnlyList<TowerSkillData> skills, Vector3 position) => _skillVfx.PlayAt(skills, position, _vfxPlayer);
 
     public IReadOnlyReactiveProperty<bool> IsSelected => _isSelected;
 
@@ -76,8 +78,10 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         ISubscriber<GameProgressEvent> gameProgressSubscriber,
         ITowerLevelService levelService,
         IGameplayService gameplayService,
-        IResourceLoadService resourceLoadService)
+        IResourceLoadService resourceLoadService,
+        IVfxPlayer vfxPlayer)
     {
+        _vfxPlayer = vfxPlayer;
         _updateService = updateService;
         _poolService = poolService;
         _gameProgressSubscriber = gameProgressSubscriber;

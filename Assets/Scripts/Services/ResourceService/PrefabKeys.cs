@@ -18,6 +18,8 @@ public static class PrefabKeys
     public const string CrossbowBow = "CrossbowBow";
     public const string CurrencyCoin = "CurrencyCoin";
     public const string CurrencyDiamond = "CurrencyDiamond";
+    public const string CurrencyEnergy = "CurrencyEnergy";
+    public const string CurrencyPackTicket = "CurrencyPackTicket";
     public const string DamageText = "DamageText";
     public const string GameResultPopup = "GameResultPopup";
     public const string GoodSlime = "GoodSlime";
@@ -76,6 +78,7 @@ public static class PrefabKeys
     public const string TreeOrange = "TreeOrange";
     public const string TreePine = "TreePine";
     public const string VfxKnightSlash = "VfxKnightSlash";
+    public const string VfxRoundHitBlue = "VfxRoundHitBlue";
     public const string VfxSlimeDeath = "VfxSlimeDeath";
     public const string VfxStun = "VfxStun";
     public const string VfxSwordSlash = "VfxSwordSlash";
@@ -100,6 +103,8 @@ public static class PrefabKeys
         { CrossbowBow, "Assets/Prefabs/Game/Characters/CrossbowBow.prefab" },
         { CurrencyCoin, "Assets/Prefabs/Common/CurrencyCoin.prefab" },
         { CurrencyDiamond, "Assets/Prefabs/Common/CurrencyDiamond.prefab" },
+        { CurrencyEnergy, "Assets/Prefabs/Common/CurrencyEnergy.prefab" },
+        { CurrencyPackTicket, "Assets/Prefabs/Common/CurrencyPackTicket.prefab" },
         { DamageText, "Assets/Prefabs/Game/UI/DamageText.prefab" },
         { GameResultPopup, "Assets/Prefabs/Game/UI/Popup/GameResultPopup.prefab" },
         { GoodSlime, "Assets/Prefabs/Game/Characters/GoodSlime.prefab" },
@@ -158,6 +163,7 @@ public static class PrefabKeys
         { TreeOrange, "Assets/Prefabs/Game/Env/TreeOrange.prefab" },
         { TreePine, "Assets/Prefabs/Game/Env/TreePine.prefab" },
         { VfxKnightSlash, "Assets/Prefabs/Game/Vfx/VfxKnightSlash.prefab" },
+        { VfxRoundHitBlue, "Assets/Prefabs/Game/Vfx/VfxRoundHitBlue.prefab" },
         { VfxSlimeDeath, "Assets/Prefabs/Game/Vfx/VfxSlimeDeath.prefab" },
         { VfxStun, "Assets/Prefabs/Game/Vfx/VfxStun.prefab" },
         { VfxSwordSlash, "Assets/Prefabs/Game/Vfx/VfxSwordSlash.prefab" },
