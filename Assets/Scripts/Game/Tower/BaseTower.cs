@@ -113,7 +113,8 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
             .AddTo(_disposables);
     }
 
-    public void Initialize(TowerData data)
+    // level이 0이면 계정 레벨을 쓴다
+    public void Initialize(TowerData data, int level = 0)
     {
         if (data == null)
             return;
@@ -121,7 +122,8 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         _data = data;
         SpawnId = ++_nextSpawnId;
 
-        int level = _levelService.GetLevel(data.Id);
+        if (level <= 0)
+            level = _levelService.GetLevel(data.Id);
         _gameplayService.SkillCatalog?.GetActiveSkills(data.Id, level, _activeSkills);
 
         _stats.Initialize(data, level, _activeSkills);

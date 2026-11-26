@@ -65,7 +65,7 @@ public class Zone : MonoBehaviour
 
         _disposables?.Dispose();
         _disposables = new CompositeDisposable();
-        _spawnRequestedSubscriber.Subscribe(e => OnTowerSpawnRequested(e.TowerData)).AddTo(_disposables);
+        _spawnRequestedSubscriber.Subscribe(e => OnTowerSpawnRequested(e.TowerData, e.Level)).AddTo(_disposables);
     }
 
     // MessagePipe 브로커는 ProjectLifetimeScope 소속이라 씬을 넘어 산다. 여기서 안 끊으면 죽은 Zone이 계속 받는다.
@@ -78,12 +78,12 @@ public class Zone : MonoBehaviour
             _towerInputHandler.EmptyCellTapped -= OnEmptyCellTapped;
     }
 
-    private void OnTowerSpawnRequested(TowerData towerData)
+    private void OnTowerSpawnRequested(TowerData towerData, int level)
     {
         if (_towerSpawner == null)
             return;
 
-        _towerSpawner.TrySpawn(towerData);
+        _towerSpawner.TrySpawn(towerData, level: level);
     }
 
     private void OnEmptyCellTapped(Vector2Int cell)

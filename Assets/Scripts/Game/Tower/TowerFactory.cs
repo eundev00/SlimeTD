@@ -3,7 +3,7 @@ using VContainer;
 
 public static class TowerFactory
 {
-    public static GameObject Create(IObjectResolver resolver, GameObject prefab, TowerData towerData, Transform inactiveHolder, Transform parent, Vector3 position)
+    public static GameObject Create(IObjectResolver resolver, GameObject prefab, TowerData towerData, Transform inactiveHolder, Transform parent, Vector3 position, int level = 0)
     {
         // 비활성 부모 밑에 생성해야 Awake가 안 돈다. 프리팹 자체를 SetActive(false)하면 에셋이 오염된다.
         var instance = Object.Instantiate(prefab, inactiveHolder);
@@ -20,7 +20,7 @@ public static class TowerFactory
         var tower = instance.GetComponent<BaseTower>();
         if (tower != null)
         {
-            tower.Initialize(towerData);
+            tower.Initialize(towerData, level);
         }
 
         return instance;

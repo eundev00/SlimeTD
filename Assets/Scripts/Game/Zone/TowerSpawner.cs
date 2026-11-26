@@ -47,7 +47,7 @@ public class TowerSpawner : MonoBehaviour
         }
     }
 
-    public bool TrySpawn(TowerData towerData = null, Vector2Int? targetCell = null)
+    public bool TrySpawn(TowerData towerData = null, Vector2Int? targetCell = null, int level = 0)
     {
         if (_resolver == null || _towerCells == null)
         {
@@ -97,7 +97,7 @@ public class TowerSpawner : MonoBehaviour
         var position = GridUtility.GridToWorld(cell.x, cell.y, gridMapData);
         position = _groundHeightSampler.SnapToGround(position);
 
-        var tower = CreateTower(prefab, towerData, position);
+        var tower = CreateTower(prefab, towerData, position, level);
 
         var handler = tower.GetComponent<ITowerInteractionHandler>();
         if (handler == null)
@@ -211,9 +211,9 @@ public class TowerSpawner : MonoBehaviour
         return _accountService == null || _accountService.IsAvailable(towerData.Id);
     }
 
-    private GameObject CreateTower(GameObject prefab, TowerData towerData, Vector3 position)
+    private GameObject CreateTower(GameObject prefab, TowerData towerData, Vector3 position, int level = 0)
     {
-        return TowerFactory.Create(_resolver, prefab, towerData, GetHolder(), _spawnRoot, position);
+        return TowerFactory.Create(_resolver, prefab, towerData, GetHolder(), _spawnRoot, position, level);
     }
 
     private Transform GetHolder()

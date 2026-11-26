@@ -45,7 +45,8 @@ public class GameplayHudPresenter : IStartable, IDisposable
 
     private void HandleTestSummonButtonClicked()
     {
-        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent(_gameplayService.Config?.TestTower));
+        // 테스트 소환은 스킬을 다 보려고 최대 레벨로 낸다
+        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent(_gameplayService.Config?.TestTower, TowerLevelService.MaxLevel));
     }
 
     public void Dispose()

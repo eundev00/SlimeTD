@@ -2,9 +2,12 @@
 public readonly struct TowerSpawnRequestedEvent
 {
     public readonly TowerData TowerData;
+    // 0이면 계정 레벨을 쓴다
+    public readonly int Level;
 
-    public TowerSpawnRequestedEvent(TowerData towerData)
+    public TowerSpawnRequestedEvent(TowerData towerData, int level = 0)
     {
         TowerData = towerData;
+        Level = level;
     }
 }
