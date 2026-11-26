@@ -13,6 +13,7 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.Register<GameServerConnection>(Lifetime.Singleton).As<IGameServerConnection>();
         builder.Register<AccountService>(Lifetime.Singleton).As<IAccountService>();
         builder.Register<SingleBattleService>(Lifetime.Singleton).As<ISingleBattleService>();
+        builder.Register<CheatService>(Lifetime.Singleton).As<ICheatService>();
         builder.RegisterEntryPoint<BootstrapEntryPoint>();
         builder.RegisterComponentInHierarchy<ServerConnectErrorView>();
 
