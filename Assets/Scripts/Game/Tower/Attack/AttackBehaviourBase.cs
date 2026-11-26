@@ -183,10 +183,10 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 
     protected abstract void Apply(in TargetInfo target, in AttackSkillRoll roll, in DamageInfo info);
 
-    // 데미지 스킬이 발동한 공격은 치명타 없이 배율로만 계산하고, 아니면 치명타를 굴린다.
+    // 스킬이 발동한 공격은 치명타 없이 배율로만 계산하고, 아니면 치명타를 굴린다.
     private DamageInfo ResolveDamage(in AttackSkillRoll roll)
     {
-        var info = roll.HasDamageProc
+        var info = roll.HasProc
             ? Context.Stats.RollSkillHit(roll.DamageMultiplier > 0f ? roll.DamageMultiplier : 1f)
             : Context.Stats.RollHit();
 

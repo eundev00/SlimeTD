@@ -29,10 +29,7 @@ public class TowerSkillController
             var skill = activeSkills[i];
 
             if (skill.Trigger == SkillTrigger.OnAttack)
-            {
                 _onAttackSkills.Add(skill);
-                _nextReadyTimes.Add(0f);
-            }
 
             if (skill.Trigger != SkillTrigger.Always)
                 continue;
@@ -55,6 +52,11 @@ public class TowerSkillController
                 }
             }
         }
+
+        // 공격 1회에 스킬은 하나만 발동한다. 해금 레벨이 높은 스킬부터 굴린다
+        _onAttackSkills.Sort((a, b) => b.UnlockLevel != a.UnlockLevel ? b.UnlockLevel.CompareTo(a.UnlockLevel) : b.Id.CompareTo(a.Id));
+        for (int i = 0; i < _onAttackSkills.Count; i++)
+            _nextReadyTimes.Add(0f);
     }
 
     // 공격 1회마다 한 번 굴린다. 화살이 여러 발이어도 발동 판정은 공격당 한 번이다.
@@ -103,9 +105,11 @@ public class TowerSkillController
                         break;
                 }
             }
+
+            break;
         }
 
-        return new AttackSkillRoll(extraShots, multiplier, splashRadius, gold, stun, crossRange);
+        return new AttackSkillRoll(_lastProcs.Count > 0, extraShots, multiplier, splashRadius, gold, stun, crossRange);
     }
 
     // 쿨타임은 공격속도와 독립이다. 발동했을 때만 시작한다.
