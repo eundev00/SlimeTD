@@ -78,15 +78,17 @@ Stencil { Ref [_SlimeStencilRef]  Comp [_SlimeStencilComp]  Pass [_SlimeStencilP
 
 ```
 BaseSlime.Initialize()
-  └ SlimeDrawOrderService.Add(slime, renderGroup)
-      └ BaseSlime.SetDrawOrder(sortingOrder, stencilRef)
+  └ SlimeDrawOrderService.Add(drawOrder, renderGroup)
+      └ SlimeDrawOrder.Set(sortingOrder, stencilRef)
           ├ 모든 렌더러 sortingOrder
           └ 머티리얼 인스턴스 _SlimeStencilRef
 ```
 
+`SlimeDrawOrder`는 슬라임 하나의 렌더러와 머티리얼 인스턴스를 들고 값만 넣는다. `BaseSlime`이 `Awake`에서 만들고, 풀 반환·파괴 때 서비스에서 빼며, 파괴 때 머티리얼 인스턴스를 지운다.
+
 ### 머티리얼 인스턴스와 큐
 
-- **`sortingOrder`가 그리는 순서를 정하는 건 Transparent 큐뿐이다.** 그래서 `BaseSlime.SetupDrawOrderMaterials`가 처음 한 번 머티리얼을 인스턴스로 만들어 Transparent 큐(몸통 3000, 얼굴 3001)로 옮기고 스텐실 Comp/Pass를 켠다. ZWrite는 그대로 켜 둔다
+- **`sortingOrder`가 그리는 순서를 정하는 건 Transparent 큐뿐이다.** 그래서 `SlimeDrawOrder` 생성자가 처음 한 번 머티리얼을 인스턴스로 만들어 Transparent 큐(몸통 3000, 얼굴 3001)로 옮기고 스텐실 Comp/Pass를 켠다. ZWrite는 그대로 켜 둔다
 - **스텐실 값은 렌더 상태라 MaterialPropertyBlock으로 못 바꾼다.** 슬라임마다 값이 달라야 해서 머티리얼 인스턴스를 쓴다. 풀링이라 인스턴스는 슬라임 오브젝트마다 처음 한 번만 생긴다
 - 파티클 렌더러는 건드리지 않는다
 
@@ -117,7 +119,7 @@ BaseSlime.Initialize()
 
 ## 6. 머티리얼
 
-몸통은 `Assets/Art/Materials/SlimeCustorm/M_Cute_Slime_XX_Flat.mat`(단순화·채도 보정한 텍스처)을 프리팹이 쓴다. 비교용으로 `_Custom` 머티리얼도 아직 남아 있다.
+몸통은 `Assets/Art/Materials/SlimeCustorm/M_Cute_Slime_XX_Flat.mat`(단순화·채도 보정한 텍스처)을 쓴다. 00~32 33개가 있고, 프리팹에 연결되지 않은 번호는 색 후보다.
 
 | 항목 | 몸통 | 얼굴 |
 |---|---|---|

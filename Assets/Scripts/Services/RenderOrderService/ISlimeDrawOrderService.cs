@@ -1,5 +1,5 @@
 public interface ISlimeDrawOrderService
 {
-    void Add(BaseSlime slime, SlimeRenderGroup group);
-    void Remove(BaseSlime slime);
+    void Add(SlimeDrawOrder drawOrder, SlimeRenderGroup group);
+    void Remove(SlimeDrawOrder drawOrder);
 }

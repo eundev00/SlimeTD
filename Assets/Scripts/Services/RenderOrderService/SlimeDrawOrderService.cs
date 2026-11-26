@@ -10,31 +10,31 @@ public class SlimeDrawOrderService : ISlimeDrawOrderService
     // 스텐실이 8비트라 일반 슬라임은 동시에 254마리(1~254)까지 순서를 구분한다
     private const int MaxNormalRank = 253;
 
-    private readonly List<BaseSlime> _normals = new List<BaseSlime>();
+    private readonly List<SlimeDrawOrder> _normals = new List<SlimeDrawOrder>();
     private int _nextRank;
 
-    public void Add(BaseSlime slime, SlimeRenderGroup group)
+    public void Add(SlimeDrawOrder drawOrder, SlimeRenderGroup group)
     {
-        if (slime == null)
+        if (drawOrder == null)
             return;
 
         if (group == SlimeRenderGroup.Boss)
         {
-            slime.SetDrawOrder(BossSortingOrder, BossStencilRef);
+            drawOrder.Set(BossSortingOrder, BossStencilRef);
             return;
         }
 
         if (_nextRank > MaxNormalRank)
             Compact();
 
-        _normals.Add(slime);
-        Apply(slime, _nextRank);
+        _normals.Add(drawOrder);
+        Apply(drawOrder, _nextRank);
         _nextRank++;
     }
 
-    public void Remove(BaseSlime slime)
+    public void Remove(SlimeDrawOrder drawOrder)
     {
-        _normals.Remove(slime);
+        _normals.Remove(drawOrder);
     }
 
     // 순번이 끝까지 차면 살아 있는 슬라임만 등장 순서대로 다시 매긴다
@@ -46,9 +46,9 @@ public class SlimeDrawOrderService : ISlimeDrawOrderService
         _nextRank = _normals.Count;
     }
 
-    private static void Apply(BaseSlime slime, int rank)
+    private static void Apply(SlimeDrawOrder drawOrder, int rank)
     {
         int clamped = Mathf.Min(rank, MaxNormalRank);
-        slime.SetDrawOrder(clamped + 1, MaxNormalRank + 1 - clamped);
+        drawOrder.Set(clamped + 1, MaxNormalRank + 1 - clamped);
     }
 }

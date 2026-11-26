@@ -11,10 +11,6 @@ using VContainer;
 
 public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpdatable
 {
-    private static readonly int StencilRefId = Shader.PropertyToID("_SlimeStencilRef");
-    private static readonly int StencilCompId = Shader.PropertyToID("_SlimeStencilComp");
-    private static readonly int StencilPassId = Shader.PropertyToID("_SlimeStencilPass");
-
     // 사망·기절 연출은 일반 슬라임 몸(반지름 약 0.26) 크기에 맞춰 만들고, 큰 슬라임은 몸 크기 비율만큼 키운다
     private const float VfxBaseRadius = 0.2637f;
     private const float TicksPerSecond = 30f;
@@ -25,8 +21,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
     [NotNull][SerializeField] private Collider _bodyCollider;
 
     private SplineAnimate _splineAnimate;
-    private Renderer[] _renderers;
-    private Material[] _materials;
+    private SlimeDrawOrder _drawOrder;
     private ISlimeDrawOrderService _drawOrderService;
     private SlimeStats _stats;
     private SlimeDataBase _data;
@@ -98,7 +93,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
             _damageTextAnchor = transform;
         }
 
-        SetupDrawOrderMaterials();
+        _drawOrder = new SlimeDrawOrder(gameObject);
 
         _stats = new SlimeStats(0);
 
@@ -138,7 +133,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
 
         _moving = false;
         _container = null;
-        _drawOrderService?.Remove(this);
+        _drawOrderService?.Remove(_drawOrder);
         UnregisterUpdate();
     }
 
@@ -171,7 +166,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
         _distance = 0f;
         _previousDistance = 0f;
         ApplyPose(0f);
-        _drawOrderService?.Add(this, data.RenderGroup);
+        _drawOrderService?.Add(_drawOrder, data.RenderGroup);
 
         _moving = !_gameOver;
         RegisterUpdate();
@@ -235,43 +230,6 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
 
         if (forward.sqrMagnitude > 0.0001f)
             transform.rotation = Quaternion.LookRotation(forward, up);
-    }
-
-    // sortingOrder가 그리는 순서를 정하는 건 Transparent 큐뿐이라 슬라임을 그 큐로 옮긴다 (ZWrite는 그대로 켜서 자기 몸 가림은 깊이로 한다).
-    // 스텐실 값이 슬라임마다 달라야 해서 머티리얼을 인스턴스로 쓴다 (렌더 상태는 PropertyBlock으로 못 바꾼다)
-    private void SetupDrawOrderMaterials()
-    {
-        var all = GetComponentsInChildren<Renderer>(true);
-        var renderers = new System.Collections.Generic.List<Renderer>();
-        var materials = new System.Collections.Generic.List<Material>();
-
-        foreach (var renderer in all)
-        {
-            if (renderer is ParticleSystemRenderer)
-                continue;
-
-            renderers.Add(renderer);
-            foreach (var material in renderer.materials)
-            {
-                int queueOffset = material.renderQueue >= (int)UnityEngine.Rendering.RenderQueue.AlphaTest ? 1 : 0;
-                material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent + queueOffset;
-                material.SetFloat(StencilCompId, (float)UnityEngine.Rendering.CompareFunction.GreaterEqual);
-                material.SetFloat(StencilPassId, (float)UnityEngine.Rendering.StencilOp.Replace);
-                materials.Add(material);
-            }
-        }
-
-        _renderers = renderers.ToArray();
-        _materials = materials.ToArray();
-    }
-
-    public void SetDrawOrder(int sortingOrder, int stencilRef)
-    {
-        for (int i = 0; i < _renderers.Length; i++)
-            _renderers[i].sortingOrder = sortingOrder;
-
-        for (int i = 0; i < _materials.Length; i++)
-            _materials[i].SetFloat(StencilRefId, stencilRef);
     }
 
     public virtual void TakeDamage(DamageInfo info)
@@ -386,12 +344,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
 
     protected virtual void OnDestroy()
     {
-        _drawOrderService?.Remove(this);
-        if (_materials != null)
-        {
-            for (int i = 0; i < _materials.Length; i++)
-                Destroy(_materials[i]);
-        }
+        _drawOrderService?.Remove(_drawOrder);
+        _drawOrder?.Dispose();
 
         UnregisterUpdate();
         _disposables?.Dispose();
