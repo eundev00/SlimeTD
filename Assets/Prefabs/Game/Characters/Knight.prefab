@@ -265,8 +265,6 @@ MonoBehaviour:
   _rangeIndicator: {fileID: 6583080133682948031}
   _animator: {fileID: 6304550979438566945}
   _animationEventListener: {fileID: 8668825013524613853}
-  _liftTarget: {fileID: 6664335346177747793}
-  _liftHeight: 0.35
 --- !u!114 &6304550979438566945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5900,6 +5898,7 @@ GameObject:
   - component: {fileID: 6664335346177747793}
   - component: {fileID: 6235985311278781914}
   - component: {fileID: 8668825013524613853}
+  - component: {fileID: 2137255114460333530}
   m_Layer: 8
   m_Name: Knight
   m_TagString: Untagged
@@ -5966,6 +5965,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a4b2c1c33d69414a80afde031b951fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerAnimationEventListener
+--- !u!114 &2137255114460333530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4546556572980567102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55929824ad40a3d40ac459c868105d21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hovl.HS_SwordTrailAnimationEvents
+  swordTrails:
+  - {fileID: 7836055510174712415}
+  workWithoutAnimation: 0
 --- !u!1 &5196473570073419459
 GameObject:
   m_ObjectHideFlags: 0
@@ -6779,6 +6793,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4641584567456960349}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8158702267700291284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5245857253250634268}
+  m_Layer: 0
+  m_Name: Trail Top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5245857253250634268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158702267700291284}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0000037252903, y: -0.36576563, z: 0.000000067055225}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8364408854772673994}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8392665920309812406
 GameObject:
   m_ObjectHideFlags: 0
@@ -6926,6 +6971,37 @@ Transform:
   - {fileID: 8096562229943890224}
   m_Father: {fileID: 4641584567456960349}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8587829324402181362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1187318079063931489}
+  m_Layer: 0
+  m_Name: Trail Bottom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1187318079063931489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8587829324402181362}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0000037252903, y: 1.4094956, z: 0.000000067055225}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8364408854772673994}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2412106304957103155
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7050,11 +7126,91 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6356179323374486834, guid: b5088480d5a994f09ac3193dd506cef8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5245857253250634268}
+    - targetCorrespondingSourceObject: {fileID: 6356179323374486834, guid: b5088480d5a994f09ac3193dd506cef8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1187318079063931489}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6016386647319060360, guid: b5088480d5a994f09ac3193dd506cef8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7836055510174712415}
   m_SourcePrefab: {fileID: 100100000, guid: b5088480d5a994f09ac3193dd506cef8, type: 3}
 --- !u!4 &8364408854772673994 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6356179323374486834, guid: b5088480d5a994f09ac3193dd506cef8, type: 3}
   m_PrefabInstance: {fileID: 3180094264481687800}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9178205361544050544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6016386647319060360, guid: b5088480d5a994f09ac3193dd506cef8, type: 3}
+  m_PrefabInstance: {fileID: 3180094264481687800}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7836055510174712415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178205361544050544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62cbe53ec0e8b004ab83d7b663b93274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hovl.HS_SwordMeshTrail
+  preset: {fileID: 11400000, guid: 4a608e5bedc59af448dbe1c4d6d963d6, type: 2}
+  trailMaterial: {fileID: 0}
+  dissolvePropertyName: _Dissolve
+  maximumDissolve: 0
+  trailLifetime: 0.3
+  minimumSectionDistance: 0.015
+  sampleInterval: 0
+  linesAlongTrail: 2
+  useCustomIntermediatePoints: 0
+  customIntermediatePoints: []
+  fadeAlphaOverLifetime: 1
+  alphaOverLifetime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.1748688
+      outSlope: -2.1748688
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08048779
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  startActive: 0
+  clearPreviousTrailOnStart: 1
+  optimizeForMobile: 0
+  smoothLowFps: 1
+  maximumSmoothedSectionDistance: 0.08
+  maxIntermediateSectionsPerFrame: 8
+  pointA: {fileID: 5245857253250634268}
+  pointB: {fileID: 1187318079063931489}
+  automaticAxis: 0
+  recalculatePointsOnAwake: 0
+  pointAInset: 0
+  pointBInset: 0
+  endpointPadding: 0
+  sortingOrder: 0
+  receiveShadows: 0
+  shadowCastingMode: 0
+  lockAutomaticEditorUpdates: 0
+  presetPointAEffectInstances: []
+  appliedEffectPreset: {fileID: 11400000, guid: 4a608e5bedc59af448dbe1c4d6d963d6, type: 2}
