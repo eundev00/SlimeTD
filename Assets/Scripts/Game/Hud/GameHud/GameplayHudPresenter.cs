@@ -5,8 +5,8 @@ using VContainer.Unity;
 
 public class GameplayHudPresenter : IStartable, IDisposable
 {
-    // TODO: 기절 확인용 임시 값. 모노리스 기절 I이 6레벨에 열린다
-    private const int TestSummonLevel = 6;
+    // TODO: 스킬 확인용 임시 값. 모노리스는 15레벨에 스킬이 다 열린다
+    private const int TestSummonLevel = 15;
 
     private readonly GameplayHudView _view;
     private readonly IGameplayService _gameplayService;
