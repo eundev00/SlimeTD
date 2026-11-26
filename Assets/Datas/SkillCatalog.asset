@@ -423,11 +423,11 @@ MonoBehaviour:
     _description: "\uACF5\uACA9\uD560 \uB54C 10% \uD655\uB960\uB85C \uC801\uC744
       1\uCD08 \uB3D9\uC548 \uAE30\uC808\uC2DC\uD0A8\uB2E4"
     _towerId: 301
-    _unlockLevel: 6
+    _unlockLevel: 1
     _upgradeOfId: 0
     _trigger: 1
     _nth: 0
-    _chance: 10
+    _chance: 50
     _cooldown: 0
     _effects:
     - _type: 10
