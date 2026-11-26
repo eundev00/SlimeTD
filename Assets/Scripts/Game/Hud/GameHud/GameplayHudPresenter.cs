@@ -5,6 +5,9 @@ using VContainer.Unity;
 
 public class GameplayHudPresenter : IStartable, IDisposable
 {
+    // TODO: 기절 확인용 임시 값. 모노리스 기절 I이 6레벨에 열린다
+    private const int TestSummonLevel = 6;
+
     private readonly GameplayHudView _view;
     private readonly IGameplayService _gameplayService;
     private readonly IPublisher<TowerSpawnRequestedEvent> _spawnRequestedPublisher;
@@ -45,8 +48,7 @@ public class GameplayHudPresenter : IStartable, IDisposable
 
     private void HandleTestSummonButtonClicked()
     {
-        // TODO: 기절 확인용 임시 값. 테스트 소환은 1레벨로 낸다
-        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent(_gameplayService.Config?.TestTower, TowerLevelService.MinLevel));
+        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent(_gameplayService.Config?.TestTower, TestSummonLevel));
     }
 
     public void Dispose()
