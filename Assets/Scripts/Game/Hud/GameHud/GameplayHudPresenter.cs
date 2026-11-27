@@ -7,21 +7,26 @@ public class GameplayHudPresenter : IStartable, IDisposable
 {
     private readonly GameplayHudView _view;
     private readonly IGameplayService _gameplayService;
+    private readonly ICoopBattleService _coopBattleService;
     private readonly IPublisher<TowerSpawnRequestedEvent> _spawnRequestedPublisher;
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
     public GameplayHudPresenter(
         GameplayHudView view,
         IGameplayService gameplayService,
+        ICoopBattleService coopBattleService,
         IPublisher<TowerSpawnRequestedEvent> spawnRequestedPublisher)
     {
         _view = view;
         _gameplayService = gameplayService;
+        _coopBattleService = coopBattleService;
         _spawnRequestedPublisher = spawnRequestedPublisher;
     }
 
     public void Start()
     {
+        // 협동 소환은 서버가 헌터를 뽑으므로 테스트 소환이 없다
+        _view.SetTestSummonVisible(!_coopBattleService.HasBattle);
         _view.TestSummonButtonClicked += HandleTestSummonButtonClicked;
 
         var info = _gameplayService.Info;
@@ -40,7 +45,8 @@ public class GameplayHudPresenter : IStartable, IDisposable
     private bool IsAffordable(int gold, int cost)
     {
         var config = _gameplayService.Config;
-        return (config != null && config.IgnoreGoldCost) || gold >= cost;
+        bool ignoreCost = config != null && config.IgnoreGoldCost && !_coopBattleService.HasBattle;
+        return ignoreCost || gold >= cost;
     }
 
     private void HandleTestSummonButtonClicked()

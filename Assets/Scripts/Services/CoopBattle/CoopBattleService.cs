@@ -24,6 +24,7 @@ public class CoopBattleService : ICoopBattleService, IDisposable
     public int MySlot { get; private set; }
     public IReadOnlyList<CoopBattlePlayer> Players => _players;
     public int TicksPerSecond { get; private set; }
+    public int StartSummonCost { get; private set; }
     public int LatestTick { get; private set; }
     public float LatestTickReceivedAt { get; private set; }
     public CoopBattleEndNtf End { get; private set; }
@@ -92,6 +93,44 @@ public class CoopBattleService : ICoopBattleService, IDisposable
             _events.Dequeue();
     }
 
+    public async UniTask<ResultCode> SummonAsync(int x, int y)
+    {
+        if (!HasBattle)
+            return ResultCode.NotFound;
+
+        try
+        {
+            var res = await _connection.RequestAsync(MsgId.CoopBattleSummonReq, new CoopBattleSummonReq { X = x, Y = y }, MsgId.CoopBattleSummonRes, CoopBattleSummonRes.Parser);
+            if (res.Result != ResultCode.Ok)
+                Debug.Log($"[CoopBattleService] 소환 실패 ({x}, {y}): {res.Result}");
+            return res.Result;
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"[CoopBattleService] 소환 요청 실패: {e.Message}");
+            return ResultCode.ServerError;
+        }
+    }
+
+    public async UniTask<ResultCode> MergeAsync(int x, int y)
+    {
+        if (!HasBattle)
+            return ResultCode.NotFound;
+
+        try
+        {
+            var res = await _connection.RequestAsync(MsgId.CoopBattleMergeReq, new CoopBattleMergeReq { X = x, Y = y }, MsgId.CoopBattleMergeRes, CoopBattleMergeRes.Parser);
+            if (res.Result != ResultCode.Ok)
+                Debug.Log($"[CoopBattleService] 합성 실패 ({x}, {y}): {res.Result}");
+            return res.Result;
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"[CoopBattleService] 합성 요청 실패: {e.Message}");
+            return ResultCode.ServerError;
+        }
+    }
+
     public async UniTask LeaveAsync()
     {
         if (!HasBattle || End != null)
@@ -124,6 +163,7 @@ public class CoopBattleService : ICoopBattleService, IDisposable
         Stage = ntf.Stage;
         MySlot = ntf.MySlot;
         TicksPerSecond = ntf.TicksPerSecond;
+        StartSummonCost = ntf.SummonCost;
         LatestTick = 0;
         LatestTickReceivedAt = Time.realtimeSinceStartup;
         End = null;

@@ -5,60 +5,34 @@ public class TowerSpawner : MonoBehaviour
 {
     private const int DefaultSummonGradeId = 1;
 
-    private IObjectResolver _resolver;
     private IGameplayService _gameplayService;
-    private IGroundHeightSampler _groundHeightSampler;
     private IAccountService _accountService;
-    private ITowerPrefabProvider _prefabProvider;
     private ISingleBattleService _singleBattleService;
     private TowerCells _towerCells;
-
-    private Transform _spawnRoot;
-    private Transform _holder;
+    private TowerPlacer _placer;
 
     [Inject]
     public void Construct(
-        IObjectResolver resolver,
         IGameplayService gameplayService,
-        IGroundHeightSampler groundHeightSampler,
         IAccountService accountService,
-        ITowerPrefabProvider prefabProvider,
         ISingleBattleService singleBattleService)
     {
         _singleBattleService = singleBattleService;
-        _resolver = resolver;
         _gameplayService = gameplayService;
-        _groundHeightSampler = groundHeightSampler;
         _accountService = accountService;
-        _prefabProvider = prefabProvider;
     }
 
-    public void Initialize(TowerCells towerCells, Transform spawnRoot)
+    public void Initialize(TowerPlacer placer)
     {
-        _towerCells = towerCells;
-        _spawnRoot = spawnRoot;
-    }
-
-    private void OnDestroy()
-    {
-        if (_holder != null)
-        {
-            Destroy(_holder.gameObject);
-        }
+        _placer = placer;
+        _towerCells = placer?.Cells;
     }
 
     public bool TrySpawn(TowerData towerData = null, Vector2Int? targetCell = null, int level = 0)
     {
-        if (_resolver == null || _towerCells == null)
+        if (_placer == null || _towerCells?.GridMapData == null)
         {
             Debug.Log("[TowerSpawner] Initialize가 호출되지 않았습니다.", this);
-            return false;
-        }
-
-        var gridMapData = _towerCells.GridMapData;
-        if (gridMapData == null)
-        {
-            Debug.Log("[TowerSpawner] GridMapData가 없어 타워를 배치할 수 없습니다.", this);
             return false;
         }
 
@@ -87,90 +61,36 @@ public class TowerSpawner : MonoBehaviour
         if (towerData == null && !TryDrawTower(out towerData, random))
             return false;
 
-        if (!_prefabProvider.TryGet(towerData, out var prefab) || !_gameplayService.TrySpendSummonCost())
+        if (!_placer.HasPrefab(towerData) || !_gameplayService.TrySpendSummonCost())
         {
             Debug.Log($"[TowerSpawner] 소환하지 못했습니다: {towerData.CodeName}", this);
             random?.Restore(savedRandom);
             return false;
         }
 
-        var position = GridUtility.GridToWorld(cell.x, cell.y, gridMapData);
-        position = _groundHeightSampler.SnapToGround(position);
-
-        var tower = CreateTower(prefab, towerData, position, level);
-
-        var handler = tower.GetComponent<ITowerInteractionHandler>();
-        if (handler == null)
-        {
-            Debug.Log("[TowerSpawner] 타워 프리팹에 ITowerInteractionHandler 구현체가 없습니다.", tower);
-            Destroy(tower);
+        if (!_placer.TryPlace(towerData, cell, level, out _))
             return false;
-        }
 
-        _towerCells.Register(cell, handler);
-        SetCell(handler, cell);
         _singleBattleService.RecordSummon(cell, towerData.Id);
         return true;
     }
 
-    public bool TryMerge(
-        TowerData resultData,
-        Vector2Int resultCell,
-        ITowerInteractionHandler source,
-        Vector2Int partnerCell,
-        ITowerInteractionHandler partner)
+    public bool TryMerge(TowerData resultData, Vector2Int resultCell, Vector2Int partnerCell)
     {
-        if (resultData == null || !_prefabProvider.TryGet(resultData, out var resultPrefab))
+        if (_placer == null || !_placer.HasPrefab(resultData))
         {
             Debug.Log("[TowerSpawner] 합성 결과 타워에 프리팹이 없습니다.", this);
             return false;
         }
 
-        if (_resolver == null || _towerCells == null)
-        {
-            Debug.Log("[TowerSpawner] Initialize가 호출되지 않았습니다.", this);
+        _placer.Remove(resultCell);
+        _placer.Remove(partnerCell);
+
+        if (!_placer.TryPlace(resultData, resultCell, 0, out _))
             return false;
-        }
 
-        var gridMapData = _towerCells.GridMapData;
-        if (gridMapData == null)
-        {
-            Debug.Log("[TowerSpawner] GridMapData가 없어 타워를 배치할 수 없습니다.", this);
-            return false;
-        }
-
-        _towerCells.Unregister(resultCell);
-        _towerCells.Unregister(partnerCell);
-
-        if (source is MonoBehaviour sourceBehaviour && sourceBehaviour != null)
-            Destroy(sourceBehaviour.gameObject);
-
-        if (partner is MonoBehaviour partnerBehaviour && partnerBehaviour != null)
-            Destroy(partnerBehaviour.gameObject);
-
-        var position = GridUtility.GridToWorld(resultCell.x, resultCell.y, gridMapData);
-        position = _groundHeightSampler.SnapToGround(position);
-
-        var tower = CreateTower(resultPrefab, resultData, position);
-
-        var handler = tower.GetComponent<ITowerInteractionHandler>();
-        if (handler == null)
-        {
-            Debug.Log("[TowerSpawner] 합성 결과 프리팹에 ITowerInteractionHandler 구현체가 없습니다.", tower);
-            Destroy(tower);
-            return false;
-        }
-
-        _towerCells.Register(resultCell, handler);
-        SetCell(handler, resultCell);
         _singleBattleService.RecordMerge(resultCell, partnerCell, resultData.Id);
         return true;
-    }
-
-    private static void SetCell(ITowerInteractionHandler handler, Vector2Int cell)
-    {
-        if (handler is BaseTower tower)
-            tower.Cell = cell;
     }
 
     private bool CanAffordSummon()
@@ -209,22 +129,5 @@ public class TowerSpawner : MonoBehaviour
     private bool IsAvailable(TowerData towerData)
     {
         return _accountService == null || _accountService.IsAvailable(towerData.Id);
-    }
-
-    private GameObject CreateTower(GameObject prefab, TowerData towerData, Vector3 position, int level = 0)
-    {
-        return TowerFactory.Create(_resolver, prefab, towerData, GetHolder(), _spawnRoot, position, level);
-    }
-
-    private Transform GetHolder()
-    {
-        if (_holder != null)
-            return _holder;
-
-        var holderObject = new GameObject("[TowerSpawnHolder]");
-        holderObject.SetActive(false);
-
-        _holder = holderObject.transform;
-        return _holder;
     }
 }

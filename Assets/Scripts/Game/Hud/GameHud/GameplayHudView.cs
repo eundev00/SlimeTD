@@ -33,6 +33,12 @@ public class GameplayHudView : MonoBehaviour
         TestSummonButtonClicked?.Invoke();
     }
 
+    public void SetTestSummonVisible(bool visible)
+    {
+        if (_testSummonButton != null)
+            _testSummonButton.gameObject.SetActive(visible);
+    }
+
     public void SetGold(int gold)
     {
         if (_goldText != null)

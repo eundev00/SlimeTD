@@ -50,7 +50,6 @@ public class GameInitiator : IAsyncStartable
         if (map == null)
             return;
 
-        // TODO: 팀원 구역은 협동 헌터 동기화(M2) 전까지 Zone 없이 비워 둔다
         var myZone = map.GetZone(coop ? _coopBattleService.MySlot : 0);
         if (myZone == null || map.Paths.Count == 0)
         {
@@ -62,11 +61,13 @@ public class GameInitiator : IAsyncStartable
         if (_gameplayService.Config != null)
             _towerLevelService.SetDefaultLevel(_gameplayService.Config.DebugTowerLevel);
 
-        // 협동은 웨이브와 슬라임 이동을 서버가 돌린다. 헌터 배치·공격은 M2에서 서버와 붙인다
+        // 협동은 웨이브, 슬라임 이동, 헌터 소환·합성, 골드를 서버가 돌린다
         if (coop)
         {
+            _zone.Initialize(myZone, true);
+            _gameplayService.SetGold(battleStage.StartingGold, _coopBattleService.StartSummonCost);
             if (_waveSpawner.Prepare(_gameplayService.Stage, map.Paths, map.Paths.Count))
-                _coopBattlePresenter.Begin(_gameplayService.Stage, _waveSpawner);
+                _coopBattlePresenter.Begin(_gameplayService.Stage, _waveSpawner, _zone, map);
             return;
         }
 

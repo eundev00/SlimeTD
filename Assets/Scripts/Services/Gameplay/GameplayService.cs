@@ -109,6 +109,12 @@ public class GameplayService : IGameplayService
         _info.Life.Value = Mathf.Max(0, life);
     }
 
+    public void SetGold(int gold, int summonCost)
+    {
+        _info.Gold.Value = Mathf.Max(0, gold);
+        _info.SummonCost.Value = summonCost;
+    }
+
     public void ReportReachedWave(int wave)
     {
         ReportWaveReached(wave);

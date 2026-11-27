@@ -34,27 +34,43 @@ namespace SlimeTD.Protocol {
             "c3VsdBgBIAEoDjITLnNsaW1ldGQuUmVzdWx0Q29kZRIhCgVpdGVtcxgCIAMo",
             "CzISLnNsaW1ldGQuSXRlbVN0YWNrEhwKFGVuZXJneV9yZWNvdmVyX2F0X21z",
             "GAMgASgDIhQKEkNvb3BCYXR0bGVMZWF2ZVJlcSI5ChJDb29wQmF0dGxlTGVh",
-            "dmVSZXMSIwoGcmVzdWx0GAEgASgOMhMuc2xpbWV0ZC5SZXN1bHRDb2RlIkQK",
-            "EENvb3BCYXR0bGVQbGF5ZXISDAoEc2xvdBgBIAEoBRISCgphY2NvdW50X2lk",
-            "GAIgASgDEg4KBmlzX2JvdBgDIAEoCCK8AQoSQ29vcEJhdHRsZVN0YXJ0TnRm",
-            "EhEKCWJhdHRsZV9pZBgBIAEoAxIjCgVzdGFnZRgCIAEoCzIULnNsaW1ldGQu",
-            "QmF0dGxlU3RhZ2USDwoHbXlfc2xvdBgDIAEoBRIqCgdwbGF5ZXJzGAQgAygL",
-            "Mhkuc2xpbWV0ZC5Db29wQmF0dGxlUGxheWVyEhgKEHRpY2tzX3Blcl9zZWNv",
-            "bmQYBSABKAUSFwoPdGlja3NfcGVyX2V2ZW50GAYgASgFIkwKEkNvb3BCYXR0",
-            "bGVFdmVudE50ZhIMCgR0aWNrGAEgASgFEigKBmV2ZW50cxgCIAMoCzIYLnNs",
-            "aW1ldGQuQ29vcEJhdHRsZUV2ZW50IrkBCg9Db29wQmF0dGxlRXZlbnQSDAoE",
-            "dGljaxgBIAEoBRIsCgp3YXZlX3N0YXJ0GAIgASgLMhYuc2xpbWV0ZC5Db29w",
-            "V2F2ZVN0YXJ0SAASLgoLc2xpbWVfc3Bhd24YAyABKAsyFy5zbGltZXRkLkNv",
-            "b3BTbGltZVNwYXduSAASMgoNc2xpbWVfYXJyaXZhbBgEIAEoCzIZLnNsaW1l",
-            "dGQuQ29vcFNsaW1lQXJyaXZhbEgAQgYKBGtpbmQiMgoNQ29vcFdhdmVTdGFy",
-            "dBIMCgR3YXZlGAEgASgFEhMKC3NsaW1lX2NvdW50GAIgASgFImsKDkNvb3BT",
-            "bGltZVNwYXduEhAKCHNsaW1lX2lkGAEgASgFEhUKDXNsaW1lX2RhdGFfaWQY",
-            "AiABKAUSEgoKcGF0aF9pbmRleBgDIAEoBRIOCgZoZWFsdGgYBCABKAUSDAoE",
-            "d2F2ZRgFIAEoBSIyChBDb29wU2xpbWVBcnJpdmFsEhAKCHNsaW1lX2lkGAEg",
-            "ASgFEgwKBGxpZmUYAiABKAUidgoQQ29vcEJhdHRsZUVuZE50ZhIRCgliYXR0",
-            "bGVfaWQYASABKAMSJwoHb3V0Y29tZRgCIAEoDjIWLnNsaW1ldGQuQmF0dGxl",
-            "T3V0Y29tZRIUCgxyZWFjaGVkX3dhdmUYAyABKAUSEAoIZW5kX3RpY2sYBCAB",
-            "KAVCE6oCEFNsaW1lVEQuUHJvdG9jb2xiBnByb3RvMw=="));
+            "dmVSZXMSIwoGcmVzdWx0GAEgASgOMhMuc2xpbWV0ZC5SZXN1bHRDb2RlIisK",
+            "E0Nvb3BCYXR0bGVTdW1tb25SZXESCQoBeBgBIAEoBRIJCgF5GAIgASgFIjoK",
+            "E0Nvb3BCYXR0bGVTdW1tb25SZXMSIwoGcmVzdWx0GAEgASgOMhMuc2xpbWV0",
+            "ZC5SZXN1bHRDb2RlIioKEkNvb3BCYXR0bGVNZXJnZVJlcRIJCgF4GAEgASgF",
+            "EgkKAXkYAiABKAUiOQoSQ29vcEJhdHRsZU1lcmdlUmVzEiMKBnJlc3VsdBgB",
+            "IAEoDjITLnNsaW1ldGQuUmVzdWx0Q29kZSJEChBDb29wQmF0dGxlUGxheWVy",
+            "EgwKBHNsb3QYASABKAUSEgoKYWNjb3VudF9pZBgCIAEoAxIOCgZpc19ib3QY",
+            "AyABKAgi0QEKEkNvb3BCYXR0bGVTdGFydE50ZhIRCgliYXR0bGVfaWQYASAB",
+            "KAMSIwoFc3RhZ2UYAiABKAsyFC5zbGltZXRkLkJhdHRsZVN0YWdlEg8KB215",
+            "X3Nsb3QYAyABKAUSKgoHcGxheWVycxgEIAMoCzIZLnNsaW1ldGQuQ29vcEJh",
+            "dHRsZVBsYXllchIYChB0aWNrc19wZXJfc2Vjb25kGAUgASgFEhcKD3RpY2tz",
+            "X3Blcl9ldmVudBgGIAEoBRITCgtzdW1tb25fY29zdBgHIAEoBSJMChJDb29w",
+            "QmF0dGxlRXZlbnROdGYSDAoEdGljaxgBIAEoBRIoCgZldmVudHMYAiADKAsy",
+            "GC5zbGltZXRkLkNvb3BCYXR0bGVFdmVudCLPAgoPQ29vcEJhdHRsZUV2ZW50",
+            "EgwKBHRpY2sYASABKAUSLAoKd2F2ZV9zdGFydBgCIAEoCzIWLnNsaW1ldGQu",
+            "Q29vcFdhdmVTdGFydEgAEi4KC3NsaW1lX3NwYXduGAMgASgLMhcuc2xpbWV0",
+            "ZC5Db29wU2xpbWVTcGF3bkgAEjIKDXNsaW1lX2Fycml2YWwYBCABKAsyGS5z",
+            "bGltZXRkLkNvb3BTbGltZUFycml2YWxIABIyCg1odW50ZXJfc3VtbW9uGAUg",
+            "ASgLMhkuc2xpbWV0ZC5Db29wSHVudGVyU3VtbW9uSAASMAoMaHVudGVyX21l",
+            "cmdlGAYgASgLMhguc2xpbWV0ZC5Db29wSHVudGVyTWVyZ2VIABIuCgtnb2xk",
+            "X2NoYW5nZRgHIAEoCzIXLnNsaW1ldGQuQ29vcEdvbGRDaGFuZ2VIAEIGCgRr",
+            "aW5kImoKEENvb3BIdW50ZXJTdW1tb24SDAoEc2xvdBgBIAEoBRIRCglodW50",
+            "ZXJfaWQYAiABKAUSEAoIdG93ZXJfaWQYAyABKAUSDQoFbGV2ZWwYBCABKAUS",
+            "CQoBeBgFIAEoBRIJCgF5GAYgASgFIoUBCg9Db29wSHVudGVyTWVyZ2USDAoE",
+            "c2xvdBgBIAEoBRIRCglodW50ZXJfaWQYAiABKAUSEAoIdG93ZXJfaWQYAyAB",
+            "KAUSDQoFbGV2ZWwYBCABKAUSCQoBeBgFIAEoBRIJCgF5GAYgASgFEhoKEnJl",
+            "bW92ZWRfaHVudGVyX2lkcxgHIAMoBSJBCg5Db29wR29sZENoYW5nZRIMCgRz",
+            "bG90GAEgASgFEgwKBGdvbGQYAiABKAUSEwoLc3VtbW9uX2Nvc3QYAyABKAUi",
+            "MgoNQ29vcFdhdmVTdGFydBIMCgR3YXZlGAEgASgFEhMKC3NsaW1lX2NvdW50",
+            "GAIgASgFImsKDkNvb3BTbGltZVNwYXduEhAKCHNsaW1lX2lkGAEgASgFEhUK",
+            "DXNsaW1lX2RhdGFfaWQYAiABKAUSEgoKcGF0aF9pbmRleBgDIAEoBRIOCgZo",
+            "ZWFsdGgYBCABKAUSDAoEd2F2ZRgFIAEoBSIyChBDb29wU2xpbWVBcnJpdmFs",
+            "EhAKCHNsaW1lX2lkGAEgASgFEgwKBGxpZmUYAiABKAUidgoQQ29vcEJhdHRs",
+            "ZUVuZE50ZhIRCgliYXR0bGVfaWQYASABKAMSJwoHb3V0Y29tZRgCIAEoDjIW",
+            "LnNsaW1ldGQuQmF0dGxlT3V0Y29tZRIUCgxyZWFjaGVkX3dhdmUYAyABKAUS",
+            "EAoIZW5kX3RpY2sYBCABKAVCE6oCEFNsaW1lVEQuUHJvdG9jb2xiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::SlimeTD.Protocol.CommonReflection.Descriptor, global::SlimeTD.Protocol.BattleReflection.Descriptor, global::SlimeTD.Protocol.PlayerReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -64,10 +80,17 @@ namespace SlimeTD.Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleMatchCancelRes), global::SlimeTD.Protocol.CoopBattleMatchCancelRes.Parser, new[]{ "Result", "Items", "EnergyRecoverAtMs" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleLeaveReq), global::SlimeTD.Protocol.CoopBattleLeaveReq.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleLeaveRes), global::SlimeTD.Protocol.CoopBattleLeaveRes.Parser, new[]{ "Result" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleSummonReq), global::SlimeTD.Protocol.CoopBattleSummonReq.Parser, new[]{ "X", "Y" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleSummonRes), global::SlimeTD.Protocol.CoopBattleSummonRes.Parser, new[]{ "Result" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleMergeReq), global::SlimeTD.Protocol.CoopBattleMergeReq.Parser, new[]{ "X", "Y" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleMergeRes), global::SlimeTD.Protocol.CoopBattleMergeRes.Parser, new[]{ "Result" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattlePlayer), global::SlimeTD.Protocol.CoopBattlePlayer.Parser, new[]{ "Slot", "AccountId", "IsBot" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleStartNtf), global::SlimeTD.Protocol.CoopBattleStartNtf.Parser, new[]{ "BattleId", "Stage", "MySlot", "Players", "TicksPerSecond", "TicksPerEvent" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleStartNtf), global::SlimeTD.Protocol.CoopBattleStartNtf.Parser, new[]{ "BattleId", "Stage", "MySlot", "Players", "TicksPerSecond", "TicksPerEvent", "SummonCost" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleEventNtf), global::SlimeTD.Protocol.CoopBattleEventNtf.Parser, new[]{ "Tick", "Events" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleEvent), global::SlimeTD.Protocol.CoopBattleEvent.Parser, new[]{ "Tick", "WaveStart", "SlimeSpawn", "SlimeArrival" }, new[]{ "Kind" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleEvent), global::SlimeTD.Protocol.CoopBattleEvent.Parser, new[]{ "Tick", "WaveStart", "SlimeSpawn", "SlimeArrival", "HunterSummon", "HunterMerge", "GoldChange" }, new[]{ "Kind" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopHunterSummon), global::SlimeTD.Protocol.CoopHunterSummon.Parser, new[]{ "Slot", "HunterId", "TowerId", "Level", "X", "Y" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopHunterMerge), global::SlimeTD.Protocol.CoopHunterMerge.Parser, new[]{ "Slot", "HunterId", "TowerId", "Level", "X", "Y", "RemovedHunterIds" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopGoldChange), global::SlimeTD.Protocol.CoopGoldChange.Parser, new[]{ "Slot", "Gold", "SummonCost" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopWaveStart), global::SlimeTD.Protocol.CoopWaveStart.Parser, new[]{ "Wave", "SlimeCount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopSlimeSpawn), global::SlimeTD.Protocol.CoopSlimeSpawn.Parser, new[]{ "SlimeId", "SlimeDataId", "PathIndex", "Health", "Wave" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopSlimeArrival), global::SlimeTD.Protocol.CoopSlimeArrival.Parser, new[]{ "SlimeId", "Life" }, null, null, null, null),
@@ -1382,6 +1405,887 @@ namespace SlimeTD.Protocol {
   }
 
   /// <summary>
+  /// 내 구역 빈 칸에 헌터를 소환한다 (다음 틱에 처리하고 그 결과를 응답한다). 헌터는 서버가 뽑는다: 내 계정에서 해금한 소환 등급(1등급) 중 하나.
+  /// 비용 = summonBaseCost + summonCostIncrease × 내 소환 횟수. 성공하면 CoopHunterSummon·CoopGoldChange 이벤트가 두 사람 모두에게 간다.
+  /// 실패: 놓을 수 없는 칸·이미 헌터 RESULT_CODE_CELL_NOT_AVAILABLE, 골드 부족 RESULT_CODE_NOT_ENOUGH_GOLD,
+  /// 소환할 수 있는 헌터 없음 RESULT_CODE_NOT_AVAILABLE, 전투 중이 아님 RESULT_CODE_NOT_FOUND
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopBattleSummonReq : pb::IMessage<CoopBattleSummonReq>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopBattleSummonReq> _parser = new pb::MessageParser<CoopBattleSummonReq>(() => new CoopBattleSummonReq());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopBattleSummonReq> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleSummonReq() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleSummonReq(CoopBattleSummonReq other) : this() {
+      x_ = other.x_;
+      y_ = other.y_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleSummonReq Clone() {
+      return new CoopBattleSummonReq(this);
+    }
+
+    /// <summary>Field number for the "x" field.</summary>
+    public const int XFieldNumber = 1;
+    private int x_;
+    /// <summary>
+    /// 내 구역(my_slot) 그리드 칸 (x = 0부터 오른쪽, y = 0부터 위쪽, 맵 파일 zone rows 기준)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int X {
+      get { return x_; }
+      set {
+        x_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "y" field.</summary>
+    public const int YFieldNumber = 2;
+    private int y_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Y {
+      get { return y_; }
+      set {
+        y_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopBattleSummonReq);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopBattleSummonReq other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (X != other.X) return false;
+      if (Y != other.Y) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (X != 0) hash ^= X.GetHashCode();
+      if (Y != 0) hash ^= Y.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (X != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Y);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (X != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Y);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (X != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(X);
+      }
+      if (Y != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Y);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopBattleSummonReq other) {
+      if (other == null) {
+        return;
+      }
+      if (other.X != 0) {
+        X = other.X;
+      }
+      if (other.Y != 0) {
+        Y = other.Y;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            X = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Y = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            X = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Y = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopBattleSummonRes : pb::IMessage<CoopBattleSummonRes>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopBattleSummonRes> _parser = new pb::MessageParser<CoopBattleSummonRes>(() => new CoopBattleSummonRes());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopBattleSummonRes> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[7]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleSummonRes() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleSummonRes(CoopBattleSummonRes other) : this() {
+      result_ = other.result_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleSummonRes Clone() {
+      return new CoopBattleSummonRes(this);
+    }
+
+    /// <summary>Field number for the "result" field.</summary>
+    public const int ResultFieldNumber = 1;
+    private global::SlimeTD.Protocol.ResultCode result_ = global::SlimeTD.Protocol.ResultCode.Ok;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::SlimeTD.Protocol.ResultCode Result {
+      get { return result_; }
+      set {
+        result_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopBattleSummonRes);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopBattleSummonRes other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Result != other.Result) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Result != global::SlimeTD.Protocol.ResultCode.Ok) hash ^= Result.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Result != global::SlimeTD.Protocol.ResultCode.Ok) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Result);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Result != global::SlimeTD.Protocol.ResultCode.Ok) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Result);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Result != global::SlimeTD.Protocol.ResultCode.Ok) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Result);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopBattleSummonRes other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Result != global::SlimeTD.Protocol.ResultCode.Ok) {
+        Result = other.Result;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Result = (global::SlimeTD.Protocol.ResultCode) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Result = (global::SlimeTD.Protocol.ResultCode) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 내 구역 (x, y) 헌터를 합성한다. 짝은 서버가 찾는다: 같은 헌터 중 가까운 고리부터, 고리 안에서는 바로 위 칸부터 시계 방향 (싱글과 같다).
+  /// 결과 헌터는 (x, y)에 생기고 짝 칸은 빈다. 결과는 다음 등급 중 내가 해금한 헌터에서 서버가 뽑는다.
+  /// 성공하면 CoopHunterMerge 이벤트. 실패: (x, y)에 내 헌터 없음 RESULT_CODE_INVALID_REQUEST, 짝 없음 RESULT_CODE_NO_MERGE_PARTNER,
+  /// 다음 등급 해금 헌터 없음 RESULT_CODE_NOT_AVAILABLE, 전투 중이 아님 RESULT_CODE_NOT_FOUND
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopBattleMergeReq : pb::IMessage<CoopBattleMergeReq>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopBattleMergeReq> _parser = new pb::MessageParser<CoopBattleMergeReq>(() => new CoopBattleMergeReq());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopBattleMergeReq> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[8]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleMergeReq() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleMergeReq(CoopBattleMergeReq other) : this() {
+      x_ = other.x_;
+      y_ = other.y_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleMergeReq Clone() {
+      return new CoopBattleMergeReq(this);
+    }
+
+    /// <summary>Field number for the "x" field.</summary>
+    public const int XFieldNumber = 1;
+    private int x_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int X {
+      get { return x_; }
+      set {
+        x_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "y" field.</summary>
+    public const int YFieldNumber = 2;
+    private int y_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Y {
+      get { return y_; }
+      set {
+        y_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopBattleMergeReq);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopBattleMergeReq other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (X != other.X) return false;
+      if (Y != other.Y) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (X != 0) hash ^= X.GetHashCode();
+      if (Y != 0) hash ^= Y.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (X != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Y);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (X != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Y);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (X != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(X);
+      }
+      if (Y != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Y);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopBattleMergeReq other) {
+      if (other == null) {
+        return;
+      }
+      if (other.X != 0) {
+        X = other.X;
+      }
+      if (other.Y != 0) {
+        Y = other.Y;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            X = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Y = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            X = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Y = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopBattleMergeRes : pb::IMessage<CoopBattleMergeRes>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopBattleMergeRes> _parser = new pb::MessageParser<CoopBattleMergeRes>(() => new CoopBattleMergeRes());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopBattleMergeRes> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleMergeRes() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleMergeRes(CoopBattleMergeRes other) : this() {
+      result_ = other.result_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopBattleMergeRes Clone() {
+      return new CoopBattleMergeRes(this);
+    }
+
+    /// <summary>Field number for the "result" field.</summary>
+    public const int ResultFieldNumber = 1;
+    private global::SlimeTD.Protocol.ResultCode result_ = global::SlimeTD.Protocol.ResultCode.Ok;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::SlimeTD.Protocol.ResultCode Result {
+      get { return result_; }
+      set {
+        result_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopBattleMergeRes);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopBattleMergeRes other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Result != other.Result) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Result != global::SlimeTD.Protocol.ResultCode.Ok) hash ^= Result.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Result != global::SlimeTD.Protocol.ResultCode.Ok) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Result);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Result != global::SlimeTD.Protocol.ResultCode.Ok) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Result);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Result != global::SlimeTD.Protocol.ResultCode.Ok) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Result);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopBattleMergeRes other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Result != global::SlimeTD.Protocol.ResultCode.Ok) {
+        Result = other.Result;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Result = (global::SlimeTD.Protocol.ResultCode) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Result = (global::SlimeTD.Protocol.ResultCode) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
   /// 전투에 참여한 사람 하나.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
@@ -1399,7 +2303,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[6]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1680,7 +2584,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[7]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1706,6 +2610,7 @@ namespace SlimeTD.Protocol {
       players_ = other.players_.Clone();
       ticksPerSecond_ = other.ticksPerSecond_;
       ticksPerEvent_ = other.ticksPerEvent_;
+      summonCost_ = other.summonCost_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1795,6 +2700,21 @@ namespace SlimeTD.Protocol {
       }
     }
 
+    /// <summary>Field number for the "summon_cost" field.</summary>
+    public const int SummonCostFieldNumber = 7;
+    private int summonCost_;
+    /// <summary>
+    /// 첫 소환 비용 (자리마다 같다). 시작 골드는 stage.starting_gold
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SummonCost {
+      get { return summonCost_; }
+      set {
+        summonCost_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1816,6 +2736,7 @@ namespace SlimeTD.Protocol {
       if(!players_.Equals(other.players_)) return false;
       if (TicksPerSecond != other.TicksPerSecond) return false;
       if (TicksPerEvent != other.TicksPerEvent) return false;
+      if (SummonCost != other.SummonCost) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1829,6 +2750,7 @@ namespace SlimeTD.Protocol {
       hash ^= players_.GetHashCode();
       if (TicksPerSecond != 0) hash ^= TicksPerSecond.GetHashCode();
       if (TicksPerEvent != 0) hash ^= TicksPerEvent.GetHashCode();
+      if (SummonCost != 0) hash ^= SummonCost.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1868,6 +2790,10 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(48);
         output.WriteInt32(TicksPerEvent);
       }
+      if (SummonCost != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(SummonCost);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1899,6 +2825,10 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(48);
         output.WriteInt32(TicksPerEvent);
       }
+      if (SummonCost != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(SummonCost);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1924,6 +2854,9 @@ namespace SlimeTD.Protocol {
       }
       if (TicksPerEvent != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(TicksPerEvent);
+      }
+      if (SummonCost != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SummonCost);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1955,6 +2888,9 @@ namespace SlimeTD.Protocol {
       }
       if (other.TicksPerEvent != 0) {
         TicksPerEvent = other.TicksPerEvent;
+      }
+      if (other.SummonCost != 0) {
+        SummonCost = other.SummonCost;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2000,6 +2936,10 @@ namespace SlimeTD.Protocol {
           }
           case 48: {
             TicksPerEvent = input.ReadInt32();
+            break;
+          }
+          case 56: {
+            SummonCost = input.ReadInt32();
             break;
           }
         }
@@ -2048,6 +2988,10 @@ namespace SlimeTD.Protocol {
             TicksPerEvent = input.ReadInt32();
             break;
           }
+          case 56: {
+            SummonCost = input.ReadInt32();
+            break;
+          }
         }
       }
     }
@@ -2073,7 +3017,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[8]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2306,7 +3250,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[9]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2336,6 +3280,15 @@ namespace SlimeTD.Protocol {
           break;
         case KindOneofCase.SlimeArrival:
           SlimeArrival = other.SlimeArrival.Clone();
+          break;
+        case KindOneofCase.HunterSummon:
+          HunterSummon = other.HunterSummon.Clone();
+          break;
+        case KindOneofCase.HunterMerge:
+          HunterMerge = other.HunterMerge.Clone();
+          break;
+        case KindOneofCase.GoldChange:
+          GoldChange = other.GoldChange.Clone();
           break;
       }
 
@@ -2399,6 +3352,42 @@ namespace SlimeTD.Protocol {
       }
     }
 
+    /// <summary>Field number for the "hunter_summon" field.</summary>
+    public const int HunterSummonFieldNumber = 5;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::SlimeTD.Protocol.CoopHunterSummon HunterSummon {
+      get { return kindCase_ == KindOneofCase.HunterSummon ? (global::SlimeTD.Protocol.CoopHunterSummon) kind_ : null; }
+      set {
+        kind_ = value;
+        kindCase_ = value == null ? KindOneofCase.None : KindOneofCase.HunterSummon;
+      }
+    }
+
+    /// <summary>Field number for the "hunter_merge" field.</summary>
+    public const int HunterMergeFieldNumber = 6;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::SlimeTD.Protocol.CoopHunterMerge HunterMerge {
+      get { return kindCase_ == KindOneofCase.HunterMerge ? (global::SlimeTD.Protocol.CoopHunterMerge) kind_ : null; }
+      set {
+        kind_ = value;
+        kindCase_ = value == null ? KindOneofCase.None : KindOneofCase.HunterMerge;
+      }
+    }
+
+    /// <summary>Field number for the "gold_change" field.</summary>
+    public const int GoldChangeFieldNumber = 7;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::SlimeTD.Protocol.CoopGoldChange GoldChange {
+      get { return kindCase_ == KindOneofCase.GoldChange ? (global::SlimeTD.Protocol.CoopGoldChange) kind_ : null; }
+      set {
+        kind_ = value;
+        kindCase_ = value == null ? KindOneofCase.None : KindOneofCase.GoldChange;
+      }
+    }
+
     private object kind_;
     /// <summary>Enum of possible cases for the "kind" oneof.</summary>
     public enum KindOneofCase {
@@ -2406,6 +3395,9 @@ namespace SlimeTD.Protocol {
       WaveStart = 2,
       SlimeSpawn = 3,
       SlimeArrival = 4,
+      HunterSummon = 5,
+      HunterMerge = 6,
+      GoldChange = 7,
     }
     private KindOneofCase kindCase_ = KindOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2440,6 +3432,9 @@ namespace SlimeTD.Protocol {
       if (!object.Equals(WaveStart, other.WaveStart)) return false;
       if (!object.Equals(SlimeSpawn, other.SlimeSpawn)) return false;
       if (!object.Equals(SlimeArrival, other.SlimeArrival)) return false;
+      if (!object.Equals(HunterSummon, other.HunterSummon)) return false;
+      if (!object.Equals(HunterMerge, other.HunterMerge)) return false;
+      if (!object.Equals(GoldChange, other.GoldChange)) return false;
       if (KindCase != other.KindCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -2452,6 +3447,9 @@ namespace SlimeTD.Protocol {
       if (kindCase_ == KindOneofCase.WaveStart) hash ^= WaveStart.GetHashCode();
       if (kindCase_ == KindOneofCase.SlimeSpawn) hash ^= SlimeSpawn.GetHashCode();
       if (kindCase_ == KindOneofCase.SlimeArrival) hash ^= SlimeArrival.GetHashCode();
+      if (kindCase_ == KindOneofCase.HunterSummon) hash ^= HunterSummon.GetHashCode();
+      if (kindCase_ == KindOneofCase.HunterMerge) hash ^= HunterMerge.GetHashCode();
+      if (kindCase_ == KindOneofCase.GoldChange) hash ^= GoldChange.GetHashCode();
       hash ^= (int) kindCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -2487,6 +3485,18 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(34);
         output.WriteMessage(SlimeArrival);
       }
+      if (kindCase_ == KindOneofCase.HunterSummon) {
+        output.WriteRawTag(42);
+        output.WriteMessage(HunterSummon);
+      }
+      if (kindCase_ == KindOneofCase.HunterMerge) {
+        output.WriteRawTag(50);
+        output.WriteMessage(HunterMerge);
+      }
+      if (kindCase_ == KindOneofCase.GoldChange) {
+        output.WriteRawTag(58);
+        output.WriteMessage(GoldChange);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2513,6 +3523,18 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(34);
         output.WriteMessage(SlimeArrival);
       }
+      if (kindCase_ == KindOneofCase.HunterSummon) {
+        output.WriteRawTag(42);
+        output.WriteMessage(HunterSummon);
+      }
+      if (kindCase_ == KindOneofCase.HunterMerge) {
+        output.WriteRawTag(50);
+        output.WriteMessage(HunterMerge);
+      }
+      if (kindCase_ == KindOneofCase.GoldChange) {
+        output.WriteRawTag(58);
+        output.WriteMessage(GoldChange);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2534,6 +3556,15 @@ namespace SlimeTD.Protocol {
       }
       if (kindCase_ == KindOneofCase.SlimeArrival) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(SlimeArrival);
+      }
+      if (kindCase_ == KindOneofCase.HunterSummon) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(HunterSummon);
+      }
+      if (kindCase_ == KindOneofCase.HunterMerge) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(HunterMerge);
+      }
+      if (kindCase_ == KindOneofCase.GoldChange) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(GoldChange);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2568,6 +3599,24 @@ namespace SlimeTD.Protocol {
             SlimeArrival = new global::SlimeTD.Protocol.CoopSlimeArrival();
           }
           SlimeArrival.MergeFrom(other.SlimeArrival);
+          break;
+        case KindOneofCase.HunterSummon:
+          if (HunterSummon == null) {
+            HunterSummon = new global::SlimeTD.Protocol.CoopHunterSummon();
+          }
+          HunterSummon.MergeFrom(other.HunterSummon);
+          break;
+        case KindOneofCase.HunterMerge:
+          if (HunterMerge == null) {
+            HunterMerge = new global::SlimeTD.Protocol.CoopHunterMerge();
+          }
+          HunterMerge.MergeFrom(other.HunterMerge);
+          break;
+        case KindOneofCase.GoldChange:
+          if (GoldChange == null) {
+            GoldChange = new global::SlimeTD.Protocol.CoopGoldChange();
+          }
+          GoldChange.MergeFrom(other.GoldChange);
           break;
       }
 
@@ -2621,6 +3670,33 @@ namespace SlimeTD.Protocol {
             SlimeArrival = subBuilder;
             break;
           }
+          case 42: {
+            global::SlimeTD.Protocol.CoopHunterSummon subBuilder = new global::SlimeTD.Protocol.CoopHunterSummon();
+            if (kindCase_ == KindOneofCase.HunterSummon) {
+              subBuilder.MergeFrom(HunterSummon);
+            }
+            input.ReadMessage(subBuilder);
+            HunterSummon = subBuilder;
+            break;
+          }
+          case 50: {
+            global::SlimeTD.Protocol.CoopHunterMerge subBuilder = new global::SlimeTD.Protocol.CoopHunterMerge();
+            if (kindCase_ == KindOneofCase.HunterMerge) {
+              subBuilder.MergeFrom(HunterMerge);
+            }
+            input.ReadMessage(subBuilder);
+            HunterMerge = subBuilder;
+            break;
+          }
+          case 58: {
+            global::SlimeTD.Protocol.CoopGoldChange subBuilder = new global::SlimeTD.Protocol.CoopGoldChange();
+            if (kindCase_ == KindOneofCase.GoldChange) {
+              subBuilder.MergeFrom(GoldChange);
+            }
+            input.ReadMessage(subBuilder);
+            GoldChange = subBuilder;
+            break;
+          }
         }
       }
     #endif
@@ -2671,6 +3747,1135 @@ namespace SlimeTD.Protocol {
             SlimeArrival = subBuilder;
             break;
           }
+          case 42: {
+            global::SlimeTD.Protocol.CoopHunterSummon subBuilder = new global::SlimeTD.Protocol.CoopHunterSummon();
+            if (kindCase_ == KindOneofCase.HunterSummon) {
+              subBuilder.MergeFrom(HunterSummon);
+            }
+            input.ReadMessage(subBuilder);
+            HunterSummon = subBuilder;
+            break;
+          }
+          case 50: {
+            global::SlimeTD.Protocol.CoopHunterMerge subBuilder = new global::SlimeTD.Protocol.CoopHunterMerge();
+            if (kindCase_ == KindOneofCase.HunterMerge) {
+              subBuilder.MergeFrom(HunterMerge);
+            }
+            input.ReadMessage(subBuilder);
+            HunterMerge = subBuilder;
+            break;
+          }
+          case 58: {
+            global::SlimeTD.Protocol.CoopGoldChange subBuilder = new global::SlimeTD.Protocol.CoopGoldChange();
+            if (kindCase_ == KindOneofCase.GoldChange) {
+              subBuilder.MergeFrom(GoldChange);
+            }
+            input.ReadMessage(subBuilder);
+            GoldChange = subBuilder;
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 헌터가 소환됐다.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopHunterSummon : pb::IMessage<CoopHunterSummon>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopHunterSummon> _parser = new pb::MessageParser<CoopHunterSummon>(() => new CoopHunterSummon());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopHunterSummon> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[14]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopHunterSummon() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopHunterSummon(CoopHunterSummon other) : this() {
+      slot_ = other.slot_;
+      hunterId_ = other.hunterId_;
+      towerId_ = other.towerId_;
+      level_ = other.level_;
+      x_ = other.x_;
+      y_ = other.y_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopHunterSummon Clone() {
+      return new CoopHunterSummon(this);
+    }
+
+    /// <summary>Field number for the "slot" field.</summary>
+    public const int SlotFieldNumber = 1;
+    private int slot_;
+    /// <summary>
+    /// 주인 자리 (그 자리 구역의 칸이다)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Slot {
+      get { return slot_; }
+      set {
+        slot_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "hunter_id" field.</summary>
+    public const int HunterIdFieldNumber = 2;
+    private int hunterId_;
+    /// <summary>
+    /// 전투 안 헌터 번호 (생긴 순서, 1부터)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int HunterId {
+      get { return hunterId_; }
+      set {
+        hunterId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "tower_id" field.</summary>
+    public const int TowerIdFieldNumber = 3;
+    private int towerId_;
+    /// <summary>
+    /// Towers.csv towerId
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TowerId {
+      get { return towerId_; }
+      set {
+        towerId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "level" field.</summary>
+    public const int LevelFieldNumber = 4;
+    private int level_;
+    /// <summary>
+    /// 주인 계정의 헌터 레벨
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Level {
+      get { return level_; }
+      set {
+        level_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "x" field.</summary>
+    public const int XFieldNumber = 5;
+    private int x_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int X {
+      get { return x_; }
+      set {
+        x_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "y" field.</summary>
+    public const int YFieldNumber = 6;
+    private int y_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Y {
+      get { return y_; }
+      set {
+        y_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopHunterSummon);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopHunterSummon other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Slot != other.Slot) return false;
+      if (HunterId != other.HunterId) return false;
+      if (TowerId != other.TowerId) return false;
+      if (Level != other.Level) return false;
+      if (X != other.X) return false;
+      if (Y != other.Y) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Slot != 0) hash ^= Slot.GetHashCode();
+      if (HunterId != 0) hash ^= HunterId.GetHashCode();
+      if (TowerId != 0) hash ^= TowerId.GetHashCode();
+      if (Level != 0) hash ^= Level.GetHashCode();
+      if (X != 0) hash ^= X.GetHashCode();
+      if (Y != 0) hash ^= Y.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Slot != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Slot);
+      }
+      if (HunterId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(HunterId);
+      }
+      if (TowerId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(TowerId);
+      }
+      if (Level != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Level);
+      }
+      if (X != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(Y);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Slot != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Slot);
+      }
+      if (HunterId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(HunterId);
+      }
+      if (TowerId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(TowerId);
+      }
+      if (Level != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Level);
+      }
+      if (X != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(Y);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Slot != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Slot);
+      }
+      if (HunterId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(HunterId);
+      }
+      if (TowerId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TowerId);
+      }
+      if (Level != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Level);
+      }
+      if (X != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(X);
+      }
+      if (Y != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Y);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopHunterSummon other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Slot != 0) {
+        Slot = other.Slot;
+      }
+      if (other.HunterId != 0) {
+        HunterId = other.HunterId;
+      }
+      if (other.TowerId != 0) {
+        TowerId = other.TowerId;
+      }
+      if (other.Level != 0) {
+        Level = other.Level;
+      }
+      if (other.X != 0) {
+        X = other.X;
+      }
+      if (other.Y != 0) {
+        Y = other.Y;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Slot = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            TowerId = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            Level = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            X = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            Y = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Slot = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            TowerId = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            Level = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            X = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            Y = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 헌터 둘이 합쳐져 새 헌터가 생겼다. removed_hunter_ids의 헌터는 칸에서 없어진다.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopHunterMerge : pb::IMessage<CoopHunterMerge>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopHunterMerge> _parser = new pb::MessageParser<CoopHunterMerge>(() => new CoopHunterMerge());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopHunterMerge> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[15]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopHunterMerge() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopHunterMerge(CoopHunterMerge other) : this() {
+      slot_ = other.slot_;
+      hunterId_ = other.hunterId_;
+      towerId_ = other.towerId_;
+      level_ = other.level_;
+      x_ = other.x_;
+      y_ = other.y_;
+      removedHunterIds_ = other.removedHunterIds_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopHunterMerge Clone() {
+      return new CoopHunterMerge(this);
+    }
+
+    /// <summary>Field number for the "slot" field.</summary>
+    public const int SlotFieldNumber = 1;
+    private int slot_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Slot {
+      get { return slot_; }
+      set {
+        slot_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "hunter_id" field.</summary>
+    public const int HunterIdFieldNumber = 2;
+    private int hunterId_;
+    /// <summary>
+    /// 새 헌터 번호
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int HunterId {
+      get { return hunterId_; }
+      set {
+        hunterId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "tower_id" field.</summary>
+    public const int TowerIdFieldNumber = 3;
+    private int towerId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TowerId {
+      get { return towerId_; }
+      set {
+        towerId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "level" field.</summary>
+    public const int LevelFieldNumber = 4;
+    private int level_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Level {
+      get { return level_; }
+      set {
+        level_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "x" field.</summary>
+    public const int XFieldNumber = 5;
+    private int x_;
+    /// <summary>
+    /// 새 헌터 칸 (합성을 요청한 칸)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int X {
+      get { return x_; }
+      set {
+        x_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "y" field.</summary>
+    public const int YFieldNumber = 6;
+    private int y_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Y {
+      get { return y_; }
+      set {
+        y_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "removed_hunter_ids" field.</summary>
+    public const int RemovedHunterIdsFieldNumber = 7;
+    private static readonly pb::FieldCodec<int> _repeated_removedHunterIds_codec
+        = pb::FieldCodec.ForInt32(58);
+    private readonly pbc::RepeatedField<int> removedHunterIds_ = new pbc::RepeatedField<int>();
+    /// <summary>
+    /// 합쳐져 없어진 두 헌터 (요청한 칸의 헌터와 짝)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<int> RemovedHunterIds {
+      get { return removedHunterIds_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopHunterMerge);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopHunterMerge other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Slot != other.Slot) return false;
+      if (HunterId != other.HunterId) return false;
+      if (TowerId != other.TowerId) return false;
+      if (Level != other.Level) return false;
+      if (X != other.X) return false;
+      if (Y != other.Y) return false;
+      if(!removedHunterIds_.Equals(other.removedHunterIds_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Slot != 0) hash ^= Slot.GetHashCode();
+      if (HunterId != 0) hash ^= HunterId.GetHashCode();
+      if (TowerId != 0) hash ^= TowerId.GetHashCode();
+      if (Level != 0) hash ^= Level.GetHashCode();
+      if (X != 0) hash ^= X.GetHashCode();
+      if (Y != 0) hash ^= Y.GetHashCode();
+      hash ^= removedHunterIds_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Slot != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Slot);
+      }
+      if (HunterId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(HunterId);
+      }
+      if (TowerId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(TowerId);
+      }
+      if (Level != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Level);
+      }
+      if (X != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(Y);
+      }
+      removedHunterIds_.WriteTo(output, _repeated_removedHunterIds_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Slot != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Slot);
+      }
+      if (HunterId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(HunterId);
+      }
+      if (TowerId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(TowerId);
+      }
+      if (Level != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Level);
+      }
+      if (X != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(Y);
+      }
+      removedHunterIds_.WriteTo(ref output, _repeated_removedHunterIds_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Slot != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Slot);
+      }
+      if (HunterId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(HunterId);
+      }
+      if (TowerId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TowerId);
+      }
+      if (Level != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Level);
+      }
+      if (X != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(X);
+      }
+      if (Y != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Y);
+      }
+      size += removedHunterIds_.CalculateSize(_repeated_removedHunterIds_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopHunterMerge other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Slot != 0) {
+        Slot = other.Slot;
+      }
+      if (other.HunterId != 0) {
+        HunterId = other.HunterId;
+      }
+      if (other.TowerId != 0) {
+        TowerId = other.TowerId;
+      }
+      if (other.Level != 0) {
+        Level = other.Level;
+      }
+      if (other.X != 0) {
+        X = other.X;
+      }
+      if (other.Y != 0) {
+        Y = other.Y;
+      }
+      removedHunterIds_.Add(other.removedHunterIds_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Slot = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            TowerId = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            Level = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            X = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            Y = input.ReadInt32();
+            break;
+          }
+          case 58:
+          case 56: {
+            removedHunterIds_.AddEntriesFrom(input, _repeated_removedHunterIds_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Slot = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            TowerId = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            Level = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            X = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            Y = input.ReadInt32();
+            break;
+          }
+          case 58:
+          case 56: {
+            removedHunterIds_.AddEntriesFrom(ref input, _repeated_removedHunterIds_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 그 자리 플레이어의 인게임 골드가 바뀌었다 (소환 비용, 나중에 처치·스킬 골드).
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopGoldChange : pb::IMessage<CoopGoldChange>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopGoldChange> _parser = new pb::MessageParser<CoopGoldChange>(() => new CoopGoldChange());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopGoldChange> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[16]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopGoldChange() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopGoldChange(CoopGoldChange other) : this() {
+      slot_ = other.slot_;
+      gold_ = other.gold_;
+      summonCost_ = other.summonCost_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopGoldChange Clone() {
+      return new CoopGoldChange(this);
+    }
+
+    /// <summary>Field number for the "slot" field.</summary>
+    public const int SlotFieldNumber = 1;
+    private int slot_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Slot {
+      get { return slot_; }
+      set {
+        slot_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "gold" field.</summary>
+    public const int GoldFieldNumber = 2;
+    private int gold_;
+    /// <summary>
+    /// 바뀐 뒤 골드
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Gold {
+      get { return gold_; }
+      set {
+        gold_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "summon_cost" field.</summary>
+    public const int SummonCostFieldNumber = 3;
+    private int summonCost_;
+    /// <summary>
+    /// 그 자리의 다음 소환 비용
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SummonCost {
+      get { return summonCost_; }
+      set {
+        summonCost_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopGoldChange);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopGoldChange other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Slot != other.Slot) return false;
+      if (Gold != other.Gold) return false;
+      if (SummonCost != other.SummonCost) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Slot != 0) hash ^= Slot.GetHashCode();
+      if (Gold != 0) hash ^= Gold.GetHashCode();
+      if (SummonCost != 0) hash ^= SummonCost.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Slot != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Slot);
+      }
+      if (Gold != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Gold);
+      }
+      if (SummonCost != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(SummonCost);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Slot != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Slot);
+      }
+      if (Gold != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Gold);
+      }
+      if (SummonCost != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(SummonCost);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Slot != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Slot);
+      }
+      if (Gold != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Gold);
+      }
+      if (SummonCost != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SummonCost);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopGoldChange other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Slot != 0) {
+        Slot = other.Slot;
+      }
+      if (other.Gold != 0) {
+        Gold = other.Gold;
+      }
+      if (other.SummonCost != 0) {
+        SummonCost = other.SummonCost;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Slot = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Gold = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            SummonCost = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Slot = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Gold = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            SummonCost = input.ReadInt32();
+            break;
+          }
         }
       }
     }
@@ -2696,7 +4901,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[10]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2938,7 +5143,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[11]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3296,7 +5501,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[12]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3537,7 +5742,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[13]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

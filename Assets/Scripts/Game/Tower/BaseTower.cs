@@ -42,6 +42,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private bool _isAttacking;
 
     private bool _gameOver;
+    private bool _localAttackDisabled;
     private bool _attackRegistered;
 
     private readonly ReactiveProperty<bool> _isSelected = new ReactiveProperty<bool>(false);
@@ -205,9 +206,16 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         _attackCancellation?.Cancel();
     }
 
+    // TODO: 협동 공격(M3)은 서버 이벤트로 그린다. 그 전까지 협동 헌터는 서 있기만 한다
+    public void DisableLocalAttack()
+    {
+        _localAttackDisabled = true;
+        ApplyAttackActive();
+    }
+
     private void ApplyAttackActive()
     {
-        bool shouldAttack = !_gameOver;
+        bool shouldAttack = !_gameOver && !_localAttackDisabled;
         if (shouldAttack == _attackRegistered)
             return;
 

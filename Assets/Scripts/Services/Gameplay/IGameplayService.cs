@@ -15,7 +15,8 @@ public interface IGameplayService : IDisposable
     bool TrySpendSummonCost();
     void SetMaxWave(int maxWave);
 
-    // 협동: 라이프와 도달 웨이브는 서버 값을 그대로 쓴다
+    // 협동: 라이프, 골드, 소환 비용, 도달 웨이브는 서버 값을 그대로 쓴다
     void SetLife(int life);
+    void SetGold(int gold, int summonCost);
     void ReportReachedWave(int wave);
 }

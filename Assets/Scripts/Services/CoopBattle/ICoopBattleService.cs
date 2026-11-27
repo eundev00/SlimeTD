@@ -11,6 +11,7 @@ public interface ICoopBattleService
     int MySlot { get; }
     IReadOnlyList<CoopBattlePlayer> Players { get; }
     int TicksPerSecond { get; }
+    int StartSummonCost { get; }
 
     // 서버가 진행한 마지막 틱과 그 알림을 받은 시각 (Time.realtimeSinceStartup)
     int LatestTick { get; }
@@ -26,6 +27,10 @@ public interface ICoopBattleService
     // 받은 순서대로 꺼낸다. 게임 씬이 뜨기 전에 온 이벤트도 쌓여 있다
     bool TryPeekEvent(out CoopBattleEvent battleEvent);
     void DequeueEvent();
+
+    // 내 구역 칸. 화면은 응답이 아니라 이벤트로 바꾼다
+    UniTask<ResultCode> SummonAsync(int x, int y);
+    UniTask<ResultCode> MergeAsync(int x, int y);
 
     UniTask LeaveAsync();
 }
