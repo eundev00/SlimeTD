@@ -6,7 +6,7 @@ using Services.UpdateService;
 using SlimeTD.Protocol;
 using UnityEngine;
 
-// 협동 화면: 서버 이벤트를 그 틱이 되면 적용한다 (웨이브 표시, 슬라임 등장·도착, 라이프, 헌터 소환·합성, 골드, 끝)
+// 협동 화면: 서버 이벤트를 그 틱이 되면 적용한다 (웨이브 표시, 슬라임 등장·도착, 라이프, 헌터 소환·합성·공격, 투사체, 피해·처치, 골드, 끝)
 public class CoopBattlePresenter : IUpdatable, IDisposable
 {
     private readonly ICoopBattleService _coopBattleService;
@@ -17,7 +17,8 @@ public class CoopBattlePresenter : IUpdatable, IDisposable
     private readonly Dictionary<int, SlimeDataBase> _slimeData = new Dictionary<int, SlimeDataBase>();
     private readonly Dictionary<int, BaseSlime> _slimes = new Dictionary<int, BaseSlime>();
 
-    private readonly Dictionary<int, (int Slot, Vector2Int Cell)> _hunters = new Dictionary<int, (int, Vector2Int)>();
+    private readonly Dictionary<int, (int Slot, Vector2Int Cell, BaseTower Tower)> _hunters = new Dictionary<int, (int, Vector2Int, BaseTower)>();
+    private readonly Dictionary<int, Projectile> _projectiles = new Dictionary<int, Projectile>();
     private readonly Dictionary<int, TowerPlacer> _teammateBoards = new Dictionary<int, TowerPlacer>();
 
     private WaveSpawner _spawner;
@@ -28,6 +29,7 @@ public class CoopBattlePresenter : IUpdatable, IDisposable
     private long _battleId;
 
     public bool IsCoopBattle => _coopBattleService.HasBattle;
+    public ICoopBattleClock Clock => _clock;
 
     public CoopBattlePresenter(ICoopBattleService coopBattleService, IGameplayService gameplayService,
         IUpdateSubscriptionService updateService, IPublisher<GameProgressEvent> gameProgressPublisher)
@@ -141,7 +143,50 @@ public class CoopBattlePresenter : IUpdatable, IDisposable
                 if (gold.Slot == _coopBattleService.MySlot)
                     _gameplayService.SetGold(gold.Gold, gold.SummonCost);
                 break;
+
+            case CoopBattleEvent.KindOneofCase.HunterAttack:
+                var attack = battleEvent.HunterAttack;
+                if (_hunters.TryGetValue(attack.HunterId, out var attacker))
+                    attacker.Tower.PlayServerAttack(_slimes.TryGetValue(attack.SlimeId, out var attackTarget) ? attackTarget.transform : null, attack.HitTick);
+                break;
+
+            case CoopBattleEvent.KindOneofCase.ProjectileFire:
+                Fire(battleEvent.ProjectileFire, battleEvent.Tick);
+                break;
+
+            case CoopBattleEvent.KindOneofCase.SlimeDamage:
+                ApplyDamage(battleEvent.SlimeDamage);
+                break;
         }
+    }
+
+    private void Fire(CoopProjectileFire fire, int tick)
+    {
+        if (!_hunters.TryGetValue(fire.HunterId, out var hunter) || hunter.Tower == null)
+            return;
+
+        // 서버 도착 지점은 바닥 평면 x·z다. 높이는 타겟 몸 가운데를 쓰고, 타겟이 없으면 발사 높이 그대로 난다
+        float? height = _slimes.TryGetValue(fire.SlimeId, out var target) ? target.BodyCenter.y : null;
+        var projectile = hunter.Tower.FireServerProjectile(fire.ProjectileId, fire.TargetX, fire.TargetZ, height, tick, fire.ArriveTick);
+        if (projectile != null)
+            _projectiles[fire.ProjectileId] = projectile;
+    }
+
+    private void ApplyDamage(CoopSlimeDamage damage)
+    {
+        if (damage.ProjectileId != 0 && _projectiles.TryGetValue(damage.ProjectileId, out var projectile))
+        {
+            _projectiles.Remove(damage.ProjectileId);
+            if (projectile != null && projectile.ServerId == damage.ProjectileId)
+                projectile.Release();
+        }
+
+        if (!_slimes.TryGetValue(damage.SlimeId, out var slime))
+            return;
+
+        if (damage.Health <= 0)
+            _slimes.Remove(damage.SlimeId);
+        slime.ApplyServerDamage(damage.Damage, damage.Critical, damage.Health);
     }
 
     private void PlaceHunter(int slot, int hunterId, int towerId, int level, Vector2Int cell)
@@ -152,12 +197,13 @@ public class CoopBattlePresenter : IUpdatable, IDisposable
             return;
         }
 
+        BaseTower tower = null;
         bool placed = slot == _coopBattleService.MySlot
-            ? _myZone.PlaceFromServer(towerData, cell, level)
-            : _teammateBoards.TryGetValue(slot, out var board) && board.TryPlace(towerData, cell, level, out _);
+            ? _myZone.PlaceFromServer(towerData, cell, level, out tower)
+            : _teammateBoards.TryGetValue(slot, out var board) && board.TryPlace(towerData, cell, level, out tower);
 
         if (placed)
-            _hunters[hunterId] = (slot, cell);
+            _hunters[hunterId] = (slot, cell, tower);
     }
 
     private void RemoveHunter(int hunterId)
@@ -180,7 +226,7 @@ public class CoopBattlePresenter : IUpdatable, IDisposable
             return;
         }
 
-        // 골드는 협동에서 서버가 준다 (M1에는 처치가 없다)
+        // 처치 골드는 서버가 gold_change로 준다
         var slime = _spawner.SpawnSlime(data, spawn.Health, 0, spawn.PathIndex, spawn.SlimeId);
         if (slime == null)
             return;
@@ -212,6 +258,7 @@ public class CoopBattlePresenter : IUpdatable, IDisposable
         _running = false;
         _slimes.Clear();
         _hunters.Clear();
+        _projectiles.Clear();
 
         foreach (var board in _teammateBoards.Values)
             board.Dispose();

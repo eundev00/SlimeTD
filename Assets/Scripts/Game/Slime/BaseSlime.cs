@@ -55,6 +55,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
 
     public SlimeStats Stats => _stats;
     public Vector3 Position => transform.position;
+    public Vector3 BodyCenter => _bodyCollider.bounds.center;
 
     [Inject]
     public void Construct(
@@ -266,14 +267,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
 
         if (_stats.IsDead)
         {
-            ClearSlow();
-            ClearStun();
-            _moving = false;
             _killedPublisher.Publish(new SlimeKilledEvent(_spawnNumber, _goldReward));
-            // 죽는 모션 없이 바로 풀로 돌려보내고, 연기는 바닥에 가리지 않게 몸 가운데에서 따로 재생한다
-            var body = _bodyCollider.bounds;
-            _vfxPlayer?.Play(_deathVfx, body.center, body.extents.y / VfxBaseRadius);
-            _poolService.Release(gameObject);
+            Die();
             return;
         }
 
@@ -282,6 +277,28 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
 
         if (info.HasStun)
             ApplyStun(info.StunDuration);
+    }
+
+    // 협동: 피해와 처치는 서버가 정한다. 처치 골드도 서버 이벤트로 오므로 처치 알림을 내지 않는다
+    public void ApplyServerDamage(int damage, bool critical, int health)
+    {
+        if (damage > 0)
+            _damageTextSpawner.Show(damage, _damageTextAnchor.position, critical);
+
+        _stats.SetHealth(health);
+        if (_stats.IsDead)
+            Die();
+    }
+
+    private void Die()
+    {
+        ClearSlow();
+        ClearStun();
+        _moving = false;
+        // 죽는 모션 없이 바로 풀로 돌려보내고, 연기는 바닥에 가리지 않게 몸 가운데에서 따로 재생한다
+        var body = _bodyCollider.bounds;
+        _vfxPlayer?.Play(_deathVfx, body.center, body.extents.y / VfxBaseRadius);
+        _poolService.Release(gameObject);
     }
 
     // 기절은 새로 걸리면 남은 시간과 비교해 긴 쪽으로 갱신한다.

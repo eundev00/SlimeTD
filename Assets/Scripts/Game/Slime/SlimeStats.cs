@@ -24,6 +24,12 @@ public class SlimeStats : IDisposable
         _currentHealth.Value -= damage;
     }
 
+    // 협동: 서버가 계산한 남은 체력
+    public void SetHealth(int health)
+    {
+        _currentHealth.Value = Math.Max(0, health);
+    }
+
     public void Reset(int maxHealth)
     {
         _currentHealth.Value = maxHealth;

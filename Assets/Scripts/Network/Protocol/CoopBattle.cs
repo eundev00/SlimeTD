@@ -47,30 +47,41 @@ namespace SlimeTD.Protocol {
             "dHRsZVBsYXllchIYChB0aWNrc19wZXJfc2Vjb25kGAUgASgFEhcKD3RpY2tz",
             "X3Blcl9ldmVudBgGIAEoBRITCgtzdW1tb25fY29zdBgHIAEoBSJMChJDb29w",
             "QmF0dGxlRXZlbnROdGYSDAoEdGljaxgBIAEoBRIoCgZldmVudHMYAiADKAsy",
-            "GC5zbGltZXRkLkNvb3BCYXR0bGVFdmVudCLPAgoPQ29vcEJhdHRsZUV2ZW50",
+            "GC5zbGltZXRkLkNvb3BCYXR0bGVFdmVudCLtAwoPQ29vcEJhdHRsZUV2ZW50",
             "EgwKBHRpY2sYASABKAUSLAoKd2F2ZV9zdGFydBgCIAEoCzIWLnNsaW1ldGQu",
             "Q29vcFdhdmVTdGFydEgAEi4KC3NsaW1lX3NwYXduGAMgASgLMhcuc2xpbWV0",
             "ZC5Db29wU2xpbWVTcGF3bkgAEjIKDXNsaW1lX2Fycml2YWwYBCABKAsyGS5z",
             "bGltZXRkLkNvb3BTbGltZUFycml2YWxIABIyCg1odW50ZXJfc3VtbW9uGAUg",
             "ASgLMhkuc2xpbWV0ZC5Db29wSHVudGVyU3VtbW9uSAASMAoMaHVudGVyX21l",
             "cmdlGAYgASgLMhguc2xpbWV0ZC5Db29wSHVudGVyTWVyZ2VIABIuCgtnb2xk",
-            "X2NoYW5nZRgHIAEoCzIXLnNsaW1ldGQuQ29vcEdvbGRDaGFuZ2VIAEIGCgRr",
-            "aW5kImoKEENvb3BIdW50ZXJTdW1tb24SDAoEc2xvdBgBIAEoBRIRCglodW50",
-            "ZXJfaWQYAiABKAUSEAoIdG93ZXJfaWQYAyABKAUSDQoFbGV2ZWwYBCABKAUS",
-            "CQoBeBgFIAEoBRIJCgF5GAYgASgFIoUBCg9Db29wSHVudGVyTWVyZ2USDAoE",
-            "c2xvdBgBIAEoBRIRCglodW50ZXJfaWQYAiABKAUSEAoIdG93ZXJfaWQYAyAB",
-            "KAUSDQoFbGV2ZWwYBCABKAUSCQoBeBgFIAEoBRIJCgF5GAYgASgFEhoKEnJl",
-            "bW92ZWRfaHVudGVyX2lkcxgHIAMoBSJBCg5Db29wR29sZENoYW5nZRIMCgRz",
-            "bG90GAEgASgFEgwKBGdvbGQYAiABKAUSEwoLc3VtbW9uX2Nvc3QYAyABKAUi",
-            "MgoNQ29vcFdhdmVTdGFydBIMCgR3YXZlGAEgASgFEhMKC3NsaW1lX2NvdW50",
-            "GAIgASgFImsKDkNvb3BTbGltZVNwYXduEhAKCHNsaW1lX2lkGAEgASgFEhUK",
-            "DXNsaW1lX2RhdGFfaWQYAiABKAUSEgoKcGF0aF9pbmRleBgDIAEoBRIOCgZo",
-            "ZWFsdGgYBCABKAUSDAoEd2F2ZRgFIAEoBSIyChBDb29wU2xpbWVBcnJpdmFs",
-            "EhAKCHNsaW1lX2lkGAEgASgFEgwKBGxpZmUYAiABKAUidgoQQ29vcEJhdHRs",
-            "ZUVuZE50ZhIRCgliYXR0bGVfaWQYASABKAMSJwoHb3V0Y29tZRgCIAEoDjIW",
-            "LnNsaW1ldGQuQmF0dGxlT3V0Y29tZRIUCgxyZWFjaGVkX3dhdmUYAyABKAUS",
-            "EAoIZW5kX3RpY2sYBCABKAVCE6oCEFNsaW1lVEQuUHJvdG9jb2xiBnByb3Rv",
-            "Mw=="));
+            "X2NoYW5nZRgHIAEoCzIXLnNsaW1ldGQuQ29vcEdvbGRDaGFuZ2VIABIyCg1o",
+            "dW50ZXJfYXR0YWNrGAggASgLMhkuc2xpbWV0ZC5Db29wSHVudGVyQXR0YWNr",
+            "SAASNgoPcHJvamVjdGlsZV9maXJlGAkgASgLMhsuc2xpbWV0ZC5Db29wUHJv",
+            "amVjdGlsZUZpcmVIABIwCgxzbGltZV9kYW1hZ2UYCiABKAsyGC5zbGltZXRk",
+            "LkNvb3BTbGltZURhbWFnZUgAQgYKBGtpbmQiWwoQQ29vcEh1bnRlckF0dGFj",
+            "axIRCglodW50ZXJfaWQYASABKAUSEAoIc2xpbWVfaWQYAiABKAUSEAoIaGl0",
+            "X3RpY2sYAyABKAUSEAoIY3JpdGljYWwYBCABKAgiiQEKEkNvb3BQcm9qZWN0",
+            "aWxlRmlyZRIVCg1wcm9qZWN0aWxlX2lkGAEgASgFEhEKCWh1bnRlcl9pZBgC",
+            "IAEoBRIQCghzbGltZV9pZBgDIAEoBRIQCgh0YXJnZXRfeBgEIAEoAhIQCgh0",
+            "YXJnZXRfehgFIAEoAhITCgthcnJpdmVfdGljaxgGIAEoBSKNAQoPQ29vcFNs",
+            "aW1lRGFtYWdlEhAKCHNsaW1lX2lkGAEgASgFEhEKCWh1bnRlcl9pZBgCIAEo",
+            "BRIMCgRzbG90GAMgASgFEg4KBmRhbWFnZRgEIAEoBRIQCghjcml0aWNhbBgF",
+            "IAEoCBIOCgZoZWFsdGgYBiABKAUSFQoNcHJvamVjdGlsZV9pZBgHIAEoBSJq",
+            "ChBDb29wSHVudGVyU3VtbW9uEgwKBHNsb3QYASABKAUSEQoJaHVudGVyX2lk",
+            "GAIgASgFEhAKCHRvd2VyX2lkGAMgASgFEg0KBWxldmVsGAQgASgFEgkKAXgY",
+            "BSABKAUSCQoBeRgGIAEoBSKFAQoPQ29vcEh1bnRlck1lcmdlEgwKBHNsb3QY",
+            "ASABKAUSEQoJaHVudGVyX2lkGAIgASgFEhAKCHRvd2VyX2lkGAMgASgFEg0K",
+            "BWxldmVsGAQgASgFEgkKAXgYBSABKAUSCQoBeRgGIAEoBRIaChJyZW1vdmVk",
+            "X2h1bnRlcl9pZHMYByADKAUiQQoOQ29vcEdvbGRDaGFuZ2USDAoEc2xvdBgB",
+            "IAEoBRIMCgRnb2xkGAIgASgFEhMKC3N1bW1vbl9jb3N0GAMgASgFIjIKDUNv",
+            "b3BXYXZlU3RhcnQSDAoEd2F2ZRgBIAEoBRITCgtzbGltZV9jb3VudBgCIAEo",
+            "BSJrCg5Db29wU2xpbWVTcGF3bhIQCghzbGltZV9pZBgBIAEoBRIVCg1zbGlt",
+            "ZV9kYXRhX2lkGAIgASgFEhIKCnBhdGhfaW5kZXgYAyABKAUSDgoGaGVhbHRo",
+            "GAQgASgFEgwKBHdhdmUYBSABKAUiMgoQQ29vcFNsaW1lQXJyaXZhbBIQCghz",
+            "bGltZV9pZBgBIAEoBRIMCgRsaWZlGAIgASgFInYKEENvb3BCYXR0bGVFbmRO",
+            "dGYSEQoJYmF0dGxlX2lkGAEgASgDEicKB291dGNvbWUYAiABKA4yFi5zbGlt",
+            "ZXRkLkJhdHRsZU91dGNvbWUSFAoMcmVhY2hlZF93YXZlGAMgASgFEhAKCGVu",
+            "ZF90aWNrGAQgASgFQhOqAhBTbGltZVRELlByb3RvY29sYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::SlimeTD.Protocol.CommonReflection.Descriptor, global::SlimeTD.Protocol.BattleReflection.Descriptor, global::SlimeTD.Protocol.PlayerReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -87,7 +98,10 @@ namespace SlimeTD.Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattlePlayer), global::SlimeTD.Protocol.CoopBattlePlayer.Parser, new[]{ "Slot", "AccountId", "IsBot" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleStartNtf), global::SlimeTD.Protocol.CoopBattleStartNtf.Parser, new[]{ "BattleId", "Stage", "MySlot", "Players", "TicksPerSecond", "TicksPerEvent", "SummonCost" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleEventNtf), global::SlimeTD.Protocol.CoopBattleEventNtf.Parser, new[]{ "Tick", "Events" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleEvent), global::SlimeTD.Protocol.CoopBattleEvent.Parser, new[]{ "Tick", "WaveStart", "SlimeSpawn", "SlimeArrival", "HunterSummon", "HunterMerge", "GoldChange" }, new[]{ "Kind" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopBattleEvent), global::SlimeTD.Protocol.CoopBattleEvent.Parser, new[]{ "Tick", "WaveStart", "SlimeSpawn", "SlimeArrival", "HunterSummon", "HunterMerge", "GoldChange", "HunterAttack", "ProjectileFire", "SlimeDamage" }, new[]{ "Kind" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopHunterAttack), global::SlimeTD.Protocol.CoopHunterAttack.Parser, new[]{ "HunterId", "SlimeId", "HitTick", "Critical" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopProjectileFire), global::SlimeTD.Protocol.CoopProjectileFire.Parser, new[]{ "ProjectileId", "HunterId", "SlimeId", "TargetX", "TargetZ", "ArriveTick" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopSlimeDamage), global::SlimeTD.Protocol.CoopSlimeDamage.Parser, new[]{ "SlimeId", "HunterId", "Slot", "Damage", "Critical", "Health", "ProjectileId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopHunterSummon), global::SlimeTD.Protocol.CoopHunterSummon.Parser, new[]{ "Slot", "HunterId", "TowerId", "Level", "X", "Y" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopHunterMerge), global::SlimeTD.Protocol.CoopHunterMerge.Parser, new[]{ "Slot", "HunterId", "TowerId", "Level", "X", "Y", "RemovedHunterIds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlimeTD.Protocol.CoopGoldChange), global::SlimeTD.Protocol.CoopGoldChange.Parser, new[]{ "Slot", "Gold", "SummonCost" }, null, null, null, null),
@@ -3290,6 +3304,15 @@ namespace SlimeTD.Protocol {
         case KindOneofCase.GoldChange:
           GoldChange = other.GoldChange.Clone();
           break;
+        case KindOneofCase.HunterAttack:
+          HunterAttack = other.HunterAttack.Clone();
+          break;
+        case KindOneofCase.ProjectileFire:
+          ProjectileFire = other.ProjectileFire.Clone();
+          break;
+        case KindOneofCase.SlimeDamage:
+          SlimeDamage = other.SlimeDamage.Clone();
+          break;
       }
 
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -3388,6 +3411,42 @@ namespace SlimeTD.Protocol {
       }
     }
 
+    /// <summary>Field number for the "hunter_attack" field.</summary>
+    public const int HunterAttackFieldNumber = 8;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::SlimeTD.Protocol.CoopHunterAttack HunterAttack {
+      get { return kindCase_ == KindOneofCase.HunterAttack ? (global::SlimeTD.Protocol.CoopHunterAttack) kind_ : null; }
+      set {
+        kind_ = value;
+        kindCase_ = value == null ? KindOneofCase.None : KindOneofCase.HunterAttack;
+      }
+    }
+
+    /// <summary>Field number for the "projectile_fire" field.</summary>
+    public const int ProjectileFireFieldNumber = 9;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::SlimeTD.Protocol.CoopProjectileFire ProjectileFire {
+      get { return kindCase_ == KindOneofCase.ProjectileFire ? (global::SlimeTD.Protocol.CoopProjectileFire) kind_ : null; }
+      set {
+        kind_ = value;
+        kindCase_ = value == null ? KindOneofCase.None : KindOneofCase.ProjectileFire;
+      }
+    }
+
+    /// <summary>Field number for the "slime_damage" field.</summary>
+    public const int SlimeDamageFieldNumber = 10;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::SlimeTD.Protocol.CoopSlimeDamage SlimeDamage {
+      get { return kindCase_ == KindOneofCase.SlimeDamage ? (global::SlimeTD.Protocol.CoopSlimeDamage) kind_ : null; }
+      set {
+        kind_ = value;
+        kindCase_ = value == null ? KindOneofCase.None : KindOneofCase.SlimeDamage;
+      }
+    }
+
     private object kind_;
     /// <summary>Enum of possible cases for the "kind" oneof.</summary>
     public enum KindOneofCase {
@@ -3398,6 +3457,9 @@ namespace SlimeTD.Protocol {
       HunterSummon = 5,
       HunterMerge = 6,
       GoldChange = 7,
+      HunterAttack = 8,
+      ProjectileFire = 9,
+      SlimeDamage = 10,
     }
     private KindOneofCase kindCase_ = KindOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3435,6 +3497,9 @@ namespace SlimeTD.Protocol {
       if (!object.Equals(HunterSummon, other.HunterSummon)) return false;
       if (!object.Equals(HunterMerge, other.HunterMerge)) return false;
       if (!object.Equals(GoldChange, other.GoldChange)) return false;
+      if (!object.Equals(HunterAttack, other.HunterAttack)) return false;
+      if (!object.Equals(ProjectileFire, other.ProjectileFire)) return false;
+      if (!object.Equals(SlimeDamage, other.SlimeDamage)) return false;
       if (KindCase != other.KindCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -3450,6 +3515,9 @@ namespace SlimeTD.Protocol {
       if (kindCase_ == KindOneofCase.HunterSummon) hash ^= HunterSummon.GetHashCode();
       if (kindCase_ == KindOneofCase.HunterMerge) hash ^= HunterMerge.GetHashCode();
       if (kindCase_ == KindOneofCase.GoldChange) hash ^= GoldChange.GetHashCode();
+      if (kindCase_ == KindOneofCase.HunterAttack) hash ^= HunterAttack.GetHashCode();
+      if (kindCase_ == KindOneofCase.ProjectileFire) hash ^= ProjectileFire.GetHashCode();
+      if (kindCase_ == KindOneofCase.SlimeDamage) hash ^= SlimeDamage.GetHashCode();
       hash ^= (int) kindCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -3497,6 +3565,18 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(58);
         output.WriteMessage(GoldChange);
       }
+      if (kindCase_ == KindOneofCase.HunterAttack) {
+        output.WriteRawTag(66);
+        output.WriteMessage(HunterAttack);
+      }
+      if (kindCase_ == KindOneofCase.ProjectileFire) {
+        output.WriteRawTag(74);
+        output.WriteMessage(ProjectileFire);
+      }
+      if (kindCase_ == KindOneofCase.SlimeDamage) {
+        output.WriteRawTag(82);
+        output.WriteMessage(SlimeDamage);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3535,6 +3615,18 @@ namespace SlimeTD.Protocol {
         output.WriteRawTag(58);
         output.WriteMessage(GoldChange);
       }
+      if (kindCase_ == KindOneofCase.HunterAttack) {
+        output.WriteRawTag(66);
+        output.WriteMessage(HunterAttack);
+      }
+      if (kindCase_ == KindOneofCase.ProjectileFire) {
+        output.WriteRawTag(74);
+        output.WriteMessage(ProjectileFire);
+      }
+      if (kindCase_ == KindOneofCase.SlimeDamage) {
+        output.WriteRawTag(82);
+        output.WriteMessage(SlimeDamage);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -3565,6 +3657,15 @@ namespace SlimeTD.Protocol {
       }
       if (kindCase_ == KindOneofCase.GoldChange) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(GoldChange);
+      }
+      if (kindCase_ == KindOneofCase.HunterAttack) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(HunterAttack);
+      }
+      if (kindCase_ == KindOneofCase.ProjectileFire) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ProjectileFire);
+      }
+      if (kindCase_ == KindOneofCase.SlimeDamage) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SlimeDamage);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -3617,6 +3718,24 @@ namespace SlimeTD.Protocol {
             GoldChange = new global::SlimeTD.Protocol.CoopGoldChange();
           }
           GoldChange.MergeFrom(other.GoldChange);
+          break;
+        case KindOneofCase.HunterAttack:
+          if (HunterAttack == null) {
+            HunterAttack = new global::SlimeTD.Protocol.CoopHunterAttack();
+          }
+          HunterAttack.MergeFrom(other.HunterAttack);
+          break;
+        case KindOneofCase.ProjectileFire:
+          if (ProjectileFire == null) {
+            ProjectileFire = new global::SlimeTD.Protocol.CoopProjectileFire();
+          }
+          ProjectileFire.MergeFrom(other.ProjectileFire);
+          break;
+        case KindOneofCase.SlimeDamage:
+          if (SlimeDamage == null) {
+            SlimeDamage = new global::SlimeTD.Protocol.CoopSlimeDamage();
+          }
+          SlimeDamage.MergeFrom(other.SlimeDamage);
           break;
       }
 
@@ -3697,6 +3816,33 @@ namespace SlimeTD.Protocol {
             GoldChange = subBuilder;
             break;
           }
+          case 66: {
+            global::SlimeTD.Protocol.CoopHunterAttack subBuilder = new global::SlimeTD.Protocol.CoopHunterAttack();
+            if (kindCase_ == KindOneofCase.HunterAttack) {
+              subBuilder.MergeFrom(HunterAttack);
+            }
+            input.ReadMessage(subBuilder);
+            HunterAttack = subBuilder;
+            break;
+          }
+          case 74: {
+            global::SlimeTD.Protocol.CoopProjectileFire subBuilder = new global::SlimeTD.Protocol.CoopProjectileFire();
+            if (kindCase_ == KindOneofCase.ProjectileFire) {
+              subBuilder.MergeFrom(ProjectileFire);
+            }
+            input.ReadMessage(subBuilder);
+            ProjectileFire = subBuilder;
+            break;
+          }
+          case 82: {
+            global::SlimeTD.Protocol.CoopSlimeDamage subBuilder = new global::SlimeTD.Protocol.CoopSlimeDamage();
+            if (kindCase_ == KindOneofCase.SlimeDamage) {
+              subBuilder.MergeFrom(SlimeDamage);
+            }
+            input.ReadMessage(subBuilder);
+            SlimeDamage = subBuilder;
+            break;
+          }
         }
       }
     #endif
@@ -3774,6 +3920,1187 @@ namespace SlimeTD.Protocol {
             GoldChange = subBuilder;
             break;
           }
+          case 66: {
+            global::SlimeTD.Protocol.CoopHunterAttack subBuilder = new global::SlimeTD.Protocol.CoopHunterAttack();
+            if (kindCase_ == KindOneofCase.HunterAttack) {
+              subBuilder.MergeFrom(HunterAttack);
+            }
+            input.ReadMessage(subBuilder);
+            HunterAttack = subBuilder;
+            break;
+          }
+          case 74: {
+            global::SlimeTD.Protocol.CoopProjectileFire subBuilder = new global::SlimeTD.Protocol.CoopProjectileFire();
+            if (kindCase_ == KindOneofCase.ProjectileFire) {
+              subBuilder.MergeFrom(ProjectileFire);
+            }
+            input.ReadMessage(subBuilder);
+            ProjectileFire = subBuilder;
+            break;
+          }
+          case 82: {
+            global::SlimeTD.Protocol.CoopSlimeDamage subBuilder = new global::SlimeTD.Protocol.CoopSlimeDamage();
+            if (kindCase_ == KindOneofCase.SlimeDamage) {
+              subBuilder.MergeFrom(SlimeDamage);
+            }
+            input.ReadMessage(subBuilder);
+            SlimeDamage = subBuilder;
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 헌터가 공격을 시작했다 (공격 모션 시작, 타겟 쪽으로 돌기). 서버 docs/decisions.md "공격 모델".
+  /// 타점(hit_tick)에 서버가 타겟을 다시 잡는다: 처음 타겟이 살아 있고 사거리 안이면 그대로, 아니면 사거리 안 가장 가까운 슬라임, 없으면 아무 일도 없다.
+  /// 근접은 타점에 CoopSlimeDamage, 투사체는 타점에 CoopProjectileFire → 도착 틱에 CoopSlimeDamage가 온다.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopHunterAttack : pb::IMessage<CoopHunterAttack>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopHunterAttack> _parser = new pb::MessageParser<CoopHunterAttack>(() => new CoopHunterAttack());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopHunterAttack> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[14]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopHunterAttack() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopHunterAttack(CoopHunterAttack other) : this() {
+      hunterId_ = other.hunterId_;
+      slimeId_ = other.slimeId_;
+      hitTick_ = other.hitTick_;
+      critical_ = other.critical_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopHunterAttack Clone() {
+      return new CoopHunterAttack(this);
+    }
+
+    /// <summary>Field number for the "hunter_id" field.</summary>
+    public const int HunterIdFieldNumber = 1;
+    private int hunterId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int HunterId {
+      get { return hunterId_; }
+      set {
+        hunterId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "slime_id" field.</summary>
+    public const int SlimeIdFieldNumber = 2;
+    private int slimeId_;
+    /// <summary>
+    /// 처음 타겟
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SlimeId {
+      get { return slimeId_; }
+      set {
+        slimeId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "hit_tick" field.</summary>
+    public const int HitTickFieldNumber = 3;
+    private int hitTick_;
+    /// <summary>
+    /// 타점 틱 (= 이 이벤트 틱 + Towers.attackHitDelay). 클라이언트는 모션 타격 프레임을 이 틱에 맞춘다
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int HitTick {
+      get { return hitTick_; }
+      set {
+        hitTick_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "critical" field.</summary>
+    public const int CriticalFieldNumber = 4;
+    private bool critical_;
+    /// <summary>
+    /// 치명타 공격 (공격 시작 때 정한다)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Critical {
+      get { return critical_; }
+      set {
+        critical_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopHunterAttack);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopHunterAttack other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (HunterId != other.HunterId) return false;
+      if (SlimeId != other.SlimeId) return false;
+      if (HitTick != other.HitTick) return false;
+      if (Critical != other.Critical) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (HunterId != 0) hash ^= HunterId.GetHashCode();
+      if (SlimeId != 0) hash ^= SlimeId.GetHashCode();
+      if (HitTick != 0) hash ^= HitTick.GetHashCode();
+      if (Critical != false) hash ^= Critical.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (HunterId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(HunterId);
+      }
+      if (SlimeId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(SlimeId);
+      }
+      if (HitTick != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(HitTick);
+      }
+      if (Critical != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(Critical);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (HunterId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(HunterId);
+      }
+      if (SlimeId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(SlimeId);
+      }
+      if (HitTick != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(HitTick);
+      }
+      if (Critical != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(Critical);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (HunterId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(HunterId);
+      }
+      if (SlimeId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SlimeId);
+      }
+      if (HitTick != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(HitTick);
+      }
+      if (Critical != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopHunterAttack other) {
+      if (other == null) {
+        return;
+      }
+      if (other.HunterId != 0) {
+        HunterId = other.HunterId;
+      }
+      if (other.SlimeId != 0) {
+        SlimeId = other.SlimeId;
+      }
+      if (other.HitTick != 0) {
+        HitTick = other.HitTick;
+      }
+      if (other.Critical != false) {
+        Critical = other.Critical;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            SlimeId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            HitTick = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            Critical = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            SlimeId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            HitTick = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            Critical = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 투사체를 쐈다 (타점). 헌터 칸 중앙에서 (target_x, target_z)까지 직선으로 arrive_tick에 닿게 날린다.
+  /// 도착 지점은 서버가 예측한 타겟 위치다. 도착 틱에 타겟이 살아 있으면 CoopSlimeDamage가 오고, 그사이 죽었거나 도착했으면 피해 없이 사라진다.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopProjectileFire : pb::IMessage<CoopProjectileFire>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopProjectileFire> _parser = new pb::MessageParser<CoopProjectileFire>(() => new CoopProjectileFire());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopProjectileFire> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[15]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopProjectileFire() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopProjectileFire(CoopProjectileFire other) : this() {
+      projectileId_ = other.projectileId_;
+      hunterId_ = other.hunterId_;
+      slimeId_ = other.slimeId_;
+      targetX_ = other.targetX_;
+      targetZ_ = other.targetZ_;
+      arriveTick_ = other.arriveTick_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopProjectileFire Clone() {
+      return new CoopProjectileFire(this);
+    }
+
+    /// <summary>Field number for the "projectile_id" field.</summary>
+    public const int ProjectileIdFieldNumber = 1;
+    private int projectileId_;
+    /// <summary>
+    /// 전투 안 투사체 번호 (발사 순서, 1부터)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ProjectileId {
+      get { return projectileId_; }
+      set {
+        projectileId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "hunter_id" field.</summary>
+    public const int HunterIdFieldNumber = 2;
+    private int hunterId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int HunterId {
+      get { return hunterId_; }
+      set {
+        hunterId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "slime_id" field.</summary>
+    public const int SlimeIdFieldNumber = 3;
+    private int slimeId_;
+    /// <summary>
+    /// 타겟
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SlimeId {
+      get { return slimeId_; }
+      set {
+        slimeId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "target_x" field.</summary>
+    public const int TargetXFieldNumber = 4;
+    private float targetX_;
+    /// <summary>
+    /// 도착 지점 (월드 좌표, 바닥 평면 x·z)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float TargetX {
+      get { return targetX_; }
+      set {
+        targetX_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "target_z" field.</summary>
+    public const int TargetZFieldNumber = 5;
+    private float targetZ_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float TargetZ {
+      get { return targetZ_; }
+      set {
+        targetZ_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "arrive_tick" field.</summary>
+    public const int ArriveTickFieldNumber = 6;
+    private int arriveTick_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ArriveTick {
+      get { return arriveTick_; }
+      set {
+        arriveTick_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopProjectileFire);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopProjectileFire other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ProjectileId != other.ProjectileId) return false;
+      if (HunterId != other.HunterId) return false;
+      if (SlimeId != other.SlimeId) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(TargetX, other.TargetX)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(TargetZ, other.TargetZ)) return false;
+      if (ArriveTick != other.ArriveTick) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ProjectileId != 0) hash ^= ProjectileId.GetHashCode();
+      if (HunterId != 0) hash ^= HunterId.GetHashCode();
+      if (SlimeId != 0) hash ^= SlimeId.GetHashCode();
+      if (TargetX != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(TargetX);
+      if (TargetZ != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(TargetZ);
+      if (ArriveTick != 0) hash ^= ArriveTick.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (ProjectileId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(ProjectileId);
+      }
+      if (HunterId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(HunterId);
+      }
+      if (SlimeId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(SlimeId);
+      }
+      if (TargetX != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(TargetX);
+      }
+      if (TargetZ != 0F) {
+        output.WriteRawTag(45);
+        output.WriteFloat(TargetZ);
+      }
+      if (ArriveTick != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(ArriveTick);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (ProjectileId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(ProjectileId);
+      }
+      if (HunterId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(HunterId);
+      }
+      if (SlimeId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(SlimeId);
+      }
+      if (TargetX != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(TargetX);
+      }
+      if (TargetZ != 0F) {
+        output.WriteRawTag(45);
+        output.WriteFloat(TargetZ);
+      }
+      if (ArriveTick != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(ArriveTick);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (ProjectileId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ProjectileId);
+      }
+      if (HunterId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(HunterId);
+      }
+      if (SlimeId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SlimeId);
+      }
+      if (TargetX != 0F) {
+        size += 1 + 4;
+      }
+      if (TargetZ != 0F) {
+        size += 1 + 4;
+      }
+      if (ArriveTick != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ArriveTick);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopProjectileFire other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ProjectileId != 0) {
+        ProjectileId = other.ProjectileId;
+      }
+      if (other.HunterId != 0) {
+        HunterId = other.HunterId;
+      }
+      if (other.SlimeId != 0) {
+        SlimeId = other.SlimeId;
+      }
+      if (other.TargetX != 0F) {
+        TargetX = other.TargetX;
+      }
+      if (other.TargetZ != 0F) {
+        TargetZ = other.TargetZ;
+      }
+      if (other.ArriveTick != 0) {
+        ArriveTick = other.ArriveTick;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            ProjectileId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            SlimeId = input.ReadInt32();
+            break;
+          }
+          case 37: {
+            TargetX = input.ReadFloat();
+            break;
+          }
+          case 45: {
+            TargetZ = input.ReadFloat();
+            break;
+          }
+          case 48: {
+            ArriveTick = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            ProjectileId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            SlimeId = input.ReadInt32();
+            break;
+          }
+          case 37: {
+            TargetX = input.ReadFloat();
+            break;
+          }
+          case 45: {
+            TargetZ = input.ReadFloat();
+            break;
+          }
+          case 48: {
+            ArriveTick = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 슬라임이 맞았다. health가 0이면 처치다 (슬라임을 없애고, 처치 골드는 hunter 주인 자리에 CoopGoldChange로 온다).
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class CoopSlimeDamage : pb::IMessage<CoopSlimeDamage>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CoopSlimeDamage> _parser = new pb::MessageParser<CoopSlimeDamage>(() => new CoopSlimeDamage());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<CoopSlimeDamage> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[16]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopSlimeDamage() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopSlimeDamage(CoopSlimeDamage other) : this() {
+      slimeId_ = other.slimeId_;
+      hunterId_ = other.hunterId_;
+      slot_ = other.slot_;
+      damage_ = other.damage_;
+      critical_ = other.critical_;
+      health_ = other.health_;
+      projectileId_ = other.projectileId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public CoopSlimeDamage Clone() {
+      return new CoopSlimeDamage(this);
+    }
+
+    /// <summary>Field number for the "slime_id" field.</summary>
+    public const int SlimeIdFieldNumber = 1;
+    private int slimeId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SlimeId {
+      get { return slimeId_; }
+      set {
+        slimeId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "hunter_id" field.</summary>
+    public const int HunterIdFieldNumber = 2;
+    private int hunterId_;
+    /// <summary>
+    /// 피해를 준 헌터 (합성으로 이미 없어졌을 수 있다)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int HunterId {
+      get { return hunterId_; }
+      set {
+        hunterId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "slot" field.</summary>
+    public const int SlotFieldNumber = 3;
+    private int slot_;
+    /// <summary>
+    /// 그 헌터의 주인 자리
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Slot {
+      get { return slot_; }
+      set {
+        slot_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "damage" field.</summary>
+    public const int DamageFieldNumber = 4;
+    private int damage_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Damage {
+      get { return damage_; }
+      set {
+        damage_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "critical" field.</summary>
+    public const int CriticalFieldNumber = 5;
+    private bool critical_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Critical {
+      get { return critical_; }
+      set {
+        critical_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "health" field.</summary>
+    public const int HealthFieldNumber = 6;
+    private int health_;
+    /// <summary>
+    /// 맞은 뒤 남은 체력
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Health {
+      get { return health_; }
+      set {
+        health_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "projectile_id" field.</summary>
+    public const int ProjectileIdFieldNumber = 7;
+    private int projectileId_;
+    /// <summary>
+    /// 투사체로 맞았으면 그 번호, 근접이면 0
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ProjectileId {
+      get { return projectileId_; }
+      set {
+        projectileId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as CoopSlimeDamage);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(CoopSlimeDamage other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (SlimeId != other.SlimeId) return false;
+      if (HunterId != other.HunterId) return false;
+      if (Slot != other.Slot) return false;
+      if (Damage != other.Damage) return false;
+      if (Critical != other.Critical) return false;
+      if (Health != other.Health) return false;
+      if (ProjectileId != other.ProjectileId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (SlimeId != 0) hash ^= SlimeId.GetHashCode();
+      if (HunterId != 0) hash ^= HunterId.GetHashCode();
+      if (Slot != 0) hash ^= Slot.GetHashCode();
+      if (Damage != 0) hash ^= Damage.GetHashCode();
+      if (Critical != false) hash ^= Critical.GetHashCode();
+      if (Health != 0) hash ^= Health.GetHashCode();
+      if (ProjectileId != 0) hash ^= ProjectileId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (SlimeId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(SlimeId);
+      }
+      if (HunterId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(HunterId);
+      }
+      if (Slot != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Slot);
+      }
+      if (Damage != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Damage);
+      }
+      if (Critical != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(Critical);
+      }
+      if (Health != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(Health);
+      }
+      if (ProjectileId != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(ProjectileId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (SlimeId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(SlimeId);
+      }
+      if (HunterId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(HunterId);
+      }
+      if (Slot != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Slot);
+      }
+      if (Damage != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Damage);
+      }
+      if (Critical != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(Critical);
+      }
+      if (Health != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(Health);
+      }
+      if (ProjectileId != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(ProjectileId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (SlimeId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SlimeId);
+      }
+      if (HunterId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(HunterId);
+      }
+      if (Slot != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Slot);
+      }
+      if (Damage != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Damage);
+      }
+      if (Critical != false) {
+        size += 1 + 1;
+      }
+      if (Health != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Health);
+      }
+      if (ProjectileId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ProjectileId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(CoopSlimeDamage other) {
+      if (other == null) {
+        return;
+      }
+      if (other.SlimeId != 0) {
+        SlimeId = other.SlimeId;
+      }
+      if (other.HunterId != 0) {
+        HunterId = other.HunterId;
+      }
+      if (other.Slot != 0) {
+        Slot = other.Slot;
+      }
+      if (other.Damage != 0) {
+        Damage = other.Damage;
+      }
+      if (other.Critical != false) {
+        Critical = other.Critical;
+      }
+      if (other.Health != 0) {
+        Health = other.Health;
+      }
+      if (other.ProjectileId != 0) {
+        ProjectileId = other.ProjectileId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            SlimeId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            Slot = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            Damage = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            Critical = input.ReadBool();
+            break;
+          }
+          case 48: {
+            Health = input.ReadInt32();
+            break;
+          }
+          case 56: {
+            ProjectileId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            SlimeId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            HunterId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            Slot = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            Damage = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            Critical = input.ReadBool();
+            break;
+          }
+          case 48: {
+            Health = input.ReadInt32();
+            break;
+          }
+          case 56: {
+            ProjectileId = input.ReadInt32();
+            break;
+          }
         }
       }
     }
@@ -3799,7 +5126,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[14]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4197,7 +5524,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[15]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4603,7 +5930,7 @@ namespace SlimeTD.Protocol {
   }
 
   /// <summary>
-  /// 그 자리 플레이어의 인게임 골드가 바뀌었다 (소환 비용, 나중에 처치·스킬 골드).
+  /// 그 자리 플레이어의 인게임 골드가 바뀌었다 (소환 비용, 처치 골드, 나중에 스킬 골드).
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
   public sealed partial class CoopGoldChange : pb::IMessage<CoopGoldChange>
@@ -4620,7 +5947,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[16]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4901,7 +6228,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[17]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5143,7 +6470,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[18]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[21]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5501,7 +6828,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[19]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5742,7 +7069,7 @@ namespace SlimeTD.Protocol {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[20]; }
+      get { return global::SlimeTD.Protocol.CoopBattleReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

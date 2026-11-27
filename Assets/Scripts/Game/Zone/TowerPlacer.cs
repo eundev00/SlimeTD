@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using UnityEngine;
 using VContainer;
 using Object = UnityEngine.Object;
 
-// 구역 그리드 칸에 타워를 만들고 지운다. 비용·뽑기·기록은 부르는 쪽이 한다
+// 구역 그리드 칸에 타워를 만들고 지운다. 비용·뽑기·기록은 부르는 쪽이 한다. serverClock이 있으면 협동(서버가 공격을 정한다)이다
 public class TowerPlacer : IDisposable
 {
     private readonly IObjectResolver _resolver;
@@ -11,21 +11,21 @@ public class TowerPlacer : IDisposable
     private readonly ITowerPrefabProvider _prefabProvider;
     private readonly TowerCells _towerCells;
     private readonly Transform _spawnRoot;
-    private readonly bool _localAttack;
+    private readonly ICoopBattleClock _serverClock;
 
     private Transform _holder;
 
     public TowerCells Cells => _towerCells;
 
     public TowerPlacer(IObjectResolver resolver, IGroundHeightSampler groundHeightSampler, ITowerPrefabProvider prefabProvider,
-        TowerCells towerCells, Transform spawnRoot, bool localAttack)
+        TowerCells towerCells, Transform spawnRoot, ICoopBattleClock serverClock)
     {
         _resolver = resolver;
         _groundHeightSampler = groundHeightSampler;
         _prefabProvider = prefabProvider;
         _towerCells = towerCells;
         _spawnRoot = spawnRoot;
-        _localAttack = localAttack;
+        _serverClock = serverClock;
     }
 
     public bool HasPrefab(TowerData towerData)
@@ -55,8 +55,8 @@ public class TowerPlacer : IDisposable
             return false;
         }
 
-        if (!_localAttack)
-            tower.DisableLocalAttack();
+        if (_serverClock != null)
+            tower.FollowServer(_serverClock);
 
         tower.Cell = cell;
         _towerCells.Register(cell, tower);

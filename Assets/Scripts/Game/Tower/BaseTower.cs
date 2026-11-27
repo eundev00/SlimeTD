@@ -13,6 +13,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 {
     private const float TickInterval = 0.1f;
     private const float RotationLerpSpeed = 10f;
+    private const string ServerAttackTrigger = "Attack";
 
     private static int _nextSpawnId;
 
@@ -42,8 +43,12 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
     private bool _isAttacking;
 
     private bool _gameOver;
-    private bool _localAttackDisabled;
     private bool _attackRegistered;
+
+    private ICoopBattleClock _serverClock;
+    private ProjectileLauncher _launcher;
+    private Transform _serverTarget;
+    private bool _serverAiming;
 
     private readonly ReactiveProperty<bool> _isSelected = new ReactiveProperty<bool>(false);
 
@@ -97,6 +102,7 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         if (_animator == null)
             Debug.Log("[BaseTower] TowerAnimator가 없습니다.", this);
 
+        _launcher = GetComponent<ProjectileLauncher>();
         _targetFinder = new ClosestTargetFinder();
         _stats = new TowerStats();
         _disposables = new CompositeDisposable();
@@ -186,7 +192,10 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         _attackCancellation = null;
 
         if (_animationEventListener != null)
+        {
             _animationEventListener.SetAttack(null);
+            _animationEventListener.HitFrame -= OnServerHitFrame;
+        }
 
         _attack?.Dispose();
         _attack = null;
@@ -206,16 +215,65 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         _attackCancellation?.Cancel();
     }
 
-    // TODO: 협동 공격(M3)은 서버 이벤트로 그린다. 그 전까지 협동 헌터는 서 있기만 한다
-    public void DisableLocalAttack()
+    // 협동: 타겟 탐색과 판정을 하지 않고 서버 공격 이벤트(PlayServerAttack, FireServerProjectile)로 그리기만 한다
+    public void FollowServer(ICoopBattleClock clock)
     {
-        _localAttackDisabled = true;
+        _serverClock = clock;
         ApplyAttackActive();
+        _updateService.RegisterUpdatable(this);
+
+        if (_animationEventListener != null)
+            _animationEventListener.HitFrame += OnServerHitFrame;
+    }
+
+    // 타격 프레임이 hit_tick에 오게 남은 시간에 맞춰 모션 속도를 정한다
+    public void PlayServerAttack(Transform target, int hitTick)
+    {
+        if (_serverClock == null || _data == null || _gameOver)
+            return;
+
+        float hitDelay = _data.AttackHitDelay > 0f ? _data.AttackHitDelay : _gameplayService.Config.HunterAttackHitDelay;
+        float tickSeconds = 1f / _serverClock.TicksPerSecond;
+        float remaining = Mathf.Max((hitTick - _serverClock.Tick) * tickSeconds, tickSeconds);
+
+        _serverTarget = target;
+        _serverAiming = true;
+        if (_launcher != null)
+            _launcher.SetHeldProjectileActive(true);
+
+        _animator.SetAttackSpeed(hitDelay / remaining);
+        _animator.SetTrigger(ServerAttackTrigger);
+    }
+
+    public Projectile FireServerProjectile(int projectileId, float targetX, float targetZ, float? targetHeight, float fireTick, int arriveTick)
+    {
+        OnServerHitFrame();
+
+        if (_launcher == null || _launcher.ProjectilePrefab == null)
+            return null;
+
+        var projectileObject = _poolService.Get(_launcher.ProjectilePrefab);
+        var projectile = projectileObject != null ? projectileObject.GetComponent<Projectile>() : null;
+        if (projectile == null)
+            return null;
+
+        Vector3 from = _launcher.FirePoint.position;
+        var target = new Vector3(targetX, targetHeight ?? from.y, targetZ);
+        projectile.FlyByServerClock(projectileId, from, target, _serverClock, fireTick, arriveTick);
+        return projectile;
+    }
+
+    private void OnServerHitFrame()
+    {
+        _serverAiming = false;
+        _animator.ResetTrigger(ServerAttackTrigger);
+        if (_launcher != null)
+            _launcher.SetHeldProjectileActive(false);
     }
 
     private void ApplyAttackActive()
     {
-        bool shouldAttack = !_gameOver && !_localAttackDisabled;
+        bool shouldAttack = !_gameOver && _serverClock == null;
         if (shouldAttack == _attackRegistered)
             return;
 
@@ -257,6 +315,15 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
     public void ManagedUpdate()
     {
+        if (_serverClock != null)
+        {
+            // 풀로 돌아간 슬라임은 비활성이다
+            if (_serverAiming && !_gameOver && _serverTarget != null && _serverTarget.gameObject.activeInHierarchy
+                && TryGetAimRotation(_serverTarget, out var serverRotation))
+                transform.rotation = Quaternion.Slerp(transform.rotation, serverRotation, 1f - Mathf.Exp(-RotationLerpSpeed * Time.deltaTime));
+            return;
+        }
+
         if (_attack == null || !_attack.RequiresFacing)
             return;
 
@@ -291,12 +358,17 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
 
     private bool TryGetAimRotation(in TargetInfo target, out Quaternion rotation)
     {
+        return TryGetAimRotation(target.Transform, out rotation);
+    }
+
+    private bool TryGetAimRotation(Transform target, out Quaternion rotation)
+    {
         rotation = transform.rotation;
 
-        if (target.Transform == null)
+        if (target == null)
             return false;
 
-        Vector3 horizontalDirection = target.Transform.position - transform.position;
+        Vector3 horizontalDirection = target.position - transform.position;
         horizontalDirection.y = 0;
 
         if (horizontalDirection.sqrMagnitude <= Mathf.Epsilon)

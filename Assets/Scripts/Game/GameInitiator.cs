@@ -64,7 +64,7 @@ public class GameInitiator : IAsyncStartable
         // 협동은 웨이브, 슬라임 이동, 헌터 소환·합성, 골드를 서버가 돌린다
         if (coop)
         {
-            _zone.Initialize(myZone, true);
+            _zone.Initialize(myZone, _coopBattlePresenter.Clock);
             _gameplayService.SetGold(battleStage.StartingGold, _coopBattleService.StartSummonCost);
             if (_waveSpawner.Prepare(_gameplayService.Stage, map.Paths, map.Paths.Count))
                 _coopBattlePresenter.Begin(_gameplayService.Stage, _waveSpawner, _zone, map);

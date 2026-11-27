@@ -2,4 +2,5 @@
 public interface ICoopBattleClock
 {
     float Tick { get; }
+    int TicksPerSecond { get; }
 }

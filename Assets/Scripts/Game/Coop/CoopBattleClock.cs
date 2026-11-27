@@ -12,6 +12,7 @@ public class CoopBattleClock : ICoopBattleClock
     private bool _started;
 
     public float Tick { get; private set; }
+    public int TicksPerSecond => Mathf.Max(1, _service.TicksPerSecond);
 
     public CoopBattleClock(ICoopBattleService service)
     {
@@ -20,7 +21,7 @@ public class CoopBattleClock : ICoopBattleClock
 
     public void Advance(float deltaTime)
     {
-        int ticksPerSecond = Mathf.Max(1, _service.TicksPerSecond);
+        int ticksPerSecond = TicksPerSecond;
         float target = TargetTick(ticksPerSecond);
 
         if (!_started || Mathf.Abs(target - Tick) > SnapSeconds * ticksPerSecond)

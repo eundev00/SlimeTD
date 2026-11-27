@@ -1,4 +1,4 @@
-using Services.PoolService;
+﻿using Services.PoolService;
 using System.Collections.Generic;
 using Services.UpdateService;
 using UnityEngine;
@@ -22,6 +22,15 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     private float _splashRadius;
     private int _slimeLayer;
     private ParticleSystem[] _particles;
+
+    // 협동 투사체 번호. 풀로 돌아가면 0이라, 재사용된 투사체를 옛 번호로 지우지 않게 확인한다
+    public int ServerId { get; private set; }
+
+    private ICoopBattleClock _serverClock;
+    private Vector3 _from;
+    private Vector3 _to;
+    private float _fireTick;
+    private float _arriveTick;
 
     private IUpdateSubscriptionService _updateService;
     private IGameObjectPoolService _poolService;
@@ -63,6 +72,30 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _updateService.RegisterUpdatable(this);
     }
 
+    // 협동: 판정 없이 서버 틱에 맞춰 도착 지점까지 직선으로 날고, arriveTick에 사라진다 (피해는 서버 이벤트)
+    public void FlyByServerClock(int serverId, Vector3 from, Vector3 to, ICoopBattleClock clock, float fireTick, int arriveTick)
+    {
+        ServerId = serverId;
+        _serverClock = clock;
+        _from = from;
+        _to = to;
+        _fireTick = fireTick;
+        _arriveTick = Mathf.Max(arriveTick, fireTick + 1f);
+        _isActive = true;
+
+        transform.position = from;
+        if ((to - from).sqrMagnitude > Mathf.Epsilon)
+            transform.rotation = Quaternion.LookRotation(to - from);
+
+        RestartParticles();
+        _updateService.RegisterUpdatable(this);
+    }
+
+    public void Release()
+    {
+        ReturnToPool();
+    }
+
 
     // 풀에서 꺼낼 때 활성화되는 순간 이전 위치에서 재생이 시작돼, 발사 위치로 옮긴 뒤 궤적을 지우고 다시 튼다
     private void RestartParticles()
@@ -78,6 +111,15 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
     {
         if (!_isActive)
             return;
+
+        if (_serverClock != null)
+        {
+            float t = Mathf.InverseLerp(_fireTick, _arriveTick, _serverClock.Tick);
+            transform.position = Vector3.Lerp(_from, _to, t);
+            if (t >= 1f)
+                ReturnToPool();
+            return;
+        }
 
         _elapsedTime += Time.deltaTime;
 
@@ -147,6 +189,8 @@ public class Projectile : MonoBehaviour, IUpdatable, IPoolItem
         _remainingPierce = 0;
         _splashRadius = 0f;
         _hitSlimes.Clear();
+        _serverClock = null;
+        ServerId = 0;
     }
 
 
