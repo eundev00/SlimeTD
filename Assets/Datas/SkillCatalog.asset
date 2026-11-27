@@ -471,7 +471,7 @@ MonoBehaviour:
     _upgradeOfId: 0
     _trigger: 1
     _nth: 0
-    _chance: 50
+    _chance: 10
     _cooldown: 0
     _effects:
     - _type: 10
@@ -512,7 +512,7 @@ MonoBehaviour:
     _upgradeOfId: 30102
     _trigger: 1
     _nth: 0
-    _chance: 50
+    _chance: 15
     _cooldown: 0
     _effects:
     - _type: 10

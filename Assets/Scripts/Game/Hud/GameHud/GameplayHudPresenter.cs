@@ -5,9 +5,6 @@ using VContainer.Unity;
 
 public class GameplayHudPresenter : IStartable, IDisposable
 {
-    // TODO: 스킬 확인용 임시 값. 모노리스는 15레벨에 스킬이 다 열린다
-    private const int TestSummonLevel = 15;
-
     private readonly GameplayHudView _view;
     private readonly IGameplayService _gameplayService;
     private readonly IPublisher<TowerSpawnRequestedEvent> _spawnRequestedPublisher;
@@ -48,7 +45,8 @@ public class GameplayHudPresenter : IStartable, IDisposable
 
     private void HandleTestSummonButtonClicked()
     {
-        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent(_gameplayService.Config?.TestTower, TestSummonLevel));
+        // 테스트 소환은 스킬을 다 보려고 최대 레벨로 낸다
+        _spawnRequestedPublisher.Publish(new TowerSpawnRequestedEvent(_gameplayService.Config?.TestTower, TowerLevelService.MaxLevel));
     }
 
     public void Dispose()
