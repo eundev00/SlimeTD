@@ -15,6 +15,8 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private CurrencyView _diamondCurrency;
 
     [Header("헌터 정보")]
+    [NotNull][SerializeField] private GradeStyle _gradeStyle;
+    [NotNull][SerializeField] private Image _decoLine;
     [NotNull][SerializeField] private Image _thumbnail;
     [NotNull][SerializeField] private GradeBadge _gradeBadge;
     [NotNull][SerializeField] private TMP_Text _nameText;
@@ -25,6 +27,9 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private TMP_Text _levelText;
     [NotNull][SerializeField] private GameObject _cardProgressRoot;
     [NotNull][SerializeField] private Slider _progressSlider;
+    [NotNull][SerializeField] private Image _progressFill;
+    [SerializeField] private Color _progressPartialColor = new Color32(0xFF, 0xD4, 0x3D, 0xFF);
+    [SerializeField] private Color _progressFullColor = new Color32(0x15, 0xEE, 0x8A, 0xFF);
     [NotNull][SerializeField] private TMP_Text _progressText;
     [NotNull][SerializeField] private GameObject _arrowBadge;
     [NotNull][SerializeField] private GameObject _lockedRow;
@@ -41,8 +46,8 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private Button _upgradeButton;
     [NotNull][SerializeField] private TMP_Text _upgradeCostText;
     [NotNull][SerializeField] private GameObject _upgradeDisabled;
-    [NotNull][SerializeField] private GameObject _upgradeMax;
     [NotNull][SerializeField] private Button _buyButton;
+    [NotNull][SerializeField] private GameObject _maxLabel;
     [NotNull][SerializeField] private TMP_Text _buyCostText;
     [NotNull][SerializeField] private Button _closeButton;
     [NotNull][SerializeField] private TMP_Text _messageText;
@@ -112,6 +117,9 @@ public class HunterDetailPopup : PopupBase
         _nameText.text = name;
         _gradeBadge.Show(gradeId);
         _gradeTagText.text = _gradeBadge.Label;
+
+        if (_gradeStyle.TryGetColors(gradeId, out var colors))
+            _decoLine.color = colors.Fill;
     }
 
     public void SetThumbnail(Sprite thumbnail, bool unlocked)
@@ -140,6 +148,7 @@ public class HunterDetailPopup : PopupBase
     {
         float ratio = needed > 0 ? Mathf.Clamp01((float)owned / needed) : 1f;
         _progressSlider.value = ratio;
+        _progressFill.color = ratio >= 1f ? _progressFullColor : _progressPartialColor;
         _progressText.text = $"{owned}/{needed}";
     }
 
@@ -151,6 +160,7 @@ public class HunterDetailPopup : PopupBase
     public void SetCardProgressMax()
     {
         _progressSlider.value = 1f;
+        _progressFill.color = _progressFullColor;
         _progressText.text = "MAX";
     }
 
@@ -183,19 +193,14 @@ public class HunterDetailPopup : PopupBase
 
         _upgradeButton.interactable = enabled;
         _upgradeDisabled.SetActive(!enabled);
-        _upgradeMax.SetActive(false);
         _upgradeCostText.text = costText;
         _upgradeCostText.color = notEnoughCoin ? _notEnoughCostColor : _costTextColor;
     }
 
     public void ShowMaxLevel()
     {
-        SetActionVisible(buy: false, upgrade: true);
-
-        _upgradeButton.interactable = false;
-        _upgradeDisabled.SetActive(true);
-        _upgradeMax.SetActive(true);
-        _upgradeCostText.text = string.Empty;
+        SetActionVisible(buy: false, upgrade: false);
+        _maxLabel.SetActive(true);
     }
 
     public void ShowMessage(string message)
@@ -213,6 +218,7 @@ public class HunterDetailPopup : PopupBase
     {
         _buyButton.gameObject.SetActive(buy);
         _upgradeButton.gameObject.SetActive(upgrade);
+        _maxLabel.SetActive(false);
     }
 
     private void OnUpgradeButtonClicked()
