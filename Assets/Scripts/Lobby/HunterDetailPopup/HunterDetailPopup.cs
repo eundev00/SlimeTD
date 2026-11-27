@@ -46,8 +46,8 @@ public class HunterDetailPopup : PopupBase
     [NotNull][SerializeField] private Button _upgradeButton;
     [NotNull][SerializeField] private TMP_Text _upgradeCostText;
     [NotNull][SerializeField] private GameObject _upgradeDisabled;
-    [NotNull][SerializeField] private GameObject _upgradeMax;
     [NotNull][SerializeField] private Button _buyButton;
+    [NotNull][SerializeField] private GameObject _maxLabel;
     [NotNull][SerializeField] private TMP_Text _buyCostText;
     [NotNull][SerializeField] private Button _closeButton;
     [NotNull][SerializeField] private TMP_Text _messageText;
@@ -193,19 +193,14 @@ public class HunterDetailPopup : PopupBase
 
         _upgradeButton.interactable = enabled;
         _upgradeDisabled.SetActive(!enabled);
-        _upgradeMax.SetActive(false);
         _upgradeCostText.text = costText;
         _upgradeCostText.color = notEnoughCoin ? _notEnoughCostColor : _costTextColor;
     }
 
     public void ShowMaxLevel()
     {
-        SetActionVisible(buy: false, upgrade: true);
-
-        _upgradeButton.interactable = false;
-        _upgradeDisabled.SetActive(true);
-        _upgradeMax.SetActive(true);
-        _upgradeCostText.text = string.Empty;
+        SetActionVisible(buy: false, upgrade: false);
+        _maxLabel.SetActive(true);
     }
 
     public void ShowMessage(string message)
@@ -223,6 +218,7 @@ public class HunterDetailPopup : PopupBase
     {
         _buyButton.gameObject.SetActive(buy);
         _upgradeButton.gameObject.SetActive(upgrade);
+        _maxLabel.SetActive(false);
     }
 
     private void OnUpgradeButtonClicked()
