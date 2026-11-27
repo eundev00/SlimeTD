@@ -16,9 +16,14 @@ public class GameInitiator : IAsyncStartable
     private readonly WaveSpawner _waveSpawner;
     private readonly GameSceneSettings _sceneSettings;
     private readonly ISingleBattleService _singleBattleService;
+    private readonly ICoopBattleService _coopBattleService;
+    private readonly CoopBattlePresenter _coopBattlePresenter;
 
-    public GameInitiator(IGameplayService gameplayService, ITowerLevelService towerLevelService, ITowerPrefabProvider towerPrefabProvider, ISlimePrefabProvider slimePrefabProvider, IResourceLoadService resourceLoadService, Zone zone, WaveSpawner waveSpawner, GameSceneSettings sceneSettings, ISingleBattleService singleBattleService)
+    public GameInitiator(IGameplayService gameplayService, ITowerLevelService towerLevelService, ITowerPrefabProvider towerPrefabProvider, ISlimePrefabProvider slimePrefabProvider, IResourceLoadService resourceLoadService, Zone zone, WaveSpawner waveSpawner, GameSceneSettings sceneSettings, ISingleBattleService singleBattleService,
+        ICoopBattleService coopBattleService, CoopBattlePresenter coopBattlePresenter)
     {
+        _coopBattleService = coopBattleService;
+        _coopBattlePresenter = coopBattlePresenter;
         _gameplayService = gameplayService;
         _towerLevelService = towerLevelService;
         _towerPrefabProvider = towerPrefabProvider;
@@ -32,7 +37,8 @@ public class GameInitiator : IAsyncStartable
 
     public async UniTask StartAsync(CancellationToken ct)
     {
-        var battleStage = _singleBattleService.HasBattle ? _singleBattleService.Stage : null;
+        bool coop = _coopBattleService.HasBattle;
+        var battleStage = coop ? _coopBattleService.Stage : _singleBattleService.HasBattle ? _singleBattleService.Stage : null;
         string stageKey = battleStage != null ? "Stage_" + battleStage.CodeName : _sceneSettings.StageKey;
         await _gameplayService.InitializeAsync(stageKey);
         if (battleStage != null)
@@ -44,8 +50,8 @@ public class GameInitiator : IAsyncStartable
         if (map == null)
             return;
 
-        // TODO: 팀원 구역(slot 1)은 서버가 붙기 전까지 Zone 없이 비워 둔다
-        var myZone = map.GetZone(0);
+        // TODO: 팀원 구역은 협동 헌터 동기화(M2) 전까지 Zone 없이 비워 둔다
+        var myZone = map.GetZone(coop ? _coopBattleService.MySlot : 0);
         if (myZone == null || map.Paths.Count == 0)
         {
             Debug.Log("[GameInitiator] 맵에 내 배치 구역(slot 0) 또는 경로가 없습니다.", map);
@@ -55,6 +61,14 @@ public class GameInitiator : IAsyncStartable
         // 로비에서 레벨을 정하는 구조가 생기기 전까지 디버그 레벨을 기본값으로 쓴다.
         if (_gameplayService.Config != null)
             _towerLevelService.SetDefaultLevel(_gameplayService.Config.DebugTowerLevel);
+
+        // 협동은 웨이브와 슬라임 이동을 서버가 돌린다. 헌터 배치·공격은 M2에서 서버와 붙인다
+        if (coop)
+        {
+            if (_waveSpawner.Prepare(_gameplayService.Stage, map.Paths, map.Paths.Count))
+                _coopBattlePresenter.Begin(_gameplayService.Stage, _waveSpawner);
+            return;
+        }
 
         _zone.Initialize(myZone);
         _waveSpawner.Initialize(_gameplayService.Stage, map.Paths);

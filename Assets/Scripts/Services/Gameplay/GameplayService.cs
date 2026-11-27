@@ -104,6 +104,16 @@ public class GameplayService : IGameplayService
         _info.MaxWave.Value = maxWave;
     }
 
+    public void SetLife(int life)
+    {
+        _info.Life.Value = Mathf.Max(0, life);
+    }
+
+    public void ReportReachedWave(int wave)
+    {
+        ReportWaveReached(wave);
+    }
+
     public void AddSkillGold(int amount, Vector2Int cell)
     {
         if (amount <= 0 || _gameEnded)

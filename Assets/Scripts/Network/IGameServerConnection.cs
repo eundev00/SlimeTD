@@ -13,4 +13,8 @@ public interface IGameServerConnection
     UniTask<bool> ConnectAsync();
     UniTask<TResponse> RequestAsync<TResponse>(MsgId requestId, IMessage request, MsgId responseId, MessageParser<TResponse> parser)
         where TResponse : IMessage<TResponse>;
+
+    // 서버가 요청 없이 보내는 알림 (메시지 이름이 Ntf로 끝난다). 메인 스레드에서 온다
+    System.IObservable<TMessage> ObserveNotification<TMessage>(MsgId id, MessageParser<TMessage> parser)
+        where TMessage : IMessage<TMessage>;
 }

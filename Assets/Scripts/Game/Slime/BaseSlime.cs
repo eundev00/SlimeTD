@@ -50,6 +50,8 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
     private readonly SlimeSlow _slow = new SlimeSlow();
     private float _stunRemaining;
     private bool _updateRegistered;
+    private ICoopBattleClock _serverClock;
+    private int _spawnTick;
 
     public SlimeStats Stats => _stats;
     public Vector3 Position => transform.position;
@@ -133,6 +135,7 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
 
         _moving = false;
         _container = null;
+        _serverClock = null;
         _drawOrderService?.Remove(_drawOrder);
         UnregisterUpdate();
     }
@@ -172,9 +175,22 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
         RegisterUpdate();
     }
 
+    // 협동: 서버가 이동을 정한다. 위치는 나온 틱부터 지난 틱 × 속도이고, 도착은 서버 이벤트(RemoveByServer)로 끝난다
+    public void FollowServerClock(ICoopBattleClock clock, int spawnTick)
+    {
+        _serverClock = clock;
+        _spawnTick = spawnTick;
+    }
+
+    public void RemoveByServer()
+    {
+        _moving = false;
+        _poolService.Release(gameObject);
+    }
+
     public void ManagedFixedUpdate()
     {
-        if (!_moving || _data == null)
+        if (!_moving || _data == null || _serverClock != null)
             return;
 
         float dt = 1f / TicksPerSecond;
@@ -206,6 +222,13 @@ public class BaseSlime : MonoBehaviour, ISlime, IPoolItem, IUpdatable, IFixedUpd
     {
         if (!_moving)
             return;
+
+        if (_serverClock != null)
+        {
+            float elapsedTicks = Mathf.Max(0f, _serverClock.Tick - _spawnTick);
+            ApplyPose(elapsedTicks * _data.BaseSpeed / TicksPerSecond);
+            return;
+        }
 
         float alpha = Mathf.Clamp01((Time.time - Time.fixedTime) / Time.fixedDeltaTime);
         ApplyPose(Mathf.Lerp(_previousDistance, _distance, alpha));

@@ -82,24 +82,8 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
 
     public void Initialize(StageData stage, IReadOnlyList<MapPath> paths)
     {
-        _stage = stage;
-        _paths = paths;
-        _spawnCount = 0;
-
-        if (_paths == null || _paths.Count == 0)
-        {
-            Debug.Log("[WaveSpawner] 슬라임 경로가 없습니다.", this);
+        if (!Prepare(stage, paths))
             return;
-        }
-
-        if (_stage == null || _stage.FinalWave <= 0)
-        {
-            Debug.Log("[WaveSpawner] 스테이지 데이터가 없거나 웨이브가 비어 있습니다.", this);
-            return;
-        }
-
-        _gameplayService.SetMaxWave(_stage.FinalWave);
-        FindPathGroundHeights();
 
         _gameOver = false;
 
@@ -112,10 +96,34 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
                 OnWaveCleared();
         }).AddTo(_disposables);
 
-        PreparePools();
-
         if (_gameplayService.Config.AutoStartWave)
             StartWaves();
+    }
+
+    // 경로 높이와 슬라임 풀만 준비한다. 협동은 웨이브 일정을 서버가 돌리므로 이것만 쓰고 SpawnSlime으로 내보낸다.
+    // spawnsPerPlan: 무리 한 줄이 몇 번 나오는지 (협동은 입구마다 웨이브 전부라 입구 수)
+    public bool Prepare(StageData stage, IReadOnlyList<MapPath> paths, int spawnsPerPlan = 1)
+    {
+        _stage = stage;
+        _paths = paths;
+        _spawnCount = 0;
+
+        if (_paths == null || _paths.Count == 0)
+        {
+            Debug.Log("[WaveSpawner] 슬라임 경로가 없습니다.", this);
+            return false;
+        }
+
+        if (_stage == null || _stage.FinalWave <= 0)
+        {
+            Debug.Log("[WaveSpawner] 스테이지 데이터가 없거나 웨이브가 비어 있습니다.", this);
+            return false;
+        }
+
+        _gameplayService.SetMaxWave(_stage.FinalWave);
+        FindPathGroundHeights();
+        PreparePools(Mathf.Max(1, spawnsPerPlan));
+        return true;
     }
 
     private void OnDestroy()
@@ -157,7 +165,7 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
         }
     }
 
-    private void PreparePools()
+    private void PreparePools(int spawnsPerPlan)
     {
         int finalWave = _stage.FinalWave;
         var plans = new List<SpawnPlan>();
@@ -174,7 +182,7 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
                     continue;
 
                 demand.TryGetValue(prefab, out int current);
-                demand[prefab] = current + 1;
+                demand[prefab] = current + spawnsPerPlan;
             }
 
             perWave.Add(demand);
@@ -330,22 +338,31 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
 
     private void SpawnOne(SpawnPlan plan)
     {
-        var slimeData = plan.SlimeData;
+        // 입구가 여럿이면 무리 안에서 번갈아 내보내 입구마다 같은 수가 나온다
+        int pathIndex = _spawnCount % _paths.Count;
+        _spawnCount++;
+        SpawnSlime(plan.SlimeData, plan.Health, plan.GoldReward, pathIndex, _spawnCount);
+    }
+
+    public BaseSlime SpawnSlime(SlimeDataBase slimeData, int health, int goldReward, int pathIndex, int spawnNumber)
+    {
+        if (pathIndex < 0 || pathIndex >= _paths.Count)
+        {
+            Debug.Log($"[WaveSpawner] 없는 경로 번호입니다: {pathIndex}", this);
+            return null;
+        }
 
         if (!_slimePrefabProvider.TryGet(slimeData, out var prefab))
         {
             Debug.Log($"[WaveSpawner] 슬라임 프리팹이 없습니다: {slimeData.CodeName}", this);
-            return;
+            return null;
         }
 
-        // 입구가 여럿이면 무리 안에서 번갈아 내보내 입구마다 같은 수가 나온다
-        int pathIndex = _spawnCount % _paths.Count;
         var path = _paths[pathIndex].Spline;
-        _spawnCount++;
 
         var obj = _poolService.Get(prefab);
         if (obj == null)
-            return;
+            return null;
 
         obj.transform.SetParent(_spawnRoot, false);
         obj.transform.position = path.EvaluatePosition(0f);
@@ -354,10 +371,11 @@ public class WaveSpawner : MonoBehaviour, IFixedUpdatable
         if (slime == null)
         {
             Debug.Log("[WaveSpawner] 슬라임 프리팹에 BaseSlime 컴포넌트가 없습니다.", obj);
-            return;
+            return null;
         }
 
-        slime.Initialize(path, _pathGroundHeights[pathIndex], slimeData, plan.Health, plan.GoldReward, _spawnCount);
+        slime.Initialize(path, _pathGroundHeights[pathIndex], slimeData, health, goldReward, spawnNumber);
+        return slime;
     }
 
     private void OnGameOver()

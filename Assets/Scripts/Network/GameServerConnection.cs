@@ -13,6 +13,8 @@ public class GameServerConnection : IGameServerConnection, IDisposable
     private readonly ServerFrameCodec.Reader _reader = new ServerFrameCodec.Reader();
     private readonly Queue<(MsgId Expected, UniTaskCompletionSource<byte[]> Source)> _pending =
         new Queue<(MsgId, UniTaskCompletionSource<byte[]>)>();
+    private readonly Subject<(MsgId Id, byte[] Body)> _notifications = new Subject<(MsgId, byte[])>();
+    private static readonly HashSet<MsgId> NotificationIds = CollectNotificationIds();
 
     private IServerTransport _transport;
     private long _serverOffsetMs;
@@ -85,6 +87,13 @@ public class GameServerConnection : IGameServerConnection, IDisposable
             if (serverTime > 0)
                 _serverOffsetMs = serverTime * 1000L - DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
+            // 알림은 요청 순서와 상관없이 끼어 오므로 응답 대기열과 짝짓지 않는다
+            if (NotificationIds.Contains(id))
+            {
+                _notifications.OnNext((id, body));
+                continue;
+            }
+
             if (_pending.Count == 0)
             {
                 Debug.Log($"[GameServerConnection] 기다리는 요청이 없는 응답을 받았습니다: {id}");
@@ -97,6 +106,23 @@ public class GameServerConnection : IGameServerConnection, IDisposable
             else
                 source.TrySetResult(body);
         }
+    }
+
+    public IObservable<TMessage> ObserveNotification<TMessage>(MsgId id, MessageParser<TMessage> parser)
+        where TMessage : IMessage<TMessage>
+    {
+        return _notifications.Where(n => n.Id == id).Select(n => parser.ParseFrom(n.Body));
+    }
+
+    private static HashSet<MsgId> CollectNotificationIds()
+    {
+        var ids = new HashSet<MsgId>();
+        foreach (MsgId id in Enum.GetValues(typeof(MsgId)))
+        {
+            if (id.ToString().EndsWith("Ntf", StringComparison.Ordinal))
+                ids.Add(id);
+        }
+        return ids;
     }
 
     private void OnClosed(string reason)
@@ -124,5 +150,6 @@ public class GameServerConnection : IGameServerConnection, IDisposable
     {
         CloseTransport();
         _isConnected.Dispose();
+        _notifications.Dispose();
     }
 }

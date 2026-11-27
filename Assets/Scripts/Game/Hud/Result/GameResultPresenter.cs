@@ -16,9 +16,12 @@ public class GameResultPresenter : IPopupPresenter
 
     private ItemCatalog _itemCatalog;
 
+    private readonly ICoopBattleService _coopBattleService;
+
     public GameResultPresenter(GameResultPopup popup, ISceneLoader sceneLoader, IGameplayService gameplayService, IAccountService accountService,
-        ISingleBattleService singleBattleService, IResourceLoadService resourceLoadService)
+        ISingleBattleService singleBattleService, IResourceLoadService resourceLoadService, ICoopBattleService coopBattleService)
     {
+        _coopBattleService = coopBattleService;
         _popup = popup;
         _sceneLoader = sceneLoader;
         _gameplayService = gameplayService;
@@ -31,8 +34,9 @@ public class GameResultPresenter : IPopupPresenter
     {
         var info = _gameplayService.Info;
 
-        // 로비를 거치지 않은 에디터 테스트에서는 기록이 저장되지 않아 신기록을 표시하지 않는다
-        bool isNewRecord = _accountService.IsInitialized && info.ReachedWave.Value > info.PreviousBestWave.Value;
+        // 로비를 거치지 않은 에디터 테스트에서는 기록이 저장되지 않아 신기록을 표시하지 않는다. 최고 기록은 싱글 기록이다
+        bool isNewRecord = _accountService.IsInitialized && _popup.SceneName == SceneNames.SingleGame
+            && info.ReachedWave.Value > info.PreviousBestWave.Value;
 
         _popup.Setup(info.IsCleared.Value, info.ReachedWave.Value, isNewRecord);
         _popup.SetEnergyCost(EnergyCost);
@@ -72,6 +76,18 @@ public class GameResultPresenter : IPopupPresenter
 
     private void HandleRestartButtonClicked()
     {
+        if (IsCoopBattle)
+        {
+            if (_accountService.Energy.Value < EnergyCost)
+            {
+                ShowNotEnoughEnergy();
+                return;
+            }
+
+            RestartCoopAsync().Forget();
+            return;
+        }
+
         if (!IsServerBattle)
         {
             _popup.SetButtonsInteractable(false);
@@ -89,6 +105,27 @@ public class GameResultPresenter : IPopupPresenter
     }
 
     private bool IsServerBattle => _popup.SceneName == SceneNames.SingleGame && _accountService.IsInitialized;
+
+    private bool IsCoopBattle => _popup.SceneName == SceneNames.MultiGame && _coopBattleService.BattleId != 0;
+
+    // TODO: 협동 M1 확인용. 다시 하기도 서버 봇과 바로 시작한다
+    private async UniTaskVoid RestartCoopAsync()
+    {
+        _popup.SetButtonsInteractable(false);
+
+        var result = await _coopBattleService.MatchAsync(_gameplayService.Stage.StageId, true);
+        if (result != ResultCode.Ok || !await _coopBattleService.WaitStartAsync())
+        {
+            if (result == ResultCode.NotEnoughEnergy)
+                ShowNotEnoughEnergy();
+
+            // TODO: 실패 안내 UI
+            _popup.SetButtonsInteractable(true);
+            return;
+        }
+
+        _sceneLoader.ReloadAsync(_popup.SceneName).Forget();
+    }
 
     private int EnergyCost => _gameplayService.Config != null ? _gameplayService.Config.EnergyCostPerBattle : 0;
 

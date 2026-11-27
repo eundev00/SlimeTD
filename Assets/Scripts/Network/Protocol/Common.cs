@@ -24,7 +24,7 @@ namespace SlimeTD.Protocol {
     static CommonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgxjb21tb24ucHJvdG8SB3NsaW1ldGQqnAQKBU1zZ0lkEg8KC01TR19JRF9O",
+            "Cgxjb21tb24ucHJvdG8SB3NsaW1ldGQq4wYKBU1zZ0lkEg8KC01TR19JRF9O",
             "T05FEAASFAoQTVNHX0lEX0NIRUFUX1JFURBaEhQKEE1TR19JRF9DSEVBVF9S",
             "RVMQWxIUChBNU0dfSURfTE9HSU5fUkVREGQSFAoQTVNHX0lEX0xPR0lOX1JF",
             "UxBlEh8KGk1TR19JRF9HRVRfUExBWUVSX0lORk9fUkVREMgBEh8KGk1TR19J",
@@ -36,17 +36,24 @@ namespace SlimeTD.Protocol {
             "RFJBV19SRVMQsQISIwoeTVNHX0lEX1NJTkdMRV9CQVRUTEVfU1RBUlRfUkVR",
             "EJADEiMKHk1TR19JRF9TSU5HTEVfQkFUVExFX1NUQVJUX1JFUxCRAxIkCh9N",
             "U0dfSURfU0lOR0xFX0JBVFRMRV9GSU5JU0hfUkVREJIDEiQKH01TR19JRF9T",
-            "SU5HTEVfQkFUVExFX0ZJTklTSF9SRVMQkwMqmwMKClJlc3VsdENvZGUSEgoO",
-            "UkVTVUxUX0NPREVfT0sQABIfChtSRVNVTFRfQ09ERV9JTlZBTElEX1JFUVVF",
-            "U1QQARIdChlSRVNVTFRfQ09ERV9OT1RfTE9HR0VEX0lOEAISHAoYUkVTVUxU",
-            "X0NPREVfU0VSVkVSX0VSUk9SEAMSGQoVUkVTVUxUX0NPREVfTk9UX0ZPVU5E",
-            "EAQSHQoZUkVTVUxUX0NPREVfSFVOVEVSX0xPQ0tFRBAFEhkKFVJFU1VMVF9D",
-            "T0RFX01BWF9MRVZFTBAGEiAKHFJFU1VMVF9DT0RFX05PVF9FTk9VR0hfSVRF",
-            "TVMQBxIgChxSRVNVTFRfQ09ERV9BTFJFQURZX1VOTE9DS0VEEAgSHwobUkVT",
-            "VUxUX0NPREVfTk9UX1BVUkNIQVNBQkxFEAkSHQoZUkVTVUxUX0NPREVfTk9U",
-            "X0FWQUlMQUJMRRAKEh8KG1JFU1VMVF9DT0RFX0JBVFRMRV9NSVNNQVRDSBAL",
-            "EiEKHVJFU1VMVF9DT0RFX05PVF9FTk9VR0hfRU5FUkdZEAxCE6oCEFNsaW1l",
-            "VEQuUHJvdG9jb2xiBnByb3RvMw=="));
+            "SU5HTEVfQkFUVExFX0ZJTklTSF9SRVMQkwMSIQocTVNHX0lEX0NPT1BfQkFU",
+            "VExFX01BVENIX1JFURD0AxIhChxNU0dfSURfQ09PUF9CQVRUTEVfTUFUQ0hf",
+            "UkVTEPUDEigKI01TR19JRF9DT09QX0JBVFRMRV9NQVRDSF9DQU5DRUxfUkVR",
+            "EPYDEigKI01TR19JRF9DT09QX0JBVFRMRV9NQVRDSF9DQU5DRUxfUkVTEPcD",
+            "EiEKHE1TR19JRF9DT09QX0JBVFRMRV9MRUFWRV9SRVEQ+AMSIQocTVNHX0lE",
+            "X0NPT1BfQkFUVExFX0xFQVZFX1JFUxD5AxIhChxNU0dfSURfQ09PUF9CQVRU",
+            "TEVfU1RBUlRfTlRGEKYEEiEKHE1TR19JRF9DT09QX0JBVFRMRV9FVkVOVF9O",
+            "VEYQpwQSHwoaTVNHX0lEX0NPT1BfQkFUVExFX0VORF9OVEYQqAQqmwMKClJl",
+            "c3VsdENvZGUSEgoOUkVTVUxUX0NPREVfT0sQABIfChtSRVNVTFRfQ09ERV9J",
+            "TlZBTElEX1JFUVVFU1QQARIdChlSRVNVTFRfQ09ERV9OT1RfTE9HR0VEX0lO",
+            "EAISHAoYUkVTVUxUX0NPREVfU0VSVkVSX0VSUk9SEAMSGQoVUkVTVUxUX0NP",
+            "REVfTk9UX0ZPVU5EEAQSHQoZUkVTVUxUX0NPREVfSFVOVEVSX0xPQ0tFRBAF",
+            "EhkKFVJFU1VMVF9DT0RFX01BWF9MRVZFTBAGEiAKHFJFU1VMVF9DT0RFX05P",
+            "VF9FTk9VR0hfSVRFTVMQBxIgChxSRVNVTFRfQ09ERV9BTFJFQURZX1VOTE9D",
+            "S0VEEAgSHwobUkVTVUxUX0NPREVfTk9UX1BVUkNIQVNBQkxFEAkSHQoZUkVT",
+            "VUxUX0NPREVfTk9UX0FWQUlMQUJMRRAKEh8KG1JFU1VMVF9DT0RFX0JBVFRM",
+            "RV9NSVNNQVRDSBALEiEKHVJFU1VMVF9DT0RFX05PVF9FTk9VR0hfRU5FUkdZ",
+            "EAxCE6oCEFNsaW1lVEQuUHJvdG9jb2xiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SlimeTD.Protocol.MsgId), typeof(global::SlimeTD.Protocol.ResultCode), }, null, null));
@@ -77,6 +84,18 @@ namespace SlimeTD.Protocol {
     [pbr::OriginalName("MSG_ID_SINGLE_BATTLE_START_RES")] SingleBattleStartRes = 401,
     [pbr::OriginalName("MSG_ID_SINGLE_BATTLE_FINISH_REQ")] SingleBattleFinishReq = 402,
     [pbr::OriginalName("MSG_ID_SINGLE_BATTLE_FINISH_RES")] SingleBattleFinishRes = 403,
+    /// <summary>
+    /// 협동 전투 (coop_battle.proto). 500~549 요청·응답, 550~ 서버 알림(Ntf)
+    /// </summary>
+    [pbr::OriginalName("MSG_ID_COOP_BATTLE_MATCH_REQ")] CoopBattleMatchReq = 500,
+    [pbr::OriginalName("MSG_ID_COOP_BATTLE_MATCH_RES")] CoopBattleMatchRes = 501,
+    [pbr::OriginalName("MSG_ID_COOP_BATTLE_MATCH_CANCEL_REQ")] CoopBattleMatchCancelReq = 502,
+    [pbr::OriginalName("MSG_ID_COOP_BATTLE_MATCH_CANCEL_RES")] CoopBattleMatchCancelRes = 503,
+    [pbr::OriginalName("MSG_ID_COOP_BATTLE_LEAVE_REQ")] CoopBattleLeaveReq = 504,
+    [pbr::OriginalName("MSG_ID_COOP_BATTLE_LEAVE_RES")] CoopBattleLeaveRes = 505,
+    [pbr::OriginalName("MSG_ID_COOP_BATTLE_START_NTF")] CoopBattleStartNtf = 550,
+    [pbr::OriginalName("MSG_ID_COOP_BATTLE_EVENT_NTF")] CoopBattleEventNtf = 551,
+    [pbr::OriginalName("MSG_ID_COOP_BATTLE_END_NTF")] CoopBattleEndNtf = 552,
   }
 
   /// <summary>
@@ -116,7 +135,7 @@ namespace SlimeTD.Protocol {
     /// </summary>
     [pbr::OriginalName("RESULT_CODE_NOT_AVAILABLE")] NotAvailable = 10,
     /// <summary>
-    /// 전투 결과가 서버 재계산과 다름 (기록하지 않음)
+    /// 전투 결과가 비정상으로 판정됨 (명백한 조작. 기록·보상 없음). 작은 차이는 OK로 온다
     /// </summary>
     [pbr::OriginalName("RESULT_CODE_BATTLE_MISMATCH")] BattleMismatch = 11,
     /// <summary>

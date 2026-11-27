@@ -22,6 +22,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.Register<SlimeDrawOrderService>(Lifetime.Scoped).As<ISlimeDrawOrderService>();
         builder.RegisterInstance(new GameSceneSettings(_stageKey));
         builder.RegisterEntryPoint<GameInitiator>();
+        builder.Register<CoopBattlePresenter>(Lifetime.Singleton);
 
         builder.RegisterComponentInHierarchy<Zone>();
         builder.RegisterComponentInHierarchy<WaveSpawner>();
