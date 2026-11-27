@@ -9,7 +9,7 @@ public interface IGameplayService : IDisposable
     SkillCatalog SkillCatalog { get; }
     StageData Stage { get; }
 
-    UniTask InitializeAsync(string stageKey = DataKeys.Stage_SingleNormal);
+    UniTask InitializeAsync(string stageKey = DataKeys.Stage_SingleForest01);
     void AddSkillGold(int amount, UnityEngine.Vector2Int cell);
     bool TrySpendGold(int amount);
     bool TrySpendSummonCost();

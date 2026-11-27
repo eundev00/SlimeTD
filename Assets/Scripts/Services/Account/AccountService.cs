@@ -55,7 +55,7 @@ public class AccountService : IAccountService, IDisposable
 
         var catalog = await _resourceLoadService.LoadAsync<TowerCatalog>(DataKeys.TowerCatalog);
         var items = await _resourceLoadService.LoadAsync<ItemCatalog>(DataKeys.ItemCatalog);
-        var bestWaveStage = await _resourceLoadService.LoadAsync<StageData>(DataKeys.Stage_SingleNormal);
+        var bestWaveStage = await _resourceLoadService.LoadAsync<StageData>(DataKeys.Stage_SingleForest01);
         if (catalog == null || items == null || bestWaveStage == null)
         {
             Debug.Log("[AccountService] 타워·아이템·스테이지 데이터를 읽지 못했습니다.");

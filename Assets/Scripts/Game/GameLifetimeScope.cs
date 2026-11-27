@@ -6,7 +6,7 @@ using VContainer.Unity;
 public class GameLifetimeScope : LifetimeScope
 {
     [SerializeField] private RectTransform _popupRoot;
-    [SerializeField] private string _stageKey = DataKeys.Stage_SingleNormal;
+    [SerializeField] private string _stageKey = DataKeys.Stage_SingleForest01;
 
     protected override void Configure(IContainerBuilder builder)
     {

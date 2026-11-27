@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cfaff4b83cf63746a1581dd24eed0dc, type: 3}
-  m_Name: Stage_MultiNormal
+  m_Name: Stage_SingleForest01
   m_EditorClassIdentifier: Assembly-CSharp::StageData
   _stageId: 21
-  _codeName: MultiNormal
-  _mode: 2
+  _codeName: SingleForest01
+  _mode: 1
   _difficulty: 1
-  _displayName: "\uBA40\uD2F0 \uBCF4\uD1B5"
+  _displayName: "\uC232 1"
   _enabled: 1
   _startingLife: 10
   _startingGold: 50
   _spawnInterval: 0.8
   _interWaveDelay: 2
   _normalHpGrowth: 0.06
-  _mapKey: Map_Coop01
+  _mapKey: Map_Forest01
   _waves:
   - _groups:
     - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}

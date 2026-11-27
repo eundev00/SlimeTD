@@ -22,7 +22,7 @@ public class StageWave
     public IReadOnlyList<StageWaveGroup> Groups => _groups;
 }
 
-// TODO: 서버 연결 전까지 쓰는 임시 데이터. 원본은 SlimeTD-Data의 Stages.csv와 Waves/<codeName>.csv다
+// TODO: 서버 연결 전까지 쓰는 임시 데이터. 원본은 SlimeTD-Data의 CoopStages.csv / SingleStages.csv와 Waves/<codeName>.csv다
 [CreateAssetMenu(fileName = "Stage_00", menuName = "SlimeTD/Stage Data", order = 23)]
 public class StageData : ScriptableObject
 {

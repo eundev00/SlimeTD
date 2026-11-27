@@ -1110,7 +1110,7 @@ namespace SlimeTD.Protocol {
     public const int StageIdFieldNumber = 1;
     private int stageId_;
     /// <summary>
-    /// Stages.csv의 stageId
+    /// 스테이지 시트(CoopStages, SingleStages)의 stageId
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

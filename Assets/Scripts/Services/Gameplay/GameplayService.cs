@@ -52,7 +52,7 @@ public class GameplayService : IGameplayService
         gameProgressSubscriber.Subscribe(OnGameProgress).AddTo(_disposables);
     }
 
-    public async UniTask InitializeAsync(string stageKey = DataKeys.Stage_SingleNormal)
+    public async UniTask InitializeAsync(string stageKey = DataKeys.Stage_SingleForest01)
     {
         _info.PreviousBestWave.Value = _accountService.BestWave.Value;
         _info.ReachedWave.Value = 0;

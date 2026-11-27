@@ -112,19 +112,20 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 
 - 슬라임 프리팹은 시트에 없다. `codeName`과 같은 이름의 프리팹(`Assets/Prefabs/Game/Slime/<codeName>.prefab`)을 `SlimePrefabProvider`가 로드한다. 프리팹이 없으면 사용자에게 알린다
 
-### Stages.csv + Waves/<codeName>.csv → `Assets/Datas/Stages/Stage_<codeName>.asset`
+### CoopStages.csv / SingleStages.csv + Waves/<codeName>.csv → `Assets/Datas/Stages/Stage_<codeName>.asset`
 
 | 필드 | 값 |
 |---|---|
 | `_stageId`, `_codeName` | stageId, codeName |
-| `_mode`, `_difficulty` | `GameMode`, `Difficulty` 값 |
+| `_mode` | 시트에 따라 정한다: CoopStages = 2(`Coop`), SingleStages = 1(`Single`) |
+| `_difficulty` | CoopStages의 difficulty → `Difficulty` 값. SingleStages에는 열이 없으니 건드리지 않는다 |
 | `_displayName` | name (한글 이스케이프) |
 | `_enabled` | enabled |
 | `_startingLife`, `_startingGold`, `_spawnInterval`, `_interWaveDelay`, `_normalHpGrowth` | 같은 이름의 열 |
 | `_mapKey` | mapKey. 같은 이름의 맵 프리팹(`Assets/Prefabs/Game/Map/<mapKey>.prefab`)이 없으면 보고한다 |
 | `_waves` | 웨이브 1부터 순서대로 항목 하나씩. 각 항목의 `_groups`는 order 순서로 `_slime` = 그 slimeId 슬라임 에셋 참조, `_count`, `_delay`(비우면 0) |
 
-로비 웨이브 맵은 `LobbyScene`의 `LobbyLifetimeScope._stage`가 가리키는 스테이지를 읽는다 (지금 `Stage_SingleNormal`).
+로비 웨이브 맵은 `LobbyScene`의 `LobbyLifetimeScope._stage`가 가리키는 스테이지를 읽는다 (지금 `Stage_SingleForest01`).
 
 ### GameConstants.csv → `Assets/Datas/GameConfig.asset`
 

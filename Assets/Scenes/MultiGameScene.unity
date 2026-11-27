@@ -3003,7 +3003,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _popupRoot: {fileID: 1436157988}
-  _stageKey: Stage_MultiNormal
+  _stageKey: Stage_CoopNormal
 --- !u!4 &1772568649
 Transform:
   m_ObjectHideFlags: 0

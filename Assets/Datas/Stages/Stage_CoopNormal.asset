@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cfaff4b83cf63746a1581dd24eed0dc, type: 3}
-  m_Name: Stage_SingleNormal
+  m_Name: Stage_CoopNormal
   m_EditorClassIdentifier: Assembly-CSharp::StageData
   _stageId: 11
-  _codeName: SingleNormal
-  _mode: 1
+  _codeName: CoopNormal
+  _mode: 2
   _difficulty: 1
-  _displayName: "\uC2F1\uAE00 \uBCF4\uD1B5"
+  _displayName: "\uD611\uB3D9 \uBCF4\uD1B5"
   _enabled: 1
   _startingLife: 10
   _startingGold: 50
   _spawnInterval: 0.8
   _interWaveDelay: 2
   _normalHpGrowth: 0.06
-  _mapKey: Map_Forest01
+  _mapKey: Map_Coop01
   _waves:
   - _groups:
     - _slime: {fileID: 11400000, guid: 1a0000000000000000000000000000f1, type: 2}

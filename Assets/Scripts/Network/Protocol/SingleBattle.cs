@@ -130,7 +130,7 @@ namespace SlimeTD.Protocol {
     public const int StageIdFieldNumber = 1;
     private int stageId_;
     /// <summary>
-    /// Stages.csv의 stageId (싱글 보통 = 11)
+    /// SingleStages.csv의 stageId (21~, 숲 1 = 21). 협동 스테이지 번호면 RESULT_CODE_NOT_FOUND
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

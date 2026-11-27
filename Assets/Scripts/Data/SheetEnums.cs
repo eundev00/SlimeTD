@@ -4,7 +4,7 @@ public enum GameMode
 {
     None = 0,
     Single = 1,
-    Multi = 2,
+    Coop = 2,
 }
 
 public enum Difficulty
