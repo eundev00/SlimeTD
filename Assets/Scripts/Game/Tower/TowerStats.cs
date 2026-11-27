@@ -18,7 +18,7 @@ public class TowerStats : IDisposable
 
     public int Level { get; private set; } = 1;
     public float Attack { get; private set; }
-    public float AttackCooldown => _data != null ? _data.AttackCooldown : 1f;
+    public float AttackInterval => _data != null ? _data.AttackInterval : 1f;
     public float CritChance => _data != null ? (_data.CritChance + _critChanceBonus) / 100f : 0f;
     public float CritBonus => _data != null ? (_data.CritBonus + _critBonusBonus) / 100f : 0f;
 

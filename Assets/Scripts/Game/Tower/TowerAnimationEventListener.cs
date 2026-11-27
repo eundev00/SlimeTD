@@ -25,11 +25,8 @@ public class TowerAnimationEventListener : MonoBehaviour
         _attack.OnAnimationHit();
     }
 
+    // 공격은 OnAttackHit에서 끝난다. 클립의 OnAttackEnd는 모션 길이(시트 attackDuration을 뽑는 기준) 표시라 받기만 한다
     public void OnAttackEnd()
     {
-        if (_attack == null)
-            return;
-
-        _attack.OnAnimationEnd();
     }
 }

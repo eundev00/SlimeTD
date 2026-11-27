@@ -6,7 +6,7 @@ using UnityEngine;
 
 public abstract class AttackBehaviourBase : IAttackBehaviour
 {
-    private const float EndEventTimeout = 10f;
+    private const float HitEventTimeout = 10f;
     private const string AttackTrigger = "Attack";
 
     private float _remainingCooldown;
@@ -16,7 +16,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
     private AttackSkillRoll _pendingRoll;
     private DamageInfo _pendingDamage;
     private bool _vfxPending;
-    private UniTaskCompletionSource _endSource;
+    private UniTaskCompletionSource _hitSource;
 
     protected ITowerContext Context { get; private set; }
 
@@ -35,14 +35,22 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
             _remainingCooldown -= deltaTime;
     }
 
+    public void DelayNextAttack(float seconds)
+    {
+        _remainingCooldown = Mathf.Max(_remainingCooldown, seconds);
+    }
+
     public async UniTask ExecuteAsync(TargetInfo target, CancellationToken token)
     {
         var animator = Context.Animator;
         var stats = Context.Stats;
 
+        // 간격은 공격 시작부터 다음 공격 시작까지다 (서버와 같은 규칙)
+        _remainingCooldown = stats.AttackInterval / stats.AttackSpeed.Value;
+
         _pendingTarget = target;
         _hasPendingTarget = true;
-        _endSource = new UniTaskCompletionSource();
+        _hitSource = new UniTaskCompletionSource();
 
         // 스킬과 치명타는 공격 시작에 정한다. 스킬마다 공격 모션이 달라서 트리거를 보내기 전에 결과를 알아야 한다.
         var skills = Context.Skills;
@@ -63,12 +71,12 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 
             animator.SetTrigger(attackTrigger);
 
-            // 클립의 OnAttackEnd 이벤트가 완료시킨다. 이벤트가 없으면 타임아웃까지 대기한다.
-            TimeoutEndSourceAsync(_endSource, token).Forget();
+            // 공격은 타격 프레임에서 끝난다. 남은 모션은 다음 공격 트리거가 끊는다 (모션이 간격보다 긴 궁수)
+            TimeoutHitSourceAsync(_hitSource, token).Forget();
 
-            using (token.Register(() => _endSource.TrySetCanceled()))
+            using (token.Register(() => _hitSource.TrySetCanceled()))
             {
-                await _endSource.Task;
+                await _hitSource.Task;
             }
         }
         finally
@@ -81,12 +89,9 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
             _pendingRoll = default;
             _pendingDamage = default;
             _vfxPending = false;
-            _endSource = null;
+            _hitSource = null;
 
             OnAttackFinished();
-
-            // 쿨다운은 공격이 끝난 뒤부터 흐른다. 시작 시점에 걸면 모션 시간과 겹쳐 값이 무의미해진다.
-            _remainingCooldown = stats.AttackCooldown / stats.AttackSpeed.Value;
         }
     }
 
@@ -134,19 +139,22 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         PlayPendingVfx();
         OnHitFrame();
 
-        if (!target.IsValid)
-            return;
-
-        // 십자 범위 스킬은 공격 방식과 상관없이 투사체 없이 타격 순간 바로 들어간다
-        if (_pendingRoll.CrossRange > 0)
+        if (target.IsValid)
         {
-            var hitCenters = CrossDamage.Apply(target.Slime, _pendingRoll.CrossRange, _pendingDamage);
-            for (int i = 0; i < hitCenters.Count; i++)
-                Context.PlayTargetVfx(Context.Skills.LastProcs, hitCenters[i]);
-            return;
+            // 십자 범위 스킬은 공격 방식과 상관없이 투사체 없이 타격 순간 바로 들어간다
+            if (_pendingRoll.CrossRange > 0)
+            {
+                var hitCenters = CrossDamage.Apply(target.Slime, _pendingRoll.CrossRange, _pendingDamage);
+                for (int i = 0; i < hitCenters.Count; i++)
+                    Context.PlayTargetVfx(Context.Skills.LastProcs, hitCenters[i]);
+            }
+            else
+            {
+                Apply(target, _pendingRoll, _pendingDamage);
+            }
         }
 
-        Apply(target, _pendingRoll, _pendingDamage);
+        _hitSource?.TrySetResult();
     }
 
     private void PlayPendingVfx()
@@ -161,16 +169,11 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         Context.PlaySkillVfx(skills.LastProcs);
     }
 
-    public void OnAnimationEnd()
-    {
-        _endSource?.TrySetResult();
-    }
-
-    private async UniTaskVoid TimeoutEndSourceAsync(UniTaskCompletionSource source, CancellationToken token)
+    private async UniTaskVoid TimeoutHitSourceAsync(UniTaskCompletionSource source, CancellationToken token)
     {
         try
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(EndEventTimeout), cancellationToken: token);
+            await UniTask.Delay(TimeSpan.FromSeconds(HitEventTimeout), cancellationToken: token);
         }
         catch (OperationCanceledException)
         {
@@ -178,7 +181,7 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
         }
 
         if (source.TrySetResult())
-            Debug.Log($"[{GetType().Name}] 공격 종료 이벤트가 오지 않았습니다. 클립에 OnAttackEnd가 있는지 확인하세요.");
+            Debug.Log($"[{GetType().Name}] 타격 이벤트가 오지 않았습니다. 클립에 OnAttackHit가 있는지 확인하세요.");
     }
 
     protected abstract void Apply(in TargetInfo target, in AttackSkillRoll roll, in DamageInfo info);
@@ -207,8 +210,8 @@ public abstract class AttackBehaviourBase : IAttackBehaviour
 
     public virtual void Dispose()
     {
-        _endSource?.TrySetCanceled();
-        _endSource = null;
+        _hitSource?.TrySetCanceled();
+        _hitSource = null;
         Context = null;
     }
 }

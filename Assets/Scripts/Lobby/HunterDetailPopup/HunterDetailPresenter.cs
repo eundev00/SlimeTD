@@ -219,7 +219,7 @@ public class HunterDetailPresenter : IPopupPresenter
             attackBonus = delta > 0 ? $"+{delta}" : string.Empty;
         }
 
-        float attackSpeed = data.AttackCooldown > 0f ? data.AttackSpeedPercent / 100f / data.AttackCooldown : 0f;
+        float attackSpeed = data.AttackInterval > 0f ? data.AttackSpeedPercent / 100f / data.AttackInterval : 0f;
 
         _popup.SetStats(
             Mathf.RoundToInt(data.GetAttack(level)).ToString("N0"),

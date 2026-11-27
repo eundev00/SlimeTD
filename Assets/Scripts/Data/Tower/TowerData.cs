@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // TODO: 서버 연결 전까지 쓰는 임시 데이터. 타워 프리팹은 CodeName으로 찾고, 투사체 모양(프리팹)은 프리팹의 ProjectileLauncher가 가진다
 [CreateAssetMenu(fileName = "TowerData_00", menuName = "SlimeTD/Tower Data", order = 61)]
@@ -17,7 +18,9 @@ public class TowerData : ScriptableObject
     [Header("기본 수치 (레벨 1)")]
     [SerializeField] private float _baseAttack = 1f;
     [SerializeField] private float _attackGrowthRate = 5f;
-    [SerializeField] private float _attackCooldown = 1f;
+    [Tooltip("공격 시작부터 다음 공격 시작까지 간격(초, 공격속도 1 기준)")]
+    [FormerlySerializedAs("_attackCooldown")]
+    [SerializeField] private float _attackInterval = 1f;
     [SerializeField] private float _critChance = 10f;
     [SerializeField] private float _critBonus = 100f;
 
@@ -43,7 +46,7 @@ public class TowerData : ScriptableObject
     public float AttackRange => _attackRange;
     public string ThumbnailName => $"Thumb_{_codeName}";
     public float BaseAttack => _baseAttack;
-    public float AttackCooldown => _attackCooldown;
+    public float AttackInterval => _attackInterval;
     public float CritChance => _critChance;
     public float CritBonus => _critBonus;
     public float AttackSpeedPercent => BaseAttackSpeedPercent;

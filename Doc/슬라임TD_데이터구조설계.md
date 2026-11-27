@@ -66,7 +66,8 @@ TowerData (SO, 종류당 1개)
 ├─ projectilePrefab  : GameObject               // Projectile일 때. 풀 크기는 코드 상수
 ├─ baseAttack        : float                    // 등급 시트의 기준공격력
 ├─ attackGrowthRate  : float                    // 레벨당 공격력 증가율 %
-├─ attackCooldown    : float                    // 시트
+├─ attackInterval    : float                    // 공격 시작부터 다음 공격 시작까지(초). 시트
+├─ attackHitDelay / attackDuration : float      // 타격 시점 / 모션 길이(초). 0이면 GameConfig 기본값. 시트
 ├─ critChance        : float = 10               // %. 시트
 ├─ critBonus         : float = 100              // %. 시트
 ├─ unlockDiamondPrice: int                      // 잠긴 헌터의 다이아 구매 가격 (표시용, 판정은 서버). 0이면 구매 불가
@@ -79,7 +80,7 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
   BeamAttack: 타격 프레임에 대상에게 바로 데미지를 주고, ProjectileLauncher.FirePoint에서 대상까지 빔을 그린다 (빔 연출은 임시 LineRenderer)
 ```
 
-공격 애니메이션은 모든 타워가 Animator의 `Attack` 트리거 하나를 쓴다(`AttackBehaviourBase`의 상수). 타워 프리팹의 Animator Controller에 `Attack` Trigger 파라미터가 없으면 조용히 무시되고 애니메이션이 재생되지 않는다.
+공격 애니메이션은 모든 타워가 Animator의 `Attack` 트리거 하나를 쓴다(`AttackBehaviourBase`의 상수). 공격 간격은 공격을 시작할 때 건다(`attackInterval ÷ 공격속도`, 서버와 같은 규칙). 공격은 클립의 `OnAttackHit`에서 끝나고, 모션이 간격보다 길면(궁수) 다음 공격 트리거가 남은 모션을 끊는다. 소환·합성 직후에는 `GameConfig.HunterSpawnAttackDelay`(1초) 동안 공격하지 않는다. 타워 프리팹의 Animator Controller에 `Attack` Trigger 파라미터가 없으면 조용히 무시되고 애니메이션이 재생되지 않는다.
 
 ## 시트 → SO 임포트
  숫자의 원천은 CSV다. 1줄은 영문 키이고 열 설명은 데이터 저장소 `Sheets/README.md`에 있다. 위치는 데이터 저장소 `C:\Projects\SlimeTD-Data\Sheets\`다 (클라이언트 프로젝트 안에 복사본을 두지 않는다).
@@ -87,7 +88,7 @@ AttackBehaviourFactory.Create(towerData) -> MeleeAttack / ProjectileAttack / Bea
 | 시트 | 키 | 열 |
 |---|---|---|
 | `Grades.csv` | `gradeId` | `name`, `baseAttack`, `attackGrowthRate`, `gachaWeight` (레벨별 비용은 `LevelUpCosts.csv`의 `cards`, `coin`) |
-| `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackCooldown`, `critChance`, `critBonus`, `startUnlocked`(1/0, 비우면 잠금), `unlockDiamondPrice` |
+| `Towers.csv` | `towerId` | `codeName`, `name`, `gradeId`, `enabled`, `attackRange`, `attackInterval`, `critChance`, `critBonus`, `startUnlocked`(1/0, 비우면 잠금), `unlockDiamondPrice`, `attackHitDelay`, `attackDuration` |
 | `Skills.csv` | `skillId` | 아래 [타워 스킬](#타워-스킬) 참고 |
 
 - 실행: `sheets-to-so` 스킬로 반영한다. 변환 코드나 메뉴 없이 시트 값을 `TowerData_<코드명>` 에셋에 직접 쓰고 `TowerCatalog`를 시트 기준으로 맞춘다

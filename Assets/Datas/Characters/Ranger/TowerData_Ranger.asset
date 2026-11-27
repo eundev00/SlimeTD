@@ -21,7 +21,7 @@ MonoBehaviour:
   _attackRange: 2
   _baseAttack: 200
   _attackGrowthRate: 5
-  _attackCooldown: 1
+  _attackInterval: 2
   _critChance: 10
   _critBonus: 100
   _projectileSpeed: 5

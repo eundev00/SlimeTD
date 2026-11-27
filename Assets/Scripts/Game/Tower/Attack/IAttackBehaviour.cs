@@ -10,9 +10,9 @@ public interface IAttackBehaviour : IDisposable
 
     void Initialize(ITowerContext context);
     void Tick(float deltaTime);
+    void DelayNextAttack(float seconds);
     UniTask ExecuteAsync(TargetInfo target, CancellationToken token);
 
     void OnAnimationCast();
     void OnAnimationHit();
-    void OnAnimationEnd();
 }

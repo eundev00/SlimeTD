@@ -157,6 +157,10 @@ public class BaseTower : MonoBehaviour, IUpdatable, IPeriodicUpdatable, ITowerIn
         _attackCancellation = new CancellationTokenSource();
         _attack.Initialize(this);
 
+        // 소환·합성 직후에는 등장 모션을 보여 주고 공격하지 않는다
+        if (_gameplayService.Config != null)
+            _attack.DelayNextAttack(_gameplayService.Config.HunterSpawnAttackDelay);
+
         if (_animationEventListener != null)
             _animationEventListener.SetAttack(_attack);
 

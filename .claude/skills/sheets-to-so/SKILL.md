@@ -58,7 +58,7 @@ description: SlimeTD-Data 저장소의 기획 시트(CSV)를 클라이언트 Scr
 | `_codeName` | codeName |
 | `_towerName` | name (한글 이스케이프) |
 | `_attackType` | attackType → `TowerAttackType` 값 (Melee 0, Projectile 1, Beam 2) |
-| `_attackRange`, `_attackCooldown`, `_critChance`, `_critBonus` | 같은 이름의 열 |
+| `_attackRange`, `_attackInterval`, `_critChance`, `_critBonus` | 같은 이름의 열 |
 | `_baseAttack`, `_attackGrowthRate` | 그 등급의 Grades.csv `baseAttack`, `attackGrowthRate` |
 | `_projectileSpeed`, `_projectileHitRadius`, `_projectileLifetime` | TowerProjectiles.csv의 `speed`, `hitRadius`, `lifetime`. 행이 없으면 0 |
 | `_attackHitDelay`, `_attackDuration` | 같은 이름의 열 (비우면 0 = `GameConfig` 기본값) |
@@ -132,7 +132,7 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 
 ### GameConstants.csv → `Assets/Datas/GameConfig.asset`
 
-`_summonBaseCost`, `_summonCostIncrease`, `_summonGradeId`, `_slowMinSpeedRatio`, `_bossSlowScale` = 같은 이름의 key. `_hunterAttackHitDelay`, `_hunterAttackDuration` = `hunter.attackHitDelay`, `hunter.attackDuration`.
+`_summonBaseCost`, `_summonCostIncrease`, `_summonGradeId`, `_slowMinSpeedRatio`, `_bossSlowScale` = 같은 이름의 key. `_hunterAttackHitDelay`, `_hunterAttackDuration`, `_hunterSpawnAttackDelay` = `hunter.attackHitDelay`, `hunter.attackDuration`, `hunter.spawnAttackDelay`.
 
 ### 서버 전용 시트 (반영하지 않는다)
 

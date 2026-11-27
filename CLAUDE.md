@@ -124,7 +124,7 @@ UI가 작을 때는 View 하나로 시작하고, 커지면 3계층으로 승격�
 - **로비 웨이브 맵**: 전투 탭은 맵 선택 대신 세로 스크롤 웨이브 진행도 맵이다. 프리팹은 메뉴 `SlimeTD > Wave > Build Wave Map Forest`(`WaveMapBuilder`)가 만들며 실행마다 소품 배치가 바뀌고 `WaveForest.prefab`을 덮어쓴다. 상세는 [Doc/슬라임TD_로비UI.md](Doc/슬라임TD_로비UI.md) 참고
 - **데이터 ID 규칙**: 모든 데이터(타워, 스킬 등)의 ID는 종류와 상관없이 서로 겹치지 않아야 한다. 새 시트나 행을 추가할 때 기존 시트의 ID와 비교해 중복을 확인한다. 대역: 타워 101~(3자리), 스킬 타워ID×100+순번(5자리. 궁수 10101~, 일병 10301~). 한 번 정한 ID는 바꾸지 않고, 추가는 그 타워의 다음 빈 번호를 쓴다. 자릿수가 다르면 구조적으로 겹치지 않으니 새 종류의 데이터는 자릿수가 다른 대역을 잡는다. 게임 중 타워 인스턴스를 구분하는 번호는 데이터 ID가 아니라 `BaseTower.SpawnId`다 (생성마다 새로 발급, 저장하지 않음)
 - **외형 (슬라임, 타워)**: 툰 셰이더 `SlimeTD/SlimeFlatKit` 머티리얼 하나만 쓰고 외곽선은 넣지 않는다 (셰이더에서 외곽선 패스를 지웠다). 타워 색은 팔레트 텍스처를 쓴다. 외곽선을 시도했던 기록은 [Doc/슬라임TD_슬라임렌더링.md](Doc/슬라임TD_슬라임렌더링.md) 5장
-- **타워 공격 애니메이션**: 공격 클립에는 `OnAttackHit`(타격 프레임)과 `OnAttackEnd`(끝) 이벤트가 둘 다 있어야 한다. `OnAttackEnd`가 없으면 공격이 10초 타임아웃 뒤에야 끝나서 공격이 거의 멈춘다
+- **타워 공격 애니메이션**: 공격 클립에는 `OnAttackHit`(타격 프레임)과 `OnAttackEnd`(모션 끝) 이벤트를 둔다. 공격은 `OnAttackHit`에서 끝나고(없으면 10초 타임아웃), `OnAttackEnd`는 시트 `attackDuration`을 뽑는 기준이다. 공격 간격(`attackInterval`)은 공격 시작에 걸린다. 모션이 간격보다 길 수 있으므로 공격 상태(마지막 상태 포함)와 등장(`Spawn`) 상태에도 공격 트리거 전이를 둬서 다음 공격이 남은 모션을 끊게 한다
 - **스킬 아이콘**: `Assets/Art/UI/SkillIcon/SkillIcon_{스킬ID}.png` (128x128 투명 PNG). 새 아이콘은 Texture Type을 Sprite로 바꿔야 아틀라스에 들어간다 (Default면 에러 없이 빠진다). 폴더 전체를 `Assets/Art/Images/SkillIconAtlas.spriteatlasv2`가 묶고, 런타임은 `LoadAsync<SpriteAtlas>(AtlasKeys.SkillIconAtlas)` 후 `GetSprite(skill.IconName)`으로 쓴다. `Assets/Art/Images`는 Addressables 폴더로 등록되어 있고 Sprite Packer 모드는 SpriteAtlasV2다
 - **TMP 폰트 글자**: 화면에 보이는 한글(시트의 이름/설명 포함)을 바꾸면 메뉴 `SlimeTD > Data > Trim TMP Fonts To Used Characters`를 다시 실행해야 새 글자가 네모로 깨지지 않는다
 - **데이터 스크립트 위치**: ScriptableObject 정의는 Assets/Scripts/Data/에 둔다 (Game/ 아래에 두지 않는다)

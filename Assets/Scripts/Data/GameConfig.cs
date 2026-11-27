@@ -15,7 +15,9 @@ public class GameConfig : ScriptableObject
 
     [Header("헌터 공격 시점 기본값 (초, 공격속도 1 기준)")]
     [SerializeField] private float _hunterAttackHitDelay = 0.63f;
-    [SerializeField] private float _hunterAttackDuration = 1.07f;
+    [SerializeField] private float _hunterAttackDuration = 1f;
+    [Tooltip("소환·합성 직후 첫 공격까지 대기(초). 이 동안 등장 모션을 보여 준다")]
+    [SerializeField] private float _hunterSpawnAttackDelay = 1f;
 
     [Header("에너지 (표시용, 서버가 확정)")]
     [SerializeField] private int _energyCostPerBattle = 5;
@@ -33,6 +35,7 @@ public class GameConfig : ScriptableObject
     public float BossSlowScale => _bossSlowScale;
     public float HunterAttackHitDelay => _hunterAttackHitDelay;
     public float HunterAttackDuration => _hunterAttackDuration;
+    public float HunterSpawnAttackDelay => _hunterSpawnAttackDelay;
     public int EnergyCostPerBattle => _energyCostPerBattle;
     public bool IgnoreGoldCost => _ignoreGoldCost;
     public bool AutoStartWave => _autoStartWave;

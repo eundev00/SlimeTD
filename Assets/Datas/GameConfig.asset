@@ -18,7 +18,8 @@ MonoBehaviour:
   _slowMinSpeedRatio: 0.25
   _bossSlowScale: 0.5
   _hunterAttackHitDelay: 0.63
-  _hunterAttackDuration: 1.07
+  _hunterAttackDuration: 1
+  _hunterSpawnAttackDelay: 1
   _energyCostPerBattle: 5
   _ignoreGoldCost: 0
   _autoStartWave: 1
