@@ -45,9 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a0fbf32cf1204770b75f2c5eb92c847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  _speed: 5
-  _lifetime: 3
-  _hitRadius: 0.15
 --- !u!1001 &9089803191429909767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78,7 +75,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6d86cad7f06cd1b4d919003b5af871f2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.3959984
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6d86cad7f06cd1b4d919003b5af871f2, type: 3}
       propertyPath: m_LocalRotation.w

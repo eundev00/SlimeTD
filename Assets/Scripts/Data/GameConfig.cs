@@ -13,6 +13,10 @@ public class GameConfig : ScriptableObject
     [SerializeField, Range(0f, 1f)] private float _slowMinSpeedRatio = 0.25f;
     [SerializeField, Range(0f, 1f)] private float _bossSlowScale = 0.5f;
 
+    [Header("헌터 공격 시점 기본값 (초, 공격속도 1 기준)")]
+    [SerializeField] private float _hunterAttackHitDelay = 0.63f;
+    [SerializeField] private float _hunterAttackDuration = 1.07f;
+
     [Header("에너지 (표시용, 서버가 확정)")]
     [SerializeField] private int _energyCostPerBattle = 5;
 
@@ -27,6 +31,8 @@ public class GameConfig : ScriptableObject
     public int SummonGradeId => _summonGradeId;
     public float SlowMinSpeedRatio => _slowMinSpeedRatio;
     public float BossSlowScale => _bossSlowScale;
+    public float HunterAttackHitDelay => _hunterAttackHitDelay;
+    public float HunterAttackDuration => _hunterAttackDuration;
     public int EnergyCostPerBattle => _energyCostPerBattle;
     public bool IgnoreGoldCost => _ignoreGoldCost;
     public bool AutoStartWave => _autoStartWave;

@@ -26,6 +26,10 @@ public class TowerSkillData
     [SerializeField] private VfxAnchor _vfxAnchor;
     [SerializeField] private string _animTrigger;
 
+    [Header("공격 시점 (초, 공격속도 1 기준. 0이면 타워 값)")]
+    [SerializeField] private float _attackHitDelay;
+    [SerializeField] private float _attackDuration;
+
     public int Id => _id;
     public string DisplayName => _displayName;
     public string Description => _description;
@@ -43,4 +47,6 @@ public class TowerSkillData
     public VfxAnchor VfxAnchor => _vfxAnchor;
     public bool HasVfx => !string.IsNullOrEmpty(_vfxKey);
     public string AnimTrigger => _animTrigger;
+    public float AttackHitDelay => _attackHitDelay;
+    public float AttackDuration => _attackDuration;
 }

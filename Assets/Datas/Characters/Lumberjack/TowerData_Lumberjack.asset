@@ -27,6 +27,8 @@ MonoBehaviour:
   _projectileSpeed: 0
   _projectileHitRadius: 0
   _projectileLifetime: 0
+  _attackHitDelay: 0
+  _attackDuration: 0
   _unlockDiamondPrice: 0
   _levelUpCost:
     _cards: 050000000a0000000f00000014000000190000002c0000003f000000520000006500000078000000a5000000d2000000ff0000002c010000

@@ -45,9 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a0fbf32cf1204770b75f2c5eb92c847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  _speed: 5
-  _lifetime: 3
-  _hitRadius: 0.15
 --- !u!1 &5029116345232422726
 GameObject:
   m_ObjectHideFlags: 0

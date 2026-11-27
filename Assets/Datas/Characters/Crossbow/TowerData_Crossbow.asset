@@ -25,8 +25,10 @@ MonoBehaviour:
   _critChance: 10
   _critBonus: 100
   _projectileSpeed: 5
-  _projectileHitRadius: 0.15
+  _projectileHitRadius: 0.1
   _projectileLifetime: 3
+  _attackHitDelay: 0.3
+  _attackDuration: 1.07
   _unlockDiamondPrice: 0
   _levelUpCost:
     _cards: 0300000006000000090000000c0000000f000000200000003100000042000000530000006400000082000000a0000000be000000dc000000

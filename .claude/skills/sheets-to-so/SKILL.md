@@ -61,6 +61,7 @@ description: SlimeTD-Data 저장소의 기획 시트(CSV)를 클라이언트 Scr
 | `_attackRange`, `_attackCooldown`, `_critChance`, `_critBonus` | 같은 이름의 열 |
 | `_baseAttack`, `_attackGrowthRate` | 그 등급의 Grades.csv `baseAttack`, `attackGrowthRate` |
 | `_projectileSpeed`, `_projectileHitRadius`, `_projectileLifetime` | TowerProjectiles.csv의 `speed`, `hitRadius`, `lifetime`. 행이 없으면 0 |
+| `_attackHitDelay`, `_attackDuration` | 같은 이름의 열 (비우면 0 = `GameConfig` 기본값) |
 | `_unlockDiamondPrice` | unlockDiamondPrice (비우면 0). 화면 표시용 |
 | `_levelUpCost._cards`, `_coin` | 그 등급의 LevelUpCosts.csv를 level 1~14 순서로 14개 (hex 배열). 화면 표시용 |
 
@@ -90,6 +91,7 @@ description: SlimeTD-Data 저장소의 기획 시트(CSV)를 클라이언트 Scr
 | `_vfxKey` | vfxKey (비우면 빈 문자열). `PrefabKeys`에 없는 키면 보고한다 |
 | `_vfxAnchor` | `VfxAnchor` 값 (비우면 0 = Root) |
 | `_animTrigger` | animTrigger (비우면 빈 문자열) |
+| `_attackHitDelay`, `_attackDuration` | 같은 이름의 열 (비우면 0 = 타워 값) |
 
 허용 단위(README "effectType과 수치 해석")를 어긴 행은 반영하지 말고 보고한다.
 
@@ -110,6 +112,7 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 | `_renderGroup` | `SlimeRenderGroup` 값 (Normal 0, Boss 1) |
 | `_instantGameOver` | 보스만. instantGameOver |
 
+- `radius`는 옮기지 않는다. 클라이언트는 프리팹 충돌체를 쓰고, 시트 값은 데이터 저장소 `extract-combat-values` 스킬로 충돌체에서 뽑는다
 - 슬라임 프리팹은 시트에 없다. `codeName`과 같은 이름의 프리팹(`Assets/Prefabs/Game/Slime/<codeName>.prefab`)을 `SlimePrefabProvider`가 로드한다. 프리팹이 없으면 사용자에게 알린다
 
 ### CoopStages.csv / SingleStages.csv + Waves/<codeName>.csv → `Assets/Datas/Stages/Stage_<codeName>.asset`
@@ -129,7 +132,7 @@ kind가 `Normal`이면 `SlimeData`, `Boss`면 `BossSlimeData`.
 
 ### GameConstants.csv → `Assets/Datas/GameConfig.asset`
 
-`_summonBaseCost`, `_summonCostIncrease`, `_summonGradeId`, `_slowMinSpeedRatio`, `_bossSlowScale` = 같은 이름의 key.
+`_summonBaseCost`, `_summonCostIncrease`, `_summonGradeId`, `_slowMinSpeedRatio`, `_bossSlowScale` = 같은 이름의 key. `_hunterAttackHitDelay`, `_hunterAttackDuration` = `hunter.attackHitDelay`, `hunter.attackDuration`.
 
 ### 서버 전용 시트 (반영하지 않는다)
 
